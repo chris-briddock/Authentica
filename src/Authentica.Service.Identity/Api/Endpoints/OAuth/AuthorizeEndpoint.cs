@@ -1,0 +1,98 @@
+using Api.Constants;
+using Api.Requests;
+using Application.Contracts;
+using Application.DTOs;
+using Ardalis.ApiEndpoints;
+using Domain.Aggregates.Identity;
+using Domain.Constants;
+using Domain.Events;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Api.Endpoints.OAuth;
+
+/// <summary>
+/// Endpoint for handling OAuth authorization requests.
+/// </summary>
+[Route($"{Routes.BaseRoute.Name}")]
+public sealed class AuthorizeEndpoint : EndpointBaseAsync
+                                        .WithRequest<AuthorizeRequest>
+                                        .WithActionResult
+{
+    /// <summary>
+    /// Provides access to application services.
+    /// </summary>
+    public IServiceProvider Services { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthorizeEndpoint"/> class.
+    /// </summary>
+    /// <param name="services">The service provider.</param>
+    public AuthorizeEndpoint(IServiceProvider services)
+    {
+        Services = services ?? throw new ArgumentNullException(nameof(services));
+    }
+
+    /// <summary>
+    /// Handles the OAuth authorization request.
+    /// </summary>
+    /// <param name="request">The object which encapsulates the request body.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>The result of the authorization process.</returns>
+    [HttpGet($"{Routes.OAuth.Authorize}")]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status302Found)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public override async Task<ActionResult> HandleAsync(AuthorizeRequest request,
+                                                         CancellationToken cancellationToken = default)
+    {
+
+        var randomStringProvider = Services.GetRequiredService<IRandomStringProvider>();
+        var readStore = Services.GetRequiredService<IApplicationReadStore>();
+        var eventStore = Services.GetRequiredService<IEventStore>();
+
+        AuthorizeEvent @event = new()
+        {
+            Payload = request
+        };
+
+        await eventStore.SaveEventAsync(@event);
+
+        var state = randomStringProvider.Generate(64);
+
+        ApplicationDTO<AuthorizeRequest> dto = new()
+        {
+            Request = request,
+            ClaimsPrincipal = User
+        };
+
+        ClientApplication? client = await readStore.GetClientApplicationByClientIdAndCallbackUri(dto, cancellationToken);
+
+        if (client is null)
+            return Unauthorized();
+
+        HttpContext.Session.SetString($"{request.ClientId}_state", state);
+
+        if (request.ResponseType == TokenConstants.AuthorizationCode)
+        {
+            var code = randomStringProvider.Generate(256);
+            HttpContext.Session.SetString($"{request.ClientId}_code", code);
+            await HttpContext.Session.CommitAsync(cancellationToken);
+
+            var redirectUri = $"{request.CallbackUri}/?code={code}&state={state}";
+            return Redirect(redirectUri);
+        }
+
+        if (request.ResponseType == TokenConstants.ClientCredentials)
+        {
+            var redirectUri = $"{request.CallbackUri}/?state={state}";
+            await HttpContext.Session.CommitAsync(cancellationToken);
+            return Redirect(redirectUri);
+        }
+
+        return Unauthorized();
+
+    }
+}

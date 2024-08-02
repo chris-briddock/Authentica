@@ -1,0 +1,29 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+    - name: Install Dependencies
+      run: sudo apt-get install jq
+    - name: Build & Restore
+      run: dotnet build --configuration Release src/Authentica.Service.Identity/Authentica.Service.Identity.csproj
+    - name: Test
+      run: dotnet test --collect:"XPlat Code Coverage" --logger "console;verbosity=minimal" src/Authentica.Service.Identity.Tests/Authentica.Service.Identity.Tests.csproj
+      env:
+        JWT: ${{ env.JWT }}
+    - name: Publish
+      run: dotnet publish src/Authentica.Service.Identity/Authentica.Service.Identity.csproj -c Release
