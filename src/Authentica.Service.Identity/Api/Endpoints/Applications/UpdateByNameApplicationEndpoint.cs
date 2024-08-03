@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Api.Constants;
 using Api.Requests;
 using Application.Contracts;
@@ -7,7 +6,6 @@ using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Applications;
@@ -46,12 +44,13 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public override async Task<ActionResult> HandleAsync(UpdateApplicationByNameRequest request, CancellationToken cancellationToken = default)
     {
-        var userManager = Services.GetRequiredService<UserManager<User>>();
-        var userClaimsPrincipal = User.FindFirst(ClaimTypes.Email)!;
-        var user = await userManager.FindByEmailAsync(userClaimsPrincipal.Value);
+        var userWriteStore = Services.GetRequiredService<IUserReadStore>();
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
 
+        var userReadResult = await userWriteStore.GetUserByEmailAsync(User, cancellationToken);
+        var user = userReadResult.User;
+        
         if (user is null)
             return BadRequest();
 

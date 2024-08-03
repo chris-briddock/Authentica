@@ -62,7 +62,7 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
             await eventStore.SaveEventAsync(@event);
 
             if (result.Errors.Any())
-            return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
             return Ok(); 
     }

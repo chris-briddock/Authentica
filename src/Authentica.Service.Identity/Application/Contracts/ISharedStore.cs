@@ -3,6 +3,9 @@ using Domain.Contracts;
 
 namespace Application.Contracts;
 
+/// <summary>
+/// Defines a contract for operations that are generic and can be shared.
+/// </summary>
 public interface ISharedStore
 {
     /// <summary>

@@ -50,7 +50,7 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
             var result = await userWriteStore.SoftDeleteUserAsync(User, cancellationToken);
 
             if (result.Errors.Any())
-            return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
             return NoContent();
     }
