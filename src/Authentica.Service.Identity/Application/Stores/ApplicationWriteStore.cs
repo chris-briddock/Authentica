@@ -163,36 +163,9 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             application.DeletedOnUtc = DateTime.UtcNow;
             application.DeletedBy = userReadResult.User.Id;
 
-            var sql = @"
-        BEGIN TRANSACTION;
-        BEGIN TRY
-            SET NOCOUNT ON;
-
-            UPDATE [SYSTEM_IDENTITY_CLIENT_APPLICATIONS]
-            SET 
-                [IsDeleted] = @p0,
-                [DeletedOnUtc] = @p1,
-                [DeletedBy] = @p2
-            WHERE [Name] = @p3;
-
-            COMMIT TRANSACTION;
-        END TRY
-        BEGIN CATCH
-            ROLLBACK TRANSACTION;
-            THROW;
-        END CATCH;
-        ";
-
-            var parameters = new[]
-            {
-            new SqlParameter("@p0", application.IsDeleted),
-            new SqlParameter("@p1", application.DeletedOnUtc),
-            new SqlParameter("@p2", application.DeletedBy ?? (object)DBNull.Value),
-            new SqlParameter("@p3", dto.Request.Name)
-        };
-
             // Execute the SQL command to update the application
-            await DbContext.Database.ExecuteSqlRawAsync(sql, parameters, cancellationToken);
+            DbContext.ClientApplications.Update(application);
+            await DbContext.SaveChangesAsync(cancellationToken);
 
             // Return success result
             return ApplicationStoreResult.Success();

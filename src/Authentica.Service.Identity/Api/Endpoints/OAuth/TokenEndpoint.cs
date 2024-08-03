@@ -101,11 +101,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             email = user.Email;
         }
 
-        var storedState = HttpContext.Session.GetString($"{client.ClientId}_state");
-
-        if (storedState != request.State)
-            return Unauthorized();
-
         if (request.GrantType == TokenConstants.Refresh
             && request.RefreshToken is not null)
         {
@@ -117,6 +112,9 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         if (request.GrantType == TokenConstants.AuthorizationCode)
         {
+             var storedState = HttpContext.Session.GetString($"{client.ClientId}_state");
+            if (storedState != request.State)
+                return Unauthorized();
             var storedCode = HttpContext.Session.GetString($"{client.ClientId}_code");
             if (storedCode != request.Code)
                 return Unauthorized();
