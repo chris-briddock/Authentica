@@ -37,21 +37,21 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken)
     {
-            var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-            var eventStore = Services.GetRequiredService<IEventStore>();
+        var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
+        var eventStore = Services.GetRequiredService<IEventStore>();
 
-            DeleteAccountEvent @event = new()
-            {
-                Email = User.Identity!.Name!
-            };
+        DeleteAccountEvent @event = new()
+        {
+            Email = User.Identity!.Name!
+        };
 
-            await eventStore.SaveEventAsync(@event);
-            
-            var result = await userWriteStore.SoftDeleteUserAsync(User, cancellationToken);
+        await eventStore.SaveEventAsync(@event);
 
-            if (result.Errors.Any())
-                return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        var result = await userWriteStore.SoftDeleteUserAsync(User, cancellationToken);
 
-            return NoContent();
+        if (result.Errors.Any())
+            return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+
+        return NoContent();
     }
 }

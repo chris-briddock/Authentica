@@ -1,7 +1,6 @@
 using System.Text;
 using System.Web;
 using Api.Constants;
-using Application.Contracts;
 using Microsoft.Extensions.Primitives;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;

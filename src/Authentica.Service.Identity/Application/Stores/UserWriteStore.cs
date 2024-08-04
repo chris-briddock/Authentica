@@ -1,11 +1,8 @@
 using System.Security.Claims;
 using Api.Requests;
 using Application.Contracts;
-using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
-using Domain.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
 
@@ -63,5 +60,39 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             return UserStoreResult.Failed();
 
         return UserStoreResult.Success(user);
+    }
+    /// <inheritdoc/>
+    public async Task<UserStoreResult> ConfirmEmailAsync(User user, string token)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(token);
+        var result = await UserManager.ConfirmEmailAsync(user, token);
+
+        if (result.Succeeded)
+            return UserStoreResult.Success();
+
+        return UserStoreResult.Failed();
+    }
+
+    /// <summary>
+    /// Asynchronously resets a user's password using a reset token and a new password.
+    /// </summary>
+    /// <param name="user">The user whose password is being reset.</param>
+    /// <param name="token">The password reset token.</param>
+    /// <param name="newPassword">The new password for the user.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="ArgumentException">Thrown if <paramref name="token"/> is null or whitespace.</exception>
+    public async Task<UserStoreResult> ResetPasswordAsync(User user, string token, string newPassword)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(token);
+
+        var result = await UserManager.ResetPasswordAsync(user, token, newPassword);
+
+        if (result.Succeeded)
+            return UserStoreResult.Success();
+
+        return UserStoreResult.Failed();
     }
 }

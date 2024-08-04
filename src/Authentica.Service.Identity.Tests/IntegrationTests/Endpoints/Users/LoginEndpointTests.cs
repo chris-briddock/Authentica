@@ -1,0 +1,105 @@
+using Api.Constants;
+
+namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
+
+public class LoginEndpointTests
+{
+    private TestFixture<Program> _fixture;
+
+    [OneTimeSetUp]
+    public async Task OneTimeSetup()
+    {
+        _fixture = new TestFixture<Program>();
+        await _fixture.OneTimeSetUpAsync();
+    }
+
+    [OneTimeTearDown]
+    public void OneTimeTearDown()
+    {
+        _fixture.OneTimeTearDown();
+    }
+
+    [Test]
+    public async Task LoginEndpoint_Returns200OK_WhenLoginIsSuccessful()
+    {
+        var client = _fixture.WebApplicationFactory.CreateClient();
+
+        var request = new LoginRequest()
+        {
+            Email = "authorizeTest@default.com",
+            Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
+            RememberMe = true
+        };
+        
+        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+        
+        var cookies = result.Headers.GetValues("Set-Cookie");
+
+        bool hasMyCookie = cookies.Any(header => header.Contains(IdentityConstants.ApplicationScheme));
+
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(hasMyCookie, Is.EqualTo(true));
+
+    }
+
+    [Test]
+    public async Task LoginEndpoint_Returns200OK_WhenTwoFactorIsRequired()
+    {
+        var client = _fixture.WebApplicationFactory.CreateClient();
+
+        var request = new LoginRequest()
+        {
+            Email = "twoFactorTest@default.com",
+            Password = "Ar*P`w8R.WyXb7'UKxh;!-",
+            RememberMe = true
+        };
+        
+        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+        
+        var cookies = result.Headers.GetValues("Set-Cookie");
+
+        bool hasMyCookie = cookies.Any(header => header.Contains(IdentityConstants.TwoFactorUserIdScheme));
+
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(hasMyCookie, Is.EqualTo(true));
+
+    }
+
+    [Test]
+    public async Task LoginEndpoint_Returns401Unauthorized_WhenLoginFails()
+    {
+        var client = _fixture.WebApplicationFactory.CreateClient();
+
+        var request = new LoginRequest()
+        {
+            Email = "twoFactorTest@default.com",
+            Password = "Ar*P`w8R.WyXb7'UKxh-",
+            RememberMe = true
+        };
+        
+        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+    
+
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+
+    }
+
+    [Test]
+    public async Task LoginEndpoint_Returns400BadRequest_WhenUserIsNotFound()
+    {
+        var client = _fixture.WebApplicationFactory.CreateClient();
+
+        var request = new LoginRequest()
+        {
+            Email = "notfound@default.com",
+            Password = "Ar*P`w8R.WyXb7'UKxh-",
+            RememberMe = true
+        };
+        
+        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+
+    }
+}
+

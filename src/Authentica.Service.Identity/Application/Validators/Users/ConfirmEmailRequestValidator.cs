@@ -13,7 +13,7 @@ public class ConfirmEmailRequestValidator : AbstractValidator<ConfirmEmailReques
     /// </summary>
     public ConfirmEmailRequestValidator()
     {
-        RuleFor(request => request.EmailAddress)
+        RuleFor(request => request.Email)
             .NotEmpty().WithMessage("Email address is required.")
             .EmailAddress().WithMessage("Invalid email address format.");
 

@@ -38,7 +38,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
     /// <param name="request">The object which encapsulates the request body.</param>
     /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
     /// <returns>The result of the application secret being created.</returns>
-    [HttpPost($"{Routes.Applications.ApplicationSecrets}")]
+    [HttpPut($"{Routes.Applications.ApplicationSecrets}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

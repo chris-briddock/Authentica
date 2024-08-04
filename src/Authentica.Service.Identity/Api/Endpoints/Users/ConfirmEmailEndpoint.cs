@@ -42,17 +42,15 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(ConfirmEmailRequest request,
                                                          CancellationToken cancellationToken = default)
     {
-            var userManager = Services.GetRequiredService<UserManager<User>>();
+            var writeStore = Services.GetRequiredService<IUserWriteStore>();
+            var readStore = Services.GetRequiredService<IUserReadStore>();
             var eventStore = Services.GetRequiredService<IEventStore>();
 
-            var user = await userManager.FindByEmailAsync(request.EmailAddress);
-
-            if (user is null)
-                return BadRequest();
+            var userResult = await readStore.GetUserByEmailAsync(request.Email);
 
             // NOTE: This code should have been emailed to the user.
 
-            IdentityResult result = await userManager.ConfirmEmailAsync(user, request.Token);
+            var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
 
             ConfirmEmailEvent @event = new()
             {

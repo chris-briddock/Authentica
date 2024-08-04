@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Api.Requests;
 using Application.Results;
-using Domain.Contracts;
+using Domain.Aggregates.Identity;
 
 namespace Application.Contracts;
 
@@ -27,5 +27,32 @@ public interface IUserWriteStore
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is null.</exception>
     /// <exception cref="OperationCanceledException">Thrown when the operation is canceled by the <paramref name="cancellationToken"/>.</exception>
     Task<UserStoreResult> CreateUserAsync(RegisterRequest request, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Asynchronously confirms a user's email address using a confirmation token.
+    /// </summary>
+    /// <param name="user">The user whose email address is being confirmed.</param>
+    /// <param name="token">The email confirmation token.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="user"/> or <paramref name="token"/> is null.
+    /// </exception>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    Task<UserStoreResult> ConfirmEmailAsync(User user, string token);
+    /// <summary>
+    /// Asynchronously resets a user's password using a reset token and a new password.
+    /// </summary>
+    /// <param name="user">The user whose password is being reset.</param>
+    /// <param name="token">The password reset token.</param>
+    /// <param name="newPassword">The new password for the user.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="ArgumentException">Thrown if <paramref name="token"/> is null or whitespace.</exception>
+    Task<UserStoreResult> ResetPasswordAsync(User user, string token, string newPassword);
 
 }

@@ -49,31 +49,31 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(RegisterRequest request,
                                                          CancellationToken cancellationToken = default)
     {
-            var userManager = Services.GetRequiredService<UserManager<User>>();
-            var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-            var eventStore = Services.GetRequiredService<IEventStore>();
+        var userManager = Services.GetRequiredService<UserManager<User>>();
+        var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
+        var eventStore = Services.GetRequiredService<IEventStore>();
 
-            RegisterEvent @event = new()
-            {
-                Payload = request
-            };
+        RegisterEvent @event = new()
+        {
+            Payload = request
+        };
 
-            await eventStore.SaveEventAsync(@event);
+        await eventStore.SaveEventAsync(@event);
 
-            var existingUser = await userManager.FindByEmailAsync(request.Email);
+        var existingUser = await userManager.FindByEmailAsync(request.Email);
 
-            if (existingUser is not null && !existingUser.IsDeleted)
-                return StatusCode(StatusCodes.Status409Conflict, "User is deleted, or already exists.");
+        if (existingUser is not null && !existingUser.IsDeleted)
+            return StatusCode(StatusCodes.Status409Conflict, "User is deleted, or already exists.");
 
-            var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
+        var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
 
-            if (result.Errors.Any())
+        if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
-            if (!await userManager.IsInRoleAsync(result.User, RoleDefaults.User))
-                await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
-            
-            // Send confirmation email - trigger domain event.
-            return StatusCode(StatusCodes.Status201Created);
+        if (!await userManager.IsInRoleAsync(result.User, RoleDefaults.User))
+            await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
+
+        // Send confirmation email - trigger domain event.
+        return StatusCode(StatusCodes.Status201Created);
     }
 }

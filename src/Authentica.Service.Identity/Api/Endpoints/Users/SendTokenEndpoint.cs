@@ -57,9 +57,6 @@ public class SendTokenEndpoint : EndpointBaseAsync
 
         User? user = await userManager.FindByEmailAsync(request.Email);
 
-        if (user is null)
-            return BadRequest("User not found.");
-
         switch (request.TokenType)
         {
             case EmailPublisherConstants.TwoFactor:

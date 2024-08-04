@@ -30,7 +30,7 @@ public class CreateApplicationSecretEndpointTests
 
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
-        using var sut = await sutClient.PostAsJsonAsync($"api/v1/{Routes.Applications.ApplicationSecrets}", request);
+        using var sut = await sutClient.PutAsJsonAsync($"api/v1/{Routes.Applications.ApplicationSecrets}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
