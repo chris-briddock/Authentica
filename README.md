@@ -22,7 +22,7 @@ Authentica plays a crucial role in your application's security infrastructure, p
 ### Planned Improvements
 
 * **Multiple Tenants**
-* **FIDO2 Support**
+* **Passkeys Support**
 * **Application based 2FA Codes**
 
 Authorization Flows:
@@ -58,37 +58,47 @@ Authorization Flows:
 | **RabbitMQ and Azure Service Bus Support** | Integration with RabbitMQ and Azure Service Bus for messaging.                                |
 | **API Health Checks**                    | Regular health checks to monitor the API's status.                                             |
 | **Secure JWT Bearer Authentication**      | Implementation of secure JWT bearer tokens for authentication.                                 |
-| **Optional Azure Application Insights**  | Optional monitoring and diagnostics using Azure Application Insights.                         |
+| **Optional Azure Application Insights Support**  | Optional monitoring and diagnostics using Azure Application Insights.                         |
 | **Logging, Tracing, and Metrics**        | Advanced logging, tracing, and metrics with .NET Aspire.                                      |
 | **Resilient SQL Server Connections**      | Reliable connections to Microsoft SQL Server using Entity Framework Core.                      |
-| **Encrypted User Passwords**             | Protection of user passwords through encryption.                                               |
-| **HTTP/3 Support**                       | Utilizes HTTP/3 protocol with fallback to HTTP/2 and HTTP/1.1.                                 |
+| **Encrypted User Passwords**             | Protection of user passwords through irreversable encryption.                                               |
+| **Encrypted Application Secrets**             | Protection of application secrets through irreversable encryption.                                               |
+| **HTTP/3 Support**                       | Utilizes HTTP/3 protocol with fallback to HTTP/2 and HTTP/1 1.                                 |
+| **Soft deletable entries**                       | Utilizes soft deletions to ensure no data is permenantly lost.                                 |
+| **Auditable Entries** | To enable auditable entries, I have used CreatedBy, CreatedOn, ModifiedOn, and ModifiedBy columns. These columns help track who created and modified each record and when the changes occurred, ensuring comprehensive audit trails for data changes. |
+| **Data purge after 7 years, if soft deleted**                       | Data purges happen once an entry is over 7 years old. These are implemented as Background Services and run on a seperate thread, using a Periodic Timer.                       |
+| **Temporal tables**                       | When an entry in a table changes, we can tell when that happend changed, but also have a record of what changed, through these system versioned history tables                                 |
+| **Worker Services**                       | Utilizes loosley coupled worker services so this is independently scalable from the main service                                 |
+| **Security Features** | Implementations of security features such as concurrency stamps, security stamps, last logged in IP address, and last logged in date/time ensure security by providing mechanisms to detect and prevent unauthorized access, track user activity, and maintain data integrity. |
+| **Event Logging** | Utilized Domain Events and Integration Events to log every user action, ensuring the system state is rebuildable and replayable. Collected information includes the action taken, the request payload, and the timestamp. By implementing session middleware that generates a GUID as a Sequence ID, it is possible to track all actions a user takes within their session. |
+| **Integration Testing** | Utilized NUnit and Moq for integration testing to ensure system behavior is as expected by testing the interaction between various components in a production-like environment. This approach helps in identifying issues that may not be apparent in unit tests and ensures that the system works correctly as a whole. |
+| **Unit Testing** | Utilized NUnit and Moq for unit testing to ensure individual components function correctly by isolating each part of the code and testing it independently. This approach helps in identifying bugs early in the development process, verifying logic, and ensuring code reliability and maintainability. |
 
 ### Endpoints
 
-* **/oauth2/authorize**: Endpoint for user authorization.
-* **/oauth2/token**: Endpoint for obtaining OAuth tokens.
-* **/users/logout**: Endpoint for user logout.
-* **/users/login**: Endpoint for user login.
-* **/users**: Endpoint for reading a user by email.
-* **/users/register**: Endpoint for user registration.
-* **/users/delete**: Endpoint for deleting a user by email.
-* **/users/confirm-email**: Endpoint for confirming user email.
-* **/users/reset-password**: Endpoint for resetting user passwords.
-* **/users/2fa/login**: Endpoint for logging in with two-factor authentication.
-* **/users/2fa/manage**: Endpoint for managing two-factor authentication settings.
-* **/users/2fa/recovery/codes**: Endpoint for generating two-factor recovery codes.
-* **/users/2fa/recovery**: Endpoint for redeeming two-factor recovery codes.
-* **/users/details/email**: Endpoint for updating a user's email.
-* **/users/details/number**: Endpoint for updating a user's phone number.
-* **/users/details/address**: Endpoint for updating a user's address.
-* **/users/tokens**: Endpoint for managing user tokens.
-* **/applications**: Endpoint for reading an application by name.
-* **/applications/all**: Endpoint for reading all applications.
-* **/applications**: Endpoint for creating a new application.
-* **/applications**: Endpoint for updating an application by name.
-* **/applications**: Endpoint for deleting an application by name.
-* **/applications/secrets**: Endpoint for managing application secrets.
+* **/oauth2/authorize**: GET Endpoint for user authorization.
+* **/oauth2/token**: POST Endpoint for obtaining OAuth tokens.
+* **/users/logout**: POST Endpoint for user logout.
+* **/users/login**: POST Endpoint for user login.
+* **/users**: GET Endpoint for reading a user by email.
+* **/users/register**: POST Endpoint for user registration.
+* **/users/delete**: POST Endpoint for deleting a user by email.
+* **/users/confirm-email**: POST Endpoint for confirming user email.
+* **/users/reset-password**: POST Endpoint for resetting user passwords.
+* **/users/2fa/login**: POST Endpoint for logging in with two-factor authentication.
+* **/users/2fa/manage**: POST Endpoint for managing two-factor authentication settings.
+* **/users/2fa/recovery/codes**: GET Endpoint for generating two-factor recovery codes.
+* **/users/2fa/recovery**: POST Endpoint for redeeming two-factor recovery codes.
+* **/users/details/email**: PUT Endpoint for updating a user's email.
+* **/users/details/number**: PUT Endpoint for updating a user's phone number.
+* **/users/details/address**: PUT Endpoint for updating a user's address.
+* **/users/tokens**: POST Endpoint for managing user tokens.
+* **/applications**: GET Endpoint for reading an application by name.
+* **/applications/all**: GET Endpoint for reading all applications.
+* **/applications**: POST Endpoint for creating a new application.
+* **/applications**: PUT Endpoint for updating an application by name.
+* **/applications**: DELETE Endpoint for deleting an application by name.
+* **/applications/secrets**: PUT Endpoint for managing application secrets.
 
 ### Getting Started
 

@@ -19,6 +19,9 @@ public class ApplicationPurge : BackgroundService
     /// </summary>
     public ILogger<ApplicationPurge> Logger { get; }
 
+    /// <summary>
+    /// A periodic timer.
+    /// </summary>
     public readonly ITimer _timer;
 
     /// <summary>

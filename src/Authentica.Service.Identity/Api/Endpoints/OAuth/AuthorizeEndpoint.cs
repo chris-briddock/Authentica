@@ -42,9 +42,8 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
     [HttpGet($"{Routes.OAuth.Authorize}")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status302Found)]
+    [ProducesResponseType(StatusCodes.Status301MovedPermanently)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public override async Task<ActionResult> HandleAsync(AuthorizeRequest request,
                                                          CancellationToken cancellationToken = default)
     {
@@ -82,14 +81,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
             await HttpContext.Session.CommitAsync(cancellationToken);
 
             var redirectUri = $"{request.CallbackUri}/?code={code}&state={state}";
-            return Redirect(redirectUri);
-        }
-
-        if (request.ResponseType == TokenConstants.ClientCredentials)
-        {
-            var redirectUri = $"{request.CallbackUri}/?state={state}";
-            await HttpContext.Session.CommitAsync(cancellationToken);
-            return Redirect(redirectUri);
+            return RedirectPermanent(redirectUri);
         }
 
         return Unauthorized();

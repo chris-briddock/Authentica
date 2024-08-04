@@ -61,10 +61,7 @@ public sealed class TwoFactorManageEndpoint : EndpointBaseAsync
         if (!userReadResult.Succeeded)
             return BadRequest();
 
-        var result = await userManager.SetTwoFactorEnabledAsync(userReadResult.User, request.IsEnabled);
-
-        if (!result.Succeeded)
-            return BadRequest();
+        await userManager.SetTwoFactorEnabledAsync(userReadResult.User, request.IsEnabled);
 
         return NoContent();
     }

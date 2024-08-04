@@ -48,7 +48,7 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
                                                    CancellationToken cancellationToken = default)
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var userManager = Services.GetRequiredService<UserManager<User>>();
+        var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
 
         UpdatePhoneNumberEvent @event = new()
@@ -62,7 +62,10 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
 
         var user = userResult.User;
 
-        await userManager.ChangePhoneNumberAsync(user, request.PhoneNumber, request.Token);
+        var result = await userWriteStore.UpdatePhoneNumberAsync(user, request.PhoneNumber, request.Token);
+
+        if (!result.Succeeded)
+            return BadRequest();
 
         return Ok();
     }

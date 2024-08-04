@@ -1,6 +1,6 @@
 ﻿namespace Authentica.Service.Identity.Tests.Mocks;
 
-public class SignInManagerMock<TUser> : IMockBase<Mock<SignInManager<TUser>>> where TUser : IdentityUser<Guid>
+public class SignInManagerMock<TUser> : IMockBase<Mock<SignInManager<TUser>>> where TUser : IdentityUser<string>
 {
     public Mock<SignInManager<TUser>> Mock()
     {

@@ -44,12 +44,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
     {
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
-        var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
-        var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-
-        if (userResult.User is null)
-            return BadRequest(userResult.Errors.First().Description);
 
         var applicationExists = await readStore.CheckApplicationExistsAsync(request.Name, cancellationToken);
 

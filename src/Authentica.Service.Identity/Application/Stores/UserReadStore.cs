@@ -52,4 +52,30 @@ public class UserReadStore : StoreBase, IUserReadStore
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
+
+    /// <summary>
+    /// Asynchronously retrieves a user by their email address.
+    /// </summary>
+    /// <param name="email">The email address of the user to retrieve.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    public async Task<UserStoreResult> GetUserByEmailAsync(string email)
+    {
+        try
+        {
+            var user = await UserManager.FindByEmailAsync(email);
+
+            if (user is null)
+                return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+
+            return UserStoreResult.Success(user);
+        }
+        catch (Exception ex)
+        {
+           return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
+    }
 }

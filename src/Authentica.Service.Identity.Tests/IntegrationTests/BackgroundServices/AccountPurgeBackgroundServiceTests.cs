@@ -23,18 +23,17 @@ public class AccountPurgeBackgroundServiceTests
 {
     private TestFixture<Program> _fixture;
 
-    public AccountPurgeBackgroundServiceTests()
+    [OneTimeSetUp]
+    public async Task OneTimeSetup()
     {
         _fixture = new TestFixture<Program>();
-        _fixture.OneTimeSetUp();
+        await _fixture.OneTimeSetUpAsync();
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
         _fixture.OneTimeTearDown();
-        _fixture.Dispose();
-        _fixture = null!;
     }
 
     [Test]

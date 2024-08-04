@@ -19,6 +19,10 @@ jobs:
         dotnet-version: 8.0.x
     - name: Install Dependencies
       run: sudo apt-get install jq
+    - name: Install EF Core CLI
+      run: dotnet tool update --global dotnet-ef
+    - name: Generate migrations
+      run: cd src/Authentica.Service.Identity/ && dotnet ef migrations add Initial
     - name: Build & Restore
       run: dotnet build --configuration Release src/Authentica.Service.Identity/Authentica.Service.Identity.csproj
     - name: Test

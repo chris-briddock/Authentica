@@ -10,7 +10,7 @@ public sealed record ConfirmEmailRequest
     /// <summary>
     /// The users email address
     /// </summary>
-    public required string EmailAddress { get; set; } = default!;
+    public required string Email { get; set; } = default!;
     /// <summary>
     /// The code to confirm the email address
     /// </summary>

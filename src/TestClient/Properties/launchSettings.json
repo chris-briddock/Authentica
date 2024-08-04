@@ -1,15 +1,33 @@
-﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+{
   "profiles": {
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7256",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORTS": "7256",
+        "ASPNETCORE_HTTP_PORTS": "7255",
+        "ASPNETCORE_Kestrel__Certificates__Default__Path": "cert.pfx",
+        "ASPNETCORE_Kestrel__Certificates__Default__Password": "YourSecurePassword"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7256;http://localhost:7255",
+      "useSSL": true
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORTS": "7256",
+        "ASPNETCORE_HTTP_PORTS": "7255",
+        "ASPNETCORE_Kestrel__Certificates__Default__Path": "cert.pfx",
+        "ASPNETCORE_Kestrel__Certificates__Default__Password": "YourSecurePassword"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
     }
-  }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json"
 }

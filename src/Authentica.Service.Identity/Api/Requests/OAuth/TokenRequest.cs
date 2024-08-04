@@ -73,5 +73,5 @@ public sealed record TokenRequest
     /// Gets or sets the state parameter to prevent CSRF attacks.
     /// </summary> 
     [FromForm(Name = "state")]
-    public string State { get; init; } = default!;
+    public string? State { get; init; } = default!;
 }

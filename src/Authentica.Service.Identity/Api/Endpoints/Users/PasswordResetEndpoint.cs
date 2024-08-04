@@ -39,12 +39,13 @@ public sealed class PasswordResetEndpoint : EndpointBaseAsync
     /// <returns>A new <see cref="ActionResult"/></returns>
     [HttpPost($"{Routes.Users.ResetPassword}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [AllowAnonymous]
     public override async Task<ActionResult> HandleAsync(PasswordResetRequest request,
                                                         CancellationToken cancellationToken = default)
     {
-        var userManager = Services.GetRequiredService<UserManager<User>>();
+        var userReadStore = Services.GetRequiredService<IUserReadStore>();
+        var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
 
         PasswordResetEvent @event = new()
@@ -54,13 +55,13 @@ public sealed class PasswordResetEndpoint : EndpointBaseAsync
 
         await eventStore.SaveEventAsync(@event);
 
+        var userReadResult = await userReadStore.GetUserByEmailAsync(request.Email);
 
-        User? user = await userManager.FindByEmailAsync(request.Email);
+        var result = await userWriteStore.ResetPasswordAsync(userReadResult.User, request.Token, request.NewPassword);
 
-        if (user is null)
-            return BadRequest();
+        if (!result.Succeeded)
+            return StatusCode(StatusCodes.Status500InternalServerError);
 
-        await userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
         return NoContent();
 
     }

@@ -29,13 +29,6 @@ public class TokenRequestValidator : AbstractValidator<TokenRequest>
             .NotEmpty().WithMessage("redirect_uri is required.")
             .Must(uri => uri.BeAValidUri()).WithMessage("redirect_uri must be a valid URI.");
 
-        RuleFor(request => request.State)
-            .NotEmpty().WithMessage("state is required.");
-
-        // Optional fields validations
-        RuleFor(request => request.Code)
-            .NotEmpty().When(request => request.GrantType == "code").WithMessage("code is required when grant_type is 'code'.");
-
         RuleFor(request => request.RefreshToken)
             .NotEmpty().When(request => request.GrantType == "refresh_token").WithMessage("refresh_token is required when grant_type  is 'refresh_token'.");
 
