@@ -1,0 +1,47 @@
+trigger:
+- main
+
+pool:
+  name: Default
+
+stages:
+- stage: 'Build'
+  displayName: 'Build Worker Service'
+  jobs:
+  - job: Build
+    displayName: 'Build'
+    steps:
+    - checkout: self
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '8.0.x'
+    - script: |
+        dotnet build --configuration Release src/Authentica.WorkerService.Email/Authentica.WorkerService.Email.csproj
+      displayName: 'Build & Restore'
+    - script: |
+        dotnet test --collect:"XPlat Code Coverage" src/Authentica.WorkerService.Email.Tests/Authentica.WorkerService.Email.Tests.csproj
+      displayName: 'Test'
+    - script: |
+        dotnet publish src/Authentica.WorkerService.Email/Authentica.WorkerService.Email.csproj -c Release
+      displayName: 'Publish'
+    - script: dotnet tool update --global dotnet-reportgenerator-globaltool
+      displayName: 'Install Code Coverage Tool'
+    - script: |
+        cd src/Authentica.WorkerService.Email.Tests/TestResults
+        reportgenerator -reports:"*/coverage.cobertura.xml" -targetdir:"../coveragereport" -reporttypes:Html
+      displayName: 'Code Coverage Report'
+    - task: PublishCodeCoverageResults@2
+      inputs:
+        summaryFileLocation: 'src/Authentica.WorkerService.Email.Tests/TestResults/*/coverage.cobertura.xml'
+        pathToSources: 'src/Authentica.WorkerService.Email/'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: 'src/Authentica.WorkerService.Email/bin/Release/net8.0/publish/**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
