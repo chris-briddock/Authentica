@@ -2,6 +2,9 @@
 
 Secure your app with Authentica, featuring OAuth 2.0 authorization code grant, client credentials grant, refresh token grant.
 
+Technical documentation:
+https://chris-briddock.github.io/Authentica/api/Api.Constants.html
+
 ![Azure DevOps build](https://img.shields.io/azure-devops/build/Authentica/c98bacd5-0436-4667-a21d-828fb19fb305/1)
 ![Azure DevOps Code Coverage](https://img.shields.io/azure-devops/coverage/Authentica/Authentica/1)
 
