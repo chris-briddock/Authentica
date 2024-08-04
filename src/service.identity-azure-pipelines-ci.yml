@@ -4,6 +4,7 @@ trigger:
 pool:
   name: Default
 
+
 stages:
 - stage: 'Build'
   displayName: 'Build Service'
@@ -16,6 +17,10 @@ stages:
       inputs:
         packageType: 'sdk'
         version: '8.0.x'
+    - script: dotnet tool update --global dotnet-ef
+      displayName: 'Install EF Tool'
+    - script: dotnet ef migrations add Initial
+      displayName: 'Generate migrations'
     - script: |
         dotnet build --configuration Release src/Authentica.Service.Identity/Authentica.Service.Identity.csproj
       displayName: 'Build & Restore'
