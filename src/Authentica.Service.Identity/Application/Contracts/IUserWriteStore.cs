@@ -54,5 +54,36 @@ public interface IUserWriteStore
     /// </returns>
     /// <exception cref="ArgumentException">Thrown if <paramref name="token"/> is null or whitespace.</exception>
     Task<UserStoreResult> ResetPasswordAsync(User user, string token, string newPassword);
+    /// <summary>
+    /// Asynchronously redeems a two-factor recovery code for a user.
+    /// </summary>
+    /// <param name="user">The user attempting to redeem the recovery code.</param>
+    /// <param name="code">The two-factor recovery code.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    Task<UserStoreResult> RedeemTwoFactorRecoveryCodeAsync(User user, string code);
+    /// <summary>
+    /// Asynchronously updates a user's email address using a confirmation token.
+    /// </summary>
+    /// <param name="user">The user whose email address is being updated.</param>
+    /// <param name="newEmail">The new email address to set for the user.</param>
+    /// <param name="token">The email confirmation token.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    Task<UserStoreResult> UpdateEmailAsync(User user, string newEmail, string token);
 
+    /// <summary>
+    /// Updates the phone number of the specified user.
+    /// </summary>
+    /// <param name="user">The user whose phone number needs to be updated.</param>
+    /// <param name="phoneNumber">The new phone number to be set for the user.</param>
+    /// <param name="token">The token used to verify the phone number change.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="UserStoreResult"/> indicating the result of the operation.</returns>
+    Task<UserStoreResult> UpdatePhoneNumberAsync(User user, string phoneNumber, string token);
 }

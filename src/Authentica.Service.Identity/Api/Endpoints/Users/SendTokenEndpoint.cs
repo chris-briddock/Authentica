@@ -4,6 +4,7 @@ using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Authentica.Common;
 using Domain.Aggregates.Identity;
+using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -54,56 +55,64 @@ public class SendTokenEndpoint : EndpointBaseAsync
         EmailMessage message = new();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var emailPublisher = Services.GetRequiredService<IEmailPublisher>();
+        var eventStore = Services.GetRequiredService<IEventStore>();
 
-        User? user = await userManager.FindByEmailAsync(request.Email);
+        User? user = await userManager.FindByEmailAsync(request.Email)!;
+
+        var @event = new SendTokenIntegrationEvent()
+        {
+            Payload = request
+        };
+
+        await eventStore.SaveEventAsync(@event);
 
         switch (request.TokenType)
         {
             case EmailPublisherConstants.TwoFactor:
-                var twoFactorCode = await userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
+                var twoFactorCode = await userManager.GenerateTwoFactorTokenAsync(user!, TokenOptions.DefaultEmailProvider);
                 message = new()
                 {
-                    EmailAddress = user.Email!,
+                    EmailAddress = user!.Email!,
                     Code = twoFactorCode,
                     Type = EmailPublisherConstants.TwoFactor
                 };
                 break;
 
             case EmailPublisherConstants.ConfirmEmail:
-                var emailConfirmationCode = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                var emailConfirmationCode = await userManager.GenerateEmailConfirmationTokenAsync(user!);
                 message = new()
                 {
-                    EmailAddress = user.Email!,
+                    EmailAddress = user!.Email!,
                     Code = emailConfirmationCode,
                     Type = EmailPublisherConstants.ConfirmEmail
                 };
                 break;
 
             case EmailPublisherConstants.ResetPassword:
-                var passwordResetCode = await userManager.GeneratePasswordResetTokenAsync(user);
+                var passwordResetCode = await userManager.GeneratePasswordResetTokenAsync(user!);
                 message = new()
                 {
-                    EmailAddress = user.Email!,
+                    EmailAddress = user!.Email!,
                     Code = passwordResetCode,
                     Type = EmailPublisherConstants.ResetPassword
                 };
                 break;
 
             case EmailPublisherConstants.UpdateEmail:
-                var updateEmailCode = await userManager.GenerateChangeEmailTokenAsync(user, request.Email);
+                var updateEmailCode = await userManager.GenerateChangeEmailTokenAsync(user!, request.Email);
                 message = new()
                 {
-                    EmailAddress = user.Email!,
+                    EmailAddress = user!.Email!,
                     Code = updateEmailCode,
                     Type = EmailPublisherConstants.UpdateEmail
                 };
                 break;
 
             case EmailPublisherConstants.UpdatePhoneNumber:
-                var updatePhoneNumberCode = await userManager.GenerateChangePhoneNumberTokenAsync(user, request.Email);
+                var updatePhoneNumberCode = await userManager.GenerateChangePhoneNumberTokenAsync(user!, request.Email);
                 message = new()
                 {
-                    EmailAddress = user.Email!,
+                    EmailAddress = user!.Email!,
                     Code = updatePhoneNumberCode,
                     Type = EmailPublisherConstants.UpdatePhoneNumber
                 };

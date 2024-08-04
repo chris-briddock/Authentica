@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Api.Requests;
 using Application.Contracts;
+using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
 
@@ -94,5 +95,85 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             return UserStoreResult.Success();
 
         return UserStoreResult.Failed();
+    }
+
+    /// <summary>
+    /// Asynchronously redeems a two-factor recovery code for a user.
+    /// </summary>
+    /// <param name="user">The user attempting to redeem the recovery code.</param>
+    /// <param name="code">The two-factor recovery code.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    public async Task<UserStoreResult> RedeemTwoFactorRecoveryCodeAsync(User user, string code)
+    {
+        try
+        {
+            var result = await UserManager.RedeemTwoFactorRecoveryCodeAsync(user, code);
+
+            if (result.Succeeded)
+                return UserStoreResult.Success();
+
+            return UserStoreResult.Failed();
+        }
+        catch (Exception ex)
+        {
+            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
+    }
+
+    /// <summary>
+/// Asynchronously updates a user's email address using a confirmation token.
+/// </summary>
+/// <param name="user">The user whose email address is being updated.</param>
+/// <param name="newEmail">The new email address to set for the user.</param>
+/// <param name="token">The email confirmation token.</param>
+/// <returns>
+/// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+/// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+/// </returns>
+/// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    public async Task<UserStoreResult> UpdateEmailAsync(User user, string newEmail, string token)
+    {
+        try
+        {
+            var result = await UserManager.ChangeEmailAsync(user, newEmail, token);
+
+            if (!result.Succeeded)
+                return UserStoreResult.Failed();
+
+            return UserStoreResult.Success();
+        }
+        catch (Exception ex)
+        {
+            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
+
+    }
+
+    /// <summary>
+    /// Updates the phone number of the specified user.
+    /// </summary>
+    /// <param name="user">The user whose phone number needs to be updated.</param>
+    /// <param name="phoneNumber">The new phone number to be set for the user.</param>
+    /// <param name="token">The token used to verify the phone number change.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="UserStoreResult"/> indicating the result of the operation.</returns>
+    public async Task<UserStoreResult> UpdatePhoneNumberAsync(User user, string phoneNumber, string token)
+    {
+        try
+        {
+            var result = await UserManager.ChangePhoneNumberAsync(user, phoneNumber, token);
+
+            if (!result.Succeeded)
+                return UserStoreResult.Failed();
+
+            return UserStoreResult.Success();
+        }
+        catch (Exception ex)
+        {
+            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
     }
 }

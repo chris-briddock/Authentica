@@ -41,7 +41,6 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
     /// <see cref="ActionResult"/> indicating the result of the recovery code redemption.
     /// Returns <see cref="StatusCodes.Status200OK"/> if the recovery code was successfully redeemed.
     /// Returns <see cref="StatusCodes.Status400BadRequest"/> if the email is not found or the recovery code redemption fails.
-    /// Returns <see cref="StatusCodes.Status500InternalServerError"/> in case of an internal server error.
     /// </returns>
     [HttpPost($"{Routes.Users.TwoFactorRedeemRecoveryCodes}")]
     [AllowAnonymous]
@@ -50,7 +49,8 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(TwoFactorRecoveryCodeRedeemRequest request,
                                                    CancellationToken cancellationToken = default)
     {
-        var userManager = Services.GetRequiredService<UserManager<User>>();
+        var userReadStore = Services.GetRequiredService<IUserReadStore>();
+        var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
 
         TwoFactorRecoveryCodesRedeemEvent @event = new()
@@ -60,12 +60,9 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
 
         await eventStore.SaveEventAsync(@event);
 
-        var user = await userManager.FindByEmailAsync(request.Email);
+        var userReadResult = await userReadStore.GetUserByEmailAsync(request.Email);
 
-        if (user is null)
-            return BadRequest();
-
-        var result = await userManager.RedeemTwoFactorRecoveryCodeAsync(user, request.Code);
+        var result = await userWriteStore.RedeemTwoFactorRecoveryCodeAsync(userReadResult.User, request.Code);
 
         if (!result.Succeeded)
             return BadRequest();

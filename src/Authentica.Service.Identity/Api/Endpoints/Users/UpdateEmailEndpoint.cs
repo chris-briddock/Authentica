@@ -48,7 +48,7 @@ public sealed class UpdateEmailEndpoint : EndpointBaseAsync
                                                    CancellationToken cancellationToken = default)
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var userManager = Services.GetRequiredService<UserManager<User>>();
+        var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
 
         UpdateEmailEvent @event = new()
@@ -60,7 +60,10 @@ public sealed class UpdateEmailEndpoint : EndpointBaseAsync
 
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
-        await userManager.ChangeEmailAsync(userResult.User, request.Email, request.Token);
+        var result = await userWriteStore.UpdateEmailAsync(userResult.User, request.Email, request.Token);
+
+        if (!result.Succeeded)
+            return BadRequest();
 
         return Ok();
     }

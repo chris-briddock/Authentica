@@ -65,11 +65,14 @@ Authorization Flows:
 | **Encrypted Application Secrets**             | Protection of application secrets through irreversable encryption.                                               |
 | **HTTP/3 Support**                       | Utilizes HTTP/3 protocol with fallback to HTTP/2 and HTTP/1 1.                                 |
 | **Soft deletable entries**                       | Utilizes soft deletions to ensure no data is permenantly lost.                                 |
+| **Auditable Entries** | To enable auditable entries, I have used CreatedBy, CreatedOn, ModifiedOn, and ModifiedBy columns. These columns help track who created and modified each record and when the changes occurred, ensuring comprehensive audit trails for data changes. |
 | **Data purge after 7 years, if soft deleted**                       | Data purges happen once an entry is over 7 years old. These are implemented as Background Services and run on a seperate thread, using a Periodic Timer.                       |
 | **Temporal tables**                       | When an entry in a table changes, we can tell when that happend changed, but also have a record of what changed, through these system versioned history tables                                 |
 | **Worker Services**                       | Utilizes loosley coupled worker services so this is independently scalable from the main service                                 |
 | **Security Features** | Implementations of security features such as concurrency stamps, security stamps, last logged in IP address, and last logged in date/time ensure security by providing mechanisms to detect and prevent unauthorized access, track user activity, and maintain data integrity. |
 | **Event Logging** | Utilized Domain Events and Integration Events to log every user action, ensuring the system state is rebuildable and replayable. Collected information includes the action taken, the request payload, and the timestamp. By implementing session middleware that generates a GUID as a Sequence ID, it is possible to track all actions a user takes within their session. |
+| **Integration Testing** | Utilized NUnit and Moq for integration testing to ensure system behavior is as expected by testing the interaction between various components in a production-like environment. This approach helps in identifying issues that may not be apparent in unit tests and ensures that the system works correctly as a whole. |
+| **Unit Testing** | Utilized NUnit and Moq for unit testing to ensure individual components function correctly by isolating each part of the code and testing it independently. This approach helps in identifying bugs early in the development process, verifying logic, and ensuring code reliability and maintainability. |
 
 ### Endpoints
 
