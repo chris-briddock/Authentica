@@ -116,5 +116,4 @@ To get started with Authentica, follow these steps:
 
 ### License
 
-This project is licensed under the ![GitHub License](https://img.shields.io/github/license/chris-briddock/ChristopherBriddock.Identity)
-See the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License.
