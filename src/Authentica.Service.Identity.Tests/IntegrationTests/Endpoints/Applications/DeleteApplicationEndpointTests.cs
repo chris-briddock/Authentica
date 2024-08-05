@@ -95,13 +95,13 @@ public class DeleteApplicationEndpointTests
             Content = jsonContent
         };
 
-        var writeStoreMock = new Mock<IApplicationWriteStore>();
+        var writeStoreMock = new ApplicationWriteStoreMock();
 
         writeStoreMock.Setup(x => x.SoftDeleteApplicationAsync(It.IsAny<ApplicationDTO<DeleteApplicationByNameRequest>>(), It.IsAny<CancellationToken>())).ThrowsAsync(new Exception());
-        
+
         using var sutClient = _fixture.CreateAuthenticatedClient(s =>
         {
-                s.Replace(new ServiceDescriptor(typeof(IApplicationWriteStore), writeStoreMock.Object));
+            s.Replace(new ServiceDescriptor(typeof(IApplicationWriteStore), writeStoreMock.Object));
         });
 
         // Act

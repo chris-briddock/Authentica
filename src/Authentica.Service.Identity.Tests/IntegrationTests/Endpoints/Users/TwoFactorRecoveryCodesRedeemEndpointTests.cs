@@ -41,4 +41,26 @@ public class TwoFactorRecoveryCodesRedeemEndpointTests
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
+
+    [Test]
+    public async Task TwoFactoryRecoveryReedem_Returns400BadRequest_WhenRedeemIsUnsuccessful()
+    {
+        var userWriteStore = new UserWriteStoreMock();
+        userWriteStore.Setup(x => x.RedeemTwoFactorRecoveryCodeAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Failed());
+
+        using var client = _fixture.CreateAuthenticatedClient(x => 
+        {
+            x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStore.Object));
+        });
+
+        var request = new TwoFactorRecoveryCodeRedeemRequest()
+        {
+            Email = "twofactorTest@default.com",
+            Code = "888888"
+        };
+
+        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Users.TwoFactorRedeemRecoveryCodes}", request);
+
+        Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+    }
 }
