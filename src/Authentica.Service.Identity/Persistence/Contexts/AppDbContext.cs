@@ -36,8 +36,7 @@ public sealed class AppDbContext : DbContext
         optionsBuilder.UseSqlServer(Configuration.GetConnectionStringOrThrow("Default"), opt => 
         {
             opt.EnableRetryOnFailure();
-        })
-        .EnableDetailedErrors();
+        });
     }
 
     /// <summary>

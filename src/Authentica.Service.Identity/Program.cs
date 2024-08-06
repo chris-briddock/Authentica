@@ -33,6 +33,11 @@ public sealed class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
         builder.ConfigureOpenTelemetry(ServiceNameDefaults.ServiceName);
+        builder.Services.Configure<HostOptions>(options =>
+        {
+            options.ServicesStartConcurrently = true;
+            options.ServicesStopConcurrently = true;
+        });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDataProtection();
         builder.Services.AddMetrics();

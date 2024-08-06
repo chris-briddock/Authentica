@@ -33,7 +33,7 @@ public class ReadApplicationsEndpointTests
     [Test]
     public async Task ReadApplications_ReturnsBadRequest_WhenUserIsNotFound()
     {
-        var userReadStoreMock = new Mock<IUserReadStore>();
+        var userReadStoreMock = new UserReadStoreMock();
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()));
 
