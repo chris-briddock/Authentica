@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 using Application.Contracts;
 
@@ -37,7 +38,9 @@ public class TwoFactorRecoveryCodesRedeemEndpointTests
             Code = "888888"
         };
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Users.TwoFactorRedeemRecoveryCodes}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        var sut = await client.PostAsync($"api/v1/{Routes.Users.TwoFactorRedeemRecoveryCodes}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -59,7 +62,9 @@ public class TwoFactorRecoveryCodesRedeemEndpointTests
             Code = "888888"
         };
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Users.TwoFactorRedeemRecoveryCodes}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        var sut = await client.PostAsync($"api/v1/{Routes.Users.TwoFactorRedeemRecoveryCodes}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

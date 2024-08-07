@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -30,8 +31,10 @@ public class LoginEndpointTests
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             RememberMe = true
         };
+
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
         
-        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+        var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
         
         var cookies = result.Headers.GetValues("Set-Cookie");
 
@@ -53,8 +56,10 @@ public class LoginEndpointTests
             Password = "Ar*P`w8R.WyXb7'UKxh;!-",
             RememberMe = true
         };
+
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
         
-        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+        var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
         
         var cookies = result.Headers.GetValues("Set-Cookie");
 
@@ -76,8 +81,10 @@ public class LoginEndpointTests
             Password = "Ar*P`w8R.WyXb7'UKxh-",
             RememberMe = true
         };
+
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
         
-        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+        var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
     
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -95,8 +102,10 @@ public class LoginEndpointTests
             Password = "Ar*P`w8R.WyXb7'UKxh-",
             RememberMe = true
         };
+
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
         
-        var result = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Login}", request);
+        var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 

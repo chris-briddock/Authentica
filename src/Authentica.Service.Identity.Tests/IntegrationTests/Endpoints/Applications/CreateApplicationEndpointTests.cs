@@ -55,7 +55,7 @@ public class CreateApplicationEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.ToJsonString(content), Encoding.UTF8, "application/json");
 
-        using var sut = await sutClient.PostAsJsonAsync($"api/v1/{Routes.Applications.Create}", jsonContent);
+        using var sut = await sutClient.PostAsync($"api/v1/{Routes.Applications.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
