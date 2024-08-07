@@ -2,10 +2,8 @@
 using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Domain.Aggregates.Identity;
 using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Users;

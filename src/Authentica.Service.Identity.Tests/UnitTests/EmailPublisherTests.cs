@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Application.Contracts;
+using MassTransit;
 using Microsoft.FeatureManagement;
 
 namespace Authentica.Service.Identity.Tests.UnitTests;
@@ -11,13 +12,13 @@ public class EmailPublisherTests
     {
         // Arrange
         var serviceProviderMock = new ServiceProviderMock();
-        var busMock = new BusMock();
+        var busMock = new Mock<IPublishEndpoint>();
         var featureManagerMock = new FeatureManagerMock();
 
         featureManagerMock.Setup(f => f.IsEnabledAsync(It.IsAny<string>()))
             .ReturnsAsync(true);
 
-        serviceProviderMock.Setup(provider => provider.GetService(typeof(IBus)))
+        serviceProviderMock.Setup(provider => provider.GetService(typeof(IPublishEndpoint)))
             .Returns(busMock.Object);
 
         serviceProviderMock.Setup(provider => provider.GetService(typeof(IFeatureManager)))

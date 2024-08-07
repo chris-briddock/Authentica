@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 using Application.Contracts;
 
@@ -36,8 +37,9 @@ public class UpdateEmailEndpointTests
             Email = "administrator@default.com",
             Token = "888888"
         };
-
-        using var sut = await client.PutAsJsonAsync($"api/v1/{Routes.Users.UpdateEmail}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        
+        using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdateEmail}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -59,7 +61,9 @@ public class UpdateEmailEndpointTests
             Token = "888888"
         };
 
-        using var sut = await client.PutAsJsonAsync($"api/v1/{Routes.Users.UpdateEmail}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdateEmail}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

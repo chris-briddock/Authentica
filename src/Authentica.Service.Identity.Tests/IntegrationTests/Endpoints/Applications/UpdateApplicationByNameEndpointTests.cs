@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 using Application.Contracts;
 
@@ -25,7 +26,7 @@ public class UpdateApplicationByNameEndpointTests
     public async Task UpdateApplication_Returns200OK_WhenUpdateIsSuccessful()
     {
         using var sutClient = _fixture.CreateAuthenticatedClient();
-
+        
         var request = new UpdateApplicationByNameRequest()
         {
             CurrentName = "Default Application",
@@ -34,7 +35,9 @@ public class UpdateApplicationByNameEndpointTests
             NewRedirectUri = "https://localhost:7255"
         };
 
-        using var response = await sutClient.PutAsJsonAsync($"api/v1/{Routes.Applications.UpdateByName}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -59,7 +62,9 @@ public class UpdateApplicationByNameEndpointTests
             NewRedirectUri = "https://localhost:7255"
         };
 
-        using var response = await sutClient.PutAsJsonAsync($"api/v1/{Routes.Applications.UpdateByName}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -86,7 +91,9 @@ public class UpdateApplicationByNameEndpointTests
             NewRedirectUri = "https://localhost:7255"
         };
 
-        using var response = await sutClient.PutAsJsonAsync($"api/v1/{Routes.Applications.UpdateByName}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

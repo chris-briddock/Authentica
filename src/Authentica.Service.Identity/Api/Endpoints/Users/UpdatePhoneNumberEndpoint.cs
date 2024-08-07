@@ -5,8 +5,6 @@ using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Domain.Aggregates.Identity;
 using Domain.Events;
 
 namespace Api.Endpoints.Users;

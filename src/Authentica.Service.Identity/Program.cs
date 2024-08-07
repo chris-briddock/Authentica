@@ -40,8 +40,8 @@ public sealed class Program
         });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDataProtection();
+        builder.Services.AddCustomControllers();
         builder.Services.AddMetrics();
-        builder.Services.AddControllers();
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         builder.Services.AddVersioning(1,0);
@@ -49,7 +49,7 @@ public sealed class Program
         builder.Services.AddSwaggerGen($"{ServiceNameDefaults.ServiceName}.xml");
         builder.Services.TryAddScoped<ISecretHasher, SecretHasher>();
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
-        builder.Services.TryAddSingleton<ITimer, TimerProvider>();
+        builder.Services.TryAddTransient<ITimer, TimerProvider>();
         builder.Services.AddFeatureManagement();
         builder.Services.AddBearerAuthentication();
         builder.Services.AddSessionCache();

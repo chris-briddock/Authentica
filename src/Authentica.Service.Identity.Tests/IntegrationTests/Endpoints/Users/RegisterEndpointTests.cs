@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 using Application.Contracts;
 
@@ -32,7 +33,10 @@ public class RegisterEndpointTests
             PhoneNumber = "+447760162366",
             Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
         };
-        var sut = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Create}", request);
+
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        var sut = await client.PostAsync($"/api/v1/{Routes.Users.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Created));
     }
@@ -48,7 +52,9 @@ public class RegisterEndpointTests
             PhoneNumber = "+447760162366",
             Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
         };
-        var sut = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Create}", request);
+
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var sut = await client.PostAsync($"/api/v1/{Routes.Users.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
@@ -74,7 +80,10 @@ public class RegisterEndpointTests
             PhoneNumber = "+447760162366",
             Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
         };
-        var sut = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.Create}", request);
+
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        
+        var sut = await client.PostAsync($"/api/v1/{Routes.Users.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

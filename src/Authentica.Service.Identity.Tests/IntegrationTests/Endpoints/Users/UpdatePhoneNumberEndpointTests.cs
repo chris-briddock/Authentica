@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 using Application.Contracts;
 
@@ -36,7 +37,9 @@ public class UpdatePhoneNumberEndpointTests
             Token = "888888"
         };
 
-        using var sut = await client.PutAsJsonAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -57,7 +60,9 @@ public class UpdatePhoneNumberEndpointTests
             Token = "888888"
         };
 
-        using var sut = await client.PutAsJsonAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

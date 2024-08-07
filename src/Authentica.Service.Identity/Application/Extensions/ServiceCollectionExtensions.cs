@@ -17,6 +17,8 @@ using Microsoft.FeatureManagement;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistence.Contexts;
+using Utf8Json.AspNetCoreMvcFormatter;
+using Utf8Json.Resolvers;
 
 
 namespace Application.Extensions;
@@ -314,6 +316,23 @@ public static class ServiceCollectionExtensions
         {
             services.TryAddTransient<IEmailPublisher, NullEmailPublisher>();
         }
+
+        return services;
+    }
+    /// <summary>
+    /// Adds controller support with custom JSON formatters, for improved performance, rather than using System.Text.Json.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to which services will be added.</param>
+    /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
+    public static IServiceCollection AddCustomControllers(this IServiceCollection services)
+    {
+        services.AddControllers(opt => 
+        {
+            opt.InputFormatters.Clear();
+            opt.OutputFormatters.Clear();
+            opt.OutputFormatters.Add(new JsonOutputFormatter(StandardResolver.Default));
+            opt.InputFormatters.Add(new JsonInputFormatter(StandardResolver.Default));
+        });
 
         return services;
     }

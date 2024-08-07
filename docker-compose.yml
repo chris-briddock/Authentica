@@ -26,6 +26,11 @@ services:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
     ports:
+      - "15671:15671"
+      - "15691:15691"
+      - "15692:15692"
+      - "25672:25672"
+      - "4369:4369"
       - "5671:5671"
       - "5672:5672"
       - "15672:15672"

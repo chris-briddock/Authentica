@@ -1,7 +1,7 @@
 using Api.Constants;
+using Api.Responses;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
-
 
 public class TestFixture<TProgram> where TProgram : class
 {
@@ -47,12 +47,11 @@ public class TestFixture<TProgram> where TProgram : class
         var result = await Client.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
-        var jsonResponse = await result.Content.ReadAsStringAsync();
+        var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
 
-        using JsonDocument doc = JsonDocument.Parse(jsonResponse);
-        JsonElement root = doc.RootElement;
+        var response = (TokenResponse)jsonResponse!;
 
-        AccessToken = root.GetProperty("accessToken").GetString()!;
+        AccessToken = response.AccessToken;
     }
 
     public HttpClient CreateAuthenticatedClient(Action<IServiceCollection> configureServices = null!)

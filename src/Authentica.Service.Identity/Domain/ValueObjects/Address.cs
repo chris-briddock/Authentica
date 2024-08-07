@@ -33,7 +33,7 @@ public class Address
     /// <summary>
     /// Gets the post code.
     /// </summary>
-    public string? PostCode { get; set; }
+    public string? Postcode { get; set; }
 
     /// <summary>
     /// Gets the country.
@@ -66,7 +66,7 @@ public class Address
         Street = street;
         City = city;
         State = state;
-        PostCode = postCode;
+        Postcode = postCode;
         Country = country;
     }
 

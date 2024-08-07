@@ -33,7 +33,7 @@ public class AddressValidator : AbstractValidator<Address>
             .NotEmpty().WithMessage("Address state is required.")
             .MaximumLength(100).WithMessage("Address state must be at most 100 characters long.");
 
-        RuleFor(address => address.PostCode)
+        RuleFor(address => address.Postcode)
             .NotEmpty().WithMessage("Address postcode is required.")
             .MaximumLength(10).WithMessage("Address postcode must be at most 10 characters long.");
 

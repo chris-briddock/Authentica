@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 using Application.Contracts;
 
@@ -39,7 +40,9 @@ public class ResetPasswordEndpointTests
             NewPassword = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Users.ResetPassword}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
@@ -63,7 +66,9 @@ public class ResetPasswordEndpointTests
             NewPassword = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Users.ResetPassword}", request);;
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent);;
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }
