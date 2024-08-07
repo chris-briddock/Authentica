@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Microsoft.FeatureManagement;
 
@@ -12,7 +13,8 @@ public sealed class Program
         builder.ConfigureOpenTelemetry(ServiceNameDefaults.ServiceName);
         builder.Services.AddFeatureManagement();
         builder.Services.AddConsumerMessaging();
-        builder.Services.AddSingleton<ISmtpClient, SmtpClientWrapper>();
+        builder.Services.AddScoped<ISmtpClient, SmtpClientWrapper>();
+        builder.Services.AddScoped<SmtpClient>();
 
         var host = builder.Build();
         await host.RunAsync();

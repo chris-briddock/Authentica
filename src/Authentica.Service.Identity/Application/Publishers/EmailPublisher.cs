@@ -29,7 +29,7 @@ public sealed class EmailPublisher : IEmailPublisher
                               CancellationToken cancellationToken)
     {
 
-        var bus = ServiceProvider.GetService<IBus>()!;
+        var bus = ServiceProvider.GetService<IPublishEndpoint>()!;
         var featureManager = ServiceProvider.GetService<IFeatureManager>()!;
 
         if (await featureManager!.IsEnabledAsync(FeatureFlagConstants.RabbitMq) ||

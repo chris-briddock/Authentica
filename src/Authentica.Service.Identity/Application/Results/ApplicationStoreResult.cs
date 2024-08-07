@@ -1,5 +1,4 @@
 using Domain.Aggregates.Identity;
-using MongoDB.Driver.Core.Events;
 
 namespace Application.Results;
 

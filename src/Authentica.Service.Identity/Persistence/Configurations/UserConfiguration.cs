@@ -101,7 +101,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.ComplexProperty(u => u.Address)
             .Property(a => a.State).HasColumnName("address_state").HasMaxLength(100);
         builder.ComplexProperty(u => u.Address)
-            .Property(a => a.PostCode).HasColumnName("address_postcode").HasMaxLength(10);
+            .Property(a => a.Postcode).HasColumnName("address_postcode").HasMaxLength(10);
         builder.ComplexProperty(u => u.Address)
             .Property(a => a.Country).HasColumnName("address_country").HasMaxLength(100);
 
