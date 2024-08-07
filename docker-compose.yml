@@ -4,7 +4,7 @@ services:
   #   image: ${DOCKER_REGISTRY-}authenticaserviceidentity
   #   build:
   #     context: .
-  #     dockerfile: src/Dockerfile-service.identity
+  #     dockerfile: src/Dockerfile.service.identity
   #   environment: 
   #     OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
 
