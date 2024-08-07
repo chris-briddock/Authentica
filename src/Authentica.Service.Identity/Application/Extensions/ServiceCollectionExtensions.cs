@@ -330,8 +330,8 @@ public static class ServiceCollectionExtensions
         {
             opt.InputFormatters.Clear();
             opt.OutputFormatters.Clear();
-            opt.OutputFormatters.Add(new JsonOutputFormatter(StandardResolver.SnakeCase));
-            opt.InputFormatters.Add(new JsonInputFormatter(StandardResolver.SnakeCase));
+            opt.OutputFormatters.Add(new JsonOutputFormatter(StandardResolver.Default));
+            opt.InputFormatters.Add(new JsonInputFormatter(StandardResolver.Default));
         });
 
         return services;

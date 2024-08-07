@@ -1,4 +1,5 @@
 using Api.Constants;
+using Api.Responses;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -36,12 +37,11 @@ public class TokenEndpointTests
         var result = await _fixture.Client.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
-        var jsonResponse = await result.Content.ReadAsStringAsync();
+        var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
 
-        using JsonDocument doc = JsonDocument.Parse(jsonResponse);
-        JsonElement root = doc.RootElement;
+        var root = (TokenResponse)jsonResponse!;
 
-        var token = root.GetProperty("accessToken").GetString()!;
+        var token = root.AccessToken;
 
         Assert.Multiple(() =>
         {
@@ -97,13 +97,13 @@ public class TokenEndpointTests
         var result = await sutClient.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
-        var jsonResponse = await result.Content.ReadAsStringAsync();
+         var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
 
-        using JsonDocument doc = JsonDocument.Parse(jsonResponse);
-        JsonElement root = doc.RootElement;
+        var root = (TokenResponse)jsonResponse!;
 
-        var token = root.GetProperty("accessToken").GetString()!;
-        var refreshToken = root.GetProperty("refreshToken").GetString()!;
+        var token = root.AccessToken;
+
+        var refreshToken = root.RefreshToken;
 
         Assert.Multiple(() =>
         {
@@ -166,13 +166,13 @@ public class TokenEndpointTests
         var result = await sutClient.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
-        var jsonResponse = await result.Content.ReadAsStringAsync();
+        var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
 
-        using JsonDocument doc = JsonDocument.Parse(jsonResponse);
-        JsonElement root = doc.RootElement;
+        var root = (TokenResponse)jsonResponse!;
 
-        var token = root.GetProperty("accessToken").GetString()!;
-        var refreshToken = root.GetProperty("refreshToken").GetString()!;
+        var token = root.AccessToken;
+
+        var refreshToken = root.RefreshToken;
 
         Assert.Multiple(() =>
         {

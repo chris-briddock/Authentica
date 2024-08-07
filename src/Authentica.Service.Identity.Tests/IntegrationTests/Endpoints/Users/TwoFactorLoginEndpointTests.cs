@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -41,9 +42,9 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        using var sut = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
 
-        var errorResponse = await sut.Content.ReadAsStringAsync();
+        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
@@ -70,9 +71,11 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        using var sut = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
 
-        var errorResponse = await sut.Content.ReadAsStringAsync();
+        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
+
+        
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -99,7 +102,9 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        using var sut = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
 
         var errorResponse = await sut.Content.ReadAsStringAsync();
 
@@ -128,7 +133,9 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        using var sut = await client.PostAsJsonAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
 
         var errorResponse = await sut.Content.ReadAsStringAsync();
 

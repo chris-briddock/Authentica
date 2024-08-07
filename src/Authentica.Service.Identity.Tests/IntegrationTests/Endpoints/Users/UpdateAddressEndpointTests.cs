@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 using Domain.ValueObjects;
 
@@ -30,7 +31,9 @@ public class UpdateAddressEndpointTests
             Address = new Address("UPDATED", "UPDATED", "UPDATED", "UPDATED", "UPDATED", "UPDATED", "UPDATED")
         };
 
-        var sut = await client.PutAsJsonAsync($"api/v1/{Routes.Users.UpdateAddress}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdateAddress}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 

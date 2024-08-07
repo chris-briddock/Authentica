@@ -1,3 +1,4 @@
+using System.Text;
 using Api.Constants;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -30,7 +31,9 @@ public class CreateApplicationSecretEndpointTests
 
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
-        using var sut = await sutClient.PutAsJsonAsync($"api/v1/{Routes.Applications.ApplicationSecrets}", request);
+        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+
+        using var sut = await sutClient.PutAsync($"api/v1/{Routes.Applications.ApplicationSecrets}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
