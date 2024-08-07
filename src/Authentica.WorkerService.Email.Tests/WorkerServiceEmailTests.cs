@@ -53,7 +53,7 @@ public class WorkerTests
             smtp => smtp.SendMailAsync(It.Is<MailMessage>(msg =>
                 msg.To.Contains(new MailAddress("recipient@example.com")) &&
                 msg.Subject == "Please confirm your email address." &&
-                msg.Body.Contains($"https://example.com/confirm")
+                msg.Body.Contains("Your confirmation email code is https://example.com/confirm")
             )),
             Times.Once);
     }
@@ -79,8 +79,8 @@ public class WorkerTests
         _smtpClientMock.Verify(
             smtp => smtp.SendMailAsync(It.Is<MailMessage>(msg =>
                 msg.To.Contains(new MailAddress("recipient@example.com")) &&
-                msg.Subject == "You requested a two factor code" &&
-                msg.Body.Contains("Your two factor code is 123456")
+                msg.Subject == "You requested a two-factor code" &&
+                msg.Body.Contains("123456")
             )),
             Times.Once);
     }
@@ -106,8 +106,62 @@ public class WorkerTests
         _smtpClientMock.Verify(
             smtp => smtp.SendMailAsync(It.Is<MailMessage>(msg =>
                 msg.To.Contains(new MailAddress("recipient@example.com")) &&
-                msg.Subject == "Oh no! You silly goose, you forgot your password. You can reset it here." &&
-                msg.Body.Contains("Your password reset code is <span class=\"font-bold text-indigo-800\">654321</span>")
+                msg.Subject == "Password Reset Request" &&
+                msg.Body.Contains("654321")
+            )),
+            Times.Once);
+    }
+
+    [Test]
+    public async Task Consume_UpdateEmail_SendsEmail()
+    {
+        // Arrange
+        var emailMessage = new EmailMessage
+        {
+            Type = EmailPublisherConstants.UpdateEmail,
+            EmailAddress = "recipient@example.com",
+            Code = "updateemailcode"
+        };
+
+        var consumeContextMock = new Mock<ConsumeContext<EmailMessage>>();
+        consumeContextMock.Setup(c => c.Message).Returns(emailMessage);
+
+        // Act
+        await _worker.Consume(consumeContextMock.Object);
+
+        // Assert
+        _smtpClientMock.Verify(
+            smtp => smtp.SendMailAsync(It.Is<MailMessage>(msg =>
+                msg.To.Contains(new MailAddress("recipient@example.com")) &&
+                msg.Subject == "Update Your Email Address" &&
+                msg.Body.Contains("Your email update code is updateemailcode")
+            )),
+            Times.Once);
+    }
+
+    [Test]
+    public async Task Consume_UpdatePhoneNumber_SendsEmail()
+    {
+        // Arrange
+        var emailMessage = new EmailMessage
+        {
+            Type = EmailPublisherConstants.UpdatePhoneNumber,
+            EmailAddress = "recipient@example.com",
+            Code = "updatephonecode"
+        };
+
+        var consumeContextMock = new Mock<ConsumeContext<EmailMessage>>();
+        consumeContextMock.Setup(c => c.Message).Returns(emailMessage);
+
+        // Act
+        await _worker.Consume(consumeContextMock.Object);
+
+        // Assert
+        _smtpClientMock.Verify(
+            smtp => smtp.SendMailAsync(It.Is<MailMessage>(msg =>
+                msg.To.Contains(new MailAddress("recipient@example.com")) &&
+                msg.Subject == "Update Your Phone Number" &&
+                msg.Body.Contains("Your phone number update code is updatephonecode")
             )),
             Times.Once);
     }
