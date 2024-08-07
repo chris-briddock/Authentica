@@ -5,6 +5,7 @@ using Ardalis.ApiEndpoints;
 using Authentica.Common;
 using Domain.Aggregates.Identity;
 using Domain.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,7 @@ public class SendTokenEndpoint : EndpointBaseAsync
     {
         EmailMessage message = new();
         var userManager = Services.GetRequiredService<UserManager<User>>();
-        var emailPublisher = Services.GetRequiredService<IEmailPublisher>();
+        var emailPublisher = Services.GetRequiredService<IBus>();
         var eventStore = Services.GetRequiredService<IEventStore>();
 
         User? user = await userManager.FindByEmailAsync(request.Email)!;
