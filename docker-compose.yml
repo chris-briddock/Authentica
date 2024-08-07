@@ -1,20 +1,20 @@
 services:
   
-  authentica.service.identity:
-    image: ${DOCKER_REGISTRY-}authenticaserviceidentity
-    build:
-      context: .
-      dockerfile: src/Authentica.Service.Identity/Dockerfile
-    environment: 
-      OTEL_EXPORTER_OTLP_ENDPOINT: "https://aspire-dashboard:4317"
+  # authentica.service.identity:
+  #   image: ${DOCKER_REGISTRY-}authenticaserviceidentity
+  #   build:
+  #     context: .
+  #     dockerfile: src/Dockerfile-service.identity
+  #   environment: 
+  #     OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
 
-  authentica.workerservice.email:
-    image: ${DOCKER_REGISTRY-}authenticaworkerserviceemail
-    build:
-      context: .
-      dockerfile: src/Authentica.WorkerService.Email/Dockerfile
-    environment: 
-      OTEL_EXPORTER_OTLP_ENDPOINT: "https://aspire-dashboard:4317"
+  # authentica.workerservice.email:
+  #   image: ${DOCKER_REGISTRY-}authenticaworkerserviceemail
+  #   build:
+  #     context: .
+  #     dockerfile: src/Dockerfile.workerservice.email
+  #   environment: 
+  #     OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
   
 
   rabbitmq:
