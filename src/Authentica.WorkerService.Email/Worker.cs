@@ -56,71 +56,115 @@ public class Worker(ILogger<Worker> logger,
 <head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Two-Factor Verification Code</title>
-    <!-- Include Tailwind CSS styles -->
+    <title>Confirm Your Email</title>
     <link href=""https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"" rel=""stylesheet"">
 </head>
 <body class=""font-sans bg-gray-100"">
     <div class=""max-w-screen-md mx-auto p-8 bg-white shadow-md rounded-md"">
         <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">Confirm your email</h2>
         <p class=""text-gray-700"">Dear <span class=""font-bold text-indigo-800"">{context.Message.EmailAddress}</span>,</p>
-        <p class=""text-gray-700"">Your confirmation email code is {context.Message.Code} </p>
+        <p class=""text-gray-700"">Your confirmation email code is {context.Message.Code}</p>
         <p class=""text-gray-700"">If you did not request this or have any concerns, please contact our support team.</p>
         <p class=""mt-4 text-gray-700"">Thank you</p>
-        <p class=""mt-2 text-gray-600"">� 2024 All rights reserved.</p>
+        <p class=""mt-2 text-gray-600"">© 2024 All rights reserved.</p>
     </div>
 </body>
 </html>";
                 break;
+
             case EmailPublisherConstants.TwoFactor:
-                message.Subject = $"You requested a two factor code";
+                message.Subject = $"You requested a two-factor code";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
 <head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <title>Two-Factor Verification Code</title>
-    <!-- Include Tailwind CSS styles -->
     <link href=""https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"" rel=""stylesheet"">
 </head>
 <body class=""font-sans bg-gray-100"">
     <div class=""max-w-screen-md mx-auto p-8 bg-white shadow-md rounded-md"">
         <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">Two-Factor Verification Code</h2>
         <p class=""text-gray-700"">Dear <span class=""font-bold text-indigo-800"">{context.Message.EmailAddress}</span>,</p>
-        <p class=""text-gray-700"">Your two factor code is {context.Message.Code}</p>
+        <p class=""text-gray-700"">Your two-factor code is {context.Message.Code}</p>
         <p class=""text-gray-700"">If you did not request this or have any concerns, please contact our support team.</p>
         <p class=""mt-4 text-gray-700"">Thank you,<br>Your Company Name</p>
-        <p class=""mt-2 text-gray-600"">� 2024 All rights reserved.</p>
+        <p class=""mt-2 text-gray-600"">© 2024 All rights reserved.</p>
     </div>
 </body>
 </html>";
                 break;
+
             case EmailPublisherConstants.ResetPassword:
-                message.Subject = $"Oh no! You silly goose, you forgot your password. You can reset it here.";
+                message.Subject = $"Password Reset Request";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
 <head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Two-Factor Verification Code</title>
-    <!-- Include Tailwind CSS styles -->
+    <title>Password Reset</title>
     <link href=""https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"" rel=""stylesheet"">
 </head>
 <body class=""font-sans bg-gray-100"">
     <div class=""max-w-screen-md mx-auto p-8 bg-white shadow-md rounded-md"">
-        <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">Forgotten your password.</h2>
+        <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">Forgotten your password?</h2>
         <p class=""text-gray-700"">Dear <span class=""font-bold text-indigo-800"">{context.Message.EmailAddress}</span>,</p>
-        <p class=""text-gray-700"">Your password reset code is <span class=""font-bold text-indigo-800"">{context.Message.Code}</span> </p>
+        <p class=""text-gray-700"">Your password reset code is <span class=""font-bold text-indigo-800"">{context.Message.Code}</span></p>
         <p class=""text-gray-700"">If you did not request this or have any concerns, please contact our support team.</p>
         <p class=""mt-4 text-gray-700"">Thank you,<br>Your Company Name</p>
-        <p class=""mt-2 text-gray-600"">� 2024 All rights reserved.</p>
+        <p class=""mt-2 text-gray-600"">© 2024 All rights reserved.</p>
     </div>
 </body>
 </html>";
                 break;
-            default:
+
+            case EmailPublisherConstants.UpdateEmail:
+                message.Subject = $"Update Your Email Address";
+                message.Body = $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Update Email Address</title>
+    <link href=""https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"" rel=""stylesheet"">
+</head>
+<body class=""font-sans bg-gray-100"">
+    <div class=""max-w-screen-md mx-auto p-8 bg-white shadow-md rounded-md"">
+        <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">Update your email address</h2>
+        <p class=""text-gray-700"">Dear <span class=""font-bold text-indigo-800"">{context.Message.EmailAddress}</span>,</p>
+        <p class=""text-gray-700"">Your email update code is {context.Message.Code}</p>
+        <p class=""text-gray-700"">If you did not request this or have any concerns, please contact our support team.</p>
+        <p class=""mt-4 text-gray-700"">Thank you</p>
+        <p class=""mt-2 text-gray-600"">© 2024 All rights reserved.</p>
+    </div>
+</body>
+</html>";
+                break;
+
+            case EmailPublisherConstants.UpdatePhoneNumber:
+                message.Subject = $"Update Your Phone Number";
+                message.Body = $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Update Phone Number</title>
+    <link href=""https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"" rel=""stylesheet"">
+</head>
+<body class=""font-sans bg-gray-100"">
+    <div class=""max-w-screen-md mx-auto p-8 bg-white shadow-md rounded-md"">
+        <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">Update your phone number</h2>
+        <p class=""text-gray-700"">Dear <span class=""font-bold text-indigo-800"">{context.Message.EmailAddress}</span>,</p>
+        <p class=""text-gray-700"">Your phone number update code is {context.Message.Code}</p>
+        <p class=""text-gray-700"">If you did not request this or have any concerns, please contact our support team.</p>
+        <p class=""mt-4 text-gray-700"">Thank you</p>
+        <p class=""mt-2 text-gray-600"">© 2024 All rights reserved.</p>
+    </div>
+</body>
+</html>";
                 break;
         }
+
 
         await client.SendMailAsync(message);
     }

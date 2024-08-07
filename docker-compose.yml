@@ -1,20 +1,20 @@
 services:
   
-  # christopherbriddock.service.identity:
-  #   image: ${DOCKER_REGISTRY-}christopherbriddockserviceidentity
+  # authentica.service.identity:
+  #   image: ${DOCKER_REGISTRY-}authenticaserviceidentity
   #   build:
   #     context: .
-  #     dockerfile: ChristopherBriddock.Service.Identity/Dockerfile
+  #     dockerfile: src/Dockerfile.service.identity
   #   environment: 
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: "https://christopherbriddock.service.identity:4317"
+  #     OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
 
-  # christopherbriddock.service.email:
-  #   image: ${DOCKER_REGISTRY-}christopherbriddockworkerserviceemail
+  # authentica.workerservice.email:
+  #   image: ${DOCKER_REGISTRY-}authenticaworkerserviceemail
   #   build:
   #     context: .
-  #     dockerfile: ChristopherBriddock.WorkerService.Email/Dockerfile
+  #     dockerfile: src/Dockerfile.workerservice.email
   #   environment: 
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: "https://christopherbriddock.service.email:4317"
+  #     OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
   
 
   rabbitmq:

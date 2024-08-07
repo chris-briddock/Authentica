@@ -3,21 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentica.Common", "Authentica.Common\Authentica.Common.csproj", "{1F13E5C1-1E4F-4663-83AD-9FA0BC7BB261}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentica.Common", "Authentica.Common\Authentica.Common.csproj", "{1F13E5C1-1E4F-4663-83AD-9FA0BC7BB261}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentica.Service.Identity", "Authentica.Service.Identity\Authentica.Service.Identity.csproj", "{06C9BFF0-ADFD-41CA-BD0A-EC89085C0A77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentica.Service.Identity", "Authentica.Service.Identity\Authentica.Service.Identity.csproj", "{06C9BFF0-ADFD-41CA-BD0A-EC89085C0A77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentica.WorkerService.Email", "Authentica.WorkerService.Email\Authentica.WorkerService.Email.csproj", "{A9EB3A1E-DB88-40AC-B2D7-A394FF3238EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentica.WorkerService.Email", "Authentica.WorkerService.Email\Authentica.WorkerService.Email.csproj", "{A9EB3A1E-DB88-40AC-B2D7-A394FF3238EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6840A616-454A-4FDD-A17D-13F0DEDFB6FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Pipelines", "Azure Pipelines", "{4E8F9E73-82F9-4F2B-AF88-F3A7D9105847}"
+	ProjectSection(SolutionItems) = preProject
+		service.identity-azure-pipelines-ci.yml = service.identity-azure-pipelines-ci.yml
+		workerservice.email-azure-pipelines-ci.yml = workerservice.email-azure-pipelines-ci.yml
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentica.Service.Identity.Tests", "Authentica.Service.Identity.Tests\Authentica.Service.Identity.Tests.csproj", "{1ECB7655-4638-48B3-AD0C-E0055A2C112A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentica.Service.Identity.Tests", "Authentica.Service.Identity.Tests\Authentica.Service.Identity.Tests.csproj", "{1ECB7655-4638-48B3-AD0C-E0055A2C112A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentica.WorkerService.Email.Tests", "Authentica.WorkerService.Email.Tests\Authentica.WorkerService.Email.Tests.csproj", "{9B89482E-177B-48A8-A0CC-DCC1B37BDF81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentica.WorkerService.Email.Tests", "Authentica.WorkerService.Email.Tests\Authentica.WorkerService.Email.Tests.csproj", "{9B89482E-177B-48A8-A0CC-DCC1B37BDF81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClient", "TestClient\TestClient.csproj", "{28E2B323-401F-4046-A469-6B5747D76366}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestClient", "TestClient\TestClient.csproj", "{28E2B323-401F-4046-A469-6B5747D76366}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,5 +61,8 @@ Global
 		{1ECB7655-4638-48B3-AD0C-E0055A2C112A} = {6840A616-454A-4FDD-A17D-13F0DEDFB6FD}
 		{9B89482E-177B-48A8-A0CC-DCC1B37BDF81} = {6840A616-454A-4FDD-A17D-13F0DEDFB6FD}
 		{28E2B323-401F-4046-A469-6B5747D76366} = {6840A616-454A-4FDD-A17D-13F0DEDFB6FD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB40C019-AC37-4006-9415-18B5F28CC52D}
 	EndGlobalSection
 EndGlobal

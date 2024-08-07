@@ -209,7 +209,7 @@ public static class ServiceCollectionExtensions
         if (featureManager.IsEnabledAsync(FeatureFlagConstants.AzApplicationInsights).Result)
         {
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>()!;
-            services.AddApplicationInsightsTelemetry(options => options.ConnectionString = configuration["ApplicationInsights:InstrumentationKey"]);
+            services.AddApplicationInsightsTelemetry(options => options.ConnectionString = configuration["ConnectionStrings:AzureAppInsights"]);
             services.AddApplicationInsightsKubernetesEnricher();
         }
         return services;
