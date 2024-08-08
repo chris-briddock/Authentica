@@ -15,6 +15,8 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Api.Constants;
 using ITimer = Application.Contracts.ITimer;
+using Microsoft.AspNetCore.Identity;
+using Domain.Aggregates.Identity;
 
 
 namespace Authentica.Service.Identity;
@@ -47,7 +49,8 @@ public sealed class Program
         builder.Services.AddVersioning(1,0);
         builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSwaggerGen($"{ServiceNameDefaults.ServiceName}.xml");
-        builder.Services.TryAddScoped<ISecretHasher, SecretHasher>();
+        builder.Services.TryAddScoped<ISecretHasher, Argon2SecretHasher>();
+        builder.Services.TryAddScoped<IPasswordHasher<User>, Argon2PasswordHasher<User>>();
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
         builder.Services.TryAddTransient<ITimer, TimerProvider>();
         builder.Services.AddFeatureManagement();
