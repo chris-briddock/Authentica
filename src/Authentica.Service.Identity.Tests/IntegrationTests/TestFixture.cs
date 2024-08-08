@@ -37,7 +37,7 @@ public class TestFixture<TProgram> where TProgram : class
         var values = new Dictionary<string, string>
         {
             { "client_id", "2e5cf15b-bf5b-4d80-aa01-2a596403530d" },
-            { "client_secret", "eCp+79BsVS5uPb7J6MD+Stjfuw8h1Jv5dSKA89ep+AtsLy4+pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj+7esNn0xUkwobzqHVJN43YLZcI+ZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==" }, // Add your client secret here
+            { "client_secret", "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==" }, // Add your client secret here
             { "grant_type", "client_credentials" },
             { "redirect_uri", "https://localhost:7256"}
         };

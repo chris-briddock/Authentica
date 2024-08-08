@@ -209,7 +209,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             if (application is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
 
-            var secret = randomStringProvider.Generate();
+            var secret = randomStringProvider.GenerateAlphanumeric();
 
             var hashedSecret = hasher.Hash(secret);
 

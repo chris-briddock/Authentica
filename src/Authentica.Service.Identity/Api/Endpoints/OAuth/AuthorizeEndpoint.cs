@@ -59,7 +59,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
 
         await eventStore.SaveEventAsync(@event);
 
-        var state = randomStringProvider.Generate(64);
+        var state = randomStringProvider.GenerateAlphanumeric(64);
 
         ApplicationDTO<AuthorizeRequest> dto = new()
         {
@@ -76,7 +76,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
 
         if (request.ResponseType == TokenConstants.AuthorizationCode)
         {
-            var code = randomStringProvider.Generate(256);
+            var code = randomStringProvider.GenerateAlphanumeric(64);
             HttpContext.Session.SetString($"{request.ClientId}_code", code);
             await HttpContext.Session.CommitAsync(cancellationToken);
 

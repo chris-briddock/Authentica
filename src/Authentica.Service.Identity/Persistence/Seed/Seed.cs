@@ -30,7 +30,7 @@ public static class Seed
         var adminEmail = "admin@default.com";
         var user = await userManager.FindByEmailAsync(adminEmail);
 
-        var secret = "eCp+79BsVS5uPb7J6MD+Stjfuw8h1Jv5dSKA89ep+AtsLy4+pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj+7esNn0xUkwobzqHVJN43YLZcI+ZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==";
+        var secret = "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==";
 
         var hashedSecret = hasher.Hash(secret);
 
@@ -155,7 +155,7 @@ public static class Seed
             var adminEmail = "admin@default.com";
             var user = await userManager.FindByEmailAsync(adminEmail);
 
-            var secret = stringProvider.Generate();
+            var secret = stringProvider.GenerateAlphanumeric();
 
             var hashedSecret = hasher.Hash(secret);
 
@@ -210,7 +210,7 @@ public static class Seed
             var adminEmail = "admin@default.com";
             var user = await userManager.FindByEmailAsync(adminEmail);
 
-            var secret = stringProvider.Generate();
+            var secret = stringProvider.GenerateAlphanumeric();
 
             var hashedSecret = hasher.Hash(secret);
 
