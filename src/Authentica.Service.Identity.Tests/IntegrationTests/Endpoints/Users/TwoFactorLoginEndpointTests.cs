@@ -38,7 +38,6 @@ public class TwoFactorLoginEndpointTests
 
         var request = new TwoFactorLoginRequest()
         {
-            EmailAddress = "twofactortest@default.com",
             Token = "888888" // must be 6 chars.
         };
 
@@ -67,7 +66,6 @@ public class TwoFactorLoginEndpointTests
 
         var request = new TwoFactorLoginRequest()
         {
-            EmailAddress = "twofactortest@default.com",
             Token = "888888" // must be 6 chars.
         };
 
@@ -98,7 +96,6 @@ public class TwoFactorLoginEndpointTests
 
         var request = new TwoFactorLoginRequest()
         {
-            EmailAddress = "twoFactorTest@default.com",
             Token = "888888" // must be 6 chars.
         };
 
@@ -129,7 +126,6 @@ public class TwoFactorLoginEndpointTests
 
         var request = new TwoFactorLoginRequest()
         {
-            EmailAddress = "twoFactorTest@default.com",
             Token = "888888" // must be 6 chars.
         };
 

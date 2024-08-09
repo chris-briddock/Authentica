@@ -10,16 +10,18 @@ public class JsonWebTokenProviderTests
     private readonly int _expires = 120;
     private readonly string _subject = "John Doe";
 
+    private readonly IList<string> _roles = new List<string>();
+
     [Test]
     public async Task TryCreateTokenAsync_ShouldCreateToken_WhenValidParametersAreProvided()
     {
         // Arrange
         var mockProvider = new JsonWebTokenProviderMock();
-        mockProvider.Setup(p => p.TryCreateTokenAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()))
+        mockProvider.Setup(p => p.TryCreateTokenAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
                     .ReturnsAsync(new JwtResult { Success = true, Token = "mockToken", Error = null });
 
         // Act
-        var result = await mockProvider.Object.TryCreateTokenAsync(_email, _jwtSecret, _issuer, _audience, _expires, _subject);
+        var result = await mockProvider.Object.TryCreateTokenAsync(_email, _jwtSecret, _issuer, _audience, _expires, _subject, _roles);
 
         Assert.Multiple(() =>
         {

@@ -32,10 +32,10 @@ public class SmtpClientWrapper : ISmtpClient
     /// <returns>A task representing the asynchronous email sending operation.</returns>
     public Task SendMailAsync(MailMessage message)
     {
-        var smtpServer = Environment.GetEnvironmentVariable("EMAIL_SERVER")!;
-        int smtpPort = Convert.ToInt16(Environment.GetEnvironmentVariable("EMAIL_PORT"));
-        var smtpUsername = Environment.GetEnvironmentVariable("EMAIL_CREDENTIALS_EMAIL_ADDRESS");
-        var smtpPassword = Environment.GetEnvironmentVariable("EMAIL_CREDENTIALS_PASSWORD");
+        var smtpServer = Configuration["Email:Server"]!;
+        int smtpPort = Convert.ToInt16(Configuration["Email:Port"]!);
+        var smtpUsername = Configuration["Email:Credentials:EmailAddress"]!;
+        var smtpPassword = Configuration["Email:Credentials:Password"]!;
         _smtpClient.Host = smtpServer;
         _smtpClient.EnableSsl = true;
         _smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);

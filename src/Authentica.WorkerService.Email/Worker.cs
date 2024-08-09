@@ -37,7 +37,8 @@ public class Worker(ILogger<Worker> logger,
     /// <returns>An asyncronous <see cref="Task"/></returns>
     public async Task Consume(ConsumeContext<EmailMessage> context)
     {
-        var from = Environment.GetEnvironmentVariable("EMAIL_CREDENTIALS_EMAIL_ADDRESS")!;
+        var configuration = ServiceProvider.GetService<IConfiguration>()!;
+        var from = configuration["Email:Credentials:EmailAddress"]!;
         var to = context.Message.EmailAddress;
         var message = new MailMessage(from, to)
         {

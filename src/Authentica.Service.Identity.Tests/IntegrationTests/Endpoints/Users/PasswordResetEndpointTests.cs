@@ -63,7 +63,7 @@ public class ResetPasswordEndpointTests
         {
             Email = "admin@default.com",
             Token = "ajdndjnksdn",
-            NewPassword = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
+            Password = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");

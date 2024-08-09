@@ -50,9 +50,6 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
 
             var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
 
-            if (!result.Succeeded)
-                return BadRequest();
-
             ConfirmEmailEvent @event = new()
             {
                 Payload = request
@@ -60,7 +57,7 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
 
             await eventStore.SaveEventAsync(@event);
 
-            if (result.Errors.Any())
+            if (result.Errors.Any() || !result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
             return Ok(); 
