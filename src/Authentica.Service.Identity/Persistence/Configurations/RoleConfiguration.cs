@@ -44,9 +44,7 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
               .IsRequired();
         
         builder.Property(u => u.DeletedOnUtc)
-               .HasColumnName("deleted_on_utc")
-               .HasDefaultValueSql("GETUTCDATE()")
-               .ValueGeneratedOnUpdate();
+               .HasColumnName("deleted_on_utc");
 
         builder.Property(u => u.DeletedBy)
                .HasColumnName("deleted_by")
@@ -62,9 +60,7 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
                .HasMaxLength(36);
 
         builder.Property(u => u.ModifiedOnUtc)
-               .HasColumnName("modified_on_utc")
-               .HasDefaultValueSql("GETUTCDATE()")
-               .ValueGeneratedOnUpdate();
+               .HasColumnName("modified_on_utc");
 
         builder.Property(u => u.ModifiedBy)
                .HasColumnName("modified_by")

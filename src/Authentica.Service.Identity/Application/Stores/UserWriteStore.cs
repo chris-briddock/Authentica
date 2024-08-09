@@ -68,12 +68,16 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     public async Task<UserStoreResult> ConfirmEmailAsync(User user, string token)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
-        var result = await UserManager.ConfirmEmailAsync(user, token);
+        var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ConfirmEmail, token);
 
-        if (result.Succeeded)
-            return UserStoreResult.Success();
+        if (!result)
+            return UserStoreResult.Failed();
 
-        return UserStoreResult.Failed();
+        user.EmailConfirmed = true;
+
+        await UserManager.UpdateAsync(user);
+            
+        return UserStoreResult.Success();
     }
 
     /// <summary>
@@ -97,6 +101,8 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             return UserStoreResult.Failed(new IdentityErrorFactory().InvalidToken());
 
         user.PasswordHash = UserManager.PasswordHasher.HashPassword(user, newPassword);
+        
+        await UserManager.UpdateAsync(user);
 
         return UserStoreResult.Success();
     }
@@ -143,10 +149,17 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     {
         try
         {
-            var result = await UserManager.ChangeEmailAsync(user, newEmail, token);
+            var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdateEmail, token);
 
-            if (!result.Succeeded)
+            if (!result)
                 return UserStoreResult.Failed();
+
+            user.Email = newEmail;
+            user.NormalizedEmail = newEmail.ToUpper();
+            user.UserName = newEmail;
+            user.NormalizedEmail = newEmail.ToUpper();
+
+            await UserManager.UpdateAsync(user);
 
             return UserStoreResult.Success();
         }
@@ -168,10 +181,14 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     {
         try
         {
-            var result = await UserManager.ChangePhoneNumberAsync(user, phoneNumber, token);
+            var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdatePhoneNumber, token);
 
-            if (!result.Succeeded)
+            if (!result)
                 return UserStoreResult.Failed();
+
+             user.PhoneNumber = phoneNumber;
+
+            await UserManager.UpdateAsync(user);
 
             return UserStoreResult.Success();
         }

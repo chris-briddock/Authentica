@@ -4,5 +4,5 @@ namespace Domain.Events;
 
 public class RegisterAdminEvent : EventBase<RegisterRequest>
 {
-    public override RegisterRequest Payload { get; set; }
+    public override RegisterRequest Payload { get; set; } = default!;
 }

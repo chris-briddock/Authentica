@@ -49,10 +49,11 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("client_secret");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)")
-                        .HasColumnName("concurrency_stamp");
+                        .HasColumnName("concurrency_stamp")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -72,10 +73,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("deleted_by");
 
                     b.Property<DateTime?>("DeletedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("deleted_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("deleted_on_utc");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -87,10 +86,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("modified_by");
 
                     b.Property<DateTime?>("ModifiedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("modified_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("modified_on_utc");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -213,10 +210,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("deleted_by");
 
                     b.Property<DateTime?>("DeletedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("deleted_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("deleted_on_utc");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -228,10 +223,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("modified_by");
 
                     b.Property<DateTime?>("ModifiedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("modified_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("modified_on_utc");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100)
@@ -364,10 +357,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("deleted_by");
 
                     b.Property<DateTime?>("DeletedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("deleted_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("deleted_on_utc");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -406,10 +397,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("modified_by");
 
                     b.Property<DateTime?>("ModifiedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("modified_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("modified_on_utc");
 
                     b.Property<string>("NormalizedEmail")
                         .IsRequired()
@@ -487,7 +476,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                                 .HasColumnType("nvarchar(10)")
                                 .HasColumnName("address_number");
 
-                            b1.Property<string>("PostCode")
+                            b1.Property<string>("Postcode")
                                 .HasMaxLength(10)
                                 .HasColumnType("nvarchar(10)")
                                 .HasColumnName("address_postcode");
@@ -567,10 +556,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("deleted_by");
 
                     b.Property<DateTime?>("DeletedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("deleted_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("deleted_on_utc");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -582,10 +569,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("modified_by");
 
                     b.Property<DateTime?>("ModifiedOnUtc")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasColumnName("modified_on_utc")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnName("modified_on_utc");
 
                     b.Property<DateTime>("PeriodEnd")
                         .ValueGeneratedOnAddOrUpdate()

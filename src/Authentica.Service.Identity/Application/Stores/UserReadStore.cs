@@ -104,7 +104,7 @@ public class UserReadStore : StoreBase, IUserReadStore
            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
-    /// <inheritdoc>
+    /// <inheritdoc />
     public async Task<IList<string>> GetUserRolesAsync(User user)
     {
         return await UserManager.GetRolesAsync(user);

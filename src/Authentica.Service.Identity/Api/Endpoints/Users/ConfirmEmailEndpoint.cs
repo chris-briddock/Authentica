@@ -51,7 +51,7 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
             var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
 
             if (!result.Succeeded)
-                return BadRequest("Invalid token");
+                return BadRequest();
 
             ConfirmEmailEvent @event = new()
             {

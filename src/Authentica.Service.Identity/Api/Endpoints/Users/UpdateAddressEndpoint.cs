@@ -62,6 +62,8 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
         var user = userResult.User;
 
         user.Address = request.Address;
+        user.ModifiedBy = user.Id;
+        user.ModifiedOnUtc = DateTime.UtcNow;
 
         dbContext.Users.Update(user);
 

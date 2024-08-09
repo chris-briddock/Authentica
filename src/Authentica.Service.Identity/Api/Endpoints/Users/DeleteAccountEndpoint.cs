@@ -38,11 +38,13 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken)
     {
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
+        var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
+        var readUserResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
         DeleteAccountEvent @event = new()
         {
-            Email = User.Identity!.Name!
+            Email = readUserResult.User.Email!
         };
 
         await eventStore.SaveEventAsync(@event);
