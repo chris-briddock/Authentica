@@ -12,7 +12,7 @@ public sealed class RandomStringProvider : IRandomStringProvider
     /// <inheritdoc/> 
     public string GenerateAlphanumeric(int length = 256)
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789#@}{-=+)($%&^";
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789#@}{=)($%&^";
         var sb = new StringBuilder();
         using var rng = RandomNumberGenerator.Create();
 

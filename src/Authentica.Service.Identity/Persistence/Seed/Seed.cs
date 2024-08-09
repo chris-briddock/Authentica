@@ -268,7 +268,7 @@ public static class Seed
                 IsDeleted = true,
                 DeletedOnUtc = DateTime.UtcNow,
                 EmailConfirmed = true,
-                CreatedBy = "DEFAULT",
+                CreatedBy = "SYSTEM",
                 Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
             };
 

@@ -1,6 +1,6 @@
+using System.Text.Json;
 using Api.Constants;
 using Domain.Errors;
-using Utf8Json;
 
 namespace Api.Middlware;
 
@@ -72,7 +72,7 @@ public sealed class ErrorHandlingMiddleware
             ServiceName = ServiceNameDefaults.ServiceName
         };
 
-        var result = JsonSerializer.ToJsonString(problemDetails);
+        var result = JsonSerializer.Serialize(problemDetails);
         
         Logger.LogError("An error occurred. {errorDetails}", result);
 

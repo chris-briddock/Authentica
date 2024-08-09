@@ -4,14 +4,13 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 {
     private MsSqlContainer _msSqlContainer = new MsSqlBuilder()
                                                 .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-                                                .WithWaitStrategy(Wait.ForUnixContainer())
+                                                .WithWaitStrategy(Wait.ForUnixContainer().UntilMessageIsLogged("SQL Server is now ready for client connections"))
                                                 .WithAutoRemove(true)
                                                 .Build();
 
     public void StartTestContainer()
     {
         _msSqlContainer.StartAsync().Wait();
-        Task.Delay(TimeSpan.FromSeconds(20)).Wait();
     }
     public void StopTestContainer()
     {

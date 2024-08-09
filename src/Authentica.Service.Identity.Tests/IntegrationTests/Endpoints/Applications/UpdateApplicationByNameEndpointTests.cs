@@ -35,7 +35,7 @@ public class UpdateApplicationByNameEndpointTests
             NewRedirectUri = "https://localhost:7255"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
 
@@ -62,7 +62,7 @@ public class UpdateApplicationByNameEndpointTests
             NewRedirectUri = "https://localhost:7255"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
 
@@ -91,7 +91,7 @@ public class UpdateApplicationByNameEndpointTests
             NewRedirectUri = "https://localhost:7255"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
 

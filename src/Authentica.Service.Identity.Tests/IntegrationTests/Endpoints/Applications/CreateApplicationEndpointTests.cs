@@ -31,7 +31,7 @@ public class CreateApplicationEndpointTests
             RedirectUri = "https://localhost:7256"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(content), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
 
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
@@ -53,7 +53,7 @@ public class CreateApplicationEndpointTests
         };
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(content), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
 
         using var sut = await sutClient.PostAsync($"api/v1/{Routes.Applications.Create}", jsonContent);
 

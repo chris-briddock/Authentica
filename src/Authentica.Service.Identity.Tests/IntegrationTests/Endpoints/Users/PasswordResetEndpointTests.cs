@@ -37,10 +37,10 @@ public class ResetPasswordEndpointTests
         {
             Email = "admin@default.com",
             Token = "ajdndjnksdn",
-            NewPassword = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
+            Password = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent);
 
@@ -63,10 +63,10 @@ public class ResetPasswordEndpointTests
         {
             Email = "admin@default.com",
             Token = "ajdndjnksdn",
-            NewPassword = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
+            Password = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent);;
 

@@ -1,4 +1,5 @@
 using Application.Attributes;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Requests;
 
@@ -22,5 +23,5 @@ public sealed record PasswordResetRequest
     /// Gets or sets the new password for the user.
     /// </summary>
     [SensitiveData]
-    public required string NewPassword { get; init; } = default!;
+    public required string Password { get; init; } = default!;
 }

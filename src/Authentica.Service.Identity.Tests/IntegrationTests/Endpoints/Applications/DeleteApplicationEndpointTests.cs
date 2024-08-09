@@ -32,7 +32,7 @@ public class DeleteApplicationEndpointTests
             Name = "Default Application"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(content), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
 
         var request = new HttpRequestMessage
         {
@@ -59,7 +59,7 @@ public class DeleteApplicationEndpointTests
             Name = "Application"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(content), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
 
         var request = new HttpRequestMessage
         {
@@ -86,7 +86,7 @@ public class DeleteApplicationEndpointTests
             Name = "Default Application"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(content), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
 
         var request = new HttpRequestMessage
         {

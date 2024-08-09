@@ -22,9 +22,10 @@ public class Argon2SecretHasher : ISecretHasher
         if (parts.Length != 2)
             return false;
 
-        var salt = Convert.FromBase64String(parts[0]);
-        var storedHashBytes = Convert.FromBase64String(parts[1]);
-        var providedHash = Shared.HashPasswordWithArgon2(input, salt);
+        byte[] salt = Convert.FromBase64String(parts[0]);
+        byte[] storedHashBytes = Convert.FromBase64String(parts[1]);
+
+        byte[] providedHash = Shared.HashPasswordWithArgon2(input, salt);
 
         return providedHash.SequenceEqual(storedHashBytes);
     }

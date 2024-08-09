@@ -37,7 +37,7 @@ public class WorkerTests
         // Arrange
         var emailMessage = new EmailMessage
         {
-            Type = EmailPublisherConstants.ConfirmEmail,
+            Type = EmailTokenConstants.ConfirmEmail,
             EmailAddress = "recipient@example.com",
             Code = "https://example.com/confirm"
         };
@@ -64,7 +64,7 @@ public class WorkerTests
         // Arrange
         var emailMessage = new EmailMessage
         {
-            Type = EmailPublisherConstants.TwoFactor,
+            Type = EmailTokenConstants.TwoFactor,
             EmailAddress = "recipient@example.com",
             Code = "123456"
         };
@@ -91,7 +91,7 @@ public class WorkerTests
         // Arrange
         var emailMessage = new EmailMessage
         {
-            Type = EmailPublisherConstants.ResetPassword,
+            Type = EmailTokenConstants.ResetPassword,
             EmailAddress = "recipient@example.com",
             Code = "654321"
         };
@@ -118,7 +118,7 @@ public class WorkerTests
         // Arrange
         var emailMessage = new EmailMessage
         {
-            Type = EmailPublisherConstants.UpdateEmail,
+            Type = EmailTokenConstants.UpdateEmail,
             EmailAddress = "recipient@example.com",
             Code = "updateemailcode"
         };
@@ -145,7 +145,7 @@ public class WorkerTests
         // Arrange
         var emailMessage = new EmailMessage
         {
-            Type = EmailPublisherConstants.UpdatePhoneNumber,
+            Type = EmailTokenConstants.UpdatePhoneNumber,
             EmailAddress = "recipient@example.com",
             Code = "updatephonecode"
         };

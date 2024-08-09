@@ -79,7 +79,7 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
             .Select(x => x.ApplicationId)
             .ToListAsync(cancellationToken);
 
-        if (userClientLink is null || !userClientLink.Any())
+        if (userClientLink is null || userClientLink.Count == 0)
             return null;
 
         var clientApplication = await DbContext.ClientApplications

@@ -31,7 +31,7 @@ public class CreateApplicationSecretEndpointTests
 
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var sut = await sutClient.PutAsync($"api/v1/{Routes.Applications.ApplicationSecrets}", jsonContent);
 

@@ -3,7 +3,9 @@ using Api.Requests;
 using Application.Contracts;
 using Application.Factories;
 using Application.Results;
+using Authentica.Common;
 using Domain.Aggregates.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Stores;
 
@@ -66,12 +68,16 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     public async Task<UserStoreResult> ConfirmEmailAsync(User user, string token)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
-        var result = await UserManager.ConfirmEmailAsync(user, token);
+        var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ConfirmEmail, token);
 
-        if (result.Succeeded)
-            return UserStoreResult.Success();
+        if (!result)
+            return UserStoreResult.Failed();
 
-        return UserStoreResult.Failed();
+        user.EmailConfirmed = true;
+
+        await UserManager.UpdateAsync(user);
+            
+        return UserStoreResult.Success();
     }
 
     /// <summary>
@@ -89,12 +95,16 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
 
-        var result = await UserManager.ResetPasswordAsync(user, token, newPassword);
+        var tokenVerificationResult = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ResetPassword, token);
 
-        if (result.Succeeded)
-            return UserStoreResult.Success();
+        if (!tokenVerificationResult)
+            return UserStoreResult.Failed(new IdentityErrorFactory().InvalidToken());
 
-        return UserStoreResult.Failed();
+        user.PasswordHash = UserManager.PasswordHasher.HashPassword(user, newPassword);
+        
+        await UserManager.UpdateAsync(user);
+
+        return UserStoreResult.Success();
     }
 
     /// <summary>
@@ -125,24 +135,31 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     }
 
     /// <summary>
-/// Asynchronously updates a user's email address using a confirmation token.
-/// </summary>
-/// <param name="user">The user whose email address is being updated.</param>
-/// <param name="newEmail">The new email address to set for the user.</param>
-/// <param name="token">The email confirmation token.</param>
-/// <returns>
-/// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
-/// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
-/// </returns>
-/// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    /// Asynchronously updates a user's email address using a confirmation token.
+    /// </summary>
+    /// <param name="user">The user whose email address is being updated.</param>
+    /// <param name="newEmail">The new email address to set for the user.</param>
+    /// <param name="token">The email confirmation token.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
     public async Task<UserStoreResult> UpdateEmailAsync(User user, string newEmail, string token)
     {
         try
         {
-            var result = await UserManager.ChangeEmailAsync(user, newEmail, token);
+            var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdateEmail, token);
 
-            if (!result.Succeeded)
+            if (!result)
                 return UserStoreResult.Failed();
+
+            user.Email = newEmail;
+            user.NormalizedEmail = newEmail.ToUpper();
+            user.UserName = newEmail;
+            user.NormalizedEmail = newEmail.ToUpper();
+
+            await UserManager.UpdateAsync(user);
 
             return UserStoreResult.Success();
         }
@@ -164,10 +181,14 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     {
         try
         {
-            var result = await UserManager.ChangePhoneNumberAsync(user, phoneNumber, token);
+            var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdatePhoneNumber, token);
 
-            if (!result.Succeeded)
+            if (!result)
                 return UserStoreResult.Failed();
+
+             user.PhoneNumber = phoneNumber;
+
+            await UserManager.UpdateAsync(user);
 
             return UserStoreResult.Success();
         }

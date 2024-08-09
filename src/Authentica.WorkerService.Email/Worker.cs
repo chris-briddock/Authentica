@@ -13,7 +13,7 @@ namespace Authentica.WorkerService.Email;
 /// <param name="logger">The application logger.</param>
 /// <param name="configuration">The configuration of the application. </param> 
 public class Worker(ILogger<Worker> logger,
-                    IServiceProvider serviceProvider) : IConsumer
+                    IServiceProvider serviceProvider) : IConsumer<EmailMessage>
 {
     /// <summary>
     /// The application logger.
@@ -49,7 +49,7 @@ public class Worker(ILogger<Worker> logger,
 
         switch (context.Message.Type)
         {
-            case EmailPublisherConstants.ConfirmEmail:
+            case EmailTokenConstants.ConfirmEmail:
                 message.Subject = $"Please confirm your email address.";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -72,7 +72,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailPublisherConstants.TwoFactor:
+            case EmailTokenConstants .TwoFactor:
                 message.Subject = $"You requested a two-factor code";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -95,7 +95,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailPublisherConstants.ResetPassword:
+            case EmailTokenConstants .ResetPassword:
                 message.Subject = $"Password Reset Request";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -118,7 +118,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailPublisherConstants.UpdateEmail:
+            case EmailTokenConstants .UpdateEmail:
                 message.Subject = $"Update Your Email Address";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -141,7 +141,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailPublisherConstants.UpdatePhoneNumber:
+            case EmailTokenConstants .UpdatePhoneNumber:
                 message.Subject = $"Update Your Phone Number";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">

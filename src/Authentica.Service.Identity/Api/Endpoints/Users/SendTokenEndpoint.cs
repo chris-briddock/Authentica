@@ -8,6 +8,7 @@ using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Api.Endpoints.Users;
 
@@ -21,6 +22,7 @@ public class SendTokenEndpoint : EndpointBaseAsync
                                 .WithRequest<SendTokenRequest>
                                 .WithActionResult
 {
+
     /// <summary>
     /// Gets or sets the service provider used to resolve dependencies.
     /// </summary>
@@ -68,58 +70,59 @@ public class SendTokenEndpoint : EndpointBaseAsync
 
         switch (request.TokenType)
         {
-            case EmailPublisherConstants.TwoFactor:
+            case EmailTokenConstants.TwoFactor:
                 var twoFactorCode = await userManager.GenerateTwoFactorTokenAsync(user!, TokenOptions.DefaultEmailProvider);
                 message = new()
                 {
                     EmailAddress = user!.Email!,
                     Code = twoFactorCode,
-                    Type = EmailPublisherConstants.TwoFactor
+                    Type = EmailTokenConstants.TwoFactor
                 };
                 break;
 
-            case EmailPublisherConstants.ConfirmEmail:
-                var emailConfirmationCode = await userManager.GenerateEmailConfirmationTokenAsync(user!);
+            case EmailTokenConstants.ConfirmEmail:
+                var emailConfirmationCode = await userManager.GenerateUserTokenAsync(user!, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ConfirmEmail);
                 message = new()
                 {
                     EmailAddress = user!.Email!,
                     Code = emailConfirmationCode,
-                    Type = EmailPublisherConstants.ConfirmEmail
+                    Type = EmailTokenConstants.ConfirmEmail
                 };
                 break;
 
-            case EmailPublisherConstants.ResetPassword:
-                var passwordResetCode = await userManager.GeneratePasswordResetTokenAsync(user!);
+            case EmailTokenConstants.ResetPassword:
+                var passwordResetCode = await userManager.GenerateUserTokenAsync(user!, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ResetPassword);
                 message = new()
                 {
                     EmailAddress = user!.Email!,
                     Code = passwordResetCode,
-                    Type = EmailPublisherConstants.ResetPassword
+                    Type = EmailTokenConstants.ResetPassword
                 };
                 break;
 
-            case EmailPublisherConstants.UpdateEmail:
-                var updateEmailCode = await userManager.GenerateChangeEmailTokenAsync(user!, request.Email);
+            case EmailTokenConstants.UpdateEmail:
+                var updateEmailCode = await userManager.GenerateUserTokenAsync(user!, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdateEmail);
                 message = new()
                 {
                     EmailAddress = user!.Email!,
                     Code = updateEmailCode,
-                    Type = EmailPublisherConstants.UpdateEmail
+                    Type = EmailTokenConstants.UpdateEmail
                 };
                 break;
 
-            case EmailPublisherConstants.UpdatePhoneNumber:
-                var updatePhoneNumberCode = await userManager.GenerateChangePhoneNumberTokenAsync(user!, request.Email);
+            case EmailTokenConstants.UpdatePhoneNumber:
+                var updatePhoneNumberCode = await userManager.GenerateUserTokenAsync(user!, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdatePhoneNumber);
                 message = new()
                 {
                     EmailAddress = user!.Email!,
                     Code = updatePhoneNumberCode,
-                    Type = EmailPublisherConstants.UpdatePhoneNumber
+                    Type = EmailTokenConstants.UpdatePhoneNumber
                 };
                 break;
         }
 
         await emailPublisher.Publish(message, cancellationToken);
-        return Ok("If a user exists in the database, an email will be sent to that email address.");
+        // TOOD: REMOVE THE CODE FROM RESPONSE.
+        return Ok($"{message.Code} If a user exists in the database, an email will be sent to that email address.");
     }
 }

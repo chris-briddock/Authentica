@@ -8,12 +8,12 @@ public static class HasherDefaults
     /// <summary>
     /// Size of the salt in bytes (256 bits).
     /// </summary>
-    public const int SaltSize = 256 / 8;
+    public const int SaltSize = 32;
 
     /// <summary>
     /// Size of the hash in bytes (512 bits).
     /// </summary>
-    public const int HashSize = 512 / 8;
+    public const int HashSize = 64;
 
     /// <summary>
     /// Number of threads to use in parallel processing.
@@ -23,7 +23,7 @@ public static class HasherDefaults
     /// <summary>
     /// Memory size in kilobytes to use during hashing.
     /// </summary>
-    public const int MemorySize = 1024 * 2; // Memory size in KB
+    public const int MemorySize = 1024 * 64; // Memory size in KB
 
     /// <summary>
     /// Number of iterations to perform in the hashing process.

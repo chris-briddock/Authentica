@@ -50,19 +50,20 @@ public sealed class TokenEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(TokenRequest request,
                                                    CancellationToken cancellationToken = default)
     {
-        string? email = string.Empty;
+        string email = string.Empty;
         string subject = string.Empty;
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
         var configuration = Services.GetRequiredService<IConfiguration>();
         var hasher = Services.GetRequiredService<ISecretHasher>();
         var eventStore = Services.GetRequiredService<IEventStore>();
+        var userReadStore = Services.GetRequiredService<IUserReadStore>();
 
         string issuer = configuration.GetRequiredValueOrThrow("Jwt:Issuer");
         string secret = configuration.GetRequiredValueOrThrow("Jwt:Secret");
         string audience = configuration.GetRequiredValueOrThrow("Jwt:Audience");
         int expires = Convert.ToInt16(configuration.GetRequiredValueOrThrow("Jwt:Expires"));
-        int refreshExpires = expires + 60;
+        int refreshExpires = expires + 30;
 
         ClientApplication? client = await dbContext
                                           .Set<ClientApplication>()
@@ -75,31 +76,20 @@ public sealed class TokenEndpoint : EndpointBaseAsync
                                                .Where(x => x.ApplicationId == client.Id)
                                                .FirstAsync(cancellationToken);
 
+        var userReadResult = await userReadStore.GetUserByIdAsync(userClientLink.UserId);
+
+        var roles = await userReadStore.GetUserRolesAsync(userReadResult.User);
+
         var hashResult = hasher.Verify(request.ClientSecret, client.ClientSecret!);
 
         if (!hashResult)
             return Unauthorized();
 
-        var user = await dbContext
-                        .Set<User>()
-                        .Where(x => x.Id == userClientLink.UserId)
-                        .FirstAsync(cancellationToken);
-
         if (client is null)
             return Unauthorized();
 
-        if (User.Identity!.IsAuthenticated)
-        {
-            subject = User.Identity.Name!;
-            email = User.Identity.Name!;
-        }
-
-        if (user is not null
-            && !User.Identity!.IsAuthenticated)
-        {
-            subject = user.Id;
-            email = user.Email;
-        }
+        subject = userReadResult.User.Email!;
+        email = userReadResult.User.Email!;
 
         if (request.GrantType == TokenConstants.Refresh
             && request.RefreshToken is not null)
@@ -121,9 +111,9 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         }
 
         var tokenResult = await jwtProvider.TryCreateTokenAsync(
-            email!, secret, issuer, audience, expires, subject);
+            email!, secret, issuer, audience, expires, subject, roles);
         var refreshTokenResult = await jwtProvider.TryCreateRefreshTokenAsync(
-            email!, secret, issuer, audience, expires, subject);
+            email!, secret, issuer, audience, expires, subject, roles);
 
         if (tokenResult.Success && refreshTokenResult.Success)
         {

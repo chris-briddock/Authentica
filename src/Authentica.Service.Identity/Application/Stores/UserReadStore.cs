@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Application.Contracts;
 using Application.Factories;
 using Application.Results;
+using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Stores;
@@ -77,5 +78,35 @@ public class UserReadStore : StoreBase, IUserReadStore
         {
            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
+    }
+    /// <summary>
+    /// Asynchronously retrieves a user by their id.
+    /// </summary>
+    /// <param name="Id">The unique identifier of the user.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    public async Task<UserStoreResult> GetUserByIdAsync(string Id)
+    {
+        try
+        {
+            var user = await UserManager.FindByIdAsync(Id);
+
+            if (user is null)
+                return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+
+            return UserStoreResult.Success(user);
+        }
+        catch (Exception ex)
+        {
+           return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
+    }
+    /// <inheritdoc />
+    public async Task<IList<string>> GetUserRolesAsync(User user)
+    {
+        return await UserManager.GetRolesAsync(user);
     }
 }

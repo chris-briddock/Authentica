@@ -19,11 +19,11 @@ public class SendTokenEndpointTests
         _fixture.OneTimeTearDown();
     }
 
-    [TestCase(EmailPublisherConstants.TwoFactor)]
-    [TestCase(EmailPublisherConstants.ConfirmEmail)]
-    [TestCase(EmailPublisherConstants.ResetPassword)]
-    [TestCase(EmailPublisherConstants.UpdateEmail)]
-    [TestCase(EmailPublisherConstants.UpdatePhoneNumber)]
+    [TestCase(EmailTokenConstants.TwoFactor)]
+    [TestCase(EmailTokenConstants.ConfirmEmail)]
+    [TestCase(EmailTokenConstants.ResetPassword)]
+    [TestCase(EmailTokenConstants.UpdateEmail)]
+    [TestCase(EmailTokenConstants.UpdatePhoneNumber)]
     public async Task SendTokenEndpoint_ReturnsOK_ForDifferentTokenTypes(string tokenType)
     {
         // Arrange

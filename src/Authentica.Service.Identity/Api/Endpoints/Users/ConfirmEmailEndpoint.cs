@@ -37,7 +37,7 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override async Task<ActionResult> HandleAsync(ConfirmEmailRequest request,
+    public override async Task<ActionResult> HandleAsync([FromQuery]ConfirmEmailRequest request,
                                                          CancellationToken cancellationToken = default)
     {
             var writeStore = Services.GetRequiredService<IUserWriteStore>();
@@ -57,7 +57,7 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
 
             await eventStore.SaveEventAsync(@event);
 
-            if (result.Errors.Any())
+            if (result.Errors.Any() || !result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
             return Ok(); 

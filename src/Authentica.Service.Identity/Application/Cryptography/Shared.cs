@@ -30,7 +30,7 @@ public static class Shared
     /// <returns>A byte array containing the hashed password.</returns>
     public static byte[] HashPasswordWithArgon2(string password, byte[] salt)
     {
-        var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
+        var argon2 = new Argon2d(Encoding.UTF8.GetBytes(password))
         {
             Salt = salt,
             DegreeOfParallelism = HasherDefaults.DegreeOfParallelism,

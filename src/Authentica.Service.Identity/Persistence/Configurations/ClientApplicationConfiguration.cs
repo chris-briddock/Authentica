@@ -47,16 +47,15 @@ public class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApp
         builder.Property(ca => ca.ConcurrencyStamp)
                .HasMaxLength(36)
                .HasColumnName("concurrency_stamp")
-               .IsConcurrencyToken();
+               .HasDefaultValueSql("NEWID()")
+               .ValueGeneratedOnAddOrUpdate();
 
         builder.Property(u => u.IsDeleted)
               .HasColumnName("is_deleted")
               .IsRequired();
 
         builder.Property(u => u.DeletedOnUtc)
-               .HasColumnName("deleted_on_utc")
-               .HasDefaultValueSql("GETUTCDATE()")
-               .ValueGeneratedOnUpdate();
+               .HasColumnName("deleted_on_utc");
 
         builder.Property(u => u.DeletedBy)
                .HasColumnName("deleted_by")
@@ -70,19 +69,18 @@ public class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApp
         builder.Property(u => u.CreatedBy)
                .HasColumnName("created_by")
                .HasMaxLength(36);
-              
-       builder.Property(u => u.CallbackUri)
-              .HasColumnName("callback_uri")
-              .HasMaxLength(256);
+       
 
         builder.Property(u => u.ModifiedOnUtc)
-               .HasColumnName("modified_on_utc")
-               .HasDefaultValueSql("GETUTCDATE()")
-               .ValueGeneratedOnUpdate();
+               .HasColumnName("modified_on_utc");
 
         builder.Property(u => u.ModifiedBy)
                .HasColumnName("modified_by")
                .HasMaxLength(36);
+
+       builder.Property(u => u.CallbackUri)
+              .HasColumnName("callback_uri")
+              .HasMaxLength(256);
 
         // Configure the relationship with UserClientApplication
         builder.HasMany(ca => ca.UserClientApplications)
