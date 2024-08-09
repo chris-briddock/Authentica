@@ -40,9 +40,10 @@ public sealed class Program
             options.ServicesStartConcurrently = true;
             options.ServicesStopConcurrently = true;
         });
+        builder.Services.Configure<DataProtectionTokenProviderOptions>(x => x.TokenLifespan = TimeSpan.FromMinutes(5));
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDataProtection();
-        builder.Services.AddCustomControllers();
+        builder.Services.AddControllers();
         builder.Services.AddMetrics();
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

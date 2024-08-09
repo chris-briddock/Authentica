@@ -32,7 +32,7 @@ public class LoginEndpointTests
             RememberMe = true
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
         
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
         
@@ -57,7 +57,7 @@ public class LoginEndpointTests
             RememberMe = true
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
         
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
         
@@ -82,7 +82,7 @@ public class LoginEndpointTests
             RememberMe = true
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
         
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
     
@@ -103,7 +103,7 @@ public class LoginEndpointTests
             RememberMe = true
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
         
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
 

@@ -38,7 +38,7 @@ public class TwoFactorRecoveryCodesRedeemEndpointTests
             Code = "888888"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         var sut = await client.PostAsync($"api/v1/{Routes.Users.TwoFactorRedeemRecoveryCodes}", jsonContent);
 
@@ -62,7 +62,7 @@ public class TwoFactorRecoveryCodesRedeemEndpointTests
             Code = "888888"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         var sut = await client.PostAsync($"api/v1/{Routes.Users.TwoFactorRedeemRecoveryCodes}", jsonContent);
 

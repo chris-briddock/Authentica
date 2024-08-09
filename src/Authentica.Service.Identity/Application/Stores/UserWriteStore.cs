@@ -3,7 +3,9 @@ using Api.Requests;
 using Application.Contracts;
 using Application.Factories;
 using Application.Results;
+using Authentica.Common;
 using Domain.Aggregates.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Stores;
 
@@ -89,12 +91,14 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
 
-        var result = await UserManager.ResetPasswordAsync(user, token, newPassword);
+        var tokenVerificationResult = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ResetPassword, token);
 
-        if (result.Succeeded)
-            return UserStoreResult.Success();
+        if (!tokenVerificationResult)
+            return UserStoreResult.Failed(new IdentityErrorFactory().InvalidToken());
 
-        return UserStoreResult.Failed();
+        user.PasswordHash = UserManager.PasswordHasher.HashPassword(user, newPassword);
+
+        return UserStoreResult.Success();
     }
 
     /// <summary>
@@ -125,16 +129,16 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     }
 
     /// <summary>
-/// Asynchronously updates a user's email address using a confirmation token.
-/// </summary>
-/// <param name="user">The user whose email address is being updated.</param>
-/// <param name="newEmail">The new email address to set for the user.</param>
-/// <param name="token">The email confirmation token.</param>
-/// <returns>
-/// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
-/// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
-/// </returns>
-/// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    /// Asynchronously updates a user's email address using a confirmation token.
+    /// </summary>
+    /// <param name="user">The user whose email address is being updated.</param>
+    /// <param name="newEmail">The new email address to set for the user.</param>
+    /// <param name="token">The email confirmation token.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
     public async Task<UserStoreResult> UpdateEmailAsync(User user, string newEmail, string token)
     {
         try

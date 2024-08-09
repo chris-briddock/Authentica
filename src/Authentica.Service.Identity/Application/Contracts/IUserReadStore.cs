@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Application.Results;
+using Domain.Aggregates.Identity;
 
 namespace Application.Contracts;
 
@@ -27,4 +28,22 @@ public interface IUserReadStore
     /// </returns>
     /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
     Task<UserStoreResult> GetUserByEmailAsync(string email);
+    /// <summary>
+    /// Asynchronously retrieves a user by their id.
+    /// </summary>
+    /// <param name="Id">The unique identifier of the user.</param>
+    /// <returns>
+    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
+    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
+    /// </returns>
+    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    Task<UserStoreResult> GetUserByIdAsync(string Id);
+    /// <summary>
+    /// Asynchronously retrieves the list of roles associated with a specified user.
+    /// </summary>
+    /// <param name="user">The user for whom to retrieve roles.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains a list of role names associated with the user.
+    /// </returns>
+    Task<IList<string>> GetUserRolesAsync(User user);
 }

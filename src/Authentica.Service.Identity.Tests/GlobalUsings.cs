@@ -24,4 +24,4 @@ global using Authentica.Common;
 global using Application.Publishers;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.Extensions.Options;
-global using Utf8Json;
+global using System.Text.Json;

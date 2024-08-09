@@ -37,7 +37,7 @@ public class UpdatePhoneNumberEndpointTests
             Token = "888888"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", jsonContent);
 
@@ -60,7 +60,7 @@ public class UpdatePhoneNumberEndpointTests
             Token = "888888"
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", jsonContent);
 

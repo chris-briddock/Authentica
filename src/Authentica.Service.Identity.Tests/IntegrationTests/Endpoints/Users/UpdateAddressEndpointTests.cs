@@ -31,7 +31,7 @@ public class UpdateAddressEndpointTests
             Address = new Address("UPDATED", "UPDATED", "UPDATED", "UPDATED", "UPDATED", "UPDATED", "UPDATED")
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdateAddress}", jsonContent);
 

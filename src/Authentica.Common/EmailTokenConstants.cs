@@ -3,7 +3,7 @@ namespace Authentica.Common;
 /// <summary>
 /// Constants for different token types.
 /// </summary>
-public static class EmailPublisherConstants
+public static class EmailTokenConstants
 {
     /// <summary>
     /// Reset password token type.

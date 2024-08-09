@@ -42,7 +42,7 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
 
@@ -71,7 +71,7 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
 
@@ -102,7 +102,7 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
 
@@ -133,7 +133,7 @@ public class TwoFactorLoginEndpointTests
             Token = "888888" // must be 6 chars.
         };
 
-        var jsonContent = new StringContent(JsonSerializer.ToJsonString(request), Encoding.UTF8, "application/json");
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
         using var sut = await client.PostAsync($"/api/v1/{Routes.Users.TwoFactorLogin}", jsonContent);
 

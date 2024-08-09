@@ -19,6 +19,6 @@ public class ConfirmEmailRequestValidator : AbstractValidator<ConfirmEmailReques
 
         RuleFor(request => request.Token)
             .NotEmpty().WithMessage("Token is required.")
-            .Length(6, 100).WithMessage("Token must be between 6 and 100 characters long."); // Adjust length as per your token requirements
+            .Length(6, 256).WithMessage("Token must be between 6 and 256 characters long."); // Adjust length as per your token requirements
     }
 }

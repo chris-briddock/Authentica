@@ -55,7 +55,7 @@ public sealed class PasswordResetEndpoint : EndpointBaseAsync
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(request.Email);
 
-        var result = await userWriteStore.ResetPasswordAsync(userReadResult.User, request.Token, request.NewPassword);
+        var result = await userWriteStore.ResetPasswordAsync(userReadResult.User, request.Token, request.Password);
 
         if (!result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError);
