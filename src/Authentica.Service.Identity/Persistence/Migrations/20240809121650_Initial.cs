@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
+     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    /// <inheritdoc />
-    public partial class Initial : Migration
+       public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

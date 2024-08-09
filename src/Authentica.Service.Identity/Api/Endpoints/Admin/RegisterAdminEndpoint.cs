@@ -11,19 +11,34 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Admin;
 
+/// <summary>
+/// Endpoint for registering a new admin user.
+/// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public class RegisterAdminEndpoint : EndpointBaseAsync
                                     .WithRequest<RegisterRequest>
                                     .WithActionResult
 {
-
+    /// <summary>
+    /// Gets the service provider for resolving dependencies.
+    /// </summary>
     public IServiceProvider Services { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RegisterAdminEndpoint"/> class.
+    /// </summary>
+    /// <param name="services">The service provider for resolving dependencies.</param>
     public RegisterAdminEndpoint(IServiceProvider services)
     {
         Services = services;
     }
 
+    /// <summary>
+    /// Handles the HTTP POST request for registering a new admin user.
+    /// </summary>
+    /// <param name="request">The registration request containing user details.</param>
+    /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+    /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
     [HttpPost($"{Routes.Admin.Create}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     public override async Task<ActionResult> HandleAsync(RegisterRequest request,
