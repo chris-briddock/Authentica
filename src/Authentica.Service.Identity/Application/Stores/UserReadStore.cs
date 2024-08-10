@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Application.Contracts;
 using Application.Factories;
 using Application.Results;
-using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Stores;
@@ -105,8 +104,9 @@ public class UserReadStore : StoreBase, IUserReadStore
         }
     }
     /// <inheritdoc />
-    public async Task<IList<string>> GetUserRolesAsync(User user)
+    public async Task<IList<string>> GetUserRolesAsync(string email)
     {
+        var user = await UserManager.FindByEmailAsync(email) ?? null!;
         return await UserManager.GetRolesAsync(user);
     }
 }

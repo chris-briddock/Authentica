@@ -5,8 +5,6 @@ using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
 

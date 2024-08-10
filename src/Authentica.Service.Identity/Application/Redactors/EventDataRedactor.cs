@@ -22,9 +22,9 @@ public static class EventDataRedactor
     /// <typeparam name="T">The type of the object to redact.</typeparam>
     /// <param name="obj">The object to redact.</param>
     /// <returns>The redacted object.</returns>
-    public static T RedactSensitiveData<T>(T obj)
+    public static T RedactSensitiveData<T>(T obj) where T : class
     {
-        if (obj == null) return obj;
+        if (obj == null) return obj!;
 
         var visitedObjects = new HashSet<object>(new ReferenceEqualityComparer());
         return (T)RedactObject(obj, visitedObjects);
@@ -118,7 +118,6 @@ public static class EventDataRedactor
 
         return newList;
     }
-
     /// <summary>
     /// Compares objects by reference equality.
     /// </summary>

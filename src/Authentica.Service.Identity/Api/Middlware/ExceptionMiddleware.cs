@@ -75,6 +75,9 @@ public sealed class ExceptionMiddleware
             UserId = context.User?.Identity?.Name ?? "Anonymous",
             ServiceName = ServiceNameDefaults.ServiceName,
             ExceptionType = exception.GetType().Name,
+            StackTrace = exception.StackTrace!,
+            UserAgent = context.Request.Headers.UserAgent.ToString(),
+            Method = context.Request.Method
         };
 
         context.Response.ContentType = "application/problem+json";
