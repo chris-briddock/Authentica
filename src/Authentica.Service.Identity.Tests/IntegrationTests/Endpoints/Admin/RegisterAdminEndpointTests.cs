@@ -2,7 +2,7 @@ using Api.Constants;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-public class RegisterAdminEndpoint
+public class RegisterAdminEndpointTests
 {
     private TestFixture<Program> _fixture;
 

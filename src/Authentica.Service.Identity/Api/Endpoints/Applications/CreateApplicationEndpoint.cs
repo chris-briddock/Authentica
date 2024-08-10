@@ -39,6 +39,9 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
     /// <returns>The result of the application being created.</returns>
     [HttpPost($"{Routes.Applications.Create}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public override async Task<ActionResult> HandleAsync(CreateApplicationRequest request,
                                                          CancellationToken cancellationToken = default)
     {

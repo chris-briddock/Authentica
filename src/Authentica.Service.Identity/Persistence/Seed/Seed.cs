@@ -48,8 +48,7 @@ public static class Seed
                 ClientSecret = hashedSecret,
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             };
-
-            ICollection<UserClientApplication> linkTableCollection =
+            application.UserClientApplications =
             [
                 new UserClientApplication()
                 {
@@ -57,8 +56,6 @@ public static class Seed
                     ApplicationId = application.Id
                 }
             ];
-
-            application.UserClientApplications = linkTableCollection;
 
             context.ClientApplications.Add(application);
             await context.SaveChangesAsync();
@@ -90,9 +87,7 @@ public static class Seed
             };
 
             if (!await roleManager.RoleExistsAsync(newRole.Name))
-            {
                 await roleManager.CreateAsync(newRole);
-            }
         }
     }
     /// <summary>
@@ -173,10 +168,8 @@ public static class Seed
                 DeletedBy = user!.Id,
                 IsDeleted = true,
                 DeletedOnUtc = DateTime.UtcNow.AddYears(-8)
-
             };
-
-            ICollection<UserClientApplication> linkTableCollection =
+            application.UserClientApplications =
             [
                 new UserClientApplication()
                 {
@@ -184,8 +177,6 @@ public static class Seed
                     ApplicationId = application.Id
                 }
             ];
-
-            application.UserClientApplications = linkTableCollection;
 
             context.ClientApplications.Add(application);
             await context.SaveChangesAsync();
@@ -226,17 +217,14 @@ public static class Seed
                 DeletedOnUtc = DateTime.UtcNow
 
             };
-
-            ICollection<UserClientApplication> linkTableCollection =
-                [
-                    new UserClientApplication()
+            application.UserClientApplications =
+            [
+                new UserClientApplication()
                 {
                     UserId = user!.Id,
                     ApplicationId = application.Id
                 }
-                ];
-
-            application.UserClientApplications = linkTableCollection;
+            ];
 
             context.ClientApplications.Add(application);
             await context.SaveChangesAsync();

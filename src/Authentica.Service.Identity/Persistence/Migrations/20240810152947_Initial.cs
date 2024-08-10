@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
-     /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
-       public partial class Initial : Migration
+    /// <inheritdoc />
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

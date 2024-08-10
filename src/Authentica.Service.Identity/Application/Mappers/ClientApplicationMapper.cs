@@ -16,5 +16,5 @@ public partial class ClientApplicationMapper
     /// </summary>
     /// <param name="clientApplication">The <see cref="ClientApplication"/> object to convert.</param>
     /// <returns>A <see cref="ReadApplicationResponse"/> object representing the mapped data.</returns>
-    public partial ReadApplicationResponse ToReadByNameResponse(ClientApplication clientApplication);
+    public partial ReadApplicationResponse ToResponse(ClientApplication clientApplication);
 }
