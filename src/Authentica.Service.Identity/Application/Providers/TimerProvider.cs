@@ -34,5 +34,6 @@ public class TimerProvider : ITimer, IDisposable
     public void Dispose()
     {
         _timer.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

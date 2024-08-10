@@ -41,25 +41,18 @@ public class ApplicationPurge : BackgroundService
     /// <inheritdoc/>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        try
+        using var scope = ServiceScopeFactory.CreateScope();
+        while (!stoppingToken.IsCancellationRequested &&
+               await _timer.WaitForNextTickAsync(stoppingToken))
         {
-            using var scope = ServiceScopeFactory.CreateScope();
-            while (!stoppingToken.IsCancellationRequested &&
-                   await _timer.WaitForNextTickAsync(stoppingToken))
-            {
-                Logger.LogInformation("Executing {methodName}", nameof(ApplicationPurge));
+            Logger.LogInformation("Executing {methodName}", nameof(ApplicationPurge));
 
-                var sharedStore = scope.ServiceProvider.GetRequiredService<ISharedStore>();
-                
-                var result = await sharedStore.PurgeEntriesAsync<ClientApplication>(stoppingToken);
+            var sharedStore = scope.ServiceProvider.GetRequiredService<ISharedStore>();
 
-                if (result.Errors.Any())
-                    throw new PurgeFailureException(result.Errors.First().Description);
-            } 
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError("Error in background service - {methodName}, exception details: {exceptionDetails}", nameof(ApplicationPurge), ex);
+            var result = await sharedStore.PurgeEntriesAsync<ClientApplication>(stoppingToken);
+
+            if (result.Errors.Any())
+                throw new PurgeFailureException(result.Errors.First().Description);
         }
     }
 }

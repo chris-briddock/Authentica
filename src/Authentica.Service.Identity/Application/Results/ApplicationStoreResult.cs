@@ -1,5 +1,3 @@
-using Domain.Aggregates.Identity;
-
 namespace Application.Results;
 
 /// <summary>
@@ -11,11 +9,6 @@ public class ApplicationStoreResult : BaseResult<ApplicationStoreResult>
     /// 
     /// </summary>  
     public string? Secret { get; private set; } = default!;
-
-    /// <summary>
-    /// Gets or sets the client application associated with the result.
-    /// </summary> 
-    public ClientApplication? Application { get; private set; }
 
     /// <summary>
     /// Creates a successful result with the specified app.

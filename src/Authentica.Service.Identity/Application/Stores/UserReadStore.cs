@@ -27,30 +27,15 @@ public class UserReadStore : StoreBase, IUserReadStore
     /// <returns>A task that represents the asynchronous operation, containing the result of the operation.</returns>
     public async Task<UserStoreResult> GetUserByEmailAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var userClaimsPrincipal = claimsPrincipal.FindFirst(ClaimTypes.Email);
+        var userClaimsPrincipal = claimsPrincipal.FindFirst(ClaimTypes.Email)!;
 
-            if (userClaimsPrincipal is null)
-            {
-                return UserStoreResult.Failed(new IdentityError
-                {
-                    Code = "EmailNotFound",
-                    Description = "Email claim not found in the principal."
-                });
-            }
+        var user = await UserManager.FindByEmailAsync(userClaimsPrincipal.Value);
 
-            var user = await UserManager.FindByEmailAsync(userClaimsPrincipal.Value);
+        if (user is null)
+            return UserStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
-            if (user is null)
-                return UserStoreResult.Failed(IdentityErrorFactory.UserNotFound());
+        return UserStoreResult.Success(user);
 
-            return UserStoreResult.Success(user);
-        }
-        catch (Exception ex)
-        {
-            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
-        }
     }
 
     /// <summary>
@@ -75,7 +60,7 @@ public class UserReadStore : StoreBase, IUserReadStore
         }
         catch (Exception ex)
         {
-           return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
     /// <summary>
@@ -89,19 +74,12 @@ public class UserReadStore : StoreBase, IUserReadStore
     /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
     public async Task<UserStoreResult> GetUserByIdAsync(string Id)
     {
-        try
-        {
             var user = await UserManager.FindByIdAsync(Id);
 
             if (user is null)
                 return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
 
             return UserStoreResult.Success(user);
-        }
-        catch (Exception ex)
-        {
-           return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
-        }
     }
     /// <inheritdoc />
     public async Task<IList<string>> GetUserRolesAsync(string email)

@@ -56,42 +56,6 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
 
         return clientApplication;
     }
-
-    /// <summary>
-    /// Retrieves a client application by details specified in the provided DTO.
-    /// </summary>
-    /// <param name="dto">The data transfer object containing the token request and claims principal.</param>
-    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-    /// <returns>
-    /// A task that represents the asynchronous operation, containing the client application if found;
-    /// otherwise, null.
-    /// </returns>
-    public async Task<ClientApplication?> GetClientApplicationByDetailsAsync(ApplicationDTO<TokenRequest> dto, CancellationToken cancellationToken)
-    {
-        var userClaimsPrincipal = dto.ClaimsPrincipal.FindFirst(ClaimTypes.Email)!;
-        var user = await UserManager.FindByEmailAsync(userClaimsPrincipal.Value);
-
-        if (user is null)
-            return null;
-
-        var userClientLink = await DbContext.UserClientApplications
-            .Where(x => x.UserId == user.Id)
-            .Select(x => x.ApplicationId)
-            .ToListAsync(cancellationToken);
-
-        if (userClientLink is null || userClientLink.Count == 0)
-            return null;
-
-        var clientApplication = await DbContext.ClientApplications
-            .Where(x => userClientLink.Contains(x.Id))
-            .Where(x => x.ClientId == dto.Request.ClientId)
-            .Where(x => x.RedirectUri == dto.Request.RedirectUri)
-            .Where(x => x.ClientSecret == dto.Request.ClientSecret)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        return clientApplication;
-    }
-
     /// <summary>
     /// Retrieves a client application by its client ID specified in the provided DTO.
     /// </summary>

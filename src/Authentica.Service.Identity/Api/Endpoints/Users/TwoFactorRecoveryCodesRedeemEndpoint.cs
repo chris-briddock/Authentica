@@ -2,8 +2,10 @@ using Api.Constants;
 using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
+using Domain.Aggregates.Identity;
 using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Users;
@@ -50,6 +52,7 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
+        var userManager = Services.GetRequiredService<UserManager<User>>();
 
         TwoFactorRecoveryCodesRedeemEvent @event = new()
         {
@@ -64,6 +67,8 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
 
         if (!result.Succeeded)
             return BadRequest();
+
+        await userManager.SetTwoFactorEnabledAsync(userReadResult.User, false);
 
         return Ok();
     }

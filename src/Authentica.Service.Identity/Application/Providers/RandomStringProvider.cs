@@ -26,21 +26,4 @@ public sealed class RandomStringProvider : IRandomStringProvider
         }
         return sb.ToString();
     }
-    /// <inheritdoc/> 
-    public string GenerateNumbers(int length = 6)
-    {
-        const string chars = "0123456789";
-        var sb = new StringBuilder();
-        using var rng = RandomNumberGenerator.Create();
-
-        byte[] byteArray = new byte[length];
-        
-        rng.GetBytes(byteArray);
-        
-        foreach (byte b in byteArray)
-        {
-            sb.Append(chars[b % chars.Length]);
-        }
-        return sb.ToString();
-    }
 }

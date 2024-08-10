@@ -8,7 +8,7 @@ public static class HasherDefaults
     /// <summary>
     /// Size of the salt in bytes (256 bits).
     /// </summary>
-    public const int SaltSize = 32;
+    public const int SaltSize = 64;
 
     /// <summary>
     /// Size of the hash in bytes (512 bits).
@@ -28,5 +28,5 @@ public static class HasherDefaults
     /// <summary>
     /// Number of iterations to perform in the hashing process.
     /// </summary>
-    public const int Iterations = 32; // Number of iterations
+    public const int Iterations = 16; // Number of iterations
 }

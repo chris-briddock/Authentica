@@ -5,7 +5,6 @@ using Microsoft.Extensions.Primitives;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-[TestFixture]
 public class AuthorizeEndpointTests
 {
     private TestFixture<Program> _fixture;

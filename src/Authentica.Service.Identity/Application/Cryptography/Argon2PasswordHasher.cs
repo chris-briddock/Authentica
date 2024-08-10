@@ -20,9 +20,6 @@ public class Argon2PasswordHasher<TUser> : IPasswordHasher<TUser> where TUser : 
     public PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword)
     {
         var parts = hashedPassword.Split(':');
-        if (parts.Length != 2)
-            return PasswordVerificationResult.Failed;
-
         var salt = Convert.FromBase64String(parts[0]);
         var storedHashBytes = Convert.FromBase64String(parts[1]);
         var providedHash = Shared.HashPasswordWithArgon2(providedPassword, salt);

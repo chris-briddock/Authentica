@@ -40,25 +40,18 @@ public class AccountPurge : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Logger.LogInformation("Executing {methodName}", nameof(AccountPurge));
-        
-        try
-        {
-            using var scope = ServiceScopeFactory.CreateScope();
-            
-            while (!stoppingToken.IsCancellationRequested &&
-                   await _timer.WaitForNextTickAsync(stoppingToken))
-            {
-                var sharedStore = scope.ServiceProvider.GetRequiredService<ISharedStore>();
-                var result = await sharedStore.PurgeEntriesAsync<User>(stoppingToken);
 
-                if (result.Errors.Any())
-                    throw new PurgeFailureException(result.Errors.First().Description);
+        using var scope = ServiceScopeFactory.CreateScope();
 
-            } 
-        }
-        catch (Exception ex)
+        while (!stoppingToken.IsCancellationRequested &&
+               await _timer.WaitForNextTickAsync(stoppingToken))
         {
-            Logger.LogError("Error in background service - {methodName}, exception details: {exceptionDetails}", nameof(AccountPurge), ex);
+            var sharedStore = scope.ServiceProvider.GetRequiredService<ISharedStore>();
+            var result = await sharedStore.PurgeEntriesAsync<User>(stoppingToken);
+
+            if (result.Errors.Any())
+                throw new PurgeFailureException(result.Errors.First().Description);
+
         }
     }
 }

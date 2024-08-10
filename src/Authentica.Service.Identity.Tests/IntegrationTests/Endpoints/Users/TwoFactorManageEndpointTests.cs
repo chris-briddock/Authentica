@@ -5,7 +5,7 @@ namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 public class TwoFactorManageEndpointTests
 {
-        private TestFixture<Program> _fixture;
+    private TestFixture<Program> _fixture;
 
     [OneTimeSetUp]
     public async Task OneTimeSetup()

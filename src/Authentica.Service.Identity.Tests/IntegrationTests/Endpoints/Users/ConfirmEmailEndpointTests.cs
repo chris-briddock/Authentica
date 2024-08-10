@@ -1,10 +1,8 @@
-using System.Text;
 using Api.Constants;
 using Application.Factories;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-[TestFixture]
 public class ConfirmEmailEndpointTests
 {
     private TestFixture<Program> _fixture;

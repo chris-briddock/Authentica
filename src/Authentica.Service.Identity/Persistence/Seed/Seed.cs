@@ -26,7 +26,7 @@ public static class Seed
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
         var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
-        
+
         var adminEmail = "admin@default.com";
         var user = await userManager.FindByEmailAsync(adminEmail);
 
@@ -49,8 +49,8 @@ public static class Seed
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             };
 
-            ICollection<UserClientApplication> linkTableCollection = 
-            [ 
+            ICollection<UserClientApplication> linkTableCollection =
+            [
                 new UserClientApplication()
                 {
                     UserId = user!.Id,
@@ -62,7 +62,7 @@ public static class Seed
 
             context.ClientApplications.Add(application);
             await context.SaveChangesAsync();
-            
+
             logger.LogInformation("Initial application client secret: {secret}", secret);
         }
     }
@@ -100,44 +100,44 @@ public static class Seed
     /// </summary>
     /// <param name="app">The web application instance.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-        public static async Task SeedAdminUserAsync(WebApplication app)
+    public static async Task SeedAdminUserAsync(WebApplication app)
+    {
+        using var scope = app.Services.CreateAsyncScope();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+        var adminEmail = "admin@default.com";
+
+        User adminUser = new()
         {
-            using var scope = app.Services.CreateAsyncScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            UserName = adminEmail,
+            Email = adminEmail,
+            PhoneNumberConfirmed = true,
+            TwoFactorEnabled = false,
+            EmailConfirmed = true,
+            LockoutEnabled = false,
+            AccessFailedCount = 0,
+            CreatedBy = "SYSTEM",
+            Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+        };
 
-            var adminEmail = "admin@default.com";
+        // Hash the password for security.
+        adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, "fR<pGWqvn4Mu,6w[Z8axP;b5=");
 
-            User adminUser = new()
-            {
-                UserName = adminEmail,
-                Email = adminEmail,
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = false,
-                EmailConfirmed = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-                CreatedBy = "SYSTEM",
-                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
-            };
+        var existingUser = await userManager.FindByEmailAsync(adminUser.Email);
 
-            // Hash the password for security.
-            adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, "fR<pGWqvn4Mu,6w[Z8axP;b5=");
-            
-            var existingUser = await userManager.FindByEmailAsync(adminUser.Email);
-
-            if (existingUser is null)
-            {
-                await userManager.CreateAsync(adminUser);
-                // Add roles to the admin user.
-                await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
-                await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);
-            }
-                
+        if (existingUser is null)
+        {
+            await userManager.CreateAsync(adminUser);
+            // Add roles to the admin user.
+            await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
+            await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);
         }
+
+    }
     /// <summary>
     /// Seeds all test user data.
     /// </summary>
-    public static class Test 
+    public static class Test
     {
         /// <summary>
         /// Seeds the initial client application into the database if it doesn't already exist.
@@ -160,39 +160,35 @@ public static class Seed
             var hashedSecret = hasher.Hash(secret);
 
             // Check if the initial client application already exists
-            if (!context.ClientApplications.Any())
+            ClientApplication application = new()
             {
-                ClientApplication application = new()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    ClientId = Guid.NewGuid().ToString(),
-                    Name = "Default Old Deleted Application",
-                    CallbackUri = "https://localhost:7256/callback",
-                    RedirectUri = "https://localhost:7256",
-                    CreatedBy = "SYSTEM",
-                    ClientSecret = hashedSecret,
-                    ConcurrencyStamp = Guid.NewGuid().ToString(),
-                    DeletedBy = user!.Id,
-                    IsDeleted = true,
-                    DeletedOnUtc = DateTime.UtcNow.AddYears(-8)
+                Id = Guid.NewGuid().ToString(),
+                ClientId = Guid.NewGuid().ToString(),
+                Name = "Default Old Deleted Application",
+                CallbackUri = "https://localhost:7256/callback",
+                RedirectUri = "https://localhost:7256",
+                CreatedBy = "SYSTEM",
+                ClientSecret = hashedSecret,
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                DeletedBy = user!.Id,
+                IsDeleted = true,
+                DeletedOnUtc = DateTime.UtcNow.AddYears(-8)
 
-                };
+            };
 
-                ICollection<UserClientApplication> linkTableCollection =
-                [
-                    new UserClientApplication()
+            ICollection<UserClientApplication> linkTableCollection =
+            [
+                new UserClientApplication()
                 {
                     UserId = user!.Id,
                     ApplicationId = application.Id
                 }
-                ];
+            ];
 
-                application.UserClientApplications = linkTableCollection;
+            application.UserClientApplications = linkTableCollection;
 
-                context.ClientApplications.Add(application);
-                await context.SaveChangesAsync();
-
-            }
+            context.ClientApplications.Add(application);
+            await context.SaveChangesAsync();
         }
         /// <summary>
         /// Seeds the initial client application into the database if it doesn't already exist.
@@ -242,8 +238,8 @@ public static class Seed
 
             application.UserClientApplications = linkTableCollection;
 
-                context.ClientApplications.Add(application);
-                await context.SaveChangesAsync();
+            context.ClientApplications.Add(application);
+            await context.SaveChangesAsync();
         }
         /// <summary>
         /// Seeds an deleted user into the database if it doesn't already exist.
@@ -274,7 +270,7 @@ public static class Seed
 
             // Hash the password for security.
             user.PasswordHash = userManager.PasswordHasher.HashPassword(user, "fR<pGW'qvn4Mu,6w[Z8axP;b5=");
-            
+
             var existingUser = await userManager.FindByEmailAsync(user.Email);
 
             if (existingUser is null)
@@ -282,9 +278,9 @@ public static class Seed
                 await userManager.CreateAsync(user);
                 await userManager.AddToRoleAsync(user, RoleDefaults.User);
             }
-            
 
-            
+
+
         }
         /// <summary>
         /// Seeds a user into the database if it doesn't already exist for testing 
@@ -362,12 +358,12 @@ public static class Seed
                 await userManager.AddToRoleAsync(user, RoleDefaults.User);
             }
         }
-         /// <summary>
+        /// <summary>
         /// Seeds two test users into the database if it doesn't already exist for testing
         /// </summary>
         /// <param name="app">The web application instance.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public static async Task SeedBackgroundServiceUsers(WebApplication app) 
+        public static async Task SeedBackgroundServiceUsers(WebApplication app)
         {
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
@@ -388,7 +384,7 @@ public static class Seed
                 EmailConfirmed = true,
                 CreatedBy = "SYSTEM",
                 Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
-                
+
             };
 
             oldDeletedUser.PasswordHash = userManager.PasswordHasher.HashPassword(oldDeletedUser, "dnjdnjdnwjdnwqjdnqwj");
@@ -405,7 +401,7 @@ public static class Seed
                 EmailConfirmed = true,
                 CreatedBy = "SYSTEM",
                 Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
-                
+
             };
             recentDeletedUser.PasswordHash = userManager.PasswordHasher.HashPassword(recentDeletedUser, "dnjdnjdnwjdnwqjdnqwj");
 

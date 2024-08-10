@@ -9,9 +9,6 @@ namespace Application.Redactors;
 /// <summary>
 /// Provides functionality to redact sensitive data from objects.
 /// </summary>
-/// <summary>
-/// Provides functionality to redact sensitive data from objects.
-/// </summary>
 public static class EventDataRedactor
 {
     private static readonly ConcurrentDictionary<Type, PropertyInfo[]> CachedProperties = new();
@@ -24,8 +21,6 @@ public static class EventDataRedactor
     /// <returns>The redacted object.</returns>
     public static T RedactSensitiveData<T>(T obj) where T : class
     {
-        if (obj == null) return obj!;
-
         var visitedObjects = new HashSet<object>(new ReferenceEqualityComparer());
         return (T)RedactObject(obj, visitedObjects);
     }
@@ -107,13 +102,6 @@ public static class EventDataRedactor
         {
             var redactedItem = RedactObject(item, visitedObjects);
             newList.Add(redactedItem);
-        }
-
-        if (type.IsArray)
-        {
-            var array = Array.CreateInstance(elementType, newList.Count);
-            newList.CopyTo(array, 0);
-            return array;
         }
 
         return newList;
