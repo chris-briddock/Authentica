@@ -19,7 +19,7 @@ namespace Application.Validators
 
             RuleFor(request => request.Code)
                 .NotEmpty().WithMessage("Recovery code is required.")
-                .Length(6, 10).WithMessage("Recovery code must be between 6 and 10 characters long."); // Adjust length as needed
+                .Length(6, 11).WithMessage("Recovery code must be between 6 and 11 characters long."); // Adjust length as needed
         }
     }
 }

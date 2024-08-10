@@ -50,4 +50,14 @@ public sealed class CustomProblemDetails : ProblemDetails
     /// </summary>
     [JsonPropertyName("serviceName")]
     public string ServiceName { get; set; } = string.Empty;
+    /// <summary>
+    /// Gets or sets the user agent.
+    /// </summary>
+    [JsonPropertyName("userAgent")]
+    public string UserAgent { get; set; } = default!;
+    /// <summary>
+    /// Gets or sets the HTTP method used.
+    /// </summary>
+    [JsonPropertyName("method")]
+    public string Method { get; set; } = default!;
 }

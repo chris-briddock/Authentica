@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Api.Constants;
 using Domain.Errors;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Api.Middlware;
 
@@ -63,13 +64,17 @@ public sealed class ErrorHandlingMiddleware
         {
             Status = context.Response.StatusCode,
             Title = GetDefaultTitleForStatusCode(context.Response.StatusCode),
-            Detail = "An error occurred while processing your request.",
+            Detail = context.Features.Get<IExceptionHandlerFeature>()?.Error?.Message ?? "An error occurred processing your request.",
             Instance = context.Request.Path,
             MachineName = Environment.MachineName,
             Timestamp = DateTime.UtcNow,
             RequestId = context.TraceIdentifier,
             UserId = context.User?.Identity?.Name ?? "Anonymous",
-            ServiceName = ServiceNameDefaults.ServiceName
+            ServiceName = ServiceNameDefaults.ServiceName,
+            StackTrace = null!,
+            ExceptionType = null!,
+            UserAgent = context.Request.Headers.UserAgent.ToString(),
+            Method = context.Request.Method
         };
 
         var result = JsonSerializer.Serialize(problemDetails);

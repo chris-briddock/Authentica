@@ -52,6 +52,8 @@ public sealed class TokenEndpoint : EndpointBaseAsync
     {
         string email = string.Empty;
         string subject = string.Empty;
+        IList<string> roles = [];
+
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
         var configuration = Services.GetRequiredService<IConfiguration>();
@@ -63,7 +65,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         string secret = configuration.GetRequiredValueOrThrow("Jwt:Secret");
         string audience = configuration.GetRequiredValueOrThrow("Jwt:Audience");
         int expires = Convert.ToInt16(configuration.GetRequiredValueOrThrow("Jwt:Expires"));
-        int refreshExpires = expires + 30;
+
 
         ClientApplication? client = await dbContext
                                           .Set<ClientApplication>()
@@ -78,8 +80,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         var userReadResult = await userReadStore.GetUserByIdAsync(userClientLink.UserId);
 
-        var roles = await userReadStore.GetUserRolesAsync(userReadResult.User);
-
         var hashResult = hasher.Verify(request.ClientSecret, client.ClientSecret!);
 
         if (!hashResult)
@@ -88,8 +88,19 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         if (client is null)
             return Unauthorized();
 
-        subject = userReadResult.User.Email!;
-        email = userReadResult.User.Email!;
+
+        if (!User.Identity!.IsAuthenticated)
+        {
+            roles = await userReadStore.GetUserRolesAsync(userReadResult.User.Email!);
+            subject = userReadResult.User.Email!;
+            email = userReadResult.User.Email!;
+        }
+        else 
+        {
+            roles = await userReadStore.GetUserRolesAsync(User.Identity.Name!);
+            subject = User.Identity.Name!;
+            email = User.Identity.Name!;
+        }
 
         if (request.GrantType == TokenConstants.Refresh
             && request.RefreshToken is not null)
