@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TestClient;
+namespace Authentica.TestClient;
 
 public static class ServiceCollectionExtensions
 {
