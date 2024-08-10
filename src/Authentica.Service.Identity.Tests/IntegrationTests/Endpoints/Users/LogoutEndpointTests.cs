@@ -1,5 +1,3 @@
-using Api.Constants;
-
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 public class LogoutEndpointTests

@@ -28,16 +28,6 @@ public interface IApplicationReadStore
                                                                       CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Retrieves a client application based on the details specified in the provided DTO.
-    /// </summary>
-    /// <param name="dto">The data transfer object containing the token request and claims principal.</param>
-    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-    /// <returns>
-    /// A task that represents the asynchronous operation, containing the client application if found;
-    /// otherwise, null.
-    /// </returns>
-    Task<ClientApplication?> GetClientApplicationByDetailsAsync(ApplicationDTO<TokenRequest> dto, CancellationToken cancellationToken);
-    /// <summary>
     /// Retrieves a client application by its client ID specified in the provided DTO.
     /// </summary>
     /// <param name="dto">The data transfer object containing the authorization request and claims principal.</param>

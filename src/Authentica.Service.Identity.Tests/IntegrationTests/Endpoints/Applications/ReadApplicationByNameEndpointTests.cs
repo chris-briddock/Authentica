@@ -2,7 +2,6 @@ using Api.Constants;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-[TestFixture]
 public class ReadApplicationByNameEndpointTests
 {
     private TestFixture<Program> _fixture;

@@ -3,7 +3,6 @@ using Application.Contracts;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-[TestFixture]
 public class ReadApplicationsEndpointTests
 {
     private TestFixture<Program> _fixture;

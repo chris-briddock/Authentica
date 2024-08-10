@@ -50,7 +50,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             var userReadResult = await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken);
 
             if (userReadResult.User is null)
-                return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
+                return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
             var application = new ClientApplication
             {

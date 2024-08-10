@@ -38,7 +38,6 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
                .HasColumnName("normalized_name")
                .HasMaxLength(100);
 
-
        builder.Property(u => u.IsDeleted)
               .HasColumnName("is_deleted")
               .IsRequired();

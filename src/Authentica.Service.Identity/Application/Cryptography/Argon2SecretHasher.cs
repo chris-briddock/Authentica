@@ -19,9 +19,6 @@ public class Argon2SecretHasher : ISecretHasher
     public bool Verify(string input, string storedHash)
     {
         var parts = storedHash.Split(':');
-        if (parts.Length != 2)
-            return false;
-
         byte[] salt = Convert.FromBase64String(parts[0]);
         byte[] storedHashBytes = Convert.FromBase64String(parts[1]);
 

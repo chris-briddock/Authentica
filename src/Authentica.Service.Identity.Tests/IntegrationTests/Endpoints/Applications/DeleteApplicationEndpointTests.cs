@@ -2,10 +2,10 @@ using System.Text;
 using Api.Constants;
 using Application.Contracts;
 using Application.DTOs;
+using Application.Factories;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-[TestFixture]
 public class DeleteApplicationEndpointTests
 {
     private TestFixture<Program> _fixture;
@@ -97,7 +97,7 @@ public class DeleteApplicationEndpointTests
 
         var writeStoreMock = new ApplicationWriteStoreMock();
 
-        writeStoreMock.Setup(x => x.SoftDeleteApplicationAsync(It.IsAny<ApplicationDTO<DeleteApplicationByNameRequest>>(), It.IsAny<CancellationToken>())).ThrowsAsync(new Exception());
+        writeStoreMock.Setup(x => x.SoftDeleteApplicationAsync(It.IsAny<ApplicationDTO<DeleteApplicationByNameRequest>>(), It.IsAny<CancellationToken>())).ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
         using var sutClient = _fixture.CreateAuthenticatedClient(s =>
         {

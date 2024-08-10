@@ -1,10 +1,11 @@
 using System.Text;
 using Api.Constants;
 using Application.Contracts;
+using Application.DTOs;
+using Application.Factories;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-[TestFixture]
 public class UpdateApplicationByNameEndpointTests
 {   
      private TestFixture<Program> _fixture;
@@ -96,5 +97,33 @@ public class UpdateApplicationByNameEndpointTests
         using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+    }
+
+    [Test]
+    public async Task UpdateApplication_Returns500InternalServerError_WhenUpdateFails()
+    {
+        var userWriteStoreMock = new ApplicationWriteStoreMock();
+
+        userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ApplicationDTO<UpdateApplicationByNameRequest>>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
+
+         using var sutClient = _fixture.CreateAuthenticatedClient(s => 
+        {
+            s.Replace(new ServiceDescriptor(typeof(IApplicationWriteStore), userWriteStoreMock.Object));
+        });
+        
+        var request = new UpdateApplicationByNameRequest()
+        {
+            CurrentName = "Default Recent Deleted Application",
+            NewName = "Default Recent Application",
+            NewCallbackUri = "https://localhost:7255/callback",
+            NewRedirectUri = "https://localhost:7255"
+        };
+
+        var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+
+        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
+
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }
 }

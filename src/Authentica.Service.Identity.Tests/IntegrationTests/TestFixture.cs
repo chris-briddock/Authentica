@@ -3,6 +3,7 @@ using Api.Responses;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
 
+[TestFixture]
 public class TestFixture<TProgram> where TProgram : class
 {
     public CustomWebApplicationFactory<TProgram> WebApplicationFactory { get; private set; }

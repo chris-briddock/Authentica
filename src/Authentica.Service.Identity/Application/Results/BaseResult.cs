@@ -47,19 +47,4 @@ where TResult : BaseResult<TResult>, new()
         }
         return result;
     }
-
-    /// <summary>
-    /// Creates a new result indicating a failed operation with the specified errors.
-    /// </summary>
-    /// <param name="errors">A list of <see cref="IdentityError"/> objects representing the errors.</param>
-    /// <returns>A new result indicating a failed operation.</returns>
-    internal static TResult Failed(List<IdentityError>? errors)
-    {
-        var result = new TResult { Succeeded = false };
-        if (errors != null)
-        {
-            result._errors.AddRange(errors);
-        }
-        return result;
-    }
 }
