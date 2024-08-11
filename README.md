@@ -2,8 +2,7 @@
 
 Secure your app with Authentica, featuring OAuth 2.0 authorization code grant, client credentials grant, refresh token grant.
 
-Technical documentation:
-https://chris-briddock.github.io/Authentica/api/Api.Constants.html
+[Technical Documentation here](https://chris-briddock.github.io/Authentica/api/Api.Constants.html)
 
 ![Azure DevOps build](https://img.shields.io/azure-devops/build/Authentica/c98bacd5-0436-4667-a21d-828fb19fb305/1)
 ![Azure DevOps Code Coverage](https://img.shields.io/azure-devops/coverage/Authentica/Authentica/1)
@@ -64,13 +63,13 @@ Authorization Flows:
 | **Optional Azure Application Insights Support**  | Optional monitoring and diagnostics using Azure Application Insights.                         |
 | **Logging, Tracing, and Metrics**        | Advanced logging, tracing, and metrics with .NET Aspire.                                      |
 | **Resilient SQL Server Connections**      | Reliable connections to Microsoft SQL Server using Entity Framework Core.                      |
-| **Encrypted User Passwords**             | Protection of user passwords through irreversable encryption.                                               |
-| **Encrypted Application Secrets**             | Protection of application secrets through irreversable encryption.                                               |
+| **Hashed User Passwords**             | Protection of user passwords through irreversable hashing, using Argon2.                                               |
+| **Hashed Application Secrets**             | Protection of application secrets through irreversable hashing, using Argon2.                                               |
 | **HTTP/3 Support**                       | Utilizes HTTP/3 protocol with fallback to HTTP/2 and HTTP/1 1.                                 |
 | **Soft deletable entries**                       | Utilizes soft deletions to ensure no data is permenantly lost.                                 |
 | **Auditable Entries** | To enable auditable entries, I have used CreatedBy, CreatedOn, ModifiedOn, and ModifiedBy columns. These columns help track who created and modified each record and when the changes occurred, ensuring comprehensive audit trails for data changes. |
 | **Data purge after 7 years, if soft deleted**                       | Data purges happen once an entry is over 7 years old. These are implemented as Background Services and run on a seperate thread, using a Periodic Timer.                       |
-| **Temporal tables**                       | When an entry in a table changes, we can tell when that happend changed, but also have a record of what changed, through these system versioned history tables                                 |
+| **Temporal tables**                       | When an entry in a table changes, we can tell when that changed, but also have a record of what changed, through these system versioned history tables                                 |
 | **Worker Services**                       | Utilizes loosley coupled worker services so this is independently scalable from the main service                                 |
 | **Security Features** | Implementations of security features such as concurrency stamps, security stamps, last logged in IP address, and last logged in date/time ensure security by providing mechanisms to detect and prevent unauthorized access, track user activity, and maintain data integrity. |
 | **Event Logging** | Utilized Domain Events and Integration Events to log every user action, ensuring the system state is rebuildable and replayable. Collected information includes the action taken, the request payload, and the timestamp. By implementing session middleware that generates a GUID as a Sequence ID, it is possible to track all actions a user takes within their session. |

@@ -12,20 +12,12 @@ public class Argon2PasswordHasher<TUser> : IPasswordHasher<TUser> where TUser : 
     /// <inheritdoc/>
      public string HashPassword(TUser user, string password)
     {
-        var salt = Shared.GenerateSalt();
-        var hashedPassword = Shared.HashPasswordWithArgon2(password, salt);
-        return $"{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hashedPassword)}";
+       return Shared.Hash(password);
     }
     /// <inheritdoc/>
     public PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword)
     {
-        var parts = hashedPassword.Split(':');
-        var salt = Convert.FromBase64String(parts[0]);
-        var storedHashBytes = Convert.FromBase64String(parts[1]);
-        var providedHash = Shared.HashPasswordWithArgon2(providedPassword, salt);
-
-        return providedHash.SequenceEqual(storedHashBytes) ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
-
+        return Shared.Verify(providedPassword, hashedPassword) ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
     }
     
 }

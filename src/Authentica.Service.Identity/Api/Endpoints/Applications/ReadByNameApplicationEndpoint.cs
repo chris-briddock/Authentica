@@ -58,7 +58,7 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        ReadApplicationResponse response = new ClientApplicationMapper().ToReadByNameResponse(app);
+        ReadApplicationResponse response = new ClientApplicationMapper().ToResponse(app);
 
         return Ok(response);
     }

@@ -11,19 +11,9 @@ public static class FeatureFlagConstants
     public const string Redis = "Redis";
 
     /// <summary>
-    /// Constant representing the Logging feature flag.
-    /// </summary>
-    public const string Logging = "Logging";
-
-    /// <summary>
     /// Constant representing the Azure Application Insights feature flag.
     /// </summary>
     public const string AzApplicationInsights = "AppInsights";
-
-    /// <summary>
-    /// Constant representing the Seq feature flag.
-    /// </summary>
-    public const string Seq = "Seq";
 
     /// <summary>
     /// Gets or sets the boolean to enable or disable 

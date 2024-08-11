@@ -13,7 +13,7 @@ using Persistence.Contexts;
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240809121650_Initial")]
+    [Migration("20240810152947_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

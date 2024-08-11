@@ -46,4 +46,11 @@ public interface IUserReadStore
     /// A task that represents the asynchronous operation. The task result contains a list of role names associated with the user.
     /// </returns>
     Task<IList<string>> GetUserRolesAsync(string email);
+    /// <summary>
+    /// Asynchronously retrieves the list of users in the database
+    /// </summary>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains a list of all users.
+    /// </returns>
+    Task<IList<User>> GetAllUsersAsync(); 
 }

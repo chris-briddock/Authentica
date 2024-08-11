@@ -11,7 +11,7 @@ public class AccountPurgeExposeProtected : AccountPurge
 {
     public AccountPurgeExposeProtected(IServiceScopeFactory serviceScopeFactory,
                                                     ILogger<AccountPurge> logger,
-                                                    Application.Contracts.ITimer timer)
+                                                    ITimer timer)
         : base(serviceScopeFactory, logger, timer)
     { }
 

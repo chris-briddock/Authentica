@@ -41,6 +41,8 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
     /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
     [HttpPost($"{Routes.Admin.Create}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public override async Task<ActionResult> HandleAsync(RegisterRequest request,
                                                          CancellationToken cancellationToken = default)
     {
@@ -61,7 +63,11 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
         if (!await userManager.IsInRoleAsync(result.User, RoleDefaults.Admin))
+        {
             await userManager.AddToRoleAsync(result.User, RoleDefaults.Admin);
+            await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
+        }
+            
 
         // call token endpoint for a email confirmation token.
         return StatusCode(StatusCodes.Status201Created);

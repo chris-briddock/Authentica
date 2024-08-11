@@ -1,8 +1,9 @@
 using System.Security.Claims;
+using Api.Constants;
 using Application.Contracts;
 using Application.Factories;
 using Application.Results;
-using Microsoft.AspNetCore.Identity;
+using Domain.Aggregates.Identity;
 
 namespace Application.Stores;
 
@@ -19,12 +20,7 @@ public class UserReadStore : StoreBase, IUserReadStore
     {
     }
 
-    /// <summary>
-    /// Retrieves a user by their email from the given claims principal.
-    /// </summary>
-    /// <param name="claimsPrincipal">The claims principal containing the user's email claim.</param>
-    /// <param name="cancellationToken">The cancellation token to observe.</param>
-    /// <returns>A task that represents the asynchronous operation, containing the result of the operation.</returns>
+    /// <inheritdoc/>
     public async Task<UserStoreResult> GetUserByEmailAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken = default)
     {
         var userClaimsPrincipal = claimsPrincipal.FindFirst(ClaimTypes.Email)!;
@@ -38,15 +34,7 @@ public class UserReadStore : StoreBase, IUserReadStore
 
     }
 
-    /// <summary>
-    /// Asynchronously retrieves a user by their email address.
-    /// </summary>
-    /// <param name="email">The email address of the user to retrieve.</param>
-    /// <returns>
-    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
-    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
-    /// </returns>
-    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    /// <inheritdoc/>
     public async Task<UserStoreResult> GetUserByEmailAsync(string email)
     {
         try
@@ -63,28 +51,32 @@ public class UserReadStore : StoreBase, IUserReadStore
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
-    /// <summary>
-    /// Asynchronously retrieves a user by their id.
-    /// </summary>
-    /// <param name="Id">The unique identifier of the user.</param>
-    /// <returns>
-    /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
-    /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
-    /// </returns>
-    /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
+    /// <inheritdoc/>
     public async Task<UserStoreResult> GetUserByIdAsync(string Id)
     {
-            var user = await UserManager.FindByIdAsync(Id);
+        var user = await UserManager.FindByIdAsync(Id);
 
-            if (user is null)
-                return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+        if (user is null)
+            return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
 
-            return UserStoreResult.Success(user);
+        return UserStoreResult.Success(user);
     }
     /// <inheritdoc />
     public async Task<IList<string>> GetUserRolesAsync(string email)
     {
         var user = await UserManager.FindByEmailAsync(email) ?? null!;
         return await UserManager.GetRolesAsync(user);
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves a list of all users in the specified role.
+    /// </summary>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains a list of users in the specified role.
+    /// </returns>
+    public async Task<IList<User>> GetAllUsersAsync()
+    {
+        var users = await UserManager.GetUsersInRoleAsync(RoleDefaults.User);
+        return users;
     }
 }

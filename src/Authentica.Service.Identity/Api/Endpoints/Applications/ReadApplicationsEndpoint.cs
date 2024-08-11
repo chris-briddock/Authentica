@@ -55,8 +55,8 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
 
         IEnumerable<ClientApplication> apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
 
-        List<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToReadByNameResponse(app)).ToList();
-        List<ReadApplicationResponse> redactedResponses = apps.Select(app => new ClientApplicationMapper().ToReadByNameResponse(app)).ToList();
+        List<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
+        List<ReadApplicationResponse> redactedResponses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
 
         ReadApplicationsEvent @event = new()
         {
