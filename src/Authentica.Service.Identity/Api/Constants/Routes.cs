@@ -139,6 +139,14 @@ public static class Routes
     public static class Admin
     {
         /// <summary>
+        /// Allows the admin to reset a password of any user.
+        /// </summary>
+        public const string ResetPassword = "admin/reset-password";
+        /// <summary>
+        /// Allows the admin to reset a password of any user.
+        /// </summary>
+        public const string DisableTwoFactor = "admin/2fa/disable";
+        /// <summary>
         /// Allows the admin to create a new admin user.
         /// </summary>
         public const string Create = "admin/register";
@@ -151,7 +159,7 @@ public static class Routes
         /// </summary>
         public const string ReadAllEvents = "admin/events";
         /// <summary>
-        /// Reads all the events in the system.
+        /// Reads all the applications.
         /// </summary>
         public const string ReadAllApplications = "admin/applications";
     }

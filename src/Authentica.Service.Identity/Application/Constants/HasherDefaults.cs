@@ -6,7 +6,7 @@ namespace Application.Constants;
 public static class HasherDefaults
 {
     /// <summary>
-    /// Size of the salt in bytes (256 bits).
+    /// Size of the salt in bytes (512 bits).
     /// </summary>
     public const int SaltSize = 64;
 
