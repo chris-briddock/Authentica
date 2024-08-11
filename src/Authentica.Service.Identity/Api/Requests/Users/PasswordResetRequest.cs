@@ -1,5 +1,4 @@
 using Application.Attributes;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Requests;
 

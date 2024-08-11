@@ -1,10 +1,8 @@
-﻿using Application.Contracts;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.FeatureManagement;
 
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
-[TestFixture]
 public class EmailPublisherTests
 {
     [Test]

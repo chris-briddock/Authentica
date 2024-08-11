@@ -15,7 +15,7 @@ public class ApplicationStoreResult : BaseResult<ApplicationStoreResult>
     /// </summary>
     /// <param name="secret">The secret to include in the result.</param>
     /// <returns>A successful <see cref="ApplicationStoreResult"/> with the specified user.</returns>
-    public static new ApplicationStoreResult Success(string secret)
+    public static ApplicationStoreResult Success(string secret)
     {
         return new ApplicationStoreResult
         {
@@ -28,7 +28,7 @@ public class ApplicationStoreResult : BaseResult<ApplicationStoreResult>
     /// Creates a successful result.
     /// </summary>
     /// <returns>A successful <see cref="ApplicationStoreResult"/> with the specified user.</returns>
-    public static new ApplicationStoreResult Success()
+    public static ApplicationStoreResult Success()
     {
         return new ApplicationStoreResult
         {

@@ -21,7 +21,7 @@ public class CreateApplicationEndpointTests
     }
 
     [Test]
-    public async Task CreateApplication_Returns201Created_WhenRequestIsValid()
+    public async Task CreateApplication_Returns201Created_WhenSuccessful()
     {
         var content = new CreateApplicationRequest()
         {

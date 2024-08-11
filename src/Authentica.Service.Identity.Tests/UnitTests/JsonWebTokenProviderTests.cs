@@ -1,6 +1,5 @@
 ﻿namespace Authentica.Service.Identity.Tests.UnitTests;
 
-[TestFixture]
 public class JsonWebTokenProviderTests
 {
     private readonly string _email = "christopherbriddock@gmail.com";

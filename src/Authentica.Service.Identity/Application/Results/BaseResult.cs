@@ -8,20 +8,11 @@ namespace Application.Results;
 public class BaseResult<TResult>
 where TResult : BaseResult<TResult>, new()
 {
-    /// <summary>
-    /// A static readonly instance representing a successful operation.
-    /// </summary>
-    private static readonly TResult _success = new() { Succeeded = true };
 
     /// <summary>
     /// A readonly list of errors associated with the result of an operation.
     /// </summary>
     private readonly List<IdentityError> _errors = [];
-
-    /// <summary>
-    /// Gets a static instance representing a successful operation.
-    /// </summary>
-    public static TResult Success => _success;
 
     /// <summary>
     /// Gets an enumeration of errors associated with the result of an operation.
