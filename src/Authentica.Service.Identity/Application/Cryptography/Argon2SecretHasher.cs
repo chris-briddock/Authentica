@@ -1,3 +1,4 @@
+using Application.Constants;
 using Application.Contracts;
 
 namespace Application.Cryptography;
@@ -10,20 +11,12 @@ public class Argon2SecretHasher : ISecretHasher
     /// <inheritdoc/>
     public string Hash(string password)
     {
-        var salt = Shared.GenerateSalt();
-        var hashedPassword = Shared.HashPasswordWithArgon2(password, salt);
-        return $"{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hashedPassword)}";
+        return Shared.Hash(password);
     }
 
     /// <inheritdoc/>
     public bool Verify(string input, string storedHash)
     {
-        var parts = storedHash.Split(':');
-        byte[] salt = Convert.FromBase64String(parts[0]);
-        byte[] storedHashBytes = Convert.FromBase64String(parts[1]);
-
-        byte[] providedHash = Shared.HashPasswordWithArgon2(input, salt);
-
-        return providedHash.SequenceEqual(storedHashBytes);
+        return Shared.Verify(input, storedHash);
     }
 }
