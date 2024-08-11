@@ -40,11 +40,15 @@ public static class Shared
 
         return argon2.GetBytes(HasherDefaults.HashSize);
     }
-
-    public static string Hash(string password)
+    /// <summary>
+    /// Hashes a given string with the Argon2 algorithm.
+    /// </summary>
+    /// <param name="input">The string to hash.</param>
+    /// <returns>The hashed string</returns>
+    public static string Hash(string input)
     {
         var salt = GenerateSalt();
-        var hashedPassword = Shared.HashPasswordWithArgon2(password, salt);
+        var hashedPassword = HashPasswordWithArgon2(input, salt);
 
         // Combine salt and hashed password
         byte[] saltAndHash = new byte[salt.Length + hashedPassword.Length];
@@ -53,7 +57,12 @@ public static class Shared
 
         return Convert.ToBase64String(saltAndHash);
     }
-
+    /// <summary>
+    /// Verifies the password by re-encrypting the input, and comparing the stored hash.
+    /// </summary>
+    /// <param name="input">The input string.</param>
+    /// <param name="storedHash">The stored password hash.</param>
+    /// <returns></returns>
     public static bool Verify(string input, string storedHash)
     {
         byte[] saltAndHash = Convert.FromBase64String(storedHash);
