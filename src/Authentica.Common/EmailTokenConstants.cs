@@ -13,7 +13,6 @@ public static class EmailTokenConstants
     /// Confirm email token type.
     /// </summary>
     public const string ConfirmEmail = "confirm_email";
-
     /// <summary>
     /// Two factor token type.
     /// </summary>

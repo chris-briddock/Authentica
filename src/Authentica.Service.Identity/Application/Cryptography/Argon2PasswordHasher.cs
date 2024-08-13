@@ -10,9 +10,9 @@ namespace Application.Cryptography;
 public class Argon2PasswordHasher<TUser> : IPasswordHasher<TUser> where TUser : class
 {
     /// <inheritdoc/>
-     public string HashPassword(TUser user, string password)
+    public string HashPassword(TUser user, string password)
     {
-       return Shared.Hash(password);
+        return Shared.Hash(password);
     }
     /// <inheritdoc/>
     public PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword)
