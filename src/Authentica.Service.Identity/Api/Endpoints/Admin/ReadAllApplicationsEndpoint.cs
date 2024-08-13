@@ -48,7 +48,7 @@ public class ReadAllApplicationsEndpoint : EndpointBaseAsync
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var eventStore = Services.GetRequiredService<IEventStore>();
 
-        IList<ClientApplication> apps = await dbContext.ClientApplications.ToListAsync(cancellationToken: cancellationToken);
+        IList<ClientApplication> apps = await dbContext.ClientApplications.ToListAsync(cancellationToken);
 
         IList<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
         IList<ReadApplicationResponse> redactedResponses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
