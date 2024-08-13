@@ -4,10 +4,6 @@
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
-        "EMAIL_SERVER": "smtp-mail.outlook.com",
-        "EMAIL_PORT": "587",
-        "EMAIL_CREDENTIALS_EMAIL_ADDRESS": "",
-        "EMAIL_CREDENTIALS_PASSWORD": ""
       },
       "dotnetRunMessages": true
     },

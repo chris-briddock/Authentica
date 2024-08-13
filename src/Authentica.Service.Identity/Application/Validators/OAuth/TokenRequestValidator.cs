@@ -25,10 +25,6 @@ public class TokenRequestValidator : AbstractValidator<TokenRequest>
         RuleFor(request => request.ClientSecret)
             .NotEmpty().WithMessage("client_secret is required.");
 
-        RuleFor(request => request.RedirectUri)
-            .NotEmpty().WithMessage("redirect_uri is required.")
-            .Must(uri => uri.BeAValidUri()).WithMessage("redirect_uri must be a valid URI.");
-
         RuleFor(request => request.RefreshToken)
             .NotEmpty().When(request => request.GrantType == "refresh_token").WithMessage("refresh_token is required when grant_type  is 'refresh_token'.");
 

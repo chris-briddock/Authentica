@@ -1,6 +1,7 @@
 using System.Net.Mail;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Microsoft.FeatureManagement;
+using Authentica.Common;
 
 namespace Authentica.WorkerService.Email;
 
@@ -13,6 +14,7 @@ public sealed class Program
         builder.ConfigureOpenTelemetry(ServiceNameDefaults.ServiceName);
         builder.Services.AddFeatureManagement();
         builder.Services.AddConsumerMessaging();
+        builder.Services.AddAzureAppInsights();
         builder.Services.AddScoped<ISmtpClient, SmtpClientWrapper>();
         builder.Services.AddScoped<SmtpClient>();
 

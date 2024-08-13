@@ -10,10 +10,10 @@ using Persistence.Contexts;
 
 #nullable disable
 
-namespace Authentica.Service.Identity.Persistence.Migrations
+namespace Authentica.Service.Identity.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240810152947_Initial")]
+    [Migration("20240812231237_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -105,12 +105,6 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
                         .HasColumnName("PeriodStart");
-
-                    b.Property<string>("RedirectUri")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("redirect_uri");
 
                     b.HasKey("Id");
 

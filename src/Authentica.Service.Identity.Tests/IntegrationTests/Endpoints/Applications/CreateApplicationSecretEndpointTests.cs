@@ -25,7 +25,7 @@ public class CreateApplicationSecretEndpointTests
     {
         var request = new CreateApplicationSecretRequest()
         {
-            Name = "Default Application"
+            Name = "Default Test Application"
         };
 
         using var sutClient = _fixture.CreateAuthenticatedClient();

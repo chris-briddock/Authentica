@@ -1,6 +1,7 @@
 using Api.Constants;
 using Application.Contracts;
 using Authentica.Service.Identity;
+using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
@@ -14,53 +15,43 @@ namespace Persistence.Seed;
 public static class Seed
 {
     /// <summary>
-    /// Seeds the initial client application into the database if it doesn't already exist.
+    /// Seeds an admin user into the database if it doesn't already exist.
     /// </summary>
     /// <param name="app">The web application instance.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public static async Task SeedClientApplicationAsync(WebApplication app)
+    public static async Task SeedAdminUserAsync(WebApplication app)
     {
         using var scope = app.Services.CreateAsyncScope();
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
-        var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
 
-        var adminEmail = "admin@default.com";
-        var user = await userManager.FindByEmailAsync(adminEmail);
+        var adminEmail = configuration.GetRequiredValueOrThrow("Defaults:AdminEmail");
+        var adminPassword = configuration.GetRequiredValueOrThrow("Defaults:AdminPassword");
 
-        var secret = "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==";
-
-        var hashedSecret = hasher.Hash(secret);
-
-        // Check if the initial client application already exists
-        if (!context.ClientApplications.Any())
+        User adminUser = new()
         {
-            ClientApplication application = new()
-            {
-                Id = Guid.NewGuid().ToString(),
-                ClientId = "2e5cf15b-bf5b-4d80-aa01-2a596403530d",
-                Name = "Default Application",
-                CallbackUri = "https://localhost:7256/callback",
-                RedirectUri = "https://localhost:7256",
-                CreatedBy = "SYSTEM",
-                ClientSecret = hashedSecret,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            };
-            application.UserClientApplications =
-            [
-                new UserClientApplication()
-                {
-                    UserId = user!.Id,
-                    ApplicationId = application.Id
-                }
-            ];
+            UserName = adminEmail,
+            Email = adminEmail,
+            PhoneNumberConfirmed = true,
+            TwoFactorEnabled = false,
+            EmailConfirmed = true,
+            LockoutEnabled = false,
+            AccessFailedCount = 0,
+            CreatedBy = "SYSTEM",
+            Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+        };
 
-            context.ClientApplications.Add(application);
-            await context.SaveChangesAsync();
+        // Hash the password for security.
+        adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, adminPassword);
 
-            logger.LogInformation("Initial application client secret: {secret}", secret);
+        var existingUser = await userManager.FindByEmailAsync(adminUser.Email);
+
+        if (existingUser is null)
+        {
+            await userManager.CreateAsync(adminUser);
+            // Add roles to the admin user.
+            await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
+            await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);
         }
     }
     /// <summary>
@@ -90,50 +81,148 @@ public static class Seed
                 await roleManager.CreateAsync(newRole);
         }
     }
+
     /// <summary>
-    /// Seeds an admin user into the database if it doesn't already exist.
+    /// Seeds the client application into the database if it doesn't already exist.
     /// </summary>
     /// <param name="app">The web application instance.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public static async Task SeedAdminUserAsync(WebApplication app)
+    public static async Task SeedClientApplicationAsync(WebApplication app)
     {
         using var scope = app.Services.CreateAsyncScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
+        var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
 
-        var adminEmail = "admin@default.com";
+        var adminEmail = configuration.GetRequiredValueOrThrow("Defaults:AdminEmail");
+        var adminPassword = configuration.GetRequiredValueOrThrow("Defaults:AdminPassword");
+        var secret = configuration.GetRequiredValueOrThrow("Defaults:Secret");
+        var callbackUri = configuration.GetRequiredValueOrThrow("Defaults:CallbackUri");
+        var user = await userManager.FindByEmailAsync(adminEmail);
 
-        User adminUser = new()
+        var hashedSecret = hasher.Hash(secret);
+
+        // Check if the initial client application already exists
+        if (!context.ClientApplications.Any())
         {
-            UserName = adminEmail,
-            Email = adminEmail,
-            PhoneNumberConfirmed = true,
-            TwoFactorEnabled = false,
-            EmailConfirmed = true,
-            LockoutEnabled = false,
-            AccessFailedCount = 0,
-            CreatedBy = "SYSTEM",
-            Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
-        };
+            ClientApplication application = new()
+            {
+                Id = Guid.NewGuid().ToString(),
+                ClientId = Guid.NewGuid().ToString(),
+                Name = "Authentica Default Application",
+                CallbackUri = $"{callbackUri}",
+                CreatedBy = "SYSTEM",
+                ClientSecret = hashedSecret,
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            };
+            application.UserClientApplications =
+            [
+                new UserClientApplication()
+                {
+                    UserId = user!.Id,
+                    ApplicationId = application.Id
+                }
+            ];
 
-        // Hash the password for security.
-        adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, "fR<pGWqvn4Mu,6w[Z8axP;b5=");
-
-        var existingUser = await userManager.FindByEmailAsync(adminUser.Email);
-
-        if (existingUser is null)
-        {
-            await userManager.CreateAsync(adminUser);
-            // Add roles to the admin user.
-            await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
-            await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);
+            context.ClientApplications.Add(application);
+            await context.SaveChangesAsync();
         }
-
     }
     /// <summary>
     /// Seeds all test user data.
     /// </summary>
     public static class Test
     {
+        /// <summary>
+        /// Seeds an admin user into the database if it doesn't already exist.
+        /// </summary>
+        /// <param name="app">The web application instance.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public static async Task SeedTestAdminUserAsync(WebApplication app)
+        {
+            using var scope = app.Services.CreateAsyncScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+            var adminEmail = "admin@default.com";
+
+            User adminUser = new()
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                PhoneNumberConfirmed = true,
+                TwoFactorEnabled = false,
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                AccessFailedCount = 0,
+                CreatedBy = "SYSTEM",
+                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+            };
+
+            // Hash the password for security.
+            adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, "fR<pGWqvn4Mu,6w[Z8axP;b5=");
+
+            var existingUser = await userManager.FindByEmailAsync(adminUser.Email);
+
+            if (existingUser is null)
+            {
+                await userManager.CreateAsync(adminUser);
+                // Add roles to the admin user.
+                await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
+                await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);
+            }
+
+        }
+        /// <summary>
+        /// Seeds the test client application into the database if it doesn't already exist.
+        /// </summary>
+        /// <param name="app">The web application instance.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public static async Task SeedTestClientApplicationAsync(WebApplication app)
+        {
+            using var scope = app.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
+            var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
+
+            var adminEmail = "admin@default.com";
+            var user = await userManager.FindByEmailAsync(adminEmail);
+
+            var secret = "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==";
+
+            var hashedSecret = hasher.Hash(secret);
+
+            // Check if the initial client application already exists
+            if (!context.ClientApplications.Any())
+            {
+                ClientApplication application = new()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ClientId = "2e5cf15b-bf5b-4d80-aa01-2a596403530d",
+                    Name = "Default Test Application",
+                    CallbackUri = "https://localhost:7256/callback",
+                    CreatedBy = "SYSTEM",
+                    ClientSecret = hashedSecret,
+                    ConcurrencyStamp = Guid.NewGuid().ToString()
+                };
+                application.UserClientApplications =
+                [
+                    new UserClientApplication()
+                {
+                    UserId = user!.Id,
+                    ApplicationId = application.Id
+                }
+                ];
+
+                context.ClientApplications.Add(application);
+                await context.SaveChangesAsync();
+            }
+        }
+
         /// <summary>
         /// Seeds the initial client application into the database if it doesn't already exist.
         /// </summary>
@@ -161,7 +250,6 @@ public static class Seed
                 ClientId = Guid.NewGuid().ToString(),
                 Name = "Default Old Deleted Application",
                 CallbackUri = "https://localhost:7256/callback",
-                RedirectUri = "https://localhost:7256",
                 CreatedBy = "SYSTEM",
                 ClientSecret = hashedSecret,
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
@@ -208,7 +296,6 @@ public static class Seed
                 ClientId = Guid.NewGuid().ToString(),
                 Name = "Default Recent Deleted Application",
                 CallbackUri = "https://localhost:7256/callback",
-                RedirectUri = "https://localhost:7256",
                 CreatedBy = "SYSTEM",
                 ClientSecret = hashedSecret,
                 ConcurrencyStamp = Guid.NewGuid().ToString(),

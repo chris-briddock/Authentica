@@ -30,7 +30,7 @@ public class UpdateApplicationByNameEndpointTests
         
         var request = new UpdateApplicationByNameRequest()
         {
-            CurrentName = "Default Application",
+            CurrentName = "Default Test Application",
             NewName = "Default App",
             NewCallbackUri = "https://localhost:7255/callback",
             NewRedirectUri = "https://localhost:7255"
@@ -57,7 +57,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var request = new UpdateApplicationByNameRequest()
         {
-            CurrentName = "Default Application",
+            CurrentName = "Default Test Application",
             NewName = "Default App",
             NewCallbackUri = "https://localhost:7255/callback",
             NewRedirectUri = "https://localhost:7255"
@@ -86,7 +86,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var request = new UpdateApplicationByNameRequest()
         {
-            CurrentName = "Default Application",
+            CurrentName = "Default Test Application",
             NewName = "Default App",
             NewCallbackUri = "https://localhost:7255/callback",
             NewRedirectUri = "https://localhost:7255"

@@ -57,7 +57,6 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
                 Id = Guid.NewGuid().ToString(),
                 Name = dto.Request.Name,
                 CallbackUri = dto.Request.CallbackUri,
-                RedirectUri = dto.Request.RedirectUri,
                 CreatedBy = userReadResult.User.Email!,
                 CreatedOnUtc = DateTime.UtcNow
             };
@@ -110,7 +109,6 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             application.Name = dto.Request.NewName ?? application.Name;
             application.CallbackUri = dto.Request.NewCallbackUri ?? application.CallbackUri;
-            application.RedirectUri = dto.Request.NewRedirectUri ?? application.RedirectUri;
             application.ModifiedBy = userReadResult.User.Email ?? application.ModifiedBy;
             application.ModifiedOnUtc = DateTime.UtcNow;
 

@@ -185,7 +185,7 @@ public static class ServiceCollectionExtensions
 
         services.AddDistributedMemoryCache();
 
-        if (!featureManager.IsEnabledAsync(FeatureFlagConstants.Redis).Result)
+        if (!featureManager.IsEnabledAsync(FeatureFlagConstants.Cache).Result)
             return services;
         
         services.AddStackExchangeRedisCache(opt =>
@@ -196,24 +196,6 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>
-    /// Adds Azure Application Insights, if enabled.
-    /// </summary>
-    /// <param name="services">The <see cref="IServiceCollection"/> to which services will be added.</param>
-    /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddAzureAppInsights(this IServiceCollection services)
-    {
-        var featureManager = services.BuildServiceProvider()
-                                     .GetService<IFeatureManager>()!;
-
-        if (featureManager.IsEnabledAsync(FeatureFlagConstants.AzApplicationInsights).Result)
-        {
-            var configuration = services.BuildServiceProvider().GetService<IConfiguration>()!;
-            services.AddApplicationInsightsTelemetry(options => options.ConnectionString = configuration["ConnectionStrings:AzureAppInsights"]);
-            services.AddApplicationInsightsKubernetesEnricher();
-        }
-        return services;
-    }
 
     /// <summary>
     /// Adds bearer authentication services.

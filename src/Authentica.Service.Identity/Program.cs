@@ -17,6 +17,7 @@ using Api.Constants;
 using ITimer = Application.Contracts.ITimer;
 using Microsoft.AspNetCore.Identity;
 using Domain.Aggregates.Identity;
+using Authentica.Common;
 
 
 namespace Authentica.Service.Identity;
@@ -67,7 +68,6 @@ public sealed class Program
         builder.Services.AddHostedService<ApplicationPurge>();
         builder.Services.AddSqlDatabaseHealthChecks(builder.Configuration.GetConnectionStringOrThrow("Default"));
         builder.Services.AddRedisHealthChecks(builder.Configuration["ConnectionStrings:Redis"]!);
-        builder.Services.AddAzureApplicationInsightsHealthChecks();
 
         WebApplication app = builder.Build();
         app.UseSession();

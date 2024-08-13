@@ -46,7 +46,7 @@ public class CreateApplicationEndpointTests
     {
         var content = new CreateApplicationRequest()
         {
-            Name = "Default Application",
+            Name = "Default Test Application",
             CallbackUri = "https://localhost:7256/callback",
             RedirectUri = "https://localhost:7256"
         };
