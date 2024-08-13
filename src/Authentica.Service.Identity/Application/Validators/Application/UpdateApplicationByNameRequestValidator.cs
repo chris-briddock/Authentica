@@ -25,9 +25,5 @@ public class UpdateApplicationByNameRequestValidator : AbstractValidator<UpdateA
         RuleFor(request => request.NewCallbackUri)
             .Must(uri => string.IsNullOrEmpty(uri) || uri.BeAValidUri())
             .WithMessage("newCallbackUri must be a valid URI.");
-
-        RuleFor(request => request.NewRedirectUri)
-            .Must(uri => string.IsNullOrEmpty(uri) || uri.BeAValidUri())
-            .WithMessage("newRedirectUri must be a valid URI.");
     }
 }

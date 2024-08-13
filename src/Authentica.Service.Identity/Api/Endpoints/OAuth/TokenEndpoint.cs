@@ -151,7 +151,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
                 ClientId = request.ClientId,
                 ClientSecret = request.ClientSecret,
                 Code = request.Code,
-                RedirectUri = request.RedirectUri,
                 State = request.State
             },
             Response = new TokenResponse()

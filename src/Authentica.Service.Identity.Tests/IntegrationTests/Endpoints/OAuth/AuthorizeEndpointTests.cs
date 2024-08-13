@@ -23,7 +23,7 @@ public class AuthorizeEndpointTests
     }
 
     [Test]
-    public async Task AuthorizeEndpoint_Returns301Moved_WhenCodeIsRequestedForRegisteredApplication()
+    public async Task AuthorizeEndpoint_Returns302Found_WhenCodeIsRequestedForRegisteredApplication()
     {
         using var client = _fixture.WebApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
         {
@@ -56,7 +56,7 @@ public class AuthorizeEndpointTests
 
         using var response = await client.GetAsync($"api/v1/{Routes.OAuth.Authorize}?{queryString}");
 
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.MovedPermanently));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Found));
 
     }
 }

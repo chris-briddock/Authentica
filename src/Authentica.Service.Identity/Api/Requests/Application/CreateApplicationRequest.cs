@@ -14,10 +14,4 @@ public sealed record CreateApplicationRequest
     /// </summary>
     public string CallbackUri { get; init; } = default!;
 
-    /// <summary>
-    /// Gets or sets the redirect uri for the application.
-    /// </summary>
-    public string RedirectUri { get; init; } = default!;
-
-
 }

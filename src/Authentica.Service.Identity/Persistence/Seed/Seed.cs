@@ -189,6 +189,8 @@ public static class Seed
             var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
             var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
 
+            string appName = "Default Test Application";
+
             var adminEmail = "admin@default.com";
             var user = await userManager.FindByEmailAsync(adminEmail);
 
@@ -197,13 +199,14 @@ public static class Seed
             var hashedSecret = hasher.Hash(secret);
 
             // Check if the initial client application already exists
-            if (!context.ClientApplications.Any())
+            var exists = context.ClientApplications.Any(a => a.Name == appName);
+            if (!exists)
             {
                 ClientApplication application = new()
                 {
                     Id = Guid.NewGuid().ToString(),
                     ClientId = "2e5cf15b-bf5b-4d80-aa01-2a596403530d",
-                    Name = "Default Test Application",
+                    Name = appName,
                     CallbackUri = "https://localhost:7256/callback",
                     CreatedBy = "SYSTEM",
                     ClientSecret = hashedSecret,
@@ -212,10 +215,10 @@ public static class Seed
                 application.UserClientApplications =
                 [
                     new UserClientApplication()
-                {
-                    UserId = user!.Id,
-                    ApplicationId = application.Id
-                }
+                    {
+                        UserId = user!.Id,
+                        ApplicationId = application.Id
+                    }
                 ];
 
                 context.ClientApplications.Add(application);
@@ -243,31 +246,37 @@ public static class Seed
 
             var hashedSecret = hasher.Hash(secret);
 
-            // Check if the initial client application already exists
-            ClientApplication application = new()
-            {
-                Id = Guid.NewGuid().ToString(),
-                ClientId = Guid.NewGuid().ToString(),
-                Name = "Default Old Deleted Application",
-                CallbackUri = "https://localhost:7256/callback",
-                CreatedBy = "SYSTEM",
-                ClientSecret = hashedSecret,
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                DeletedBy = user!.Id,
-                IsDeleted = true,
-                DeletedOnUtc = DateTime.UtcNow.AddYears(-8)
-            };
-            application.UserClientApplications =
-            [
-                new UserClientApplication()
-                {
-                    UserId = user!.Id,
-                    ApplicationId = application.Id
-                }
-            ];
+            var appName = "Default Old Deleted Application";
 
-            context.ClientApplications.Add(application);
-            await context.SaveChangesAsync();
+            var exists = context.ClientApplications.Any(a => a.Name == appName);
+            if (!exists)
+            {
+                // Check if the initial client application already exists
+                ClientApplication application = new()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ClientId = Guid.NewGuid().ToString(),
+                    Name = appName,
+                    CallbackUri = "https://localhost:7256/callback",
+                    CreatedBy = "SYSTEM",
+                    ClientSecret = hashedSecret,
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    DeletedBy = user!.Id,
+                    IsDeleted = true,
+                    DeletedOnUtc = DateTime.UtcNow.AddYears(-8)
+                };
+                application.UserClientApplications =
+                [
+                    new UserClientApplication()
+                    {
+                        UserId = user!.Id,
+                        ApplicationId = application.Id
+                    }
+                ];
+
+                context.ClientApplications.Add(application);
+                await context.SaveChangesAsync();
+            }
         }
         /// <summary>
         /// Seeds the initial client application into the database if it doesn't already exist.
@@ -289,32 +298,38 @@ public static class Seed
 
             var hashedSecret = hasher.Hash(secret);
 
-            // Check if the initial client application already exists
-            ClientApplication application = new()
+            var appName = "Default Recent Deleted Application";
+
+            var exists = context.ClientApplications.Any(a => a.Name == appName);
+            if (!exists)
             {
-                Id = Guid.NewGuid().ToString(),
-                ClientId = Guid.NewGuid().ToString(),
-                Name = "Default Recent Deleted Application",
-                CallbackUri = "https://localhost:7256/callback",
-                CreatedBy = "SYSTEM",
-                ClientSecret = hashedSecret,
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                DeletedBy = user!.Id,
-                IsDeleted = true,
-                DeletedOnUtc = DateTime.UtcNow
-
-            };
-            application.UserClientApplications =
-            [
-                new UserClientApplication()
+            // Check if the initial client application already exists
+                ClientApplication application = new()
                 {
-                    UserId = user!.Id,
-                    ApplicationId = application.Id
-                }
-            ];
+                    Id = Guid.NewGuid().ToString(),
+                    ClientId = Guid.NewGuid().ToString(),
+                    Name = appName,
+                    CallbackUri = "https://localhost:7256/callback",
+                    CreatedBy = "SYSTEM",
+                    ClientSecret = hashedSecret,
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    DeletedBy = user!.Id,
+                    IsDeleted = true,
+                    DeletedOnUtc = DateTime.UtcNow
 
-            context.ClientApplications.Add(application);
-            await context.SaveChangesAsync();
+                };
+                application.UserClientApplications =
+                [
+                    new UserClientApplication()
+                    {
+                        UserId = user!.Id,
+                        ApplicationId = application.Id
+                    }
+                ];
+
+                context.ClientApplications.Add(application);
+                await context.SaveChangesAsync();
+            }
         }
         /// <summary>
         /// Seeds an deleted user into the database if it doesn't already exist.

@@ -79,7 +79,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
             await HttpContext.Session.CommitAsync(cancellationToken);
 
             var redirectUri = $"{request.CallbackUri}/?code={code}&state={state}";
-            return RedirectPermanent(redirectUri);
+            return Redirect(redirectUri);
         }
 
         return Unauthorized();

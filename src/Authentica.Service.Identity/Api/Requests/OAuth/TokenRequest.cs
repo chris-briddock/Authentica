@@ -37,13 +37,6 @@ public sealed record TokenRequest
     public string? Code { get; init; }
 
     /// <summary>
-    /// Gets or sets the URI to which the response will be sent. 
-    /// This value must match one of the Redirection URI values registered during client registration.
-    /// </summary>
-    [FromForm(Name = "redirect_uri")]
-    public string? RedirectUri { get; init; } = default!;
-
-    /// <summary>
     /// Gets or sets the code verifier used in the PKCE (Proof Key for Code Exchange) extension to OAuth 2.0.
     /// This is relevant for the authorization code flow.
     /// </summary>

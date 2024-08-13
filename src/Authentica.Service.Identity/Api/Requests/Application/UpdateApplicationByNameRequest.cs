@@ -14,10 +14,6 @@ public sealed record UpdateApplicationByNameRequest
     /// </summary>
     public string? NewName { get; init; } = default!;
     /// <summary>
-    /// Gets or sets the new redirect uri for the application.
-    /// </summary>
-    public string? NewRedirectUri { get; init; } = default!;
-    /// <summary>
     /// Gets or sets the new callback uri for the application.
     /// </summary>
     public string? NewCallbackUri { get; init; } = default!;

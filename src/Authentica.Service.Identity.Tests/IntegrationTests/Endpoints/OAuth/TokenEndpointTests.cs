@@ -27,8 +27,7 @@ public class TokenEndpointTests
         {
             { "client_id", "2e5cf15b-bf5b-4d80-aa01-2a596403530d" },
             { "client_secret", "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==" },
-            { "grant_type", "client_credentials" },
-            { "redirect_uri", "https://localhost:7256"}
+            { "grant_type", "client_credentials" }
         };
 
         var content = new FormUrlEncodedContent(values);
@@ -58,8 +57,7 @@ public class TokenEndpointTests
             { "client_id", "2e5cf15b-bf5b-4d80-aa01-2a596403530d" },
             { "client_secret", "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==" }, // Add your client secret here
             { "grant_type", "refresh_token" },
-            { "refresh_token", "abddhdhdh"},
-            { "redirect_uri", "https://localhost:7256"}
+            { "refresh_token", "abddhdhdh"}
         };
 
         var content = new FormUrlEncodedContent(values);
@@ -124,8 +122,7 @@ public class TokenEndpointTests
             { "client_secret", "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==" },
             { "grant_type", "code" },
             { "code", null!},
-            { "state", null!},
-            { "redirect_uri", "https://localhost:7256"}
+            { "state", null!}
         };
 
         var content = new FormUrlEncodedContent(values);

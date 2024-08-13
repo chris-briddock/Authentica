@@ -19,11 +19,6 @@ public class ReadApplicationResponse
     public string CallbackUri { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets the redirect URI.
-    /// </summary>
-    public string RedirectUri { get; set; } = default!;
-
-    /// <summary>
     /// Gets or sets the name of the client application.
     /// </summary>
     public string Name { get; set; } = default!;
