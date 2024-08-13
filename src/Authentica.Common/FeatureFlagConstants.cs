@@ -8,7 +8,7 @@ public static class FeatureFlagConstants
     /// <summary>
     /// Constant representing the Redis feature flag.
     /// </summary>
-    public const string Redis = "Redis";
+    public const string Cache = "Cache";
 
     /// <summary>
     /// Constant representing the Azure Application Insights feature flag.

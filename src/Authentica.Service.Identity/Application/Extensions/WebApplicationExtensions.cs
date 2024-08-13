@@ -26,6 +26,8 @@ public static class WebApplicationExtensions
     /// <returns>A Task representing the asynchronous operation.</returns>
     public static async Task UseSeedTestDataAsync(this WebApplication app)
     {
+        await Seed.Test.SeedTestAdminUserAsync(app);
+        await Seed.Test.SeedTestClientApplicationAsync(app);
         await Seed.Test.SeedAuthorizeUser(app);
         await Seed.Test.SeedDeletedUser(app);
         await Seed.Test.SeedTwoFactorUser(app);

@@ -24,7 +24,7 @@ public class ReadApplicationByNameEndpointTests
     {
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
-        using var response = await sutClient.GetAsync($"api/v1/{Routes.Applications.ReadByName}/?Name=Default%20Application");
+        using var response = await sutClient.GetAsync($"api/v1/{Routes.Applications.ReadByName}/?name=Default%20Test%20Application");
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }

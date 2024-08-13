@@ -17,7 +17,7 @@ public sealed record AuthorizeRequest
 
     /// <summary>
     /// Gets or sets the URI to which the response will be sent. 
-    /// This value must match one of the redirection URI values registered during client registration.
+    /// This value must match one of the callback URI values registered during client registration.
     /// </summary>
     [FromQuery(Name = "callback_uri")]
     public string CallbackUri { get; init; } = default!;

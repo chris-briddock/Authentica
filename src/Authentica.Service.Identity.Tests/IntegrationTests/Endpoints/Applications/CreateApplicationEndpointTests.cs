@@ -26,8 +26,7 @@ public class CreateApplicationEndpointTests
         var content = new CreateApplicationRequest()
         {
             Name = "Test App",
-            CallbackUri = "https://localhost:7256/callback",
-            RedirectUri = "https://localhost:7256"
+            CallbackUri = "https://localhost:7256/callback"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
@@ -46,9 +45,8 @@ public class CreateApplicationEndpointTests
     {
         var content = new CreateApplicationRequest()
         {
-            Name = "Default Application",
-            CallbackUri = "https://localhost:7256/callback",
-            RedirectUri = "https://localhost:7256"
+            Name = "Default Test Application",
+            CallbackUri = "https://localhost:7256/callback"
         };
         using var sutClient = _fixture.CreateAuthenticatedClient();
 

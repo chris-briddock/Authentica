@@ -38,12 +38,6 @@ public class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApp
                .HasMaxLength(100)
                .HasColumnName("name")
                .IsRequired();
-
-        builder.Property(ca => ca.RedirectUri)
-                .HasMaxLength(256)
-                .HasColumnName("redirect_uri")
-                .IsRequired();
-       
         builder.Property(ca => ca.ConcurrencyStamp)
                .HasMaxLength(36)
                .HasColumnName("concurrency_stamp")

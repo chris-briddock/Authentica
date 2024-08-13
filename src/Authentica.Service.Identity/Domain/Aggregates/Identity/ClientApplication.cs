@@ -91,12 +91,6 @@ public class ClientApplication<TKey> where TKey : IEquatable<TKey>
     /// </summary>
     public virtual string CallbackUri { get; set; } = default!;
     /// <summary>
-    /// Gets or sets the redirect URI for the client application.
-    /// This URI is used by the authorization server to 
-    /// redirect the user after granting authorization.
-    /// </summary>
-    public virtual string RedirectUri { get; set; } = default!;
-    /// <summary>
     /// A random value that should change whenever a application is persisted.
     /// </summary>
     public virtual string? ConcurrencyStamp { get; set; } = default!;

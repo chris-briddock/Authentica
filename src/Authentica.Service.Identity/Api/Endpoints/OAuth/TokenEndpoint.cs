@@ -70,7 +70,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         ClientApplication? client = await dbContext
                                           .Set<ClientApplication>()
                                           .Where(x => x.ClientId == request.ClientId)
-                                          .Where(x => x.RedirectUri == request.RedirectUri)
                                           .FirstAsync(cancellationToken);
 
         UserClientApplication userClientLink = await dbContext
@@ -152,7 +151,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
                 ClientId = request.ClientId,
                 ClientSecret = request.ClientSecret,
                 Code = request.Code,
-                RedirectUri = request.RedirectUri,
                 State = request.State
             },
             Response = new TokenResponse()

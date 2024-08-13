@@ -21,9 +21,5 @@ public class CreateApplicationRequestValidator : AbstractValidator<CreateApplica
         RuleFor(request => request.CallbackUri)
             .NotEmpty().WithMessage("CallbackUri is required.")
             .Must(uri => uri.BeAValidUri()).WithMessage("CallbackUri must be a valid URI.");
-
-        RuleFor(request => request.RedirectUri)
-            .NotEmpty().WithMessage("RedirectUri is required.")
-            .Must(uri => uri.BeAValidUri()).WithMessage("RedirectUri must be a valid URI.");
     }
 }

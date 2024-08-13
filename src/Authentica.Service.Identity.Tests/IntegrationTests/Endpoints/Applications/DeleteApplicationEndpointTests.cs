@@ -29,7 +29,7 @@ public class DeleteApplicationEndpointTests
         // Arrange
         var content = new DeleteApplicationByNameRequest()
         {
-            Name = "Default Application"
+            Name = "Default Test Application"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
@@ -83,7 +83,7 @@ public class DeleteApplicationEndpointTests
         // Arrange
         var content = new DeleteApplicationByNameRequest()
         {
-            Name = "Default Application"
+            Name = "Default Test Application"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");

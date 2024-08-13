@@ -30,10 +30,9 @@ public class UpdateApplicationByNameEndpointTests
         
         var request = new UpdateApplicationByNameRequest()
         {
-            CurrentName = "Default Application",
+            CurrentName = "Default Test Application",
             NewName = "Default App",
             NewCallbackUri = "https://localhost:7255/callback",
-            NewRedirectUri = "https://localhost:7255"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
@@ -57,10 +56,9 @@ public class UpdateApplicationByNameEndpointTests
 
         var request = new UpdateApplicationByNameRequest()
         {
-            CurrentName = "Default Application",
+            CurrentName = "Default Test Application",
             NewName = "Default App",
-            NewCallbackUri = "https://localhost:7255/callback",
-            NewRedirectUri = "https://localhost:7255"
+            NewCallbackUri = "https://localhost:7255/callback"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
@@ -86,10 +84,9 @@ public class UpdateApplicationByNameEndpointTests
 
         var request = new UpdateApplicationByNameRequest()
         {
-            CurrentName = "Default Application",
+            CurrentName = "Default Test Application",
             NewName = "Default App",
             NewCallbackUri = "https://localhost:7255/callback",
-            NewRedirectUri = "https://localhost:7255"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
@@ -117,7 +114,6 @@ public class UpdateApplicationByNameEndpointTests
             CurrentName = "Default Recent Deleted Application",
             NewName = "Default Recent Application",
             NewCallbackUri = "https://localhost:7255/callback",
-            NewRedirectUri = "https://localhost:7255"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
