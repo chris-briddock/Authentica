@@ -150,6 +150,10 @@ public static class Seed
         /// </summary>
         public const string AddressValue = "DEFAULT";
         /// <summary>
+        /// Default admin email value for test data.
+        /// </summary>
+        public const string AdminEmail = "admin@default.com";
+        /// <summary>
         /// Seeds an admin user into the database if it doesn't already exist.
         /// </summary>
         /// <param name="app">The web application instance.</param>
@@ -159,7 +163,7 @@ public static class Seed
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-            var adminEmail = "admin@default.com";
+            var adminEmail = AdminEmail;
 
             User adminUser = new()
             {
@@ -202,7 +206,7 @@ public static class Seed
 
             string appName = "Default Test Application";
 
-            var adminEmail = "admin@default.com";
+            var adminEmail = AdminEmail;
             var user = await userManager.FindByEmailAsync(adminEmail);
 
             var secret = "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==";
@@ -250,7 +254,7 @@ public static class Seed
             var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
             var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
 
-            var adminEmail = "admin@default.com";
+            var adminEmail = AdminEmail;
             var user = await userManager.FindByEmailAsync(adminEmail);
 
             var secret = stringProvider.GenerateAlphanumeric();
@@ -302,7 +306,7 @@ public static class Seed
             var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
             var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
 
-            var adminEmail = "admin@default.com";
+            var adminEmail = AdminEmail;
             var user = await userManager.FindByEmailAsync(adminEmail);
 
             var secret = stringProvider.GenerateAlphanumeric();
