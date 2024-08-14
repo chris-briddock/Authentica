@@ -137,6 +137,14 @@ public static class Seed
     public static class Test
     {
         /// <summary>
+        /// Default created by value for seed data.
+        /// </summary>
+        public const string CreatedBy = "SYSTEM";
+        /// <summary>
+        /// Default address value for seed data.
+        /// </summary>
+        public const string AddressValue = "DEFAULT";
+        /// <summary>
         /// Seeds an admin user into the database if it doesn't already exist.
         /// </summary>
         /// <param name="app">The web application instance.</param>
@@ -157,8 +165,8 @@ public static class Seed
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                CreatedBy = "SYSTEM",
-                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+                CreatedBy = CreatedBy,
+                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 
             // Hash the password for security.
@@ -208,7 +216,7 @@ public static class Seed
                     ClientId = "2e5cf15b-bf5b-4d80-aa01-2a596403530d",
                     Name = appName,
                     CallbackUri = "https://localhost:7256/callback",
-                    CreatedBy = "SYSTEM",
+                    CreatedBy = CreatedBy,
                     ClientSecret = hashedSecret,
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 };
@@ -258,7 +266,7 @@ public static class Seed
                     ClientId = Guid.NewGuid().ToString(),
                     Name = appName,
                     CallbackUri = "https://localhost:7256/callback",
-                    CreatedBy = "SYSTEM",
+                    CreatedBy = CreatedBy,
                     ClientSecret = hashedSecret,
                     ConcurrencyStamp = Guid.NewGuid().ToString(),
                     DeletedBy = user!.Id,
@@ -310,7 +318,7 @@ public static class Seed
                     ClientId = Guid.NewGuid().ToString(),
                     Name = appName,
                     CallbackUri = "https://localhost:7256/callback",
-                    CreatedBy = "SYSTEM",
+                    CreatedBy = CreatedBy,
                     ClientSecret = hashedSecret,
                     ConcurrencyStamp = Guid.NewGuid().ToString(),
                     DeletedBy = user!.Id,
@@ -354,8 +362,8 @@ public static class Seed
                 IsDeleted = true,
                 DeletedOnUtc = DateTime.UtcNow,
                 EmailConfirmed = true,
-                CreatedBy = "SYSTEM",
-                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+                CreatedBy = CreatedBy,
+                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 
             // Hash the password for security.
@@ -396,8 +404,8 @@ public static class Seed
                 IsDeleted = false,
                 DeletedOnUtc = default!,
                 EmailConfirmed = true,
-                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT"),
-                CreatedBy = "SYSTEM"
+                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue),
+                CreatedBy = CreatedBy
             };
 
             user.PasswordHash = userManager.PasswordHasher.HashPassword(user, "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`");
@@ -434,8 +442,8 @@ public static class Seed
                 IsDeleted = false,
                 DeletedOnUtc = default!,
                 EmailConfirmed = true,
-                CreatedBy = "SYSTEM",
-                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+                CreatedBy = CreatedBy,
+                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 
             // Hash the password for security.
@@ -472,8 +480,8 @@ public static class Seed
                 IsDeleted = true,
                 DeletedOnUtc = DateTime.UtcNow.AddYears(-8),
                 EmailConfirmed = true,
-                CreatedBy = "SYSTEM",
-                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+                CreatedBy = CreatedBy,
+                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
 
             };
 
@@ -489,8 +497,8 @@ public static class Seed
                 AccessFailedCount = 0,
                 IsDeleted = true,
                 EmailConfirmed = true,
-                CreatedBy = "SYSTEM",
-                Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+                CreatedBy = CreatedBy,
+                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
 
             };
             recentDeletedUser.PasswordHash = userManager.PasswordHasher.HashPassword(recentDeletedUser, "dnjdnjdnwjdnwqjdnqwj");
