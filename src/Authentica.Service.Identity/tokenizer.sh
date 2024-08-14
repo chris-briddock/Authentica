@@ -5,22 +5,27 @@ usage() {
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
     echo "  -h, --help                     Display this help message"
+    echo "  --sql-hostname HOST            SQL Server hostname"
+    echo "  --sql-database DB              SQL Database name"
+    echo "  --sql-username USERNAME        SQL Username"
+    echo "  --sql-password PASSWORD        SQL Password"
+    echo "  --redis-host HOST              Redis host"
     echo "  --az-service-bus STRING        Azure Service Bus connection string"
     echo "  --az-app-insights STRING       Application Insights connection string"
+    echo "  --jwt-audience AUDIENCE        JWT audience"
+    echo "  --jwt-secret SECRET            JWT secret"
+    echo "  --jwt-expires EXPIRES          JWT expiration"
     echo "  --rabbit-host HOST             RabbitMQ host"
     echo "  --rabbit-username USERNAME     RabbitMQ username"
     echo "  --rabbit-password PASSWORD     RabbitMQ password"
-    echo "  --email-server SERVER          Email server"
-    echo "  --email-port PORT              Email port"
-    echo "  --email-address ADDRESS        Email address"
-    echo "  --email-password PASSWORD      Email password"
-    echo "  --feature-app-insights VALUE   Enable or disable AppInsights feature (true/false)"
-    echo "  --feature-service-bus VALUE    Enable or disable ServiceBus feature (true/false)"
-    echo "  --feature-rabbitmq VALUE       Enable or disable RabbitMQ feature (true/false)"
     echo "  --admin-email EMAIL            Admin email address"
     echo "  --admin-password PASSWORD      Admin password"
     echo "  --client-secret SECRET         Client secret"
     echo "  --client-callback-uri URI      Client callback URI"
+    echo "  --feature-cache VALUE          Enable or disable Cache feature (true/false)"
+    echo "  --feature-app-insights VALUE   Enable or disable AppInsights feature (true/false)"
+    echo "  --feature-service-bus VALUE    Enable or disable ServiceBus feature (true/false)"
+    echo "  --feature-rabbitmq VALUE       Enable or disable RabbitMQ feature (true/false)"
     exit 1
 }
 
@@ -36,6 +41,31 @@ while [[ $# -gt 0 ]]; do
         -h|--help)
             usage
             ;;
+        --sql-hostname)
+            sqlHostname="$2"
+            shift
+            shift
+            ;;
+        --sql-database)
+            sqlDatabase="$2"
+            shift
+            shift
+            ;;
+        --sql-username)
+            sqlUsername="$2"
+            shift
+            shift
+            ;;
+        --sql-password)
+            sqlPassword="$2"
+            shift
+            shift
+            ;;
+        --redis-host)
+            redisHost="$2"
+            shift
+            shift
+            ;;
         --az-service-bus)
             azServiceBus="$2"
             shift
@@ -43,6 +73,21 @@ while [[ $# -gt 0 ]]; do
             ;;
         --az-app-insights)
             azAppInsightsConnectionString="$2"
+            shift
+            shift
+            ;;
+        --jwt-audience)
+            jwtAudience="$2"
+            shift
+            shift
+            ;;
+        --jwt-secret)
+            jwtSecret="$2"
+            shift
+            shift
+            ;;
+        --jwt-expires)
+            jwtExpires="$2"
             shift
             shift
             ;;
@@ -58,41 +103,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         --rabbit-password)
             rabbitPassword="$2"
-            shift
-            shift
-            ;;
-        --email-server)
-            emailServer="$2"
-            shift
-            shift
-            ;;
-        --email-port)
-            emailPort="$2"
-            shift
-            shift
-            ;;
-        --email-address)
-            emailAddress="$2"
-            shift
-            shift
-            ;;
-        --email-password)
-            emailPassword="$2"
-            shift
-            shift
-            ;;
-        --feature-app-insights)
-            featureAppInsights="$2"
-            shift
-            shift
-            ;;
-        --feature-service-bus)
-            featureServiceBus="$2"
-            shift
-            shift
-            ;;
-        --feature-rabbitmq)
-            featureRabbitmq="$2"
             shift
             shift
             ;;
@@ -116,6 +126,26 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             ;;
+        --feature-cache)
+            featureCache="$2"
+            shift
+            shift
+            ;;
+        --feature-app-insights)
+            featureAppInsights="$2"
+            shift
+            shift
+            ;;
+        --feature-service-bus)
+            featureServiceBus="$2"
+            shift
+            shift
+            ;;
+        --feature-rabbitmq)
+            featureRabbitmq="$2"
+            shift
+            shift
+            ;;
         *)
             echo "Invalid option: $1"
             usage
@@ -129,12 +159,44 @@ escape_json() {
 }
 
 # Replace placeholder values in the appsettings.json file
+if [ ! -z "$sqlHostname" ]; then
+    sed -i "s/{sqlHostname}/$(escape_json "$sqlHostname")/g" appsettings.json
+fi
+
+if [ ! -z "$sqlDatabase" ]; then
+    sed -i "s/{sqlDatabase}/$(escape_json "$sqlDatabase")/g" appsettings.json
+fi
+
+if [ ! -z "$sqlUsername" ]; then
+    sed -i "s/{sqlUsername}/$(escape_json "$sqlUsername")/g" appsettings.json
+fi
+
+if [ ! -z "$sqlPassword" ]; then
+    sed -i "s/{sqlPassword}/$(escape_json "$sqlPassword")/g" appsettings.json
+fi
+
+if [ ! -z "$redisHost" ]; then
+    sed -i "s/{redisHost}/$(escape_json "$redisHost")/g" appsettings.json
+fi
+
 if [ ! -z "$azServiceBus" ]; then
     sed -i "s/{azServiceBus}/$(escape_json "$azServiceBus")/g" appsettings.json
 fi
 
 if [ ! -z "$azAppInsightsConnectionString" ]; then
     sed -i "s/{azAppInsightsConnectionString}/$(escape_json "$azAppInsightsConnectionString")/g" appsettings.json
+fi
+
+if [ ! -z "$jwtAudience" ]; then
+    sed -i "s/{jwtAudience}/$(escape_json "$jwtAudience")/g" appsettings.json
+fi
+
+if [ ! -z "$jwtSecret" ]; then
+    sed -i "s/{jwtSecret}/$(escape_json "$jwtSecret")/g" appsettings.json
+fi
+
+if [ ! -z "$jwtExpires" ]; then
+    sed -i "s/{jwtExpires}/$(escape_json "$jwtExpires")/g" appsettings.json
 fi
 
 if [ ! -z "$rabbitHost" ]; then
@@ -147,22 +209,6 @@ fi
 
 if [ ! -z "$rabbitPassword" ]; then
     sed -i "s/{rabbitPassword}/$(escape_json "$rabbitPassword")/g" appsettings.json
-fi
-
-if [ ! -z "$emailServer" ]; then
-    sed -i "s/{emailServer}/$(escape_json "$emailServer")/g" appsettings.json
-fi
-
-if [ ! -z "$emailPort" ]; then
-    sed -i "s/{emailPort}/$(escape_json "$emailPort")/g" appsettings.json
-fi
-
-if [ ! -z "$emailAddress" ]; then
-    sed -i "s/{emailAddress}/$(escape_json "$emailAddress")/g" appsettings.json
-fi
-
-if [ ! -z "$emailPassword" ]; then
-    sed -i "s/{emailPassword}/$(escape_json "$emailPassword")/g" appsettings.json
 fi
 
 if [ ! -z "$adminEmail" ]; then
@@ -182,6 +228,10 @@ if [ ! -z "$clientCallbackUri" ]; then
 fi
 
 # Replace feature management values
+if [ ! -z "$featureCache" ]; then
+    sed -i "s/\"Cache\": false/\"Cache\": $featureCache/g" appsettings.json
+fi
+
 if [ ! -z "$featureAppInsights" ]; then
     sed -i "s/\"AppInsights\": false/\"AppInsights\": $featureAppInsights/g" appsettings.json
 fi

@@ -36,7 +36,7 @@ public interface IApplicationReadStore
     /// A task that represents the asynchronous operation, containing the client application if found;
     /// otherwise, null.
     /// </returns>
-    Task<ClientApplication?> GetClientApplicationByClientIdAndCallbackUri(ApplicationDTO<AuthorizeRequest> dto, CancellationToken cancellationToken);
+    Task<ClientApplication?> GetClientApplicationByClientIdAndCallbackUri(ApplicationDto<AuthorizeRequest> dto, CancellationToken cancellationToken);
     /// <summary>
     /// Retrieves all client applications associated with a given user ID.
     /// </summary>

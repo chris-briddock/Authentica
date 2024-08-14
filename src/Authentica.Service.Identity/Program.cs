@@ -26,7 +26,8 @@ namespace Authentica.Service.Identity;
 /// The entry point for the Web Application.
 /// </summary>
 public sealed class Program
-{
+{ 
+    private Program(){}
     /// <summary>
     /// The entry method for the web application.
     /// </summary>
@@ -67,7 +68,7 @@ public sealed class Program
         builder.Services.AddHostedService<AccountPurge>();
         builder.Services.AddHostedService<ApplicationPurge>();
         builder.Services.AddSqlDatabaseHealthChecks(builder.Configuration.GetConnectionStringOrThrow("Default"));
-        builder.Services.AddRedisHealthChecks(builder.Configuration["ConnectionStrings:Redis"]!);
+        builder.Services.AddRedisHealthCheck();
 
         WebApplication app = builder.Build();
         app.UseSession();

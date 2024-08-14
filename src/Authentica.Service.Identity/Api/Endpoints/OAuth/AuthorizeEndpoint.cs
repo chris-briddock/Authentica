@@ -59,7 +59,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
 
         await eventStore.SaveEventAsync(@event);
 
-        ApplicationDTO<AuthorizeRequest> dto = new()
+        ApplicationDto<AuthorizeRequest> dto = new()
         {
             Request = request,
             ClaimsPrincipal = User

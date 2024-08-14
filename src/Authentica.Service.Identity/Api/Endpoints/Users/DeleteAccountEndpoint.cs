@@ -35,7 +35,7 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken)
+    public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default!)
     {
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();

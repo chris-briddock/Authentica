@@ -42,11 +42,11 @@ public sealed class AppDbContext : DbContext
     /// <summary>
     /// Applies entity configurations defined in the current assembly to the DbContext.
     /// </summary>
-    /// <param name="builder">The model builder instance used to apply entity configurations.</param>
-    protected override void OnModelCreating(ModelBuilder builder)
+    /// <param name="modelBuilder">The model builder instance used to apply entity configurations.</param>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        base.OnModelCreating(builder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(modelBuilder);
     }
 
     /// <summary>

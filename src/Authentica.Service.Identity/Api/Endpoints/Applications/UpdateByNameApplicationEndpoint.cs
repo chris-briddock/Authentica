@@ -70,7 +70,7 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        var dto = new ApplicationDTO<UpdateApplicationByNameRequest>()
+        var dto = new ApplicationDto<UpdateApplicationByNameRequest>()
         {
             Request = request,
             ClaimsPrincipal = User

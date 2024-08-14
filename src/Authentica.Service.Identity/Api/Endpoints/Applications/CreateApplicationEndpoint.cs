@@ -54,7 +54,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         if (applicationExists)
             return BadRequest("Application with this name already exists.");
 
-        var dto = new ApplicationDTO<CreateApplicationRequest>()
+        var dto = new ApplicationDto<CreateApplicationRequest>()
         {
             Request = request,
             ClaimsPrincipal = User

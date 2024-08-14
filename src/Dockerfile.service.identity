@@ -2,11 +2,8 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
+EXPOSE 7171
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -28,4 +25,10 @@ RUN dotnet publish "./Authentica.Service.Identity.csproj" -c $BUILD_CONFIGURATIO
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+ENV ASPNETCORE_URLS=https://+:7171
+COPY Authentica.Service.Identity/cert.pfx /app/cert.pfx
+RUN chmod 644 /app/cert.pfx 
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=YourSecurePassword
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/cert.pfx
+USER app
 ENTRYPOINT ["dotnet", "Authentica.Service.Identity.dll"]

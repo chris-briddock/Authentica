@@ -58,7 +58,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        ApplicationDTO<CreateApplicationSecretRequest> dto = new()
+        ApplicationDto<CreateApplicationSecretRequest> dto = new()
         {
             Request = request,
             ClaimsPrincipal = User
