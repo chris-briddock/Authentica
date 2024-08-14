@@ -36,4 +36,14 @@ public class TimerProvider : ITimer, IDisposable
         _timer.Dispose();
         GC.SuppressFinalize(this);
     }
+    /// <summary>
+    /// Releases all resources used by the current instance of the <see cref="TimerProvider"/> class.
+    /// </summary>
+    public virtual void Dispose(bool disposing)
+    {  
+        if (disposing)
+        {
+            Dispose();
+        }
+    }
 }

@@ -3,7 +3,7 @@ namespace Domain.Constants;
 /// <summary>
 /// Represents the authorize response types
 /// </summary>
-public sealed class TokenConstants
+public static class TokenConstants
 {
     /// <summary>
     /// Represents the value for client credentials token type.

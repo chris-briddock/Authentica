@@ -34,19 +34,20 @@ public static class ServiceCollectionExtensions
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
     public static IServiceCollection AddSwaggerGen(this IServiceCollection services, string xmlFile)
     {
+        string AuthSchemeName = "Bearer";
         services.AddSwaggerGen(opt =>
         {
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
             opt.IncludeXmlComments(xmlPath);
-            opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            opt.AddSecurityDefinition(AuthSchemeName, new OpenApiSecurityScheme
             {
                 Description = @"JWT Authorization header using the Bearer scheme.
                       Enter 'Bearer' [space] and then your token in the text input below.",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
+                Scheme = AuthSchemeName
             });
 
             opt.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -57,10 +58,10 @@ public static class ServiceCollectionExtensions
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Id = AuthSchemeName
                             },
                             Scheme = "oauth2",
-                            Name = "Bearer",
+                            Name = AuthSchemeName,
                             In = ParameterLocation.Header,
 
                         },

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mail;
+using MassTransit.Util;
 
 namespace Authentica.WorkerService.Email;
 
@@ -51,5 +52,11 @@ public sealed class SmtpClientWrapper : ISmtpClient
     {
         _smtpClient.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    public virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+          Dispose();
     }
 }
