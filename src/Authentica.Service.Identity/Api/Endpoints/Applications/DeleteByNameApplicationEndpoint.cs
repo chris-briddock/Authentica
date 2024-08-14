@@ -57,7 +57,7 @@ public class DeleteByNameApplicationEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        ApplicationDTO<DeleteApplicationByNameRequest> dto = new()
+        ApplicationDto<DeleteApplicationByNameRequest> dto = new()
         {
             Request = request,
             ClaimsPrincipal = User

@@ -41,7 +41,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     /// 5. Uses a transaction to ensure that both insert operations are atomic.
     /// 6. Rolls back the transaction if an exception occurs, and returns an error result.
     /// </remarks>
-    public async Task<ApplicationStoreResult> CreateClientApplicationAsync(ApplicationDTO<CreateApplicationRequest> dto, CancellationToken cancellationToken = default)
+    public async Task<ApplicationStoreResult> CreateClientApplicationAsync(ApplicationDto<CreateApplicationRequest> dto, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(dto);
 
@@ -132,7 +132,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationStoreResult"/> which indicates the success or failure of the operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="dto"/> is <c>null</c>.</exception>
     /// <exception cref="Exception">Thrown when an error occurs during the process of soft deleting the client application.</exception>
-    public async Task<ApplicationStoreResult> SoftDeleteApplicationAsync(ApplicationDTO<DeleteApplicationByNameRequest> dto,
+    public async Task<ApplicationStoreResult> SoftDeleteApplicationAsync(ApplicationDto<DeleteApplicationByNameRequest> dto,
                                                                          CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -181,7 +181,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     /// <param name="cancellationToken">A token to cancel the operation if needed. The default value is <see cref="CancellationToken.None"/>.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="dto"/> is <c>null</c> or empty.</exception>
-    public async Task<ApplicationStoreResult> UpdateClientSecretAsync(ApplicationDTO<CreateApplicationSecretRequest> dto, CancellationToken cancellationToken = default)
+    public async Task<ApplicationStoreResult> UpdateClientSecretAsync(ApplicationDto<CreateApplicationSecretRequest> dto, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(dto);
 

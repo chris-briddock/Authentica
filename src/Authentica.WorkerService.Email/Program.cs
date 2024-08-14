@@ -7,6 +7,8 @@ namespace Authentica.WorkerService.Email;
 
 public sealed class Program
 {
+    private Program(){}
+    
     public static async Task Main(string[] args)
     {
         var builder = Host.CreateApplicationBuilder(args);

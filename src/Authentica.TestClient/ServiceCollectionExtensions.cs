@@ -8,7 +8,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBearerAuthentication(this IServiceCollection services)
     {
-        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

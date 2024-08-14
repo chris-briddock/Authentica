@@ -101,12 +101,9 @@ public static class Seed
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
-        var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
 
         var adminEmail = configuration.GetRequiredValueOrThrow("Defaults:AdminEmail");
-        var adminPassword = configuration.GetRequiredValueOrThrow("Defaults:AdminPassword");
         var secret = configuration.GetRequiredValueOrThrow("Defaults:Secret");
         var callbackUri = configuration.GetRequiredValueOrThrow("Defaults:CallbackUri");
         var user = await userManager.FindByEmailAsync(adminEmail);
@@ -201,9 +198,7 @@ public static class Seed
             using var scope = app.Services.CreateAsyncScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
             var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
-            var stringProvider = scope.ServiceProvider.GetRequiredService<IRandomStringProvider>();
 
             string appName = "Default Test Application";
 

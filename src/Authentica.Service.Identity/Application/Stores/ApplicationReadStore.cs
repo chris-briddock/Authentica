@@ -65,7 +65,7 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     /// A task that represents the asynchronous operation, containing the client application if found;
     /// otherwise, null.
     /// </returns>
-    public async Task<ClientApplication?> GetClientApplicationByClientIdAndCallbackUri(ApplicationDTO<AuthorizeRequest> dto, CancellationToken cancellationToken)
+    public async Task<ClientApplication?> GetClientApplicationByClientIdAndCallbackUri(ApplicationDto<AuthorizeRequest> dto, CancellationToken cancellationToken)
     {
         return await DbContext.ClientApplications
             .Where(x => x.ClientId == dto.Request.ClientId)

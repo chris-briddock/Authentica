@@ -48,7 +48,7 @@ public abstract class StoreBase
     /// Initializes a new instance of the <see cref="StoreBase"/> class.
     /// </summary>
     /// <param name="services">The service provider used to resolve dependencies.</param>
-    public StoreBase(IServiceProvider services)
+    protected StoreBase(IServiceProvider services)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
     }

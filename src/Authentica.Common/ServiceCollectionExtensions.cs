@@ -20,7 +20,6 @@ public static class ServiceCollectionExtensions
 
         if (featureManager.IsEnabledAsync(FeatureFlagConstants.AzApplicationInsights).Result)
         {
-            var configuration = services.BuildServiceProvider().GetService<IConfiguration>()!;
             services.AddApplicationInsightsTelemetry();
             services.ConfigureTelemetryModule<RequestTrackingTelemetryModule>(
                 (module, options) => { module.CollectionOptions.InjectResponseHeaders = true; });

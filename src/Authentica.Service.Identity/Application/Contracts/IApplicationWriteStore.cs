@@ -18,7 +18,7 @@ public interface IApplicationWriteStore
     /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationStoreResult"/> which indicates the success or failure of the operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="dto"/> is <c>null</c>.</exception>
     /// <exception cref="Exception">Thrown when an error occurs during the process of adding the client application.</exception>
-    Task<ApplicationStoreResult> CreateClientApplicationAsync(ApplicationDTO<CreateApplicationRequest> dto,
+    Task<ApplicationStoreResult> CreateClientApplicationAsync(ApplicationDto<CreateApplicationRequest> dto,
                                                               CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -29,7 +29,7 @@ public interface IApplicationWriteStore
     /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationStoreResult"/> which indicates the success or failure of the operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="dto"/> is <c>null</c>.</exception>
     /// <exception cref="Exception">Thrown when an error occurs during the process of updating the client application.</exception>
-    Task<ApplicationStoreResult> UpdateApplicationAsync(ApplicationDTO<UpdateApplicationByNameRequest> dto,
+    Task<ApplicationStoreResult> UpdateApplicationAsync(ApplicationDto<UpdateApplicationByNameRequest> dto,
                                                         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -41,7 +41,7 @@ public interface IApplicationWriteStore
     /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationStoreResult"/> which indicates the success or failure of the operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="dto"/> is <c>null</c>.</exception>
     /// <exception cref="Exception">Thrown when an error occurs during the process of soft deleting the client application.</exception>
-    Task<ApplicationStoreResult> SoftDeleteApplicationAsync(ApplicationDTO<DeleteApplicationByNameRequest> dto,
+    Task<ApplicationStoreResult> SoftDeleteApplicationAsync(ApplicationDto<DeleteApplicationByNameRequest> dto,
                                                             CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -51,7 +51,7 @@ public interface IApplicationWriteStore
     /// <param name="cancellationToken">A token to cancel the operation if needed. The default value is <see cref="CancellationToken.None"/>.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="dto"/> is <c>null</c> or empty.</exception>
-    Task<ApplicationStoreResult> UpdateClientSecretAsync(ApplicationDTO<CreateApplicationSecretRequest> dto,
+    Task<ApplicationStoreResult> UpdateClientSecretAsync(ApplicationDto<CreateApplicationSecretRequest> dto,
                                                          CancellationToken cancellationToken = default);
 
 }

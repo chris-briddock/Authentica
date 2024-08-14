@@ -8,9 +8,9 @@ namespace Application.Cryptography;
 public class Argon2SecretHasher : ISecretHasher
 {
     /// <inheritdoc/>
-    public string Hash(string password)
+    public string Hash(string input)
     {
-        return Shared.Hash(password);
+        return Shared.Hash(input);
     }
 
     /// <inheritdoc/>

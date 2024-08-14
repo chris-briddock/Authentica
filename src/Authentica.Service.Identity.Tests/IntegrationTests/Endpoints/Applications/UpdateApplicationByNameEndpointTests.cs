@@ -101,7 +101,7 @@ public class UpdateApplicationByNameEndpointTests
     {
         var userWriteStoreMock = new ApplicationWriteStoreMock();
 
-        userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ApplicationDTO<UpdateApplicationByNameRequest>>(), It.IsAny<CancellationToken>()))
+        userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ApplicationDto<UpdateApplicationByNameRequest>>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
          using var sutClient = _fixture.CreateAuthenticatedClient(s => 

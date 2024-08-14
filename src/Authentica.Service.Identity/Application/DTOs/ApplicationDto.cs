@@ -5,7 +5,7 @@ namespace Application.DTOs;
 /// <summary>
 /// Represents a data transfer object for an application.
 /// </summary>
-public class ApplicationDTO<TRequest>
+public class ApplicationDto<TRequest>
 where TRequest : class
 {
     /// <summary>

@@ -97,7 +97,7 @@ public class DeleteApplicationEndpointTests
 
         var writeStoreMock = new ApplicationWriteStoreMock();
 
-        writeStoreMock.Setup(x => x.SoftDeleteApplicationAsync(It.IsAny<ApplicationDTO<DeleteApplicationByNameRequest>>(), It.IsAny<CancellationToken>())).ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
+        writeStoreMock.Setup(x => x.SoftDeleteApplicationAsync(It.IsAny<ApplicationDto<DeleteApplicationByNameRequest>>(), It.IsAny<CancellationToken>())).ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
         using var sutClient = _fixture.CreateAuthenticatedClient(s =>
         {

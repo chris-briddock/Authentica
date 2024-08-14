@@ -6,7 +6,7 @@ namespace Authentica.WorkerService.Email;
 /// <summary>
 /// Wrapper class for the SmtpClient to send emails.
 /// </summary>
-public class SmtpClientWrapper : ISmtpClient
+public sealed class SmtpClientWrapper : ISmtpClient
 {
     private readonly SmtpClient _smtpClient;
 

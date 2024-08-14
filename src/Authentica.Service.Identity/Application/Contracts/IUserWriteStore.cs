@@ -16,7 +16,7 @@ public interface IUserWriteStore
     /// <param name="user">The user to be soft deleted.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="UserStoreResult"/> indicating the success or failure of the operation.</returns>
-    Task<UserStoreResult> SoftDeleteUserAsync(ClaimsPrincipal user, CancellationToken cancellationToken);
+    Task<UserStoreResult> SoftDeleteUserAsync(ClaimsPrincipal user, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously creates a new user based on the provided registration request.
