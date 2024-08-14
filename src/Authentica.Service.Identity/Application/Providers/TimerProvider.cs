@@ -5,7 +5,7 @@ namespace Application.Providers;
 /// <summary>
 /// Provides a timer that ticks at regular intervals and allows waiting for the next tick.
 /// </summary>
-public class TimerProvider : ITimer, IDisposable
+public sealed class TimerProvider : ITimer, IDisposable
 {
     private readonly PeriodicTimer _timer;
 

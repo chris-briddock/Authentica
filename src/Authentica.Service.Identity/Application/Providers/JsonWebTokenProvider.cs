@@ -10,7 +10,7 @@ namespace Application.Providers;
 /// Represents a service for managing JSON Web Tokens.
 /// This includes creating, refreshing and validating JSON Web Tokens.
 /// </summary>
-public class JsonWebTokenProvider : IJsonWebTokenProvider
+public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
 {
     /// <inheritdoc/>
     public async Task<JwtResult> TryCreateTokenAsync(string email,
