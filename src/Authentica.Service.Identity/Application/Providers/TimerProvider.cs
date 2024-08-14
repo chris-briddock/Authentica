@@ -5,7 +5,7 @@ namespace Application.Providers;
 /// <summary>
 /// Provides a timer that ticks at regular intervals and allows waiting for the next tick.
 /// </summary>
-public class TimerProvider : ITimer, IDisposable
+public sealed class TimerProvider : ITimer, IDisposable
 {
     private readonly PeriodicTimer _timer;
 
@@ -35,15 +35,5 @@ public class TimerProvider : ITimer, IDisposable
     {
         _timer.Dispose();
         GC.SuppressFinalize(this);
-    }
-    /// <summary>
-    /// Releases all resources used by the current instance of the <see cref="TimerProvider"/> class.
-    /// </summary>
-    public virtual void Dispose(bool disposing)
-    {  
-        if (disposing)
-        {
-            Dispose();
-        }
     }
 }
