@@ -88,7 +88,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationStoreResult"/> which indicates the success or failure of the operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="dto"/> is <c>null</c>.</exception>
     /// <exception cref="Exception">Thrown when an error occurs during the process of updating the client application.</exception>
-    public async Task<ApplicationStoreResult> UpdateApplicationAsync(ApplicationDTO<UpdateApplicationByNameRequest> dto,
+    public async Task<ApplicationStoreResult> UpdateApplicationAsync(ApplicationDto<UpdateApplicationByNameRequest> dto,
                                                                      CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(dto);
