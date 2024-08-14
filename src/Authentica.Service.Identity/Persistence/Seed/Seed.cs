@@ -15,6 +15,14 @@ namespace Persistence.Seed;
 public static class Seed
 {
     /// <summary>
+    /// Default value for created by.
+    /// </summary>
+    public const string CreatedBy = "SYSTEM";
+    /// <summary>
+    /// Default value for an address.
+    /// </summary>
+    public const string AddressValue = "DEFAULT";
+    /// <summary>
     /// Seeds an admin user into the database if it doesn't already exist.
     /// </summary>
     /// <param name="app">The web application instance.</param>
@@ -37,8 +45,8 @@ public static class Seed
             EmailConfirmed = true,
             LockoutEnabled = false,
             AccessFailedCount = 0,
-            CreatedBy = "SYSTEM",
-            Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+            CreatedBy = CreatedBy,
+            Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
         };
 
         // Hash the password for security.
@@ -73,7 +81,7 @@ public static class Seed
             {
                 Name = role,
                 NormalizedName = role.ToUpper(),
-                CreatedBy = "SYSTEM",
+                CreatedBy = CreatedBy,
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             };
 
@@ -114,7 +122,7 @@ public static class Seed
                 ClientId = Guid.NewGuid().ToString(),
                 Name = "Authentica Default Application",
                 CallbackUri = $"{callbackUri}",
-                CreatedBy = "SYSTEM",
+                CreatedBy = CreatedBy,
                 ClientSecret = hashedSecret,
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             };
