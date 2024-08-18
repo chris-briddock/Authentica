@@ -26,7 +26,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
         {
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(jwtSecret);
+            var key = Encoding.UTF8.GetBytes(jwtSecret);
             var expiryMinutesToAdd = expires;
 
             List<Claim> claims =
@@ -79,7 +79,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(jwtSecret);
+            var key = Encoding.UTF8.GetBytes(jwtSecret);
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
