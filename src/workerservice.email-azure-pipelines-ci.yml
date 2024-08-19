@@ -52,7 +52,7 @@ stages:
     - task: Bash@3
       inputs:
         filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
-        arguments: ' --az-service-bus $(ServiceBusConnectionString) --az-app-insights $(AppInsightsConnectionString) --email-server $(EmailServer) --email-port $(EmailPort) --email-address $(EmailAddress) --email-password $(EmailPassword) --feature-app-insights "true" --feature-service-bus "true" --feature-rabbitmq "false"'
+        arguments: '--feature-service-bus "true" --feature-app-insights "true" --az-service-bus $(ServiceBusConnectionString) --az-app-insights $(AppInsightsConnectionString) --email-server $(EmailServer) --email-port $(EmailPort) --email-address $(EmalAddress) --email-password $(EmailPassword)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
     - task: Bash@3
       inputs:
