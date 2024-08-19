@@ -47,6 +47,7 @@ stages:
         publishLocation: 'Container'
   - job: Docker
     displayName: 'Docker'
+    dependsOn: 'Build'
     steps:
     - checkout: self
     - task: Bash@3
