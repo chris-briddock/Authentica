@@ -59,7 +59,7 @@ stages:
     - task: Bash@3
       inputs:
         filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
-        arguments: '--sql-hostname $(SqlHostname) --sql-database $(SqlDatabase) --sql-username $(SqlUsername) --sql-password $(SqlPassword) --redis-host $(RedisHost) --jwt-audience $(JwtAudience) --jwt-secret $(JwtSecret) --jwt-expires $(JwtExpires) --az-service-bus $(ServiceBusConnectionString) --admin-email $(AdminEmail) --admin-password $(AdminPassword) --client-secret $(ClientSecret) --client-callback-uri $(ClientCallbackUri) --feature-cache "true"  --feature-app-insights "false" --feature-service-bus "true" --feature-rabbitmq "false"'
+        arguments: '--sql-hostname $(SqlHostname) --sql-database $(SqlDatabase) --sql-username $(SqlUsername) --sql-password $(SqlPassword) --redis-host $(RedisHost) --jwt-audience $(JwtAudience) --jwt-secret $(JwtSecret) --jwt-expires $(JwtExpires) --az-service-bus $(ServiceBusConnectionString) --az-app-insights $(AppInsightsConnectionString) --admin-email $(AdminEmail) --admin-password $(AdminPassword) --client-secret $(ClientSecret) --client-callback-uri $(ClientCallbackUri) --feature-cache "true"  --feature-app-insights "true" --feature-service-bus "true" --feature-rabbitmq "false"'
         workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
     - task: Bash@3
       inputs:
