@@ -26,6 +26,10 @@ usage() {
     echo "  --feature-app-insights VALUE   Enable or disable AppInsights feature (true/false)"
     echo "  --feature-service-bus VALUE    Enable or disable ServiceBus feature (true/false)"
     echo "  --feature-rabbitmq VALUE       Enable or disable RabbitMQ feature (true/false)"
+    echo "  --email-server SERVER          Email server"
+    echo "  --email-port PORT              Email server port"
+    echo "  --email-address ADDRESS        Email address"
+    echo "  --email-password PASSWORD      Email password"
     exit 1
 }
 
@@ -146,6 +150,26 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             ;;
+        --email-server)
+            emailServer="$2"
+            shift
+            shift
+            ;;
+        --email-port)
+            emailPort="$2"
+            shift
+            shift
+            ;;
+        --email-address)
+            emailAddress="$2"
+            shift
+            shift
+            ;;
+        --email-password)
+            emailPassword="$2"
+            shift
+            shift
+            ;;
         *)
             echo "Invalid option: $1"
             usage
@@ -242,6 +266,23 @@ fi
 
 if [ ! -z "$featureRabbitmq" ]; then
     sed -i "s/\"RabbitMq\": false/\"RabbitMq\": $featureRabbitmq/g" appsettings.json
+fi
+
+# Replace email settings
+if [ ! -z "$emailServer" ]; then
+    sed -i "s/{emailServer}/$(escape_json "$emailServer")/g" appsettings.json
+fi
+
+if [ ! -z "$emailPort" ]; then
+    sed -i "s/{emailPort}/$(escape_json "$emailPort")/g" appsettings.json
+fi
+
+if [ ! -z "$emailAddress" ]; then
+    sed -i "s/{emailAddress}/$(escape_json "$emailAddress")/g" appsettings.json
+fi
+
+if [ ! -z "$emailPassword" ]; then
+    sed -i "s/{emailPassword}/$(escape_json "$emailPassword")/g" appsettings.json
 fi
 
 echo "Placeholder values replaced in appsettings.json file."
