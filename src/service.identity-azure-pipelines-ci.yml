@@ -67,6 +67,6 @@ stages:
         script: 'cat appsettings.json'
         workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
     - script: |
-          docker tag 144.21.55.225:5000/authentica-service-identity:latest http://144.21.55.225:5000/authentica-service-identity:latest
+          docker build -f Dockerfile.service.identity -t 144.21.55.225:5000/authentica-service-identity:latest . 
           docker push http://144.21.55.225:5000/authentica-service-identity:latest:latest
-          displayName: 'Push Docker Image' 
+      displayName: 'Push to build'
