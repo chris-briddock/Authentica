@@ -42,7 +42,6 @@ stages:
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
         Contents: |
-          deploy/**/*.yaml
           **/src/Authentica.Service.Identity/bin/Release/net8.0/publish/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         OverWrite: true
@@ -60,7 +59,7 @@ stages:
     - task: Bash@3
       inputs:
         filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
-        arguments: '--sql-hostname $(SqlHostname) --sql-database $(SqlDatabase) --sql-username $(SqlUsername) --sql-password $(SqlPassword) --redis-host $(RedisHost) --jwt-audience $(JwtAudience) --jwt-secret $(JwtSecret) --jwt-expires $(JwtExpires) --az-service-bus $(ServiceBusConnectionString) --az-app-insights $(AppInsightsConnectionString) --admin-email $(AdminEmail) --admin-password $(AdminPassword) --client-secret $(ClientSecret) --client-callback-uri $(ClientCallbackUri) --feature-cache "true"  --feature-app-insights "true" --feature-service-bus "true" --feature-rabbitmq "false"'
+        arguments: '--sql-hostname $(SqlHostname) --sql-database $(SqlDatabase) --sql-username $(SqlUsername) --sql-password $(SqlPassword) --redis-host $(RedisHost) --jwt-audience $(JwtAudience) --jwt-secret $(JwtSecret) --jwt-expires $(JwtExpires) --az-app-insights $(AppInsightsConnectionString) --admin-email $(AdminEmail) --admin-password $(AdminPassword) --client-secret $(ClientSecret) --client-callback-uri $(ClientCallbackUri) --feature-cache "true"  --feature-app-insights "true" --feature-service-bus "false" --feature-rabbitmq "true" --rabbit-host $(RabbitHost) --rabbit-username $(RabbitUsername) --rabbit-password $(RabbitPassword)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
     - task: Bash@3
       inputs:
@@ -71,10 +70,10 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.service.identity -t 144.21.55.225:5000/authentica-service-identity:latest .
+          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.service.identity -t 172.16.16.51:9000/authentica-service-identity:latest .
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'
     - task: Bash@3
       inputs: 
         targetType: 'inline'
-        script: docker push 144.21.55.225:5000/authentica-service-identity:latest
+        script: docker push 172.16.16.51:9000/authentica-service-identity:latest
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'

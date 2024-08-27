@@ -53,7 +53,7 @@ stages:
     - task: Bash@3
       inputs:
         filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
-        arguments: '--feature-service-bus "true" --feature-app-insights "true" --az-service-bus $(ServiceBusConnectionString) --az-app-insights $(AppInsightsConnectionString) --email-server $(EmailServer) --email-port $(EmailPort) --email-address $(EmalAddress) --email-password $(EmailPassword)'
+        arguments: '--feature-service-bus "false" --feature-app-insights "true" --feature-rabbitmq "true" --rabbit-host $(RabbitHost) --rabbit-username $(RabbitUsername) --rabbit-password $(RabbitPassword) --az-app-insights $(AppInsightsConnectionString) --email-server $(EmailServer) --email-port $(EmailPort) --email-address $(EmalAddress) --email-password $(EmailPassword)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.WorkerService.Email'
     - task: Bash@3
       inputs:
@@ -64,10 +64,10 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.workerservice.email -t 144.21.55.225:5000/authentica-workerservice-email:latest .
+          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.workerservice.email -t 172.16.16.51:9000/authentica-workerservice-email:latest .
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'
     - task: Bash@3
       inputs: 
         targetType: 'inline'
-        script: docker push 144.21.55.225:5000/authentica-workerservice-email:latest
+        script: docker push 172.16.16.51:9000/authentica-workerservice-email:latest
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'  
