@@ -1,0 +1,3 @@
+Deployed via helm chart using:
+
+helm install my-redis bitnami/redis -f values.yaml

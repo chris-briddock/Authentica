@@ -1,0 +1,52 @@
+persistence:
+  storageClass: "nfs-client"
+
+replicaCount: 3
+
+auth:
+  username: user
+  password: "YourStrong@Passw0rd"
+
+service:
+  type: NodePort
+  port: 5672
+  nodePort: 31672  # You can choose a port between 30000-32767
+  managerPort: 15672
+  managerNodePort: 31673
+
+livenessProbe:
+  enabled: false
+
+readinessProbe:
+  enabled: false
+
+customLivenessProbe:
+  exec:
+    command:
+      - /bin/bash
+      - -ec
+      - rabbitmq-diagnostics -q ping
+  initialDelaySeconds: 120
+  periodSeconds: 30
+  timeoutSeconds: 20
+  failureThreshold: 6
+  successThreshold: 1
+
+customReadinessProbe:
+  exec:
+    command:
+      - /bin/bash
+      - -ec
+      - rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_local_alarms
+  initialDelaySeconds: 10
+  periodSeconds: 30
+  timeoutSeconds: 20
+  failureThreshold: 3
+  successThreshold: 1
+
+plugins: "rabbitmq_management"
+
+extraConfiguration: |
+  listeners.tcp.default = 5672
+  management.tcp.port = 15672
+  management.tcp.ip = 0.0.0.0

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aspire-dashboard
+  labels:
+    app: aspire-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aspire-dashboard
+  template:
+    metadata:
+      labels:
+        app: aspire-dashboard
+    spec:
+      containers:
+      - name: aspire-dashboard
+        image: mcr.microsoft.com/dotnet/aspire-dashboard:8.0.0
+        ports:
+        - containerPort: 18888
+        - containerPort: 18889
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 4
+            memory: 768Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aspire-dashboard-service
+spec:
+  selector:
+    app: aspire-dashboard
+  ports:
+    - name: dashboard
+      port: 18888
+      targetPort: 18888
+    - name: otlp
+      port: 4317
+      targetPort: 18889
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aspire-dashboard-service
+spec:
+  selector:
+    app: aspire-dashboard
+  ports:
+    - name: dashboard
+      port: 18888
+      targetPort: 18888
+      nodePort: 30888  # You can change this to any port between 30000-32767
+    - name: otlp
+      port: 4317
+      targetPort: 18889
+      nodePort: 30317  # You can change this to any port between 30000-32767
+  type: NodePort

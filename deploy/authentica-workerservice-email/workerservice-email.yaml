@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentica-worker-email
+  namespace: authentica
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: authentica-worker-email
+  template:
+    metadata:
+      labels:
+        app: authentica-worker-email
+    spec:
+      containers:
+      - name: worker-container
+        image:  172.16.16.51:9000/authentica-workerservice-email:latest
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "250m"
+          limits:
+            memory: "4Gi"
+            cpu: "4"

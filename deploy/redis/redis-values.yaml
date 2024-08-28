@@ -1,0 +1,21 @@
+architecture: replication
+auth:
+  enabled: true
+  password: "YourStrong@Passw0rd"
+
+master:
+  persistence:
+    enabled: true
+    storageClass: "nfs-client"
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+
+replica:
+  replicaCount: 3
+  persistence:
+    enabled: true
+    storageClass: "nfs-client"
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi

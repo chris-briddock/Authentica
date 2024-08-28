@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentica-api
+  namespace: authentica
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: authentica-api
+  template:
+    metadata:
+      labels:
+        app: authentica-api
+    spec:
+      containers:
+      - name: authentica-service-identity
+        image: 172.16.16.51:9000/authentica-service-identity:latest
+        ports:
+        - containerPort: 7171
+        envFrom:
+        - configMapRef:
+            name: authentica-config
+        env:
+        - name: ASPNETCORE_HTTPS_PORTS
+          value: "7171"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://10.111.22.55:4317"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "1"
+          limits:
+            memory: "3Gi"
+            cpu: "8"

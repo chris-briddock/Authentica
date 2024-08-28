@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-service
+spec:
+  selector:
+    app: mssql  # This matches the label on your MSSQL pods
+  ports:
+    - port: 1433
+      targetPort: 1433
+      nodePort: 31432
+  type: NodePort
