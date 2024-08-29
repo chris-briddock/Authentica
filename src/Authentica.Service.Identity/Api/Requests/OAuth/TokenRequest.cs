@@ -59,8 +59,8 @@ public sealed record TokenRequest
     /// Gets or sets the scope of the access request. 
     /// This is a space-delimited list of strings.
     /// </summary>
-    [FromForm(Name = "scope")]
-    public string? Scope { get; init; }
+    [FromForm(Name = "scopes")]
+    public string? Scopes { get; init; }
 
     /// <summary>
     /// Gets or sets the state parameter to prevent CSRF attacks.

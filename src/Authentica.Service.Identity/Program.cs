@@ -56,6 +56,7 @@ public sealed class Program
         builder.Services.TryAddScoped<IPasswordHasher<User>, Argon2PasswordHasher<User>>();
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
         builder.Services.TryAddTransient<ITimer, TimerProvider>();
+        builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
         builder.Services.AddFeatureManagement();
         builder.Services.AddBearerAuthentication();
         builder.Services.AddSessionCache();

@@ -6,8 +6,8 @@ namespace Application.Results;
 public class ApplicationStoreResult : BaseResult<ApplicationStoreResult>
 {
     /// <summary>
-    /// 
-    /// </summary>  
+    /// Gets or sets the secret associated with the application.
+    /// </summary>
     public string? Secret { get; private set; } = default!;
 
     /// <summary>
