@@ -23,6 +23,7 @@ public class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApp
         builder.HasKey(ca => ca.Id);
 
         builder.Property(ca => ca.Id)
+               .HasColumnName("id")
                .HasMaxLength(36);
 
         builder.Property(ca => ca.ClientId)
@@ -63,7 +64,6 @@ public class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApp
         builder.Property(u => u.CreatedBy)
                .HasColumnName("created_by")
                .HasMaxLength(36);
-       
 
         builder.Property(u => u.ModifiedOnUtc)
                .HasColumnName("modified_on_utc");

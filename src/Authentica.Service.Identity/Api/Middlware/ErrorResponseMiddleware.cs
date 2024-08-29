@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Api.Constants;
+using Domain.Constants;
 using Domain.Errors;
 using Microsoft.AspNetCore.Diagnostics;
 
@@ -25,7 +25,8 @@ public sealed class ErrorHandlingMiddleware
     /// </summary>
     /// <param name="next">The next middleware in the request pipeline.</param>
     /// <param name="logger">The logger for logging error details.</param>
-    public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
+    public ErrorHandlingMiddleware(RequestDelegate next,
+                                   ILogger<ErrorHandlingMiddleware> logger)
     {
         Next = next ?? throw new ArgumentNullException(nameof(next));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));

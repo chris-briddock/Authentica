@@ -10,8 +10,8 @@ namespace Authentica.Service.Identity.Tests.IntegrationTests;
 public class ApplicationPurgeExposeProtected : ApplicationPurge
 {
     public ApplicationPurgeExposeProtected(IServiceScopeFactory serviceScopeFactory,
-                                                    ILogger<ApplicationPurge> logger,
-                                                    ITimer timer)
+                                           ILogger<ApplicationPurge> logger,
+                                           ITimer timer)
         : base(serviceScopeFactory, logger, timer)
     { }
 

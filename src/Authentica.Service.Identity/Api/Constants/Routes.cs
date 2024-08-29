@@ -29,6 +29,10 @@ public static class Routes
         /// Route for obtaining OAuth tokens.
         /// </summary>
         public const string Token = "oauth2/token";
+        /// <summary>
+        /// Routes for device code.
+        /// </summary>
+        public const string Device = "oauth2/device";
 
     }
 

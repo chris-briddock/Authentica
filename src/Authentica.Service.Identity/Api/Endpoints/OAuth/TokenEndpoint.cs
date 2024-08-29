@@ -8,6 +8,7 @@ using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
 using Domain.Events;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
@@ -60,6 +61,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         var hasher = Services.GetRequiredService<ISecretHasher>();
         var eventStore = Services.GetRequiredService<IEventStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
+        var userManager = Services.GetRequiredService<UserManager<User>>();
 
         string issuer = configuration.GetRequiredValueOrThrow("Jwt:Issuer");
         string secret = configuration.GetRequiredValueOrThrow("Jwt:Secret");
@@ -99,6 +101,14 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             roles = await userReadStore.GetUserRolesAsync(User.Identity.Name!);
             subject = User.Identity.Name!;
             email = User.Identity.Name!;
+        }
+
+        if (request.GrantType == TokenConstants.DeviceCode)
+        {
+            var result = await userManager.VerifyUserTokenAsync(userReadResult.User, TokenOptions.DefaultEmailProvider, TokenConstants.DeviceCode, request.DeviceCode!);
+
+            if (!result)
+                return Unauthorized();
         }
 
         if (request.GrantType == TokenConstants.Refresh

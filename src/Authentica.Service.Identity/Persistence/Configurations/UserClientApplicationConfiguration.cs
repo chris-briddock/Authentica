@@ -15,18 +15,19 @@ public class UserClientApplicationConfiguration : IEntityTypeConfiguration<UserC
     /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<UserClientApplication> builder)
     {
-        builder.ToTable("SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS", opt => 
+        builder.ToTable("SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS", opt =>
         {
             opt.IsTemporal();
         });
-        
+
         builder.HasKey(uca => uca.Id);
 
         builder.Property(uca => uca.Id)
-                .HasMaxLength(36);
+               .HasColumnName("id")
+               .HasMaxLength(36);
 
         builder.Property(uca => uca.UserId)
-                .HasColumnName("user_id")
+               .HasColumnName("user_id")
                .HasMaxLength(36)
                .IsRequired();
 
@@ -37,14 +38,14 @@ public class UserClientApplicationConfiguration : IEntityTypeConfiguration<UserC
 
         // Configure the relationship with User
         builder.HasOne(uc => uc.User)
-            .WithMany(u => u.UserClientApplications)
-            .HasForeignKey(uc => uc.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+               .WithMany(u => u.UserClientApplications)
+               .HasForeignKey(uc => uc.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         // Configure the relationship with ClientApplication
         builder.HasOne(uc => uc.Application)
-            .WithMany(a => a.UserClientApplications)
-            .HasForeignKey(uc => uc.ApplicationId)
-            .OnDelete(DeleteBehavior.Cascade);
+               .WithMany(a => a.UserClientApplications)
+               .HasForeignKey(uc => uc.ApplicationId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }
