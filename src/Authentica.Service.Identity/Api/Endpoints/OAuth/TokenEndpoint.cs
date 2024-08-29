@@ -49,11 +49,12 @@ public sealed class TokenEndpoint : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public override async Task<ActionResult> HandleAsync(TokenRequest request,
-                                                   CancellationToken cancellationToken = default)
+                                                         CancellationToken cancellationToken = default)
     {
         string email = string.Empty;
         string subject = string.Empty;
         IList<string> roles = [];
+        IList<string> scopes = [];
 
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
@@ -62,6 +63,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         var eventStore = Services.GetRequiredService<IEventStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
+        var scopeProvider = Services.GetRequiredService<IScopeProvider>();
 
         string issuer = configuration.GetRequiredValueOrThrow("Jwt:Issuer");
         string secret = configuration.GetRequiredValueOrThrow("Jwt:Secret");
@@ -88,7 +90,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         if (client is null)
             return Unauthorized();
-
 
         if (!User.Identity!.IsAuthenticated)
         {
@@ -122,18 +123,20 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         if (request.GrantType == TokenConstants.AuthorizationCode)
         {
-             var storedState = HttpContext.Session.GetString($"{client.ClientId}_state");
+            var storedState = HttpContext.Session.GetString($"{client.ClientId}_state");
             if (storedState != request.State)
                 return Unauthorized();
             var storedCode = HttpContext.Session.GetString($"{client.ClientId}_code");
             if (storedCode != request.Code)
                 return Unauthorized();
         }
+        if (request.Scopes is not null)
+            scopes = scopeProvider.ParseScopes(request.Scopes);
 
         var tokenResult = await jwtProvider.TryCreateTokenAsync(
-            email!, secret, issuer, audience, expires, subject, roles);
+            email!, secret, issuer, audience, expires, subject, roles, scopes);
         var refreshTokenResult = await jwtProvider.TryCreateRefreshTokenAsync(
-            email!, secret, issuer, audience, expires, subject, roles);
+            email!, secret, issuer, audience, expires, subject, roles, scopes);
 
         if (tokenResult.Success && refreshTokenResult.Success)
         {

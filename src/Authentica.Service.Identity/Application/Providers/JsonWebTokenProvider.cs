@@ -19,7 +19,8 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                                                      string audience,
                                                      int expires,
                                                      string subject,
-                                                     IList<string> roles)
+                                                     IList<string> roles,
+                                                     IList<string>? scopes)
     {
         JwtResult result = new();
         try
@@ -40,6 +41,15 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+
+            if (scopes is not null)
+            {
+                foreach (var scope in scopes)
+                {
+                   claims.Add(new Claim("scp", scope));
+                }
+            }
+            
 
             SigningCredentials signingCredentials = new(
                 new SymmetricSecurityKey(key),
@@ -118,12 +128,14 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                                                             string audience,
                                                             int expires,
                                                             string subject,
-                                                            IList<string> roles) => await TryCreateTokenAsync(email,
-                                                                                                         jwtSecret,
-                                                                                                         issuer,
-                                                                                                         audience,
-                                                                                                         expires,
-                                                                                                         subject,
-                                                                                                         roles);
+                                                            IList<string> roles,
+                                                            IList<string>? scopes) => await TryCreateTokenAsync(email,
+                                                                                                                jwtSecret,
+                                                                                                                issuer,
+                                                                                                                audience,
+                                                                                                                expires,
+                                                                                                                subject,
+                                                                                                                roles,
+                                                                                                                scopes);
 
 }

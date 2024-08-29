@@ -17,6 +17,7 @@ public interface IJsonWebTokenProvider
     /// <param name="expires">The expiration date and time of the JWT.</param>
     /// <param name="subject">The subject of the JWT.</param>
     /// <param name="roles">The roles that are stored as claims in the JWT.</param>
+    /// <param name="scopes">The scopes that are assigned to the JWT.</param>
     /// <returns>A <see cref="JwtResult"/> containing the result of the token creation.</returns>
     Task<JwtResult> TryCreateRefreshTokenAsync(string email,
                                                string jwtSecret,
@@ -24,7 +25,8 @@ public interface IJsonWebTokenProvider
                                                string audience,
                                                int expires,
                                                string subject,
-                                               IList<string> roles);
+                                               IList<string> roles,
+                                               IList<string>? scopes);
     /// <summary>
     /// Tries to create a new JWT (JSON Web Token) asynchronously.
     /// </summary>
@@ -35,6 +37,7 @@ public interface IJsonWebTokenProvider
     /// <param name="expires">The expiration date and time of the JWT.</param>
     /// <param name="subject">The subject of the JWT.</param>
     /// <param name="roles">The roles that are stored as claims in the JWT.</param>
+    /// <param name="scopes">The scopes that are assigned to the JWT.</param>
     /// <returns>A <see cref="JwtResult"/> containing the result of the token creation.</returns>
     Task<JwtResult> TryCreateTokenAsync(string email,
                                         string jwtSecret,
@@ -42,7 +45,8 @@ public interface IJsonWebTokenProvider
                                         string audience,
                                         int expires,
                                         string subject,
-                                        IList<string> roles);
+                                        IList<string> roles,
+                                        IList<string>? scopes);
     /// <summary>
     /// Tries to validate a JWT (JSON Web Token) asynchronously.
     /// </summary>

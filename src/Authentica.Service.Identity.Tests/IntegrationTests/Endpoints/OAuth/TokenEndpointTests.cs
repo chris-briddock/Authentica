@@ -75,6 +75,7 @@ public class TokenEndpointTests
                                                          It.IsAny<string>(),
                                                          It.IsAny<int>(),
                                                          It.IsAny<string>(), 
+                                                         It.IsAny<IList<string>>(),
                                                          It.IsAny<IList<string>>())).ReturnsAsync(new JwtResult() { Success = true, Token = "asjsjsjsj"});
 
         mockJwtProvider.Setup(x => x.TryCreateRefreshTokenAsync(It.IsAny<string>(),
@@ -83,6 +84,7 @@ public class TokenEndpointTests
                                                                 It.IsAny<string>(),
                                                                 It.IsAny<int>(),
                                                                 It.IsAny<string>(),
+                                                                It.IsAny<IList<string>>(),
                                                                 It.IsAny<IList<string>>())).ReturnsAsync(new JwtResult() { Success = true, Token = "asjsjsjsj"});
 
         var sutClient = _fixture.WebApplicationFactory.WithWebHostBuilder(x => 
@@ -145,6 +147,7 @@ public class TokenEndpointTests
                                                          It.IsAny<string>(),
                                                          It.IsAny<int>(),
                                                          It.IsAny<string>(),
+                                                         It.IsAny<IList<string>>(),
                                                          It.IsAny<IList<string>>())).ReturnsAsync(new JwtResult() { Success = true, Token = "asjsjsjsj"});
 
         mockJwtProvider.Setup(x => x.TryCreateRefreshTokenAsync(It.IsAny<string>(),
@@ -153,6 +156,7 @@ public class TokenEndpointTests
                                                                 It.IsAny<string>(),
                                                                 It.IsAny<int>(),
                                                                 It.IsAny<string>(),
+                                                                It.IsAny<IList<string>>(),
                                                                 It.IsAny<IList<string>>())).ReturnsAsync(new JwtResult() { Success = true, Token = "asjsjsjsj"});
 
         var sutClient = _fixture.WebApplicationFactory.WithWebHostBuilder(x => 
