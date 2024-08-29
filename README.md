@@ -1,6 +1,6 @@
 # Authentica
 
-Secure your app with Authentica, featuring OAuth 2.0 authorization code grant, client credentials grant, refresh token grant.
+Secure your app with Authentica, featuring OAuth 2.0 authorization code grant, client credentials grant, device code grant, refresh token grant.
 
 [Technical Documentation](https://chris-briddock.github.io/Authentica/api/Api.Constants.html)
 
@@ -26,10 +26,6 @@ Authentica plays a crucial role in your application's security infrastructure, p
 * **Multiple Tenants**
 * **Passkeys Support**
 * **Application based 2FA Codes**
-
-Authorization Flows:
-
-* **Device Authorization Flow (Device Grant)**
 
 ### User Functionality
 
@@ -80,6 +76,7 @@ Authorization Flows:
 
 * **/oauth2/authorize**: GET Endpoint for user authorization.
 * **/oauth2/token**: POST Endpoint for obtaining OAuth tokens.
+* **/oauth2/device**: GET Endpoint for creating a token to be used on your Smart TV, Smart Fridge and other Smart devices that lack a keyboard and mouse.
 * **/users/logout**: POST Endpoint for user logout.
 * **/users/login**: POST Endpoint for user login.
 * **/users**: GET Endpoint for reading a user by email.
