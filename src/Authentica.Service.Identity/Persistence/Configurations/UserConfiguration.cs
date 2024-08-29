@@ -7,9 +7,6 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configuration class for the entity framework mapping of <see cref="User"/>.
 /// </summary>
-/// <summary>
-/// Configuration class for the entity framework mapping of <see cref="User"/>.
-/// </summary>
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     /// <summary>
@@ -26,6 +23,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)
+               .HasColumnName("id")
                .HasMaxLength(36)
                .IsRequired();
 
@@ -89,6 +87,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
        builder.Property(u => u.LastLoginIPAddress)
               .HasColumnName("last_ip_address_used")
               .HasMaxLength(32);
+       
+       builder.Property(u => u.TwoFactorEnabled)
+              .HasColumnName("two_factor_enabled");
 
         builder.ComplexProperty(u => u.Address)
             .Property(a => a.Name).HasColumnName("address_name").HasMaxLength(64);

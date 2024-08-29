@@ -10,10 +10,10 @@ using Persistence.Contexts;
 
 #nullable disable
 
-namespace Authentica.Service.Identity.Migrations
+namespace Authentica.Service.Identity.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240812231237_Initial")]
+    [Migration("20240829161255_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -30,7 +30,8 @@ namespace Authentica.Service.Identity.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("CallbackUri")
                         .IsRequired()
@@ -126,7 +127,8 @@ namespace Authentica.Service.Identity.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAddOrUpdate()
@@ -135,7 +137,8 @@ namespace Authentica.Service.Identity.Migrations
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Data")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("data");
 
                     b.Property<string>("EventType")
                         .IsRequired()
@@ -179,7 +182,8 @@ namespace Authentica.Service.Identity.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -266,7 +270,8 @@ namespace Authentica.Service.Identity.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("ClaimType")
                         .HasMaxLength(100)
@@ -322,7 +327,8 @@ namespace Authentica.Service.Identity.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int")
@@ -439,7 +445,8 @@ namespace Authentica.Service.Identity.Migrations
                         .HasColumnName("security_stamp");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("two_factor_enabled");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -515,7 +522,8 @@ namespace Authentica.Service.Identity.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("ClaimType")
                         .HasMaxLength(100)
@@ -605,7 +613,8 @@ namespace Authentica.Service.Identity.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("ApplicationId")
                         .IsRequired()

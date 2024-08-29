@@ -19,6 +19,7 @@ public class RoleClaimConfiguration : IEntityTypeConfiguration<RoleClaim>
         builder.HasKey(rc => rc.Id);
 
         builder.Property(rc => rc.Id)
+                .HasColumnName("id")
                 .HasMaxLength(36);
         
         builder.Property(rc => rc.RoleId)
@@ -33,7 +34,7 @@ public class RoleClaimConfiguration : IEntityTypeConfiguration<RoleClaim>
                .HasColumnName("claim_value")
                .HasMaxLength(100);
 
-         builder.Property(ca => ca.ConcurrencyStamp)
+        builder.Property(ca => ca.ConcurrencyStamp)
                .HasMaxLength(36)
                .HasColumnName("concurrency_stamp")
                .IsConcurrencyToken();

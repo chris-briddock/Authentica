@@ -20,8 +20,8 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Id)
+               .HasColumnName("id")
                .HasMaxLength(36);
-
 
         builder.HasIndex(r => r.NormalizedName)
               .HasDatabaseName("RoleNameIndex").IsUnique();
@@ -34,6 +34,7 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.Property(u => u.Name)
                 .HasColumnName("name")
                 .HasMaxLength(100);
+        
         builder.Property(u => u.NormalizedName)
                .HasColumnName("normalized_name")
                .HasMaxLength(100);

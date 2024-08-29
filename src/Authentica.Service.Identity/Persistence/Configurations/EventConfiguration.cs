@@ -26,6 +26,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
         // Configure the Id property
         builder.Property(e => e.Id)
+               .HasColumnName("id")
                .HasMaxLength(36);
 
         // Configure the sequence id property
@@ -45,6 +46,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
                .ValueGeneratedOnAddOrUpdate();
         
         // Configure the Data property
-        builder.Property(e => e.Data);
+        builder.Property(e => e.Data)
+               .HasColumnName("data");
     }
 }

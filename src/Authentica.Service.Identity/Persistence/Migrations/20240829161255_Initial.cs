@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Authentica.Service.Identity.Migrations
+namespace Authentica.Service.Identity.Persistence.Migrations
 {
     /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
     public partial class Initial : Migration
     {
         /// <inheritdoc />
@@ -17,7 +15,7 @@ namespace Authentica.Service.Identity.Migrations
                 name: "SYSTEM_IDENTITY_CLIENT_APPLICATIONS",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_CLIENT_APPLICATIONSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -110,7 +108,7 @@ namespace Authentica.Service.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SYSTEM_IDENTITY_CLIENT_APPLICATIONS", x => x.Id);
+                    table.PrimaryKey("PK_SYSTEM_IDENTITY_CLIENT_APPLICATIONS", x => x.id);
                 })
                 .Annotation("SqlServer:IsTemporal", true)
                 .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_CLIENT_APPLICATIONSHistory")
@@ -122,7 +120,7 @@ namespace Authentica.Service.Identity.Migrations
                 name: "SYSTEM_IDENTITY_EVENTS",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_EVENTSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -158,7 +156,7 @@ namespace Authentica.Service.Identity.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    data = table.Column<string>(type: "nvarchar(max)", nullable: true)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_EVENTSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -167,7 +165,7 @@ namespace Authentica.Service.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SYSTEM_IDENTITY_EVENTS", x => x.Id);
+                    table.PrimaryKey("PK_SYSTEM_IDENTITY_EVENTS", x => x.id);
                 })
                 .Annotation("SqlServer:IsTemporal", true)
                 .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_EVENTSHistory")
@@ -179,7 +177,7 @@ namespace Authentica.Service.Identity.Migrations
                 name: "SYSTEM_IDENTITY_ROLES",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_ROLESHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -260,7 +258,7 @@ namespace Authentica.Service.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SYSTEM_IDENTITY_ROLES", x => x.Id);
+                    table.PrimaryKey("PK_SYSTEM_IDENTITY_ROLES", x => x.id);
                 })
                 .Annotation("SqlServer:IsTemporal", true)
                 .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_ROLESHistory")
@@ -374,7 +372,7 @@ namespace Authentica.Service.Identity.Migrations
                 name: "SYSTEM_IDENTITY_USERS",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -548,7 +546,7 @@ namespace Authentica.Service.Identity.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false)
+                    two_factor_enabled = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -575,7 +573,7 @@ namespace Authentica.Service.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SYSTEM_IDENTITY_USERS", x => x.Id);
+                    table.PrimaryKey("PK_SYSTEM_IDENTITY_USERS", x => x.id);
                 })
                 .Annotation("SqlServer:IsTemporal", true)
                 .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
@@ -587,7 +585,7 @@ namespace Authentica.Service.Identity.Migrations
                 name: "SYSTEM_IDENTITY_ROLE_CLAIMS",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_ROLE_CLAIMSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -632,12 +630,12 @@ namespace Authentica.Service.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SYSTEM_IDENTITY_ROLE_CLAIMS", x => x.Id);
+                    table.PrimaryKey("PK_SYSTEM_IDENTITY_ROLE_CLAIMS", x => x.id);
                     table.ForeignKey(
                         name: "FK_SYSTEM_IDENTITY_ROLE_CLAIMS_SYSTEM_IDENTITY_ROLES_role_id",
                         column: x => x.role_id,
                         principalTable: "SYSTEM_IDENTITY_ROLES",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("SqlServer:IsTemporal", true)
@@ -650,7 +648,7 @@ namespace Authentica.Service.Identity.Migrations
                 name: "SYSTEM_IDENTITY_USER_CLAIMS",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USER_CLAIMSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -737,12 +735,12 @@ namespace Authentica.Service.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SYSTEM_IDENTITY_USER_CLAIMS", x => x.Id);
+                    table.PrimaryKey("PK_SYSTEM_IDENTITY_USER_CLAIMS", x => x.id);
                     table.ForeignKey(
                         name: "FK_SYSTEM_IDENTITY_USER_CLAIMS_SYSTEM_IDENTITY_USERS_user_id",
                         column: x => x.user_id,
                         principalTable: "SYSTEM_IDENTITY_USERS",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("SqlServer:IsTemporal", true)
@@ -755,7 +753,7 @@ namespace Authentica.Service.Identity.Migrations
                 name: "SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -788,18 +786,18 @@ namespace Authentica.Service.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS", x => x.Id);
+                    table.PrimaryKey("PK_SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS", x => x.id);
                     table.ForeignKey(
                         name: "FK_SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS_SYSTEM_IDENTITY_CLIENT_APPLICATIONS_application_id",
                         column: x => x.application_id,
                         principalTable: "SYSTEM_IDENTITY_CLIENT_APPLICATIONS",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS_SYSTEM_IDENTITY_USERS_user_id",
                         column: x => x.user_id,
                         principalTable: "SYSTEM_IDENTITY_USERS",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("SqlServer:IsTemporal", true)
@@ -844,13 +842,13 @@ namespace Authentica.Service.Identity.Migrations
                         name: "FK_SYSTEM_LINK_IDENTITY_USER_ROLES_SYSTEM_IDENTITY_ROLES_role_id",
                         column: x => x.role_id,
                         principalTable: "SYSTEM_IDENTITY_ROLES",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SYSTEM_LINK_IDENTITY_USER_ROLES_SYSTEM_IDENTITY_USERS_user_id",
                         column: x => x.user_id,
                         principalTable: "SYSTEM_IDENTITY_USERS",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("SqlServer:IsTemporal", true)

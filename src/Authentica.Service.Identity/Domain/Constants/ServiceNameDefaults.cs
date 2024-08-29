@@ -1,4 +1,4 @@
-namespace Api.Constants;
+namespace Domain.Constants;
 
 /// <summary>
 /// Contains default values for service names used in the application.

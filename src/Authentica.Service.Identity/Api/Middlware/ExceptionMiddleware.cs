@@ -1,4 +1,4 @@
-using Api.Constants;
+using Domain.Constants;
 using Domain.Errors;
 using System.Text.Json;
 

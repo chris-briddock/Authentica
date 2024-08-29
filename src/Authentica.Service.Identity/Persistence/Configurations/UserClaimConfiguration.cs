@@ -23,10 +23,11 @@ public class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
         builder.HasKey(uc => uc.Id);
 
         builder.Property(uc => uc.Id)
+               .HasColumnName("id")
                .HasMaxLength(36);
 
         builder.Property(uc => uc.UserId)
-              .HasColumnName("user_id")
+               .HasColumnName("user_id")
                .HasMaxLength(36)
                .IsRequired();
        
@@ -44,8 +45,8 @@ public class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
                .HasMaxLength(100);
 
          builder.Property(u => u.IsDeleted)
-              .HasColumnName("is_deleted")
-              .IsRequired();
+                .HasColumnName("is_deleted")
+                .IsRequired();
 
         builder.Property(u => u.DeletedOnUtc)
                .HasColumnName("deleted_on_utc");
