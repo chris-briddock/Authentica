@@ -7,6 +7,7 @@ using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Api.Endpoints.Users;
 
@@ -47,6 +48,7 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var eventStore = Services.GetRequiredService<IEventStore>();
+        SignInResult result = new();
 
         TwoFactorLoginEvent @event = new()
         {
@@ -54,7 +56,6 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
         };
 
         await eventStore.SaveEventAsync(@event);
-
 
          var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
 
@@ -66,9 +67,19 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
         if (!isTwoFactorEnabled)
             return Unauthorized("User does not have two factor enabled.");
 
-        var signInResult = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
-
-        if (!signInResult.Succeeded)
+        bool temp;
+        IList<string> providers = [];
+        if (request.UseAuthenticator)
+        {
+            providers = await userManager.GetValidTwoFactorProvidersAsync(user);
+            temp = await userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultAuthenticatorProvider, request.Token);
+        }   
+        else
+        {
+             result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
+        }
+           
+        if (!result.Succeeded)
             return Unauthorized();
             
         return Ok();

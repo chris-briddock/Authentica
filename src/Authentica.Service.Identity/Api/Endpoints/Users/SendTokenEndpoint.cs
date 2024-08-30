@@ -121,7 +121,6 @@ public class SendTokenEndpoint : EndpointBaseAsync
         }
 
         await emailPublisher.Publish(message, cancellationToken);
-        // TOOD: REMOVE THE CODE FROM RESPONSE.
-        return Ok($"{message.Code} If a user exists in the database, an email will be sent to that email address.");
+        return Ok($"If a user exists in the database, an email will be sent to that email address.");
     }
 }
