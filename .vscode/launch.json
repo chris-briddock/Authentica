@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "C#: Authentica Debug",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build",
+        "program": "${workspaceFolder}/src/Authentica.Service.Identity/bin/Debug/net8.0/Authentica.Service.Identity.dll",
+        "args": [],
+        "cwd": "${workspaceFolder}/src/Authentica.Service.Identity",
+        "console": "internalConsole",
+        "stopAtEntry": false
+      }
+    ]
+  }

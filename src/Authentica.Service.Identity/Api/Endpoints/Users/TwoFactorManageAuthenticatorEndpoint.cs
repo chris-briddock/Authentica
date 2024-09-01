@@ -33,7 +33,7 @@ public class TwoFactorManageAuthenticatorEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var eventStore = Services.GetRequiredService<IEventStore>();
-        var qrCodeProvider = Services.GetRequiredService<IQrCodeProvider>();
+        var totpProvider = Services.GetRequiredService<ITwoFactorTotpProvider>();
         string formattedKey = string.Empty;
         string uri = string.Empty;
 
@@ -53,11 +53,10 @@ public class TwoFactorManageAuthenticatorEndpoint : EndpointBaseAsync
             if (string.IsNullOrEmpty(unformattedKey))
             {
                  await userManager.ResetAuthenticatorKeyAsync(result.User);
-                 unformattedKey = await userManager.GetAuthenticatorKeyAsync(result.User);
-
+                 unformattedKey = await totpProvider.GenerateKeyAsync(result.User);
             } 
-            formattedKey = qrCodeProvider.FormatKey(unformattedKey!);
-            uri = qrCodeProvider.Generate(result.User.Email!, unformattedKey!);
+            formattedKey = totpProvider.FormatKey(unformattedKey);
+            uri = await totpProvider.GenerateQrCodeUriAsync(result.User);
         }
 
         TwoFactorManageAuthenticatorResponse response = new()

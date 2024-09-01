@@ -48,7 +48,7 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var eventStore = Services.GetRequiredService<IEventStore>();
-        SignInResult result = new();
+        SignInResult result;
 
         TwoFactorLoginEvent @event = new()
         {
@@ -67,20 +67,13 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
         if (!isTwoFactorEnabled)
             return Unauthorized("User does not have two factor enabled.");
 
-        bool temp;
-        IList<string> providers = [];
         if (request.UseAuthenticator)
-        {
-            providers = await userManager.GetValidTwoFactorProvidersAsync(user);
-            temp = await userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultAuthenticatorProvider, request.Token);
-        }   
+            result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultAuthenticatorProvider, request.Token, true, true);
         else
-        {
              result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
-        }
-           
+
         if (!result.Succeeded)
-            return Unauthorized();
+                return Unauthorized();
             
         return Ok();
     }

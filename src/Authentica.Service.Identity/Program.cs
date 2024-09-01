@@ -57,7 +57,7 @@ public sealed class Program
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
         builder.Services.TryAddTransient<ITimer, TimerProvider>();
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
-        builder.Services.TryAddScoped<IQrCodeProvider, QrCodeProvider>();
+        builder.Services.TryAddScoped<ITwoFactorTotpProvider, TwoFactorTotpProvider>();
         builder.Services.AddFeatureManagement();
         builder.Services.AddBearerAuthentication();
         builder.Services.AddSessionCache();
