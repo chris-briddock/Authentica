@@ -33,11 +33,7 @@ public sealed class AppDbContext : DbContext
     /// <param name="optionsBuilder">The options builder used to configure DbContext options.</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {  
-        // optionsBuilder.UseSqlServer(Configuration.GetConnectionStringOrThrow("Default"), opt => 
-        // {
-        //     opt.EnableRetryOnFailure();
-        // });
-        optionsBuilder.UseSqlServer("Server=localhost;Database=Authentica.Service.Identity;User Id=SA;Password=YourStrong@Passw0rd;TrustServerCertificate=True", opt => 
+        optionsBuilder.UseSqlServer(Configuration.GetConnectionStringOrThrow("Default"), opt => 
         {
             opt.EnableRetryOnFailure();
         });
