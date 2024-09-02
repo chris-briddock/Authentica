@@ -40,7 +40,7 @@ public class Address
     /// </summary>
     public string? Country { get; set; }
 
-     /// <summary>
+    /// <summary>
     /// Initializes a new instance of the <see cref="Address"/> class.
     /// </summary>
     public Address()
