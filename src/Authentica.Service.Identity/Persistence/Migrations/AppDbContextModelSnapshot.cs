@@ -443,6 +443,9 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnType("nvarchar(32)")
                         .HasColumnName("security_stamp");
 
+                    b.Property<bool>("TwoFactorAuthenticatorEnabled")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit")
                         .HasColumnName("two_factor_enabled");

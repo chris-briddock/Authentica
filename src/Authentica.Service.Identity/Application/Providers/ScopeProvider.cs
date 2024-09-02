@@ -17,7 +17,7 @@ public sealed class ScopeProvider : IScopeProvider
     {
         if (string.IsNullOrWhiteSpace(scopeString))
         {
-            return new List<string>();
+            return [];
         }
 
         return scopeString.Split(separator, StringSplitOptions.RemoveEmptyEntries)

@@ -49,6 +49,10 @@ public static partial class Routes
         /// </summary>
         public const string TwoFactorManage = "users/2fa/manage";
         /// <summary>
+        /// Route for managing two factor codes using an application like Google or Microsoft Authenticator. 
+        /// </summary>
+        public const string TwoFactorManageAuthenticator = "users/2fa/manage/authenticator";
+        /// <summary>
         /// Route for generating two-factor recovery codes.
         /// </summary>
         public const string TwoFactorRecoveryCodes = "users/2fa/recovery/codes";

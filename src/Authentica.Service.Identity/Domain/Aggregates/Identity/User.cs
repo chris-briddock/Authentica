@@ -67,6 +67,11 @@ public sealed class User : IdentityUser<string>,
     public Address Address { get; set; } = default!;
 
     /// <summary>
+    /// Gets or sets if the user has enabled application based TOTP codes.
+    /// </summary>
+    public bool TwoFactorAuthenticatorEnabled { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the collection of user roles associated with the user.
     /// </summary>
     public ICollection<UserRole> UserRoles { get; set; } = default!;

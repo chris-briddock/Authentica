@@ -13,7 +13,7 @@ using Persistence.Contexts;
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240829161255_Initial")]
+    [Migration("20240830154802_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -443,6 +443,9 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)")
                         .HasColumnName("security_stamp");
+
+                    b.Property<bool>("TwoFactorAuthenticatorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit")
