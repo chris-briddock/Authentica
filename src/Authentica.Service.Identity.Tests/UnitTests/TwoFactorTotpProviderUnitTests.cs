@@ -1,14 +1,8 @@
-using NUnit.Framework;
-using Moq;
-using Microsoft.Extensions.Options;
-using System;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
-[TestFixture]
+[TestFixture, Category("TwoFactorTotpProvider")]
 public class TwoFactorTotpProviderTests
 {
     private Mock<IServiceProvider> _serviceProviderMock;
@@ -19,8 +13,7 @@ public class TwoFactorTotpProviderTests
     [SetUp]
     public void SetUp()
     {
-        _userManagerMock = new Mock<UserManager<User>>(
-            Mock.Of<IUserStore<User>>());
+        _userManagerMock = new UserManagerMock<User>().Mock();
 
         _serviceProviderMock = new Mock<IServiceProvider>();
         _serviceProviderMock
@@ -58,7 +51,7 @@ public class TwoFactorTotpProviderTests
         var email = "user@example.com";
         var key = "new-authenticator-key";
         var unformattedKey = "unformatted-auth-key";
-        var issuer = UrlEncoder.Default.Encode(IdentityConstants.TwoFactorUserIdScheme);
+        var issuer = "Authentica";
 
         _userManagerMock.Setup(um => um.GenerateNewAuthenticatorKey()).Returns(key);
         _userManagerMock.Setup(um => um.GetAuthenticatorKeyAsync(user))
