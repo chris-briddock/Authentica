@@ -104,7 +104,7 @@ Authentica plays a crucial role in your application's security infrastructure, p
 
 To get started with Authentica, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/chris-briddock/ChristopherBriddock.Identity.git`
+1. Clone the repository: `git clone https://github.com/chris-briddock/Authentica.git`
 2. Open the solution.
 3. Ensure you have added migrations for the project with Entity Framework Core.
 4. Replace all required values in appsettings.development.json. SQL Server, Redis and RabbitMQ will be configured already.
