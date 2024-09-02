@@ -24,7 +24,7 @@ Authentica plays a crucial role in your application's security infrastructure, p
 ### Planned Improvements
 
 * **Multiple Tenants**
-* **Passkeys Support (FIDO2, Passkeys)**
+* **Passkeys Support (FIDO2, Fingerprint, FaceID)**
 * **External OAuth2.0 Logins (Microsoft, Google)**
 
 ### User Functionality
