@@ -24,8 +24,8 @@ Authentica plays a crucial role in your application's security infrastructure, p
 ### Planned Improvements
 
 * **Multiple Tenants**
-* **Passkeys Support**
-* **Application based 2FA Codes**
+* **Passkeys Support (FIDO2, Passkeys)**
+* **External OAuth2.0 Logins (Microsoft, Google)**
 
 ### User Functionality
 
@@ -85,7 +85,8 @@ Authentica plays a crucial role in your application's security infrastructure, p
 * **/users/confirm-email**: POST Endpoint for confirming user email.
 * **/users/reset-password**: POST Endpoint for resetting user passwords.
 * **/users/2fa/login**: POST Endpoint for logging in with two-factor authentication.
-* **/users/2fa/manage**: POST Endpoint for managing two-factor authentication settings.
+* **/users/2fa/manage**: POST Endpoint for enabling/disabling two-factor authentication settings
+* **/users/2fa/manage/authenticator**: POST Endpoint for enabling/disabling two factor via an authenticator app.
 * **/users/2fa/recovery/codes**: GET Endpoint for generating two-factor recovery codes.
 * **/users/2fa/recovery**: POST Endpoint for redeeming two-factor recovery codes.
 * **/users/details/email**: PUT Endpoint for updating a user's email.
