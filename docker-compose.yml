@@ -1,21 +1,22 @@
 services:
   
-  # authentica.service.identity:
-  #   image: ${DOCKER_REGISTRY-}authenticaserviceidentity
-  #   build:
-  #     context: .
-  #     dockerfile: src/Dockerfile.service.identity
-  #   environment: 
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
+  authentica.service.identity:
+    image: ${DOCKER_REGISTRY-}authenticaserviceidentity
+    build:
+      context: .
+      dockerfile: src/Dockerfile.service.identity
+    environment: 
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
+      ASPNETCORE_HTTPS_PORTS: 7171
+      ASPNETCORE_ENVIRONMENT: "Development"
 
-  # authentica.workerservice.email:
-  #   image: ${DOCKER_REGISTRY-}authenticaworkerserviceemail
-  #   build:
-  #     context: .
-  #     dockerfile: src/Dockerfile.workerservice.email
-  #   environment: 
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
-  
+  authentica.workerservice.email:
+    image: ${DOCKER_REGISTRY-}authenticaworkerserviceemail
+    build:
+      context: .
+      dockerfile: src/Dockerfile.workerservice.email
+    environment: 
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
 
   rabbitmq:
     hostname: "rabbitmq"

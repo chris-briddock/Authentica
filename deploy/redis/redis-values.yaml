@@ -4,6 +4,10 @@ auth:
   password: "YourStrong@Passw0rd"
 
 master:
+  startupProbe:
+    enabled: true
+    failureThreshold: 20
+    periodSeconds: 10
   persistence:
     enabled: true
     storageClass: "nfs-client"
@@ -13,6 +17,10 @@ master:
 
 replica:
   replicaCount: 3
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
   persistence:
     enabled: true
     storageClass: "nfs-client"
