@@ -4,7 +4,7 @@ metadata:
   name: authentica-worker-email
   namespace: authentica
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: authentica-worker-email
@@ -15,11 +15,14 @@ spec:
     spec:
       containers:
       - name: worker-container
-        image:  172.16.16.51:9000/authentica-workerservice-email:latest
+        image: 172.16.16.103:30679/authentica-workerservice-email:latest
+        env:
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: "http://10.97.200.223:4317"
         resources:
           requests:
-            memory: "1Gi"
+            memory: "512Mi"
             cpu: "250m"
           limits:
-            memory: "4Gi"
-            cpu: "4"
+            memory: "512Mi"
+            cpu: "2"

@@ -11,5 +11,5 @@ spec:
       nodePort: 30379
   selector:
     app.kubernetes.io/name: redis
-    app.kubernetes.io/instance: my-redis
+    app.kubernetes.io/instance: redis
     app.kubernetes.io/component: master
