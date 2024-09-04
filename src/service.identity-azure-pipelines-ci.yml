@@ -90,10 +90,10 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.service.identity -t 172.16.16.51:9000/authentica-service-identity:latest .
+          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.service.identity -t $(DockerRegistry)/authentica-service-identity:latest .
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'
     - task: Bash@3
       inputs: 
         targetType: 'inline'
-        script: docker push 172.16.16.51:9000/authentica-service-identity:latest
+        script: docker push $(DockerRegistry)/authentica-service-identity:latest
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'
