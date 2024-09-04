@@ -78,10 +78,10 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.workerservice.email -t 172.16.16.51:9000/authentica-workerservice-email:latest .
+          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.workerservice.email -t $(DockerRegistry)/authentica-workerservice-email:latest .
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'
     - task: Bash@3
       inputs: 
         targetType: 'inline'
-        script: docker push 172.16.16.51:9000/authentica-workerservice-email:latest
+        script: docker push $(DockerRegistry)/authentica-workerservice-email:latest
         workingDirectory: '$(System.DefaultWorkingDirectory)/src'
