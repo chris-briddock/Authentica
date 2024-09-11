@@ -4,22 +4,25 @@ services:
     image: ${DOCKER_REGISTRY-}authenticaserviceidentity
     build:
       context: .
-      dockerfile: src/Dockerfile.service.identity
+      dockerfile: Dockerfile.service.identity
     environment: 
-      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
       ASPNETCORE_HTTPS_PORTS: 7171
-      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_ENVIRONMENT: "Production"
+    ports:
+      - "7171:7171"
 
   authentica.workerservice.email:
     image: ${DOCKER_REGISTRY-}authenticaworkerserviceemail
     build:
       context: .
-      dockerfile: src/Dockerfile.workerservice.email
+      dockerfile: Dockerfile.workerservice.email
     environment: 
-      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:4317"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      ASPNETCORE_ENVIRONMENT: "Production"
 
   rabbitmq:
-    hostname: "rabbitmq"
+    hostname: rabbitmq
     container_name: rabbitmq
     restart: unless-stopped
     image: rabbitmq:3-management
@@ -39,6 +42,7 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver2022
+    hostname: sqlserver
     environment:
       SA_PASSWORD: "YourStrong@Passw0rd"
       ACCEPT_EULA: "Y"
@@ -50,12 +54,14 @@ services:
   
   redis:
     image: redis:latest
+    hostname: redis
     container_name: test-redis
     ports:
-      - "5002:6379"
+      - "6379:6379"
     restart: always
     
   aspire-dashboard:
+    hostname: "aspire-dashboard"
     image: mcr.microsoft.com/dotnet/aspire-dashboard:8.0.0
     ports:
       - "18888:18888"

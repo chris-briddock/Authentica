@@ -87,13 +87,11 @@ public sealed class Program
         app.UseCustomHealthCheckMapping();
         await app.UseDatabaseMigrationsAsync<AppDbContext>();
         await app.UseSeedDataAsync();
+        app.UseCors(CorsDefaults.PolicyName);
+        app.UseSwagger();
+        app.UseSwaggerUI();
         if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            app.UseCors(CorsDefaults.PolicyName);
             await app.UseSeedTestDataAsync();
-        }
         await app.RunAsync();
     }
 }

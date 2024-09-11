@@ -14,31 +14,31 @@ public class AddressValidator : AbstractValidator<Address>
     public AddressValidator()
     {
         RuleFor(address => address.Name)
-            .NotEmpty().WithMessage("Address name is required.")
-            .MaximumLength(64).WithMessage("Address name must be at most 64 characters long.");
+            .MaximumLength(64).WithMessage("Address name must be at most 64 characters long.")
+            .When(address => !string.IsNullOrEmpty(address.Name));
 
         RuleFor(address => address.Number)
-            .NotEmpty().WithMessage("Address number is required.")
-            .MaximumLength(10).WithMessage("Address number must be at most 10 characters long.");
+            .MaximumLength(10).WithMessage("Address number must be at most 10 characters long.")
+            .When(address => !string.IsNullOrEmpty(address.Number));
 
         RuleFor(address => address.Street)
-            .NotEmpty().WithMessage("Address street is required.")
-            .MaximumLength(200).WithMessage("Address street must be at most 200 characters long.");
+            .MaximumLength(200).WithMessage("Address street must be at most 200 characters long.")
+            .When(address => !string.IsNullOrEmpty(address.Street));
 
         RuleFor(address => address.City)
-            .NotEmpty().WithMessage("Address city is required.")
-            .MaximumLength(100).WithMessage("Address city must be at most 100 characters long.");
+            .MaximumLength(100).WithMessage("Address city must be at most 100 characters long.")
+            .When(address => !string.IsNullOrEmpty(address.City));
 
         RuleFor(address => address.State)
-            .NotEmpty().WithMessage("Address state is required.")
-            .MaximumLength(100).WithMessage("Address state must be at most 100 characters long.");
+            .MaximumLength(100).WithMessage("Address state must be at most 100 characters long.")
+            .When(address => !string.IsNullOrEmpty(address.State));
 
         RuleFor(address => address.Postcode)
-            .NotEmpty().WithMessage("Address postcode is required.")
-            .MaximumLength(10).WithMessage("Address postcode must be at most 10 characters long.");
+            .MaximumLength(10).WithMessage("Address postcode must be at most 10 characters long.")
+            .When(address => !string.IsNullOrEmpty(address.Postcode));
 
         RuleFor(address => address.Country)
-            .NotEmpty().WithMessage("Address country is required.")
-            .MaximumLength(100).WithMessage("Address country must be at most 100 characters long.");
+            .MaximumLength(100).WithMessage("Address country must be at most 100 characters long.")
+            .When(address => !string.IsNullOrEmpty(address.Country));
     }
 }
