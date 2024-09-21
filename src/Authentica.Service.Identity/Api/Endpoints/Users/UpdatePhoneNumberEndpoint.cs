@@ -5,7 +5,6 @@ using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Events;
 
 namespace Api.Endpoints.Users;
 
@@ -47,14 +46,6 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
-
-        UpdatePhoneNumberEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 

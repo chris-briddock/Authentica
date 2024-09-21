@@ -3,7 +3,6 @@ using Api.Responses;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,13 +46,6 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
         var eventStore = Services.GetRequiredService<IEventStore>();
 
         var query = await dbContext.Users.ToListAsync(cancellationToken);
-
-        ReadAllUsersEvent @event = new()
-        {
-            Email = User.Identity!.Name!
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         var response = new GetAllUsersMapper().ToResponse(query);
 

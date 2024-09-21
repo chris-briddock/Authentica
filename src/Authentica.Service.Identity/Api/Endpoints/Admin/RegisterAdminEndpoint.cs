@@ -3,7 +3,6 @@ using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -47,17 +46,9 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
                                                          CancellationToken cancellationToken = default)
     {
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
-
-        RegisterAdminEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);

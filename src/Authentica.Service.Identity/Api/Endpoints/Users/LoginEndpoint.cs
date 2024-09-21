@@ -4,7 +4,6 @@ using Application.Contracts;
 using Application.Extensions;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
@@ -68,13 +67,6 @@ public sealed class LoginEndpoint : EndpointBaseAsync
         user.LastLoginDateTime = DateTime.UtcNow;
         user.LastLoginIPAddress = HttpContext.GetIpAddress();
         dbContext.Users.Update(user);
-
-        LoginEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         // Check if the user requires two-factor authentication
         if (signInResult.RequiresTwoFactor)

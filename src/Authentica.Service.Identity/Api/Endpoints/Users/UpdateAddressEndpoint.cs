@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
-using Domain.Events;
 
 namespace Api.Endpoints.Users;
 
@@ -48,14 +47,6 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var dbContext = Services.GetRequiredService<AppDbContext>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
-
-        UpdateAddressEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 

@@ -3,7 +3,6 @@ using Api.Responses;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,20 +44,10 @@ public class ReadAllEventsEndpoint : EndpointBaseAsync
     public override async Task<ActionResult<IList<EventResponse>>> HandleAsync(CancellationToken cancellationToken = default)
     {
         var dbContext = Services.GetRequiredService<AppDbContext>();
-        var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-        var eventStore = Services.GetRequiredService<IEventStore>();
 
         var events = await dbContext.Events.ToListAsync(cancellationToken);
 
         var responses = new ReadAllEventsMapper().ToResponse(events);
-
-        ReadAllEventsEvent @event = new()
-        {
-            Email = userReadResult.User.Email!
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         return Ok(responses);
     }

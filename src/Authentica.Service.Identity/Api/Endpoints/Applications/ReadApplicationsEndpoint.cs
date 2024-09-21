@@ -4,7 +4,6 @@ using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +46,6 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
     {
         var readStoreResult = Services.GetRequiredService<IApplicationReadStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
         if (userResult?.User?.Id is null)
@@ -56,14 +54,6 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
         IEnumerable<ClientApplication> apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
 
         List<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
-        List<ReadApplicationResponse> redactedResponses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
-
-        ReadApplicationsEvent @event = new()
-        {
-            Payload = redactedResponses
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         return Ok(responses);
     }

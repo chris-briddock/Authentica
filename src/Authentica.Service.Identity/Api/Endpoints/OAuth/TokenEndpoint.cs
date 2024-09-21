@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Api.Constants;
 using Api.Requests;
 using Api.Responses;
@@ -7,7 +8,6 @@ using Ardalis.ApiEndpoints;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
-using Domain.Events;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +55,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         string subject = string.Empty;
         IList<string> roles = [];
         IList<string> scopes = [];
+        IList<Claim> groups = [];
 
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
@@ -94,6 +95,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         if (!User.Identity!.IsAuthenticated)
         {
             roles = await userReadStore.GetUserRolesAsync(userReadResult.User.Email!);
+            groups = await userReadStore.GetUserGroupsAsync(userReadResult.User);
             subject = userReadResult.User.Email!;
             email = userReadResult.User.Email!;
         }
@@ -134,9 +136,9 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             scopes = scopeProvider.ParseScopes(request.Scopes);
 
         var tokenResult = await jwtProvider.TryCreateTokenAsync(
-            email!, secret, issuer, audience, expires, subject, roles, scopes);
+            email!, secret, issuer, audience, expires, subject, roles, groups, scopes);
         var refreshTokenResult = await jwtProvider.TryCreateRefreshTokenAsync(
-            email!, secret, issuer, audience, expires, subject, roles, scopes);
+            email!, secret, issuer, audience, expires, subject, roles, groups, scopes);
 
         if (tokenResult.Success && refreshTokenResult.Success)
         {
@@ -155,27 +157,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             TokenType = "Bearer",
             Expires = expires.ToString()
         };
-
-        TokenEvent @event = new()
-        {
-            Request = new TokenRequest()
-            {
-                GrantType = request.GrantType,
-                ClientId = request.ClientId,
-                ClientSecret = request.ClientSecret,
-                Code = request.Code,
-                State = request.State
-            },
-            Response = new TokenResponse()
-            {
-                AccessToken = response.AccessToken,
-                RefreshToken = response.RefreshToken,
-                TokenType = "Bearer",
-                Expires = expires.ToString()
-            }
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         return Ok(response);
     }

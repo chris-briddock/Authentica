@@ -4,7 +4,6 @@ using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,13 +51,6 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
 
         var userReadResult = await userWriteStore.GetUserByEmailAsync(User, cancellationToken);
         var user = userReadResult.User;
-
-        UpdateApplicationByNameEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
         
         if (user is null)
             return BadRequest();

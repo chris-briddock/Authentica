@@ -53,4 +53,11 @@ public interface IUserReadStore
     /// A task that represents the asynchronous operation. The task result contains a list of all users.
     /// </returns>
     Task<IList<User>> GetAllUsersAsync(); 
+    /// <summary>
+    /// Asynchronously retrieves the list of groups, associated to a user.
+    /// </summary>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains a list of groups.
+    /// </returns>
+    Task<IList<Claim>> GetUserGroupsAsync(User user);
 }

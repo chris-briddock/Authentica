@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Application.Results;
 
 namespace Application.Providers;
@@ -17,6 +18,7 @@ public interface IJsonWebTokenProvider
     /// <param name="expires">The expiration date and time of the JWT.</param>
     /// <param name="subject">The subject of the JWT.</param>
     /// <param name="roles">The roles that are stored as claims in the JWT.</param>
+    /// <param name="groups">The groups that are store as claims in the JWT.</param>
     /// <param name="scopes">The scopes that are assigned to the JWT.</param>
     /// <returns>A <see cref="JwtResult"/> containing the result of the token creation.</returns>
     Task<JwtResult> TryCreateRefreshTokenAsync(string email,
@@ -26,6 +28,7 @@ public interface IJsonWebTokenProvider
                                                int expires,
                                                string subject,
                                                IList<string> roles,
+                                               IList<Claim> groups,
                                                IList<string>? scopes);
     /// <summary>
     /// Tries to create a new JWT (JSON Web Token) asynchronously.
@@ -37,6 +40,7 @@ public interface IJsonWebTokenProvider
     /// <param name="expires">The expiration date and time of the JWT.</param>
     /// <param name="subject">The subject of the JWT.</param>
     /// <param name="roles">The roles that are stored as claims in the JWT.</param>
+    /// <param name="groups">The groups that are store as claims in the JWT.</param>
     /// <param name="scopes">The scopes that are assigned to the JWT.</param>
     /// <returns>A <see cref="JwtResult"/> containing the result of the token creation.</returns>
     Task<JwtResult> TryCreateTokenAsync(string email,
@@ -46,6 +50,7 @@ public interface IJsonWebTokenProvider
                                         int expires,
                                         string subject,
                                         IList<string> roles,
+                                        IList<Claim> groups,
                                         IList<string>? scopes);
     /// <summary>
     /// Tries to validate a JWT (JSON Web Token) asynchronously.

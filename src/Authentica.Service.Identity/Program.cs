@@ -75,6 +75,7 @@ public sealed class Program
         WebApplication app = builder.Build();
         app.UseSession();
         app.UseMiddleware<ExceptionMiddleware>();
+        app.UseMiddleware<EventLoggingMiddleware>();
         app.UseMiddleware<SessionMiddleware>();
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseHsts();

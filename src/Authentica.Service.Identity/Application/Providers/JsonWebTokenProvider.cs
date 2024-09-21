@@ -20,6 +20,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                                                      int expires,
                                                      string subject,
                                                      IList<string> roles,
+                                                     IList<Claim> groups,
                                                      IList<string>? scopes)
     {
         JwtResult result = new();
@@ -42,6 +43,11 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
+            foreach (var group in groups)
+            {
+                claims.Add(group);
+            }
+
             if (scopes is not null)
             {
                 foreach (var scope in scopes)
@@ -50,7 +56,6 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                 }
             }
             
-
             SigningCredentials signingCredentials = new(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha512);
@@ -129,6 +134,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                                                             int expires,
                                                             string subject,
                                                             IList<string> roles,
+                                                            IList<Claim> groups,
                                                             IList<string>? scopes) => await TryCreateTokenAsync(email,
                                                                                                                 jwtSecret,
                                                                                                                 issuer,
@@ -136,6 +142,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                                                                                                                 expires,
                                                                                                                 subject,
                                                                                                                 roles,
+                                                                                                                groups,
                                                                                                                 scopes);
 
 }

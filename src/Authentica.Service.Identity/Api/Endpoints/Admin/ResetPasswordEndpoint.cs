@@ -3,7 +3,6 @@ using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -48,7 +47,6 @@ public class ResetPasswordEndpoint : EndpointBaseAsync
                                                          CancellationToken cancellationToken = default)
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
 
         var user = await userManager.FindByEmailAsync(request.Email);
 
@@ -58,13 +56,6 @@ public class ResetPasswordEndpoint : EndpointBaseAsync
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
         await userManager.ResetPasswordAsync(user, token, request.Password);
-
-        ResetPasswordAdminEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         return NoContent();
 

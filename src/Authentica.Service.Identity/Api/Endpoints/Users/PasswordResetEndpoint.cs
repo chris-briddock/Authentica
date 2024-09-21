@@ -2,7 +2,6 @@
 using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,13 +48,6 @@ public sealed class PasswordResetEndpoint : EndpointBaseAsync
         var userReadResult = await userReadStore.GetUserByEmailAsync(request.Email);
 
         var result = await userWriteStore.ResetPasswordAsync(userReadResult.User, request.Token, request.Password);
-
-        PasswordResetEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         if (!result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError);

@@ -3,7 +3,6 @@ using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -51,14 +50,6 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
-
-        RegisterEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 

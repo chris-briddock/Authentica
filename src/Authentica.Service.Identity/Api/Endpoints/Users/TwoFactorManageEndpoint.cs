@@ -3,7 +3,6 @@ using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -48,15 +47,6 @@ public sealed class TwoFactorManageEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-        var eventStore = Services.GetRequiredService<IEventStore>();
-
-        TwoFactorManageEvent @event = new()
-        {
-            Email = User.Identity!.Name!,
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         if (!userReadResult.Succeeded)
             return BadRequest();

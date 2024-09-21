@@ -2,7 +2,6 @@
 using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,20 +41,12 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
     {
             var writeStore = Services.GetRequiredService<IUserWriteStore>();
             var readStore = Services.GetRequiredService<IUserReadStore>();
-            var eventStore = Services.GetRequiredService<IEventStore>();
 
             var userResult = await readStore.GetUserByEmailAsync(request.Email);
 
             // NOTE: This code should have been emailed to the user.
 
             var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
-
-            ConfirmEmailEvent @event = new()
-            {
-                Payload = request
-            };
-
-            await eventStore.SaveEventAsync(@event);
 
             if (result.Errors.Any() || !result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);

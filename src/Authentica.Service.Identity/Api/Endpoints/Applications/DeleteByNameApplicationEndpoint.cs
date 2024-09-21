@@ -3,7 +3,6 @@ using Api.Requests;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +47,6 @@ public class DeleteByNameApplicationEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
 
         var app = await readStore.GetClientApplicationByNameAndUserIdAsync(request.Name,
                                                                            userReadResult.User!.Id,
@@ -67,13 +65,6 @@ public class DeleteByNameApplicationEndpoint : EndpointBaseAsync
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
-
-        DeleteApplicationEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         return NoContent();
     }

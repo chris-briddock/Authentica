@@ -19,9 +19,7 @@ public sealed class EventStore : StoreBase, IEventStore
     /// <remarks>
     /// This constructor initializes the <see cref="EventStore"/> instance by calling the base constructor with the provided service provider.
     /// </remarks>
-    public EventStore(IServiceProvider services) : base(services)
-    {
-    }
+    public EventStore(IServiceProvider services) : base(services) {}
     /// <inheritdoc/>
     public ImmutableList<Event> GetEventsBySessionId(string sessionId)
     {
@@ -48,7 +46,7 @@ public sealed class EventStore : StoreBase, IEventStore
 
         Event record = new()
         {
-            EventType = @event.GetType().Name,
+            EventType = $"{HttpContext.Request.Method} {HttpContext.Request.Path}",
             CreatedOn = DateTime.UtcNow,
             Data = eventData,
             SequenceId = HttpContext.Session.GetString(SessionConstants.SequenceId)!

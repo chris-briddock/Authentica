@@ -4,7 +4,6 @@ using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,19 +45,10 @@ public class ReadAllApplicationsEndpoint : EndpointBaseAsync
     public override async Task<ActionResult<IList<ReadApplicationResponse>>> HandleAsync(CancellationToken cancellationToken = default)
     {
         var dbContext = Services.GetRequiredService<AppDbContext>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
 
         IList<ClientApplication> apps = await dbContext.ClientApplications.ToListAsync(cancellationToken);
 
         IList<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
-        IList<ReadApplicationResponse> redactedResponses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
-
-        ReadAllApplicationsEvent @event = new()
-        {
-            Payload = redactedResponses
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         return Ok(responses);
     }

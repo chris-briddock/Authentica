@@ -1,9 +1,7 @@
 using Api.Constants;
 using Api.Requests;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -47,15 +45,7 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         SignInResult result;
-
-        TwoFactorLoginEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
          var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
 

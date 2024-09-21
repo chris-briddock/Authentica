@@ -1,8 +1,6 @@
 using Api.Constants;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -43,17 +41,6 @@ public sealed class LogoutEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default)
     {
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
-        var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
-
-        var result = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-
-        LogoutEvent @event = new()
-        {
-            Email = result.User.Email!
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         await signInManager.SignOutAsync();
         return NoContent();

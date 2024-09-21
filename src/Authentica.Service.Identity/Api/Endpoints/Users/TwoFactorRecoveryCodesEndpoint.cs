@@ -2,7 +2,6 @@ using Api.Constants;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -44,14 +43,6 @@ public class TwoFactorRecoveryCodesEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
-
-        TwoFactorRecoveryCodesEvent @event = new()
-        {
-            Email = User.Identity!.Name!
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 

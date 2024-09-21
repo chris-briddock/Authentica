@@ -68,15 +68,17 @@ public class UserReadStore : StoreBase, IUserReadStore
         return await UserManager.GetRolesAsync(user);
     }
 
-    /// <summary>
-    /// Asynchronously retrieves a list of all users in the specified role.
-    /// </summary>
-    /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains a list of users in the specified role.
-    /// </returns>
+    /// <inheritdoc />
     public async Task<IList<User>> GetAllUsersAsync()
     {
         var users = await UserManager.GetUsersInRoleAsync(RoleDefaults.User);
         return users;
+    }
+    /// <inheritdoc />
+    public async Task<IList<Claim>> GetUserGroupsAsync(User user)
+    {
+        var groups = await UserManager.GetClaimsAsync(user);
+
+        return groups;
     }
 }

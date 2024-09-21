@@ -51,7 +51,6 @@ public class TwoFactorManageAuthenticatorEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         var totpProvider = Services.GetRequiredService<ITwoFactorTotpProvider>();
         string formattedKey = string.Empty;
         string uri = string.Empty;
