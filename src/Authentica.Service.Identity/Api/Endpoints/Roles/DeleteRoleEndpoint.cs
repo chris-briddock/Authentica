@@ -6,6 +6,8 @@ using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Api.Endpoints.Roles;
 
@@ -38,6 +40,7 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
     /// <returns>An action result indicating the outcome of the delete operation.</returns>
     [HttpDelete($"{Routes.Roles.Delete}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

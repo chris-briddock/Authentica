@@ -5,6 +5,7 @@ using Application.Contracts;
 using Application.Extensions;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
@@ -46,6 +47,7 @@ public sealed class LoginEndpoint : EndpointBaseAsync
     [HttpPost($"{Routes.Users.Login}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     public override async Task<ActionResult> HandleAsync(LoginRequest request,
                                                         CancellationToken cancellationToken = default)
     {
