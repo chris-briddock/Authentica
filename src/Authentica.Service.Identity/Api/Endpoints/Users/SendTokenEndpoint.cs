@@ -1,5 +1,6 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Authentica.Common;
@@ -55,6 +56,7 @@ public class SendTokenEndpoint : EndpointBaseAsync
         EmailMessage message = new();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var emailPublisher = Services.GetRequiredService<IEmailPublisher>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         User? user = await userManager.FindByEmailAsync(request.Email)!;
 
@@ -110,6 +112,13 @@ public class SendTokenEndpoint : EndpointBaseAsync
                 };
                 break;
         }
+
+        SendTokenActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         await emailPublisher.Publish(message, cancellationToken);
         return Ok($"If a user exists in the database, an email will be sent to that email address.");

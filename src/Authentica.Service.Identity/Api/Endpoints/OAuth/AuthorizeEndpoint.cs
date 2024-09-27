@@ -5,6 +5,7 @@ using Application.DTOs;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
+using Application.Activities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
 
         var randomStringProvider = Services.GetRequiredService<IRandomStringProvider>();
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         ApplicationDto<AuthorizeRequest> dto = new()
         {
@@ -72,6 +74,14 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
             var redirectUri = $"{request.CallbackUri}/?code={code}&state={state}";
             return Redirect(redirectUri);
         }
+
+        AuthorizeActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
+
 
         return Unauthorized();
 

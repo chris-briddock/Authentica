@@ -1,5 +1,6 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
@@ -50,6 +51,7 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 
@@ -58,11 +60,19 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
 
+        RegisterActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
+
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
         if (!await userManager.IsInRoleAsync(result.User, RoleDefaults.User))
             await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
+
 
         // Send confirmation email - trigger domain event.
         return StatusCode(StatusCodes.Status201Created);

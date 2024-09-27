@@ -1,5 +1,6 @@
 ﻿using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authorization;
@@ -36,21 +37,29 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override async Task<ActionResult> HandleAsync([FromQuery]ConfirmEmailRequest request,
+    public override async Task<ActionResult> HandleAsync([FromQuery] ConfirmEmailRequest request,
                                                          CancellationToken cancellationToken = default)
     {
-            var writeStore = Services.GetRequiredService<IUserWriteStore>();
-            var readStore = Services.GetRequiredService<IUserReadStore>();
+        var writeStore = Services.GetRequiredService<IUserWriteStore>();
+        var readStore = Services.GetRequiredService<IUserReadStore>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
-            var userResult = await readStore.GetUserByEmailAsync(request.Email);
+        var userResult = await readStore.GetUserByEmailAsync(request.Email);
 
-            // NOTE: This code should have been emailed to the user.
+        // NOTE: This code should have been emailed to the user.
 
-            var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
+        var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
 
-            if (result.Errors.Any() || !result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        ConfirmEmailActivity activity = new()
+        {
+            Payload = request
+        };
 
-            return Ok(); 
+        await activityWriteStore.SaveActivityAsync(activity);
+
+        if (result.Errors.Any() || !result.Succeeded)
+            return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+
+        return Ok();
     }
 }

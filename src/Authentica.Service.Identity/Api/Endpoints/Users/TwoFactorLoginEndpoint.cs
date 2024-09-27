@@ -1,5 +1,7 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
+using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -45,6 +47,7 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         SignInResult result;
 
          var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -62,6 +65,13 @@ public sealed class TwoFactorLoginEndpoint : EndpointBaseAsync
         else
              result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
 
+        TwoFactorLoginActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
+    
         if (!result.Succeeded)
                 return Unauthorized();
             

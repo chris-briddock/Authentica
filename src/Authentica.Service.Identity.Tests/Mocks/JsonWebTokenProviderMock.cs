@@ -1,4 +1,6 @@
-﻿namespace Authentica.Service.Identity.Tests.Mocks;
+﻿using Application.Contracts;
+
+namespace Authentica.Service.Identity.Tests.Mocks;
 
 public class JsonWebTokenProviderMock : Mock<IJsonWebTokenProvider>, IMockBase<JsonWebTokenProviderMock>
 {

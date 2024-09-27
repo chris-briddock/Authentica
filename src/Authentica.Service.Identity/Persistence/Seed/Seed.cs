@@ -1,10 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
-using Domain.Aggregates.Identity;
-using Domain.ValueObjects;
-using Microsoft.AspNetCore.Identity;
-using Persistence.Contexts;
-
 namespace Persistence.Seed;
 
 /// <summary>

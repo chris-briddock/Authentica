@@ -3,6 +3,7 @@ using Api.Responses;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -47,6 +48,7 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
         var readStoreResult = Services.GetRequiredService<IApplicationReadStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         if (userResult?.User?.Id is null)
             return BadRequest();
@@ -54,6 +56,13 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
         IEnumerable<ClientApplication> apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
 
         List<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
+
+        ReadApplicationsActivity activity = new()
+        {
+            Payload = responses
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok(responses);
     }

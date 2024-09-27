@@ -1,9 +1,7 @@
-using System.Security.Claims;
 using Api.Constants;
 using Api.Requests;
 using Api.Responses;
 using Application.Contracts;
-using Application.Providers;
 using Ardalis.ApiEndpoints;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
@@ -55,13 +53,11 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         string subject = string.Empty;
         IList<string> roles = [];
         IList<string> scopes = [];
-        IList<Claim> groups = [];
 
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
         var configuration = Services.GetRequiredService<IConfiguration>();
         var hasher = Services.GetRequiredService<ISecretHasher>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var scopeProvider = Services.GetRequiredService<IScopeProvider>();
@@ -95,7 +91,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         if (!User.Identity!.IsAuthenticated)
         {
             roles = await userReadStore.GetUserRolesAsync(userReadResult.User.Email!);
-            groups = await userReadStore.GetUserGroupsAsync(userReadResult.User);
             subject = userReadResult.User.Email!;
             email = userReadResult.User.Email!;
         }
@@ -136,9 +131,9 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             scopes = scopeProvider.ParseScopes(request.Scopes);
 
         var tokenResult = await jwtProvider.TryCreateTokenAsync(
-            email!, secret, issuer, audience, expires, subject, roles, groups, scopes);
+            email!, secret, issuer, audience, expires, subject, roles, scopes);
         var refreshTokenResult = await jwtProvider.TryCreateRefreshTokenAsync(
-            email!, secret, issuer, audience, expires, subject, roles, groups, scopes);
+            email!, secret, issuer, audience, expires, subject, roles, scopes);
 
         if (tokenResult.Success && refreshTokenResult.Success)
         {

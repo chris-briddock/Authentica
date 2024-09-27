@@ -4,6 +4,7 @@ using Api.Responses;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -50,6 +51,7 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
         var readStoreResult = Services.GetRequiredService<IApplicationReadStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var user = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         ClientApplication? app = await readStoreResult.GetClientApplicationByNameAndUserIdAsync(request.Name,
                                                                                                 user.User!.Id,
@@ -59,6 +61,14 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
             return BadRequest();
 
         ReadApplicationResponse response = new ClientApplicationMapper().ToResponse(app);
+
+        ReadApplicationByNameActivity activity = new()
+        {
+            Request = request,
+            Response = response
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok(response);
     }

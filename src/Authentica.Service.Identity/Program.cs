@@ -13,11 +13,11 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Api.Constants;
 using ITimer = Application.Contracts.ITimer;
 using Microsoft.AspNetCore.Identity;
 using Domain.Aggregates.Identity;
 using Authentica.Common;
+using Application.Stores;
 
 
 namespace Authentica.Service.Identity;
@@ -55,6 +55,8 @@ public sealed class Program
         builder.Services.TryAddScoped<ISecretHasher, Argon2SecretHasher>();
         builder.Services.TryAddScoped<IPasswordHasher<User>, Argon2PasswordHasher<User>>();
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
+        builder.Services.TryAddScoped<ISessionWriteStore, SessionWriteStore>();
+        builder.Services.TryAddScoped<ISessionReadStore, SessionReadStore>();
         builder.Services.TryAddTransient<ITimer, TimerProvider>();
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
         builder.Services.TryAddScoped<ITwoFactorTotpProvider, TwoFactorTotpProvider>();
@@ -75,7 +77,6 @@ public sealed class Program
         WebApplication app = builder.Build();
         app.UseSession();
         app.UseMiddleware<ExceptionMiddleware>();
-        app.UseMiddleware<EventLoggingMiddleware>();
         app.UseMiddleware<SessionMiddleware>();
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseHsts();

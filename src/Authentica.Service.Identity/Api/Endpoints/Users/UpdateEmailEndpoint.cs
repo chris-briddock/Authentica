@@ -5,6 +5,7 @@ using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Application.Activities;
 
 namespace Api.Endpoints.Users;
 
@@ -46,6 +47,7 @@ public sealed class UpdateEmailEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
@@ -53,6 +55,13 @@ public sealed class UpdateEmailEndpoint : EndpointBaseAsync
 
         if (!result.Succeeded)
             return BadRequest();
+
+        UpdateEmailActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         return Ok();
     }

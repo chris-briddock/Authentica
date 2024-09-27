@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
+using Application.Activities;
 
 namespace Api.Endpoints.Users;
 
@@ -47,6 +48,7 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var dbContext = Services.GetRequiredService<AppDbContext>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
@@ -57,6 +59,13 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
         user.ModifiedOnUtc = DateTime.UtcNow;
 
         dbContext.Users.Update(user);
+
+        UpdateAddressActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

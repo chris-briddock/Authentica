@@ -74,11 +74,4 @@ public class UserReadStore : StoreBase, IUserReadStore
         var users = await UserManager.GetUsersInRoleAsync(RoleDefaults.User);
         return users;
     }
-    /// <inheritdoc />
-    public async Task<IList<Claim>> GetUserGroupsAsync(User user)
-    {
-        var groups = await UserManager.GetClaimsAsync(user);
-
-        return groups;
-    }
 }

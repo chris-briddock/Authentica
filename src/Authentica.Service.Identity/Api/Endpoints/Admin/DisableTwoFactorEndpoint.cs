@@ -1,6 +1,8 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Contracts;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +15,7 @@ namespace Api.Endpoints.Admin;
 /// Endpoint for reading all applications and returning their responses.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
-public class DisableTwoFactorEndpoint : EndpointBaseAsync
+public sealed class DisableTwoFactorEndpoint : EndpointBaseAsync
                                         .WithRequest<DisableTwoFactorRequest>
                                         .WithActionResult
 {
@@ -46,13 +48,21 @@ public class DisableTwoFactorEndpoint : EndpointBaseAsync
                                                          CancellationToken cancellationToken = default)
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
        var user = await userManager.FindByEmailAsync(request.Email);
 
-       if (user is null)
-        return BadRequest();
+        if (user is null)
+            return BadRequest();
 
         await userManager.SetTwoFactorEnabledAsync(user, false);
+
+        DisableTwoFactorActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok();
     }

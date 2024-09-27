@@ -3,7 +3,6 @@ using System.Text.Encodings.Web;
 using Application.Contracts;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 
 namespace Application.Providers;
 
@@ -19,11 +18,6 @@ public sealed class TwoFactorTotpProvider : ITwoFactorTotpProvider
     private IServiceProvider Services { get; }
 
     /// <summary>
-    /// Gets the identity options configuration.
-    /// </summary>
-    public IOptions<IdentityOptions> Options { get; }
-
-    /// <summary>
     /// Gets the user manager service from the service provider.
     /// </summary>
     private UserManager<User> UserManager => Services.GetRequiredService<UserManager<User>>(); 
@@ -32,11 +26,9 @@ public sealed class TwoFactorTotpProvider : ITwoFactorTotpProvider
     /// Initializes a new instance of the <see cref="TwoFactorTotpProvider"/> class.
     /// </summary>
     /// <param name="services">The service provider.</param>
-    /// <param name="options">The identity options configuration.</param>
-    public TwoFactorTotpProvider(IServiceProvider services, IOptions<IdentityOptions> options)
+    public TwoFactorTotpProvider(IServiceProvider services)
     {
         Services = services;
-        Options = options;
     }
 
     /// <summary>

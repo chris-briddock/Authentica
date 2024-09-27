@@ -9,7 +9,7 @@ public static partial class Seed
 {
     public static partial class Test
     {
-            /// <summary>
+    /// <summary>
     /// Seeds the test client application into the database if it doesn't already exist.
     /// </summary>
     /// <param name="app">The web application instance.</param>

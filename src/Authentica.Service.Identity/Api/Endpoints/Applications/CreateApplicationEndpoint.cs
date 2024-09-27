@@ -3,6 +3,7 @@ using Api.Requests;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
     {
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var applicationExists = await readStore.CheckApplicationExistsAsync(request.Name, cancellationToken);
 
@@ -63,6 +65,13 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
+        CreatedApplicationActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
+        
         return StatusCode(StatusCodes.Status201Created);
     }
 }

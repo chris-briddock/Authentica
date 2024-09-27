@@ -7,7 +7,6 @@ public class TwoFactorTotpProviderTests
 {
     private Mock<IServiceProvider> _serviceProviderMock;
     private Mock<UserManager<User>> _userManagerMock;
-    private Mock<IOptions<IdentityOptions>> _identityOptionsMock;
     private TwoFactorTotpProvider _provider;
 
     [SetUp]
@@ -20,11 +19,7 @@ public class TwoFactorTotpProviderTests
             .Setup(sp => sp.GetService(typeof(UserManager<User>)))
             .Returns(_userManagerMock.Object);
 
-        var identityOptions = new IdentityOptions();
-        _identityOptionsMock = new Mock<IOptions<IdentityOptions>>();
-        _identityOptionsMock.Setup(opt => opt.Value).Returns(identityOptions);
-
-        _provider = new TwoFactorTotpProvider(_serviceProviderMock.Object, _identityOptionsMock.Object);
+        _provider = new TwoFactorTotpProvider(_serviceProviderMock.Object);
     }
 
     [Test]

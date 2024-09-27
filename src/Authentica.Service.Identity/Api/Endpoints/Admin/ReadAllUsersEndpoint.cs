@@ -3,6 +3,7 @@ using Api.Responses;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,11 +44,18 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
     public override async Task<ActionResult<IList<GetUserResponse>>> HandleAsync(CancellationToken cancellationToken = default)
     {
         var dbContext = Services.GetRequiredService<AppDbContext>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var query = await dbContext.Users.ToListAsync(cancellationToken);
 
         var response = new GetAllUsersMapper().ToResponse(query);
+
+        ReadAllUsersActivity activity = new()
+        {
+            Email = User.Identity?.Name ?? "Unknown"
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok(response);        
     }

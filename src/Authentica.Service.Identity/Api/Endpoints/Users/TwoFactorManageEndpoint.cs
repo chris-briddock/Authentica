@@ -1,5 +1,6 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
@@ -46,12 +47,21 @@ public sealed class TwoFactorManageEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
         if (!userReadResult.Succeeded)
             return BadRequest();
 
         await userManager.SetTwoFactorEnabledAsync(userReadResult.User, request.IsEnabled);
+
+        TwoFactorManageActivity activity = new()
+        {
+            Email = User.Identity?.Name ?? "Unknown",
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         return NoContent();
     }

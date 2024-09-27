@@ -1,5 +1,6 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
@@ -51,6 +52,7 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(request.Email);
 
@@ -60,6 +62,13 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
             return BadRequest();
 
         await userManager.SetTwoFactorEnabledAsync(userReadResult.User, false);
+
+        TwoFactorRecoveryCodesRedeemActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         return Ok();
     }

@@ -24,9 +24,9 @@ public static partial class Routes
         /// </summary>
         public const string ReadAllUsers = "admin/users";
         /// <summary>
-        /// Reads all the events in the system.
+        /// Reads all the activities in the system.
         /// </summary>
-        public const string ReadAllEvents = "admin/events";
+        public const string ReadAllActivities = "admin/activities";
         /// <summary>
         /// Reads all the applications.
         /// </summary>

@@ -2,6 +2,7 @@ using Api.Constants;
 using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -47,6 +48,7 @@ public class ResetPasswordEndpoint : EndpointBaseAsync
                                                          CancellationToken cancellationToken = default)
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var user = await userManager.FindByEmailAsync(request.Email);
 
@@ -56,6 +58,13 @@ public class ResetPasswordEndpoint : EndpointBaseAsync
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
         await userManager.ResetPasswordAsync(user, token, request.Password);
+
+        ResetPasswordAdminActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         return NoContent();
 

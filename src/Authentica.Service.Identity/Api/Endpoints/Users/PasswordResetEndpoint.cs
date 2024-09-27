@@ -1,5 +1,6 @@
 ﻿using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authorization;
@@ -43,11 +44,18 @@ public sealed class PasswordResetEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(request.Email);
 
         var result = await userWriteStore.ResetPasswordAsync(userReadResult.User, request.Token, request.Password);
+
+        PasswordResetActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         if (!result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError);

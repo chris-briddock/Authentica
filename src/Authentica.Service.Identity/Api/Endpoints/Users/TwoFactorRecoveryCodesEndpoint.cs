@@ -1,4 +1,5 @@
 using Api.Constants;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
@@ -43,10 +44,19 @@ public class TwoFactorRecoveryCodesEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
         var codes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(userReadResult.User, 10);
+
+        TwoFactorRecoveryCodesActivity activity = new()
+        {
+            Email = User.Identity?.Name ?? "Unknown",
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
+
         return Ok(codes);
     }
 }

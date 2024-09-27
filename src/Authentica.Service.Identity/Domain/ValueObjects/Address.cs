@@ -3,7 +3,7 @@ namespace Domain.ValueObjects;
 /// <summary>
 /// Represents an address value object.
 /// </summary>
-public class Address
+public sealed class Address
 {
     /// <summary>
     /// Gets or sets the name of the building, if there is one.

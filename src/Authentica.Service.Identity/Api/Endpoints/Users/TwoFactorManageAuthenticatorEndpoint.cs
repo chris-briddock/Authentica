@@ -1,6 +1,7 @@
 using Api.Constants;
 using Api.Requests;
 using Api.Responses;
+using Application.Activities.Users;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
@@ -52,6 +53,7 @@ public class TwoFactorManageAuthenticatorEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var totpProvider = Services.GetRequiredService<ITwoFactorTotpProvider>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         string formattedKey = string.Empty;
         string uri = string.Empty;
 
@@ -82,6 +84,14 @@ public class TwoFactorManageAuthenticatorEndpoint : EndpointBaseAsync
             AuthenticatorKey = formattedKey,
             QrCodeUri = uri
         };
+
+        TwoFactorManageAuthenticatorActivity activity = new()
+        {
+            Request = request,
+            Response = response
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         return Ok(response);
     }

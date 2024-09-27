@@ -1,5 +1,6 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Application.Extensions;
 using Ardalis.ApiEndpoints;
@@ -51,7 +52,7 @@ public sealed class LoginEndpoint : EndpointBaseAsync
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var dbContext = Services.GetRequiredService<AppDbContext>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         // Set the authentication scheme
         signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
@@ -67,6 +68,13 @@ public sealed class LoginEndpoint : EndpointBaseAsync
         user.LastLoginDateTime = DateTime.UtcNow;
         user.LastLoginIPAddress = HttpContext.GetIpAddress();
         dbContext.Users.Update(user);
+
+        LoginActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         // Check if the user requires two-factor authentication
         if (signInResult.RequiresTwoFactor)
