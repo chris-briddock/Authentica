@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -7,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
     /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
     public partial class Initial : Migration
     {
         /// <inheritdoc />
@@ -302,7 +300,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    ip_address = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false)
+                    ip_address = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: true)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_SESSIONSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)

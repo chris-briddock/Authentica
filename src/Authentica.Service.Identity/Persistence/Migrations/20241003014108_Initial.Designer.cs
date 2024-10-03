@@ -13,7 +13,7 @@ using Persistence.Contexts;
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240927155039_Initial")]
+    [Migration("20241003014108_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -335,7 +335,6 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("end_date_time");
 
                     b.Property<string>("IpAddress")
-                        .IsRequired()
                         .HasMaxLength(45)
                         .HasColumnType("nvarchar(45)")
                         .HasColumnName("ip_address");

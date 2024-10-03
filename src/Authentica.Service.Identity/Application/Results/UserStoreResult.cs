@@ -5,7 +5,7 @@ namespace Application.Results;
 /// <summary>
 /// Represents the result of a user store operation.
 /// </summary>
-public class UserStoreResult : BaseResult<UserStoreResult>
+public sealed class UserStoreResult : BaseResult<UserStoreResult>
 {
     /// <summary>
     /// Gets the user associated with the result.
@@ -23,18 +23,6 @@ public class UserStoreResult : BaseResult<UserStoreResult>
         {
             Succeeded = true,
             User = user
-        };
-    }
-
-    /// <summary>
-    /// Creates a successful result with the specified user.
-    /// </summary>
-    /// <returns>A successful <see cref="UserStoreResult"/> with the specified user.</returns>
-    public static UserStoreResult Success()
-    {
-        return new UserStoreResult
-        {
-            Succeeded = true
         };
     }
 }

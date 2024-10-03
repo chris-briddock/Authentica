@@ -1,9 +1,11 @@
+using Domain.Contracts;
+
 namespace Domain.Aggregates.Identity;
 
 /// <summary>
 /// Represents a user session within the system.
 /// </summary>
-public sealed class Session
+public sealed class Session : ISoftDeletableEntity<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the session.
@@ -37,7 +39,7 @@ public sealed class Session
     /// <summary>
     /// Gets or sets the IP address from which the session originated.
     /// </summary>
-    public string IpAddress { get; set; } = default!;
+    public string? IpAddress { get; set; } = default!;
 
     /// <summary>
     /// Gets or sets the user agent string of the client that initiated the session.
@@ -47,4 +49,10 @@ public sealed class Session
     /// Gets or sets the current status of the session.
     /// </summary>
     public string Status { get; set; } = default!;
+    /// <inheritdoc/>
+    public bool IsDeleted { get; set; } = false;
+    /// <inheritdoc/>
+    public DateTime? DeletedOnUtc {  get; set; } 
+    /// <inheritdoc/>
+    public string? DeletedBy {  get; set; } = default!:
 }

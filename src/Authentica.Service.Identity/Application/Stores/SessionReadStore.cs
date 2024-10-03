@@ -15,13 +15,14 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
     public SessionReadStore(IServiceProvider services) : base(services)
     {
     }
-    /// <summary>
-    /// Retrieves a session from the store asynchronously based on the user ID.
-    /// </summary>
-    /// <param name="UserId">The ID of the user whose session is to be retrieved.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains a list of sessions associated with the user.</returns>
+    /// <inheritdoc/>
     public async Task<IList<Session>> GetAsync(string UserId)
     {
         return await DbContext.Sessions.Where(x => x.UserId == UserId).ToListAsync();
+    }
+    /// <inheritdoc/>
+    public async Task<Session> GetByIdAsync(string SessionId)
+    {
+        return await DbContext.Sessions.Where(x => x.SessionId == SessionId).FirstAsync();
     }
 }

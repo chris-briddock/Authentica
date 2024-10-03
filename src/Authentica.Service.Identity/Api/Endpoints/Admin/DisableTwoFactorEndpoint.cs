@@ -16,8 +16,8 @@ namespace Api.Endpoints.Admin;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public sealed class DisableTwoFactorEndpoint : EndpointBaseAsync
-                                        .WithRequest<DisableTwoFactorRequest>
-                                        .WithActionResult
+                                               .WithRequest<DisableTwoFactorRequest>
+                                               .WithActionResult
 {
     /// <summary>
     /// Gets the service provider used to resolve dependencies.
@@ -36,7 +36,7 @@ public sealed class DisableTwoFactorEndpoint : EndpointBaseAsync
     /// <summary>
     /// Handles disabling two factor for a given user.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="request">The object which encapsulates the request.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
      /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
     [HttpPost($"{Routes.Admin.DisableTwoFactor}")]

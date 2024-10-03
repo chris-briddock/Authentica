@@ -1,5 +1,6 @@
 using Application.Contracts;
 using Domain.Aggregates.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
 /// <summary>
@@ -23,8 +24,16 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     /// <returns>A task that represents the asynchronous operation. The task result contains the created session.</returns>
     public async Task<Session> CreateAsync(Session session)
     {
-        await DbContext.Sessions.AddAsync(session);
-        await DbContext.SaveChangesAsync();
+        try
+        {
+            await DbContext.Sessions.AddAsync(session);
+            await DbContext.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
         return session;
     }
 
@@ -35,7 +44,21 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task DeleteAsync(Session session)
     {
-        DbContext.Sessions.Remove(session);
-        await DbContext.SaveChangesAsync();
+        try
+        {
+            await DbContext.Sessions.Where(x => x.SessionId == session.Id)
+                .ExecuteUpdateAsync(
+                x => x
+                .SetProperty(s => s.IsDeleted, s => true)
+                .SetProperty(s => s.EndDateTime, s => DateTime.UtcNow)
+                .SetProperty(s => s.DeletedBy, s => session.UserId)
+                .SetProperty(s => s.DeletedOnUtc, s => DateTime.UtcNow)
+                );
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
     }
 }
