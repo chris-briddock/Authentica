@@ -24,7 +24,7 @@ public class ReadAllApplicationsEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets the service provider used to resolve dependencies.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReadAllApplicationsEndpoint"/> class.

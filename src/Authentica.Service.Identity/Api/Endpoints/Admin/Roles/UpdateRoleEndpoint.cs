@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Endpoints.Roles;
+namespace Api.Endpoints.Admin.Roles;
 
 /// <summary>
 /// Represents an endpoint for updating an existing group.
@@ -23,7 +23,7 @@ public sealed class UpdateRoleEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets or sets the service provider for dependency injection.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UpdateRoleEndpoint"/> class.
@@ -45,12 +45,12 @@ public sealed class UpdateRoleEndpoint : EndpointBaseAsync
     /// If the update is successful, it returns a 204 No Content response.
     /// If the update fails, it returns a 500 Internal Server Error response.
     /// </remarks>
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpPut($"{Routes.Roles.Update}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
+    [HttpPut($"{Routes.Admin.Roles.Update}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public override async Task<ActionResult> HandleAsync(UpdateRoleRequest request,
-                                                   CancellationToken cancellationToken = default)
+                                                        CancellationToken cancellationToken = default)
     {
         var roleManager = Services.GetRequiredService<RoleManager<Role>>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();

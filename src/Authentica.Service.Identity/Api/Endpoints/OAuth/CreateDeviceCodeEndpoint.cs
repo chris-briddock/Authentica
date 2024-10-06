@@ -26,7 +26,7 @@ public sealed class CreateDeviceCodeEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateDeviceCodeEndpoint"/> class.

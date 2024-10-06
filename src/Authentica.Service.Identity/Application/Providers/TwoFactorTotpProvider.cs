@@ -8,9 +8,9 @@ namespace Application.Providers;
 
 /// <summary>
 /// Provides functionality for generating and validating Time-based One-Time Password (TOTP) 
-/// keys for two-factor authentication.
+/// keys for mfa.
 /// </summary>
-public sealed class TwoFactorTotpProvider : ITwoFactorTotpProvider
+public sealed class MultiFactorTotpProvider : IMultiFactorTotpProvider
 {
     /// <summary>
     /// Gets the service provider used to resolve dependencies.
@@ -23,10 +23,10 @@ public sealed class TwoFactorTotpProvider : ITwoFactorTotpProvider
     private UserManager<User> UserManager => Services.GetRequiredService<UserManager<User>>(); 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TwoFactorTotpProvider"/> class.
+    /// Initializes a new instance of <see cref="MultiFactorTotpProvider"/>
     /// </summary>
     /// <param name="services">The service provider.</param>
-    public TwoFactorTotpProvider(IServiceProvider services)
+    public MultiFactorTotpProvider(IServiceProvider services)
     {
         Services = services;
     }

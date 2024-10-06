@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Requests;
 
 /// <summary>
-/// Represent a users two factor request to enable or disable the feature.
+/// Represent a users request to enable or disable mfa.
 /// </summary>
-public sealed record TwoFactorManageRequest
+public sealed record MultiFactorManageRequest
 {
     /// <summary>
     /// Gets or sets the isEnabled flag.

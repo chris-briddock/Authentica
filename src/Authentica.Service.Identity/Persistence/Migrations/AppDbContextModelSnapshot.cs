@@ -20,7 +20,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -157,7 +157,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                                 .HasColumnName("deleted_on_utc");
 
                             b1.Property<bool>("IsDeleted")
-                                .HasColumnType("bit");
+                                .HasColumnType("bit")
+                                .HasColumnName("is_deleted");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("EntityModificationStatus", "Domain.Aggregates.Identity.ClientApplication.EntityModificationStatus#EntityModificationStatus<string>", b1 =>
@@ -255,7 +256,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                                 .HasColumnName("deleted_on_utc");
 
                             b1.Property<bool>("IsDeleted")
-                                .HasColumnType("bit");
+                                .HasColumnType("bit")
+                                .HasColumnName("is_deleted");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("EntityModificationStatus", "Domain.Aggregates.Identity.Role.EntityModificationStatus#EntityModificationStatus<string>", b1 =>
@@ -437,7 +439,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                                 .HasColumnName("deleted_on_utc");
 
                             b1.Property<bool>("IsDeleted")
-                                .HasColumnType("bit");
+                                .HasColumnType("bit")
+                                .HasColumnName("is_deleted");
                         });
 
                     b.HasKey("Id");
@@ -483,15 +486,6 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("email_confirmed");
 
-                    b.Property<DateTime?>("LastLoginDateTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("last_login_date_time");
-
-                    b.Property<string>("LastLoginIPAddress")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)")
-                        .HasColumnName("last_ip_address_used");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit")
                         .HasColumnName("lockout_enabled");
@@ -499,6 +493,10 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("lockout_end");
+
+                    b.Property<bool>("MultiFactorAuthenticatorEnabled")
+                        .HasColumnType("bit")
+                        .HasColumnName("multi_factor_app_enabled");
 
                     b.Property<string>("NormalizedEmail")
                         .IsRequired()
@@ -543,12 +541,9 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnType("nvarchar(32)")
                         .HasColumnName("security_stamp");
 
-                    b.Property<bool>("TwoFactorAuthenticatorEnabled")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit")
-                        .HasColumnName("two_factor_enabled");
+                        .HasColumnName("multi_factor_enabled");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -626,7 +621,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                                 .HasColumnName("deleted_on_utc");
 
                             b1.Property<bool>("IsDeleted")
-                                .HasColumnType("bit");
+                                .HasColumnType("bit")
+                                .HasColumnName("is_deleted");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("EntityModificationStatus", "Domain.Aggregates.Identity.User.EntityModificationStatus#EntityModificationStatus<string>", b1 =>
@@ -738,7 +734,8 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                                 .HasColumnName("deleted_on_utc");
 
                             b1.Property<bool>("IsDeleted")
-                                .HasColumnType("bit");
+                                .HasColumnType("bit")
+                                .HasColumnName("is_deleted");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("EntityModificationStatus", "Domain.Aggregates.Identity.UserClaim.EntityModificationStatus#EntityModificationStatus<string>", b1 =>

@@ -81,8 +81,9 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
                      .HasColumnName("deleted_on_utc")
                      .HasMaxLength(36);
 
-              builder.ComplexProperty(u => u.EntityDeletionStatus)
+             builder.ComplexProperty(u => u.EntityDeletionStatus)
                      .Property(x => x.IsDeleted)
+                     .HasColumnName("is_deleted")
                      .IsRequired();
     }
 }

@@ -22,7 +22,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AuthorizeEndpoint"/> class.
@@ -63,6 +63,13 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
         if (client is null)
             return Unauthorized();
 
+        AuthorizeActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
+
         if (request.ResponseType == TokenConstants.AuthorizationCode)
         {
             var state = randomStringProvider.GenerateAlphanumeric(64);
@@ -74,14 +81,6 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
             var redirectUri = $"{request.CallbackUri}/?code={code}&state={state}";
             return Redirect(redirectUri);
         }
-
-        AuthorizeActivity activity = new()
-        {
-            Payload = request
-        };
-
-        await activityStore.SaveActivityAsync(activity);
-
 
         return Unauthorized();
 

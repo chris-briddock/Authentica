@@ -21,7 +21,7 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
     /// <summary>
     /// The application's service provider.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="RegisterEndpoint"/>

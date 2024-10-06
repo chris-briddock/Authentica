@@ -122,7 +122,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    EntityDeletionStatus_IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    is_deleted = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_CLIENT_APPLICATIONSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -221,7 +221,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    EntityDeletionStatus_IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    is_deleted = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_ROLESHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -356,7 +356,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    EntityDeletionStatus_IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    is_deleted = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_SESSIONSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -485,19 +485,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    last_login_date_time = table.Column<DateTime>(type: "datetime2", nullable: true)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
-                        .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    last_ip_address_used = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
-                        .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    TwoFactorAuthenticatorEnabled = table.Column<bool>(type: "bit", nullable: false)
+                    multi_factor_app_enabled = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -581,7 +569,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    EntityDeletionStatus_IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    is_deleted = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -659,7 +647,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    two_factor_enabled = table.Column<bool>(type: "bit", nullable: false)
+                    multi_factor_enabled = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USERSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -815,7 +803,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    EntityDeletionStatus_IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    is_deleted = table.Column<bool>(type: "bit", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "SYSTEM_IDENTITY_USER_CLAIMSHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)

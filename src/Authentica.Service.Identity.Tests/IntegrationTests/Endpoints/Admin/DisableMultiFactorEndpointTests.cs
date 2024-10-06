@@ -1,8 +1,9 @@
 using Api.Constants;
+using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-public class DisableTwoFactorEndpointTests
+public class DisableMultiFactorEndpointTests
 {
     private TestFixture<Program> _fixture;
 
@@ -20,16 +21,16 @@ public class DisableTwoFactorEndpointTests
     }
 
     [Test]
-    public async Task DisableTwoFactor_Returns200OK_WhenSuccessful()
+    public async Task DisableMultiFactor_Returns200OK_WhenSuccessful()
     {
-        var request = new DisableTwoFactorRequest()
+        var request = new DisableMultiFactorRequest()
         {
-            Email = "twofactorTest@default.com"
-        };
+            Email = Seed.Test.MultiFactorUserEmail
+        }; 
 
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.DisableTwoFactor}", request);
+        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.DisableMultiFactor}", request);
 
         sut.EnsureSuccessStatusCode();
 
@@ -37,16 +38,16 @@ public class DisableTwoFactorEndpointTests
     }
 
     [Test]
-    public async Task DisableTwoFactor_Returns400BadRequest_WhenUserIsNotFound()
+    public async Task DisableMultiFactor_Returns400BadRequest_WhenUserIsNotFound()
     {
-        var request = new DisableTwoFactorRequest()
+        var request = new DisableMultiFactorRequest()
         {
-            Email = "twofactorTest@default1.com"
+            Email = "test@test.com"
         };
 
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.DisableTwoFactor}", request);
+        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.DisableMultiFactor}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

@@ -41,25 +41,25 @@ public static partial class Routes
         /// </summary>
         public const string ResetPassword = "users/reset-password";
         /// <summary>
-        /// Route for logging in with two-factor authentication.
+        /// Route for logging in with mfa authentication.
         /// </summary>
-        public const string TwoFactorLogin = "users/2fa/login";
+        public const string MultiFactorLogin = "users/mfa/login";
         /// <summary>
-        /// Route for managing two-factor authentication.
+        /// Route for managing mfa authentication.
         /// </summary>
-        public const string TwoFactorManage = "users/2fa/manage";
+        public const string MultiFactorManage = "users/mfa/manage";
         /// <summary>
-        /// Route for managing two factor codes using an application like Google or Microsoft Authenticator. 
+        /// Route for managing mfa codes using an application like Google or Microsoft Authenticator. 
         /// </summary>
-        public const string TwoFactorManageAuthenticator = "users/2fa/manage/authenticator";
+        public const string MultiFactorManageAuthenticator = "users/mfa/manage/authenticator";
         /// <summary>
-        /// Route for generating two-factor recovery codes.
+        /// Route for generating mfa recovery codes.
         /// </summary>
-        public const string TwoFactorRecoveryCodes = "users/2fa/recovery/codes";
+        public const string MultiFactorRecoveryCodes = "users/mfa/recovery/codes";
         /// <summary>
-        /// Route for redeeming two-factor recovery codes.
+        /// Route for redeeming mfa recovery codes.
         /// </summary>
-        public const string TwoFactorRedeemRecoveryCodes = "users/2fa/recovery";
+        public const string MultiFactorRedeemRecoveryCodes = "users/mfa/recovery";
         /// <summary>
         /// Route for updating a user's email.
         /// </summary>

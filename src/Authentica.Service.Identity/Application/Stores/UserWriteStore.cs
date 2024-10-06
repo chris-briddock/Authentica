@@ -96,7 +96,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     }
 
    /// <inheritdoc/>
-    public async Task<UserStoreResult> RedeemTwoFactorRecoveryCodeAsync(User user, string code)
+    public async Task<UserStoreResult> RedeemMultiFactorRecoveryCodeAsync(User user, string code)
     {
         try
         {

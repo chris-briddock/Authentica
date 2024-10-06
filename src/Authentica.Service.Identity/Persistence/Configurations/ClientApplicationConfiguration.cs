@@ -79,6 +79,7 @@ public class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApp
 
               builder.ComplexProperty(u => u.EntityDeletionStatus)
                      .Property(x => x.IsDeleted)
+                     .HasColumnName("is_deleted")
                      .IsRequired();
 
               builder.Property(u => u.CallbackUri)

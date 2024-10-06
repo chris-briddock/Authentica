@@ -22,7 +22,7 @@ public class ResetPasswordEndpoint : EndpointBaseAsync
      /// <summary>
     /// Gets the service provider for resolving dependencies.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ResetPasswordEndpoint"/> class.

@@ -26,7 +26,7 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
     private IServiceProvider Services { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DisableTwoFactorEndpoint"/> class.
+    /// Initializes a new instance of the <see cref="DisableMultiFactorEndpoint"/> class.
     /// </summary>
     /// <param name="services">The service provider used to resolve dependencies.</param>
     public ReadAllActivitiesEndpoint(IServiceProvider services)
@@ -57,7 +57,6 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
-
 
         return Ok(responses);
     }

@@ -1,12 +1,12 @@
 namespace Api.Requests;
 
 /// <summary>
-/// Represents a two factor sign in request.
+/// Represents a mfa sign in request.
 /// </summary>
-public sealed record TwoFactorLoginRequest
+public sealed record MultiFactorLoginRequest
 {
     /// <summary>
-    /// The two factor token
+    /// The mfa token
     /// </summary>
     public string Token { get; init; } = default!;
     /// <summary>

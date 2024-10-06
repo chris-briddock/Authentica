@@ -4,14 +4,14 @@ using FluentValidation;
 namespace Application.Validators
 {
     /// <summary>
-    /// Validator for <see cref="TwoFactorRecoveryCodeRedeemRequest"/>.
+    /// Validator for <see cref="MultiFactorRecoveryCodeRedeemRequest"/>.
     /// </summary>
-    public class TwoFactorRecoveryCodeRedeemRequestValidator : AbstractValidator<TwoFactorRecoveryCodeRedeemRequest>
+    public class MultiFactorRecoveryCodeRedeemRequestValidator : AbstractValidator<MultiFactorRecoveryCodeRedeemRequest>
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="TwoFactorRecoveryCodeRedeemRequestValidator"/>.
+        /// Initializes a new instance of <see cref="MultiFactorRecoveryCodeRedeemRequestValidator"/>.
         /// </summary>
-        public TwoFactorRecoveryCodeRedeemRequestValidator()
+        public MultiFactorRecoveryCodeRedeemRequestValidator()
         {
             RuleFor(request => request.Email)
                 .NotEmpty().WithMessage("Email address is required.")

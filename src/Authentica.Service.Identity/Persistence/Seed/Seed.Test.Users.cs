@@ -19,12 +19,10 @@ public static partial class Seed
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-            var adminEmail = AdminEmail;
-
             User adminUser = new()
             {
-                UserName = adminEmail,
-                Email = adminEmail,
+                UserName = AdminEmail,
+                Email = AdminEmail,
                 PhoneNumberConfirmed = true,
                 TwoFactorEnabled = false,
                 EmailConfirmed = true,
@@ -61,7 +59,7 @@ public static partial class Seed
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-            var userEmail = "deletedUser@default.com";
+            var userEmail = DeleteUserEmail;
 
             User user = new()
             {
@@ -103,7 +101,7 @@ public static partial class Seed
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-            var userEmail = "authorizeTest@default.com";
+            var userEmail = AuthorizeUserEmail;
 
             User user = new()
             {
@@ -136,12 +134,12 @@ public static partial class Seed
         /// </summary>
         /// <param name="app">The web application instance.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public static async Task SeedTwoFactorUser(WebApplication app)
+        public static async Task SeedMultiFactorUser(WebApplication app)
         {
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-            var userEmail = "twoFactorTest@default.com";
+            var userEmail = MultiFactorUserEmail;
 
             User user = new()
             {
@@ -178,8 +176,8 @@ public static partial class Seed
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-            var oldDeletedUserEmail = "olddeleted@default.com";
-            var recentDeletedUserEmail = "recentlydeleted@default.com";
+            var oldDeletedUserEmail = OldDeletedUserEmail;
+            var recentDeletedUserEmail = RecentlyDeletedUserEmail;
 
             var oldDeletedUser = new User()
             {

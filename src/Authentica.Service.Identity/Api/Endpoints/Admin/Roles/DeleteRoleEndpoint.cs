@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace Api.Endpoints.Roles;
+namespace Api.Endpoints.Admin.Roles;
 
 /// <summary>
 /// Represents an endpoint for deleting a group (soft delete).
@@ -22,7 +22,7 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets or sets the service provider for dependency injection.
     /// </summary>
-    public IServiceProvider Services { get; set; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DeleteRoleEndpoint"/> class.
@@ -39,8 +39,8 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
     /// <param name="request">The request containing the name of the group to delete.</param>
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
     /// <returns>An action result indicating the outcome of the delete operation.</returns>
-    [HttpDelete($"{Routes.Roles.Delete}")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpDelete($"{Routes.Admin.Roles.Delete}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

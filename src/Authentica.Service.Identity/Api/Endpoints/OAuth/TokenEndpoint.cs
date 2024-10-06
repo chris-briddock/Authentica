@@ -25,7 +25,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="TokenEndpoint"/>

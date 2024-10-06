@@ -77,6 +77,7 @@ public class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
 
               builder.ComplexProperty(u => u.EntityDeletionStatus)
                      .Property(x => x.IsDeleted)
+                     .HasColumnName("is_deleted")
                      .IsRequired();
     }
 }

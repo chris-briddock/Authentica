@@ -11,33 +11,33 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Endpoints.Users;
 
 /// <summary>
-/// Exposes an endpoint which generates two factor recovery codes.
+/// Exposes an endpoint which generates mfa recovery codes.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
-public class TwoFactorRecoveryCodesEndpoint : EndpointBaseAsync
-                                              .WithoutRequest
-                                              .WithActionResult
+public class MultiFactorRecoveryCodesEndpoint : EndpointBaseAsync
+                                                .WithoutRequest
+                                                .WithActionResult
 {
     /// <summary>
     /// Gets the service provider.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TwoFactorRecoveryCodesEndpoint"/> class.
+    /// Initializes a new instance of the <see cref="MultiFactorRecoveryCodesEndpoint"/> class.
     /// </summary>
     /// <param name="services">The service provider.</param>
-    public TwoFactorRecoveryCodesEndpoint(IServiceProvider services)
+    public MultiFactorRecoveryCodesEndpoint(IServiceProvider services)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
     }
 
     /// <summary>
-    /// Handles the HTTP GET request to generate new two-factor recovery codes.
+    /// Handles the HTTP GET request to generate new mfa recovery codes.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token to observe.</param>
     /// <returns>An <see cref="ActionResult"/> containing the newly generated recovery codes or an error status.</returns>
-    [HttpGet($"{Routes.Users.TwoFactorRecoveryCodes}")]
+    [HttpGet($"{Routes.Users.MultiFactorRecoveryCodes}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default)
@@ -50,7 +50,7 @@ public class TwoFactorRecoveryCodesEndpoint : EndpointBaseAsync
 
         var codes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(userReadResult.User, 10);
 
-        TwoFactorRecoveryCodesActivity activity = new()
+        MultiFactorRecoveryCodesActivity activity = new()
         {
             Email = User.Identity?.Name ?? "Unknown",
         };

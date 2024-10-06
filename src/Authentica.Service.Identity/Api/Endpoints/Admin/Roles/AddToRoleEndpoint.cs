@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Endpoints.Roles;
+namespace Api.Endpoints.Admin.Roles;
 /// <summary>
 /// Endpoint for adding a user to a role.
 /// </summary>
@@ -22,7 +22,7 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets or sets the service provider for dependency injection.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AddToRoleEndpoint"/> class.
@@ -43,10 +43,10 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
     /// Returns <see cref="OkResult"/> if the user is successfully added to the role.
     /// Returns <see cref="BadRequestResult"/> if the operation fails.
     /// </returns>
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPut($"{Routes.Roles.Add}")]
+    [HttpPut($"{Routes.Admin.Roles.Add}")]
     public override async Task<ActionResult> HandleAsync(AddToRoleRequest request,
                                                          CancellationToken cancellationToken = default)
     {

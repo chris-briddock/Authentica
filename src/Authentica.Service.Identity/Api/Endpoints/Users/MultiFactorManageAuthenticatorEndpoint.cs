@@ -14,78 +14,78 @@ namespace Api.Endpoints.Users;
 
 
 /// <summary>
-/// Endpoint for managing the authenticator used for two-factor authentication (2FA).
-/// Allows enabling or disabling 2FA for a user and generates the necessary authenticator key and QR code URI.
+/// Endpoint for managing the authenticator used for mfa.
+/// Allows enabling or disabling mfa for a user and generates the necessary authenticator key and QR code URI.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
-public class TwoFactorManageAuthenticatorEndpoint : EndpointBaseAsync
-                                                    .WithRequest<TwoFactorManageAuthenticatorRequest>
+public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
+                                                    .WithRequest<MultiFactorManageAuthenticatorRequest>
                                                     .WithActionResult
 {
     /// <summary>
     /// Gets the service provider used to resolve dependencies.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TwoFactorManageAuthenticatorEndpoint"/> class.
+    /// Initializes a new instance of the <see cref="MultiFactorManageAuthenticatorEndpoint"/> class.
     /// </summary>
     /// <param name="services">The service provider.</param>
     /// <exception cref="ArgumentNullException">Thrown when the provided <paramref name="services"/> is null.</exception>
-    public TwoFactorManageAuthenticatorEndpoint(IServiceProvider services)
+    public MultiFactorManageAuthenticatorEndpoint(IServiceProvider services)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
     }
 
     /// <summary>
-    /// Handles the request to manage the user's authenticator for two-factor authentication.
-    /// Enables or disables 2FA for the user, and if enabled, generates the authenticator key and QR code URI.
+    /// Handles the request to manage the user's authenticator for mfa authentication.
+    /// Enables or disables mfa for the user, and if enabled, generates the authenticator key and QR code URI.
     /// </summary>
     /// <param name="request">The request containing the information on whether to enable or disable the authenticator.</param>
     /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
     /// <returns>An <see cref="ActionResult"/> containing the formatted authenticator key and QR code URI if 2FA is enabled, or an error message if not.</returns>
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpPost($"{Routes.Users.TwoFactorManageAuthenticator}")]
-    public override async Task<ActionResult> HandleAsync(TwoFactorManageAuthenticatorRequest request,
+    [HttpPost($"{Routes.Users.MultiFactorManageAuthenticator}")]
+    public override async Task<ActionResult> HandleAsync(MultiFactorManageAuthenticatorRequest request,
                                                          CancellationToken cancellationToken = default)
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var totpProvider = Services.GetRequiredService<ITwoFactorTotpProvider>();
+        var totpProvider = Services.GetRequiredService<IMultiFactorTotpProvider>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         string formattedKey = string.Empty;
         string uri = string.Empty;
 
-        var result = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
+        var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
-        if (!result.User.TwoFactorEnabled)
-            return BadRequest("User does not have two factor enabled.");
+        if (!user.TwoFactorEnabled)
+            return BadRequest("User does not have mfa enabled.");
 
-        result.User.TwoFactorAuthenticatorEnabled = request.IsEnabled;
+        user.MultiFactorAuthenticatorEnabled = request.IsEnabled;
 
-        await userManager.UpdateAsync(result.User);
+        await userManager.UpdateAsync(user);
 
         if (request.IsEnabled)
         {
-            string? unformattedKey = await userManager.GetAuthenticatorKeyAsync(result.User);
+            string? unformattedKey = await userManager.GetAuthenticatorKeyAsync(user);
 
             if (string.IsNullOrEmpty(unformattedKey))
             {
-                 await userManager.ResetAuthenticatorKeyAsync(result.User);
-                 unformattedKey = await totpProvider.GenerateKeyAsync(result.User);
+                 await userManager.ResetAuthenticatorKeyAsync(user);
+                 unformattedKey = await totpProvider.GenerateKeyAsync(user);
             } 
             formattedKey = totpProvider.FormatKey(unformattedKey);
-            uri = await totpProvider.GenerateQrCodeUriAsync(result.User);
+            uri = await totpProvider.GenerateQrCodeUriAsync(user);
         }
 
-        TwoFactorManageAuthenticatorResponse response = new()
+        MultiFactorManageAuthenticatorResponse response = new()
         {
             AuthenticatorKey = formattedKey,
             QrCodeUri = uri
         };
 
-        TwoFactorManageAuthenticatorActivity activity = new()
+        MultiFactorManageAuthenticatorActivity activity = new()
         {
             Request = request,
             Response = response

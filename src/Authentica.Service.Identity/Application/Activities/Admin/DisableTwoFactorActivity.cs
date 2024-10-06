@@ -3,12 +3,12 @@ using Api.Requests;
 namespace Application.Activities;
 
 /// <summary>
-/// Represents an activity that occurs when two-factor authentication is disabled.
+/// Represents an activity that occurs when mfa is disabled.
 /// </summary>
-public sealed class DisableTwoFactorActivity : ActivityBase<DisableTwoFactorRequest>
+public sealed class DisableMultiFactorActivity : ActivityBase<DisableMultiFactorRequest>
 {
     /// <summary>
     /// Gets or sets the payload containing the request.
     /// </summary>
-    public override DisableTwoFactorRequest Payload { get; set; } = default!;
+    public override DisableMultiFactorRequest Payload { get; set; } = default!;
 }

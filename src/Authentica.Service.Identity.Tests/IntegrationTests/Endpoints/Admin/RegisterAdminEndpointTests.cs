@@ -8,6 +8,8 @@ public class RegisterAdminEndpointTests
 {
     private TestFixture<Program> _fixture;
 
+    private const string AdminEmail = "admintest@test.com";
+
     [OneTimeSetUp]
     public async Task OneTimeSetup()
     {
@@ -26,7 +28,7 @@ public class RegisterAdminEndpointTests
     {
         var request = new RegisterRequest()
         {
-            Email = "admintest@default.com",
+            Email = AdminEmail,
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             PhoneNumber = "+447760162366",
             Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
@@ -44,7 +46,7 @@ public class RegisterAdminEndpointTests
     {
         var request = new RegisterRequest()
         {
-            Email = "admintest@default.com",
+            Email = AdminEmail,
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             PhoneNumber = "+447760162366",
             Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")

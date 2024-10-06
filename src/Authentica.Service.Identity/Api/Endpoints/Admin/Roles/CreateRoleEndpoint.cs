@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Endpoints.Roles;
+namespace Api.Endpoints.Admin.Roles;
 
 /// <summary>
 /// Endpoint for creating a new role.
@@ -22,7 +22,7 @@ public class CreateRoleEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets or sets the service provider for dependency injection.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateRoleEndpoint"/> class.
@@ -42,10 +42,10 @@ public class CreateRoleEndpoint : EndpointBaseAsync
     /// <returns>An action result indicating the outcome of the operation.</returns>
     /// <response code="201">Returns when the role is successfully created.</response>
     /// <response code="500">Returns when there's an internal server error during role creation.</response>
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpPost($"{Routes.Roles.Create}")]
+    [HttpPost($"{Routes.Admin.Roles.Create}")]
     public override async Task<ActionResult> HandleAsync(CreateRoleRequest request,
                                                          CancellationToken cancellationToken = default)
     {
@@ -58,7 +58,9 @@ public class CreateRoleEndpoint : EndpointBaseAsync
         Role group = new()
         {
             Name = request.Name,
-            EntityCreationStatus = new(DateTime.UtcNow, user.Id)
+            EntityCreationStatus = new(DateTime.UtcNow, user.Id),
+            EntityDeletionStatus = new(false, null, null),
+            EntityModificationStatus = new(DateTime.UtcNow, user.Id)
         };
 
         var result = await roleManager.CreateAsync(group);

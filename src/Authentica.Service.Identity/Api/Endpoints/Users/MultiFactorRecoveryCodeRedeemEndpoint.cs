@@ -11,29 +11,29 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Endpoints.Users;
 
 /// <summary>
-/// Exposes an endpoint which allows a user to redeem two factor codes.
+/// Exposes an endpoint which allows a user to redeem mfa recovery codes.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
-public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
-                                                   .WithRequest<TwoFactorRecoveryCodeRedeemRequest>
-                                                   .WithActionResult
+public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
+                                                     .WithRequest<MultiFactorRecoveryCodeRedeemRequest>
+                                                     .WithActionResult
 {
     /// <summary>
     /// The application service provider.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TwoFactorRecoveryCodeRedeemEndpoint"/> class.
+    /// Initializes a new instance of the <see cref="MultiFactorRecoveryCodeRedeemEndpoint"/> class.
     /// </summary>
     /// <param name="services">The service provider.</param>
-    public TwoFactorRecoveryCodeRedeemEndpoint(IServiceProvider services)
+    public MultiFactorRecoveryCodeRedeemEndpoint(IServiceProvider services)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
     }
 
     /// <summary>
-    /// Handles the HTTP POST request to redeem a two-factor recovery code.
+    /// Handles the HTTP POST request to redeem a mfa recovery code.
     /// </summary>
     /// <param name="request">The request containing the user's email address and the recovery code.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
@@ -42,11 +42,11 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
     /// Returns <see cref="StatusCodes.Status200OK"/> if the recovery code was successfully redeemed.
     /// Returns <see cref="StatusCodes.Status400BadRequest"/> if the email is not found or the recovery code redemption fails.
     /// </returns>
-    [HttpPost($"{Routes.Users.TwoFactorRedeemRecoveryCodes}")]
+    [HttpPost($"{Routes.Users.MultiFactorRedeemRecoveryCodes}")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override async Task<ActionResult> HandleAsync(TwoFactorRecoveryCodeRedeemRequest request,
+    public override async Task<ActionResult> HandleAsync(MultiFactorRecoveryCodeRedeemRequest request,
                                                    CancellationToken cancellationToken = default)
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
@@ -54,16 +54,16 @@ public class TwoFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var userReadResult = await userReadStore.GetUserByEmailAsync(request.Email);
+        var user = (await userReadStore.GetUserByEmailAsync(request.Email)).User;
 
-        var result = await userWriteStore.RedeemTwoFactorRecoveryCodeAsync(userReadResult.User, request.Code);
+        var result = await userWriteStore.RedeemMultiFactorRecoveryCodeAsync(user, request.Code);
 
         if (!result.Succeeded)
             return BadRequest();
 
-        await userManager.SetTwoFactorEnabledAsync(userReadResult.User, false);
+        await userManager.SetTwoFactorEnabledAsync(user, false);
 
-        TwoFactorRecoveryCodesRedeemActivity activity = new()
+        MultiFactorRecoveryCodesRedeemActivity activity = new()
         {
             Payload = request
         };

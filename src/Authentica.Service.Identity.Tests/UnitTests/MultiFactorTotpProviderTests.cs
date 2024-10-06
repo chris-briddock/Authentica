@@ -2,12 +2,12 @@ using System.Text.Encodings.Web;
 
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
-[TestFixture, Category("TwoFactorTotpProvider")]
-public class TwoFactorTotpProviderTests
+[TestFixture, Category("MultiFactorTotpProvider")]
+public class MultiFactorTotpProviderTests
 {
     private Mock<IServiceProvider> _serviceProviderMock;
     private Mock<UserManager<User>> _userManagerMock;
-    private TwoFactorTotpProvider _provider;
+    private MultiFactorTotpProvider _provider;
 
     [SetUp]
     public void SetUp()
@@ -19,7 +19,7 @@ public class TwoFactorTotpProviderTests
             .Setup(sp => sp.GetService(typeof(UserManager<User>)))
             .Returns(_userManagerMock.Object);
 
-        _provider = new TwoFactorTotpProvider(_serviceProviderMock.Object);
+        _provider = new MultiFactorTotpProvider(_serviceProviderMock.Object);
     }
 
     [Test]

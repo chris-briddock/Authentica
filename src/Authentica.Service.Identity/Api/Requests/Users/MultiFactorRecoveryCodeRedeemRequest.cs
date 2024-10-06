@@ -1,9 +1,9 @@
 namespace Api.Requests;
 
 /// <summary>
-/// Represents a two factor recovery code redeem request.
+/// Represents a mfa recovery code redeem request.
 /// </summary>
-public sealed record TwoFactorRecoveryCodeRedeemRequest
+public sealed record MultiFactorRecoveryCodeRedeemRequest
 {
     /// <summary>
     /// Gets or sets the user email address which the recovery code is used for.

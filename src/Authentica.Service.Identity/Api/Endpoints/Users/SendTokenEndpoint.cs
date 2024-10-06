@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Endpoints.Users;
 
 /// <summary>
-/// Endpoint for sending a token based on the type of request made, such as two-factor authentication, email confirmation, 
-/// password reset, or updating email/phone number. This endpoint handles the request, generates the appropriate token, 
-/// and publishes it via email if the user exists.
+/// Endpoint for sending a token based on the type of request made, such as mfa, email confirmation, 
+/// password reset, or updating email/phone number. 
+/// This endpoint handles the request, generates the appropriate token, and publishes it via email if the user exists.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public class SendTokenEndpoint : EndpointBaseAsync
@@ -25,7 +25,7 @@ public class SendTokenEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets or sets the service provider used to resolve dependencies.
     /// </summary>
-    public IServiceProvider Services { get; set; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SendTokenEndpoint"/> class.
@@ -38,7 +38,7 @@ public class SendTokenEndpoint : EndpointBaseAsync
 
     /// <summary>
     /// Handles the HTTP POST request to send a token based on the specified token type. The token type determines whether
-    /// to generate a two-factor authentication code, email confirmation code, password reset token, or a code for updating
+    /// to generate a mfa code, email confirmation code, password reset token, or a code for updating
     /// email or phone number. If the user exists, the token will be sent via email.
     /// </summary>
     /// <param name="request">The request containing the email address and token type.</param>
@@ -62,13 +62,13 @@ public class SendTokenEndpoint : EndpointBaseAsync
 
         switch (request.TokenType)
         {
-            case EmailTokenConstants.TwoFactor:
-                var twoFactorCode = await userManager.GenerateTwoFactorTokenAsync(user!, TokenOptions.DefaultEmailProvider);
+            case EmailTokenConstants.MultiFactor:
+                var mfaCode = await userManager.GenerateTwoFactorTokenAsync(user!, TokenOptions.DefaultEmailProvider);
                 message = new()
                 {
                     EmailAddress = user!.Email!,
-                    Code = twoFactorCode,
-                    Type = EmailTokenConstants.TwoFactor
+                    Code = mfaCode,
+                    Type = EmailTokenConstants.MultiFactor
                 };
                 break;
 

@@ -72,6 +72,7 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
 
               builder.ComplexProperty(u => u.EntityDeletionStatus)
                      .Property(x => x.IsDeleted)
+                     .HasColumnName("is_deleted")
                      .IsRequired();
 
               builder.HasMany(r => r.RoleClaims)

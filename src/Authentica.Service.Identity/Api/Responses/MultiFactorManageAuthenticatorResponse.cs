@@ -1,10 +1,10 @@
 namespace Api.Responses;
 
 /// <summary>
-/// Represents the response returned after managing the user's authenticator for two-factor authentication (2FA).
-/// Contains the authenticator key and the QR code URI if 2FA is enabled.
+/// Represents the response returned after managing the user's authenticator for mfa.
+/// Contains the authenticator key and the QR code URI if mfa is enabled.
 /// </summary>
-public sealed record TwoFactorManageAuthenticatorResponse
+public sealed record MultiFactorManageAuthenticatorResponse
 {
     /// <summary>
     /// Gets or sets the formatted authenticator key.

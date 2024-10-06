@@ -18,7 +18,7 @@ public static partial class WebApplicationExtensions
         await Seed.Test.SeedTestClientApplicationAsync(app);
         await Seed.Test.SeedAuthorizeUser(app);
         await Seed.Test.SeedDeletedUser(app);
-        await Seed.Test.SeedTwoFactorUser(app);
+        await Seed.Test.SeedMultiFactorUser(app);
         await Seed.Test.SeedBackgroundServiceUsers(app);
         await Seed.Test.SeedOldDeletedClientApplicationAsync(app);
         await Seed.Test.SeedRecentDeletedClientApplicationAsync(app);

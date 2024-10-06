@@ -15,16 +15,6 @@ public sealed class User : IdentityUser<string>, IEntityDeletionStatus<string>
     public override string Id { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
-    /// Gets or sets the last login time and date.
-    /// </summary>
-    public DateTime? LastLoginDateTime { get; set; } = default!;
-
-    /// <summary>
-    /// Gets or sets the last login ip address.
-    /// </summary>
-    public string? LastLoginIPAddress { get; set; } = default!;
-
-    /// <summary>
     /// Gets or sets the creation status of the entity.
     /// </summary>
     /// <remarks>
@@ -56,9 +46,9 @@ public sealed class User : IdentityUser<string>, IEntityDeletionStatus<string>
     public Address Address { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets if the user has enabled application based TOTP codes.
+    /// Gets or sets if the user has enabled application based TOTPs.
     /// </summary>
-    public bool TwoFactorAuthenticatorEnabled { get; set; } = false;
+    public bool MultiFactorAuthenticatorEnabled { get; set; } = false;
 
     /// <summary>
     /// Gets or sets the collection of user roles associated with the user.

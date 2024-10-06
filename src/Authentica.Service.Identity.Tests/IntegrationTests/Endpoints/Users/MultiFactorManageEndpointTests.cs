@@ -3,7 +3,7 @@ using Application.Contracts;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
-public class TwoFactorManageEndpointTests
+public class MultiFactorManageEndpointTests
 {
     private TestFixture<Program> _fixture;
 
@@ -22,17 +22,17 @@ public class TwoFactorManageEndpointTests
 
 
     [Test]
-    public async Task TwoFactorManage_Returns204NoContent_WhenTwoFactorIsEnabledSuccessfully()
+    public async Task MultiFactorManage_Returns204NoContent_WhenMultiFactorIsEnabledSuccessfully()
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        using var sut = await client.PostAsync($"api/v1/{Routes.Users.TwoFactorManage}?is_enabled=true", null!);
+        using var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorManage}?is_enabled=true", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
 
     [Test]
-    public async Task TwoFactorManage_ReturnsBadRequest_WhenUserIsNotFound()
+    public async Task MultiFactorManage_ReturnsBadRequest_WhenUserIsNotFound()
     {
         var readStoreMock = new UserReadStoreMock();
 
@@ -42,7 +42,7 @@ public class TwoFactorManageEndpointTests
         
         var client = _fixture.CreateAuthenticatedClient(x => x.Replace(new ServiceDescriptor(typeof(IUserReadStore), readStoreMock.Object)));
 
-        using var sut = await client.PostAsync($"api/v1/{Routes.Users.TwoFactorManage}?is_enabled=true", null!);
+        using var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorManage}?is_enabled=true", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

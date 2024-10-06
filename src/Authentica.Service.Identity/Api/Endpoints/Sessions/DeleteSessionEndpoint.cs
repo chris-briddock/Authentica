@@ -11,6 +11,7 @@ namespace Api.Endpoints;
 /// <summary>
 /// Represents an endpoint for deleting a session.
 /// </summary>
+[Route($"{Routes.BaseRoute.Name}")]
 public sealed class DeleteSessionEndpoint : EndpointBaseAsync
                                             .WithRequest<DeleteSessionRequest>
                                             .WithActionResult
@@ -18,7 +19,7 @@ public sealed class DeleteSessionEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets the service provider used to resolve dependencies.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DeleteSessionEndpoint"/> class.

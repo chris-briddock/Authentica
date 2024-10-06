@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Endpoints.Roles;
+namespace Api.Endpoints.Admin.Roles;
 
 /// <summary>
 /// Represents an endpoint for retrieving all groups (roles).
@@ -22,7 +22,7 @@ public sealed class ReadRolesEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets or sets the service provider for dependency injection.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReadRolesEndpoint"/> class.
@@ -41,9 +41,9 @@ public sealed class ReadRolesEndpoint : EndpointBaseAsync
     /// <remarks>
     /// This method retrieves all roles from the role manager and returns them as an OK result.
     /// </remarks>
-    [HttpGet($"{Routes.Roles.Read}")]
+    [HttpGet($"{Routes.Admin.Roles.Read}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default)
     {
         var roleManager = Services.GetRequiredService<RoleManager<Role>>();

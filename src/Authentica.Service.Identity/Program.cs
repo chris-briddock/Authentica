@@ -59,7 +59,7 @@ public sealed class Program
         builder.Services.TryAddScoped<ISessionReadStore, SessionReadStore>();
         builder.Services.TryAddTransient<ITimer, TimerProvider>();
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
-        builder.Services.TryAddScoped<ITwoFactorTotpProvider, TwoFactorTotpProvider>();
+        builder.Services.TryAddScoped<IMultiFactorTotpProvider, MultiFactorTotpProvider>();
         builder.Services.AddFeatureManagement();
         builder.Services.AddBearerAuthentication();
         builder.Services.AddSessionCache();
@@ -87,13 +87,16 @@ public sealed class Program
         app.UseAuthorization();
         app.MapControllers();
         app.UseCustomHealthCheckMapping();
-        await app.UseDatabaseMigrationsAsync<AppDbContext>();
+        if (!app.Environment.IsProduction())
+        {
+            await app.UseDatabaseMigrationsAsync<AppDbContext>();
+            app.UseCors(CorsDefaults.PolicyName);
+        }
         await app.UseSeedDataAsync();
         if (app.Environment.IsDevelopment())
-        {
+        {           
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.UseCors(CorsDefaults.PolicyName);
             await app.UseSeedTestDataAsync();
         }
         await app.RunAsync();

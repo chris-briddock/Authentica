@@ -43,14 +43,10 @@ public static class ActivityDataRedactor
         var type = obj.GetType();
 
         if (type.IsPrimitive || type == typeof(string))
-        {
             return obj;
-        }
 
         if (typeof(IEnumerable).IsAssignableFrom(type) && type != typeof(string))
-        {
             return RedactCollection((IEnumerable)obj, visitedObjects);
-        }
 
         var properties = CachedProperties.GetOrAdd(type, t => t
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -59,7 +55,7 @@ public static class ActivityDataRedactor
 
         foreach (var property in properties)
         {
-            if (property.GetCustomAttributes(typeof(SensitiveDataAttribute), true).Any())
+            if (property.GetCustomAttributes(typeof(SensitiveDataAttribute), true).Length != 0)
             {
                 if (property.PropertyType == typeof(string))
                 {

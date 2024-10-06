@@ -20,7 +20,7 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets the service provider instance for resolving services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UpdateAddressEndpoint"/> class.

@@ -72,21 +72,21 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailTokenConstants .TwoFactor:
-                message.Subject = $"You requested a two-factor code";
+            case EmailTokenConstants .MultiFactor:
+                message.Subject = $"You requested a multi factor authorization code";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
 <head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Two-Factor Verification Code</title>
+    <title>MFA Verification Code</title>
     <link href=""https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"" rel=""stylesheet"">
 </head>
 <body class=""font-sans bg-gray-100"">
     <div class=""max-w-screen-md mx-auto p-8 bg-white shadow-md rounded-md"">
-        <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">Two-Factor Verification Code</h2>
+        <h2 class=""text-2xl font-semibold mb-4 text-gray-800"">MFA Verification Code</h2>
         <p class=""text-gray-700"">Dear <span class=""font-bold text-indigo-800"">{context.Message.EmailAddress}</span>,</p>
-        <p class=""text-gray-700"">Your two-factor code is {context.Message.Code}</p>
+        <p class=""text-gray-700"">Your MFA code is {context.Message.Code}</p>
         <p class=""text-gray-700"">If you did not request this or have any concerns, please contact our support team.</p>
         <p class=""mt-4 text-gray-700"">Thank you,<br>Your Company Name</p>
         <p class=""mt-2 text-gray-600"">© 2024 All rights reserved.</p>

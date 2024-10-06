@@ -81,15 +81,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
               builder.Property(u => u.AccessFailedCount)
                      .HasColumnName("access_failed_count");
 
-              builder.Property(u => u.LastLoginDateTime)
-                     .HasColumnName("last_login_date_time");
-
-              builder.Property(u => u.LastLoginIPAddress)
-                     .HasColumnName("last_ip_address_used")
-                     .HasMaxLength(32);
-
               builder.Property(u => u.TwoFactorEnabled)
-                     .HasColumnName("two_factor_enabled");
+                     .HasColumnName("multi_factor_enabled");
+              
+              builder.Property(u => u.MultiFactorAuthenticatorEnabled)
+                     .HasColumnName("multi_factor_app_enabled");
 
               builder.ComplexProperty(u => u.Address)
                   .Property(a => a.Name).HasColumnName("address_name").HasMaxLength(64);
@@ -142,6 +138,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
               builder.ComplexProperty(u => u.EntityDeletionStatus)
                      .Property(x => x.IsDeleted)
+                     .HasColumnName("is_deleted")
                      .IsRequired();
 
               builder.HasMany(u => u.UserClaims)
