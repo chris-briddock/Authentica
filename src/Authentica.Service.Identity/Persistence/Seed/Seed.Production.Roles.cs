@@ -25,7 +25,9 @@ public static partial class Seed
             {
                 Name = role,
                 NormalizedName = role.ToUpper(),
-                CreatedBy = CreatedBy,
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityDeletionStatus = new(false, null, null),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             };
 

@@ -52,14 +52,13 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         Role? role = await roleManager.FindByNameAsync(request.Name);
-        var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
+        var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         if (role is null)
             return BadRequest();
 
-        role.IsDeleted = true;
-        role.DeletedBy = userReadResult.User.Id;
-        role.DeletedOnUtc = DateTime.UtcNow;
+        role.EntityDeletionStatus = new(true, DateTime.UtcNow, user.Id);
+        role.EntityModificationStatus = new(DateTime.UtcNow, user.Id); 
 
         var result = await roleManager.UpdateAsync(role);
 

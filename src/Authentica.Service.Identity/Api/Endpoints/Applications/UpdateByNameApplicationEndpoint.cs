@@ -50,8 +50,7 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var userReadResult = await userWriteStore.GetUserByEmailAsync(User, cancellationToken);
-        var user = userReadResult.User;
+        var user = (await userWriteStore.GetUserByEmailAsync(User, cancellationToken)).User;
         
         if (user is null)
             return BadRequest();

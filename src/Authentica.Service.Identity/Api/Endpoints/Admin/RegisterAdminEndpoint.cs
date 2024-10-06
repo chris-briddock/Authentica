@@ -16,8 +16,8 @@ namespace Api.Endpoints.Admin;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public class RegisterAdminEndpoint : EndpointBaseAsync
-                                    .WithRequest<RegisterRequest>
-                                    .WithActionResult
+                                     .WithRequest<RegisterRequest>
+                                     .WithActionResult
 {
     /// <summary>
     /// Gets the service provider for resolving dependencies.

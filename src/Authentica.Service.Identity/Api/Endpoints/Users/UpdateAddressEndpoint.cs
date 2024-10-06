@@ -50,13 +50,11 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-
-        var user = userResult.User;
+        var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         user.Address = request.Address;
-        user.ModifiedBy = user.Id;
-        user.ModifiedOnUtc = DateTime.UtcNow;
+        user.EntityModificationStatus.ModifiedBy = user.Id;
+        user.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
 
         dbContext.Users.Update(user);
 

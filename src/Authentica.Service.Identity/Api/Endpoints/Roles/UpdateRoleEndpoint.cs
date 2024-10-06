@@ -63,8 +63,8 @@ public sealed class UpdateRoleEndpoint : EndpointBaseAsync
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
         currentRole.Name = request.Name;
-        currentRole.ModifiedBy = userReadResult.User.Id; 
-        currentRole.ModifiedOnUtc = DateTime.UtcNow;
+        currentRole.EntityModificationStatus.ModifiedBy = userReadResult.User.Id; 
+        currentRole.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
         var result = await roleManager.UpdateAsync(currentRole);
 
         if (!result.Succeeded)

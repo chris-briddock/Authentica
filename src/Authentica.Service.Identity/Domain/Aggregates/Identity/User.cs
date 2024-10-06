@@ -7,9 +7,7 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a user in the identity system with additional auditing and soft deletion properties.
 /// </summary>
-public sealed class User : IdentityUser<string>,
-                           ISoftDeletableEntity<string>, 
-                           IAuditableEntity<string>
+public sealed class User : IdentityUser<string>, IEntityDeletionStatus<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the user.
@@ -27,40 +25,31 @@ public sealed class User : IdentityUser<string>,
     public string? LastLoginIPAddress { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets a value indicating whether the user is deleted.
+    /// Gets or sets the creation status of the entity.
     /// </summary>
-    public bool IsDeleted { get; set; }
+    /// <remarks>
+    /// This property contains information about the creation of the entity.
+    /// It includes whether the creation was successful and any relevant messages.
+    /// </remarks>
+    public EntityCreationStatus<string> EntityCreationStatus { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets the date and time in UTC when the user was deleted.
+    /// Gets or sets the deletion status of the entity.
     /// </summary>
-    public DateTime? DeletedOnUtc { get; set; }
+    /// <remarks>
+    /// This property tracks whether the entity has been soft-deleted, 
+    /// along with metadata about the deletion event (like the timestamp and user responsible).
+    /// </remarks>
+    public EntityDeletionStatus<string> EntityDeletionStatus { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets the identifier of the user who deleted this user.
+    /// Gets or sets the modification status of the entity.
     /// </summary>
-    public string? DeletedBy { get; set; }
-
-    /// <summary>
-    /// Gets or sets the date and time in UTC when the user was created.
-    /// </summary>
-    public DateTime CreatedOnUtc { get; set; }
-
-    /// <summary>
-    /// Gets or sets the identifier of the user who created this user.
-    /// </summary>
-    public string CreatedBy { get; set; } = default!;
-
-    /// <summary>
-    /// Gets or sets the date and time in UTC when the user was last modified.
-    /// </summary>
-    public DateTime? ModifiedOnUtc { get; set; }
-
-    /// <summary>
-    /// Gets or sets the identifier of the user who last modified this user.
-    /// </summary>
-    public string? ModifiedBy { get; set; }
-
+    /// <remarks>
+    /// This property stores information about when the entity was created and last modified,
+    /// and who performed the actions.
+    /// </remarks>
+    public EntityModificationStatus<string> EntityModificationStatus { get; set; } = default!;
     /// <summary>
     /// Gets or sets the address of the user.
     /// </summary>

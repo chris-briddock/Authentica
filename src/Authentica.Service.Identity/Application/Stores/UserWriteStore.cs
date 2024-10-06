@@ -26,12 +26,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     public async Task<UserStoreResult> SoftDeleteUserAsync(ClaimsPrincipal user,
                                                 CancellationToken cancellationToken = default)
     {
-        var userReadResult = await UserReadStore.GetUserByEmailAsync(user, cancellationToken);
+        var updatedUser = (await UserReadStore.GetUserByEmailAsync(user, cancellationToken)).User;
 
-        var updatedUser = userReadResult.User;
-        updatedUser.IsDeleted = true;
-        updatedUser.DeletedBy = userReadResult.User.Id;
-        updatedUser.DeletedOnUtc = DateTime.UtcNow;
+        updatedUser.EntityDeletionStatus = new(true, DateTime.UtcNow, updatedUser.Id);
 
         var result = await UserManager.UpdateAsync(updatedUser);
 
@@ -54,8 +51,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             Address = request.Address
 
         };
-        user.CreatedBy = user.Id;
-        user.CreatedOnUtc = DateTime.UtcNow;
+        user.EntityCreationStatus = new(DateTime.UtcNow, user.Id);
+        user.EntityModificationStatus = new(DateTime.UtcNow, user.Id);
+        user.EntityDeletionStatus = new(false, null, null);
         user.PasswordHash = UserManager.PasswordHasher.HashPassword(user, $"""{request.Password}""");
         var result = await UserManager.CreateAsync(user);
 

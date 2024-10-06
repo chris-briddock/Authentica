@@ -51,10 +51,14 @@ public class CreateRoleEndpoint : EndpointBaseAsync
     {
         var roleManager = Services.GetRequiredService<RoleManager<Role>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var userReadStore = Services.GetRequiredService<IUserReadStore>();
+
+        var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         Role group = new()
         {
-            Name = request.Name
+            Name = request.Name,
+            EntityCreationStatus = new(DateTime.UtcNow, user.Id)
         };
 
         var result = await roleManager.CreateAsync(group);

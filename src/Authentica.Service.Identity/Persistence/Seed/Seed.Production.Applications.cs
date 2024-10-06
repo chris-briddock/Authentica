@@ -37,7 +37,9 @@ public static partial class Seed
                 ClientId = Guid.NewGuid().ToString(),
                 Name = "Authentica Default Application",
                 CallbackUri = $"{callbackUri}",
-                CreatedBy = CreatedBy,
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityDeletionStatus = new(false, null, null),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 ClientSecret = hashedSecret,
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             };

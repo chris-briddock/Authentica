@@ -59,5 +59,30 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
         builder.Property(e => e.Status)
                .HasColumnName("status")
                .HasMaxLength(100);
+
+       builder.ComplexProperty(u => u.EntityCreationStatus)
+                     .Property(x => x.CreatedBy)
+                     .HasColumnName("created_by")
+                     .HasMaxLength(36);
+
+              builder.ComplexProperty(u => u.EntityCreationStatus)
+                     .Property(x => x.CreatedOnUtc)
+                     .HasColumnName("created_on_utc")
+                     .HasDefaultValueSql("GETUTCDATE()")
+                     .ValueGeneratedOnAdd();
+
+              builder.ComplexProperty(u => u.EntityDeletionStatus)
+                     .Property(x => x.DeletedBy)
+                     .HasColumnName("deleted_by")
+                     .HasMaxLength(36);
+
+              builder.ComplexProperty(u => u.EntityDeletionStatus)
+                     .Property(x => x.DeletedOnUtc)
+                     .HasColumnName("deleted_on_utc")
+                     .HasMaxLength(36);
+
+              builder.ComplexProperty(u => u.EntityDeletionStatus)
+                     .Property(x => x.IsDeleted)
+                     .IsRequired();
     }
 }

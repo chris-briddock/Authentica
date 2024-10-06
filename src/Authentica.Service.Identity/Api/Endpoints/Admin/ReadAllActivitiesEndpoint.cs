@@ -17,8 +17,8 @@ namespace Api.Endpoints.Admin;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
-                                         .WithoutRequest
-                                         .WithActionResult<IList<ActivityResponse>>
+                                                .WithoutRequest
+                                                .WithActionResult<IList<ActivityResponse>>
 {
     /// <summary>
     /// Gets the service provider used to resolve dependencies.

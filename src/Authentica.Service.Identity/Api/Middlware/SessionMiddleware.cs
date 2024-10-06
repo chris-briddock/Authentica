@@ -47,7 +47,9 @@ public sealed class SessionMiddleware
                 UserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown",
                 IpAddress = context.GetIpAddress(),
                 UserAgent = context.Request.Headers.UserAgent.ToString(),
-                Status = SessionStatus.Active
+                Status = SessionStatus.Active,
+                EntityCreationStatus = new(DateTime.UtcNow, context.User?.Identity?.Name ?? "SYSTEM"),
+                EntityDeletionStatus = new(false, null, null)
             };
 
             // Save the session to the database

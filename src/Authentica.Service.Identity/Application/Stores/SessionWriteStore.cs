@@ -49,10 +49,10 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
             await DbContext.Sessions.Where(x => x.SessionId == session.Id)
                 .ExecuteUpdateAsync(
                 x => x
-                .SetProperty(s => s.IsDeleted, s => true)
+                .SetProperty(s => s.EntityDeletionStatus.IsDeleted, s => true)
                 .SetProperty(s => s.EndDateTime, s => DateTime.UtcNow)
-                .SetProperty(s => s.DeletedBy, s => session.UserId)
-                .SetProperty(s => s.DeletedOnUtc, s => DateTime.UtcNow)
+                .SetProperty(s => s.EntityDeletionStatus.DeletedBy, s => session.UserId)
+                .SetProperty(s => s.EntityDeletionStatus.DeletedOnUtc, s => DateTime.UtcNow)
                 );
         }
         catch (Exception)

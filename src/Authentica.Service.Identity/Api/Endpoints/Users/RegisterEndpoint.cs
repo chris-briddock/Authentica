@@ -55,7 +55,7 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
 
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 
-        if (existingUser is not null && !existingUser.IsDeleted)
+        if (existingUser is not null && !existingUser.EntityDeletionStatus.IsDeleted)
             return StatusCode(StatusCodes.Status409Conflict, "User is deleted, or already exists.");
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);

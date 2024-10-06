@@ -30,7 +30,9 @@ public static partial class Seed
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                CreatedBy = CreatedBy,
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityDeletionStatus = new(false, DateTime.UtcNow, CreatedBy),
                 Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 
@@ -69,10 +71,10 @@ public static partial class Seed
                 TwoFactorEnabled = false,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                IsDeleted = true,
-                DeletedOnUtc = DateTime.UtcNow,
                 EmailConfirmed = true,
-                CreatedBy = CreatedBy,
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityDeletionStatus = new(true, DateTime.UtcNow, CreatedBy),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 
@@ -111,11 +113,11 @@ public static partial class Seed
                 TwoFactorEnabled = false,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                IsDeleted = false,
-                DeletedOnUtc = default!,
+                EntityDeletionStatus = new(false, null, null),
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 EmailConfirmed = true,
-                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue),
-                CreatedBy = CreatedBy
+                Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 
             user.PasswordHash = userManager.PasswordHasher.HashPassword(user, "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`");
@@ -149,10 +151,10 @@ public static partial class Seed
                 TwoFactorEnabled = true,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                IsDeleted = false,
-                DeletedOnUtc = default!,
+                EntityDeletionStatus = new(false, null, null),
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 EmailConfirmed = true,
-                CreatedBy = CreatedBy,
                 Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 
@@ -187,10 +189,10 @@ public static partial class Seed
                 TwoFactorEnabled = true,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                IsDeleted = true,
-                DeletedOnUtc = DateTime.UtcNow.AddYears(-8),
+                EntityDeletionStatus = new(true, DateTime.UtcNow.AddYears(-8), CreatedBy),
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 EmailConfirmed = true,
-                CreatedBy = CreatedBy,
                 Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
 
             };
@@ -205,9 +207,10 @@ public static partial class Seed
                 TwoFactorEnabled = true,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                IsDeleted = true,
+                EntityDeletionStatus = new(true, DateTime.UtcNow, CreatedBy),
+                EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+                EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 EmailConfirmed = true,
-                CreatedBy = CreatedBy,
                 Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
 
             };

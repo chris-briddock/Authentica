@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Stores;
 
 /// <summary>
-/// Represents a shared store that manages entities implementing <see cref="ISoftDeletableEntity{TKey}"/>.
+/// Represents a shared store that manages entities.
 /// </summary>
 public class SharedStore : StoreBase, ISharedStore
 {
@@ -22,12 +22,12 @@ public class SharedStore : StoreBase, ISharedStore
     /// <summary>
     /// Purges entries of type <typeparamref name="TEntity"/> that were soft-deleted more than seven years ago.
     /// </summary>
-    /// <typeparam name="TEntity">The type of the entity, which must implement <see cref="ISoftDeletableEntity{TKey}"/>.</typeparam>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="SharedStoreResult"/> indicating the result of the purge operation.</returns>
     /// <inheritdoc/>
     public async Task<SharedStoreResult> PurgeEntriesAsync<TEntity>(CancellationToken cancellationToken)
-    where TEntity : class, ISoftDeletableEntity<string>
+    where TEntity : class, IEntityDeletionStatus<string>
     {
         try
         {
@@ -35,7 +35,7 @@ public class SharedStore : StoreBase, ISharedStore
             var dbSet = DbContext.Set<TEntity>();
 
             var toBeDeleted = await dbSet
-                                    .Where(u => u.DeletedOnUtc < sevenYearsAgo)
+                                    .Where(u => u.EntityDeletionStatus.DeletedOnUtc < sevenYearsAgo)
                                     .ToListAsync(cancellationToken);
 
             if (toBeDeleted.Count > 0)

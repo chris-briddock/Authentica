@@ -49,9 +49,7 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-
-        var user = userResult.User;
+        var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         var result = await userWriteStore.UpdatePhoneNumberAsync(user, request.PhoneNumber, request.Token);
 
