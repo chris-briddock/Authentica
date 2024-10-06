@@ -48,40 +48,40 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-  - job: Docker
-    displayName: 'Docker'
-    dependsOn: 'Build'
-    steps:
-    - checkout: self
-    - task: Bash@3
-      inputs:
-        filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
-        arguments: >-
-          --feature-service-bus '$(ServiceBusEnabled)'
-          --feature-app-insights '$(ApplicationInsightsEnabled)'
-          --feature-rabbitmq '$(RabbitEnabled)'
-          --rabbit-host '$(RabbitHost)'
-          --rabbit-username '$(RabbitUsername)'
-          --rabbit-password '$(RabbitPassword)'
-          --az-app-insights '$(AppInsightsConnectionString)'
-          --email-server '$(EmailServer)'
-          --email-port '$(EmailPort)'
-          --email-address '$(EmailAddress)'
-          --email-password '$(EmailPassword)'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.WorkerService.Email'
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: 'cat appsettings.json'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.WorkerService.Email'
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.workerservice.email -t $(DockerRegistry)/authentica-workerservice-email:latest .
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src'
-    - task: Bash@3
-      inputs: 
-        targetType: 'inline'
-        script: docker push $(DockerRegistry)/authentica-workerservice-email:latest
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src'
+  # - job: Docker
+  #   displayName: 'Docker'
+  #   dependsOn: 'Build'
+  #   steps:
+  #   - checkout: self
+  #   - task: Bash@3
+  #     inputs:
+  #       filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
+  #       arguments: >-
+  #         --feature-service-bus '$(ServiceBusEnabled)'
+  #         --feature-app-insights '$(ApplicationInsightsEnabled)'
+  #         --feature-rabbitmq '$(RabbitEnabled)'
+  #         --rabbit-host '$(RabbitHost)'
+  #         --rabbit-username '$(RabbitUsername)'
+  #         --rabbit-password '$(RabbitPassword)'
+  #         --az-app-insights '$(AppInsightsConnectionString)'
+  #         --email-server '$(EmailServer)'
+  #         --email-port '$(EmailPort)'
+  #         --email-address '$(EmailAddress)'
+  #         --email-password '$(EmailPassword)'
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.WorkerService.Email'
+  #   - task: Bash@3
+  #     inputs:
+  #       targetType: 'inline'
+  #       script: 'cat appsettings.json'
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.WorkerService.Email'
+  #   - task: Bash@3
+  #     inputs:
+  #       targetType: 'inline'
+  #       script: |
+  #         docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.workerservice.email -t $(DockerRegistry)/authentica-workerservice-email:latest .
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src'
+  #   - task: Bash@3
+  #     inputs: 
+  #       targetType: 'inline'
+  #       script: docker push $(DockerRegistry)/authentica-workerservice-email:latest
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src'
