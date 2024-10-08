@@ -1,4 +1,5 @@
 using Api.Requests;
+using Authentica.Common;
 using FluentValidation;
 
 namespace Application.Validators;
@@ -14,11 +15,11 @@ public class SendTokenRequestValidator : AbstractValidator<SendTokenRequest>
     /// </summary>
     private static readonly string[] AllowedTokenTypes = 
     { 
-        "reset_password", 
-        "confirm_email", 
-        "two_factor", 
-        "update_email", 
-        "update_phonenumber" 
+        EmailTokenConstants.ResetPassword,
+        EmailTokenConstants.MultiFactor,
+        EmailTokenConstants.ConfirmEmail,
+        EmailTokenConstants.UpdateEmail,
+        EmailTokenConstants.UpdatePhoneNumber
     };
 
     /// <summary>

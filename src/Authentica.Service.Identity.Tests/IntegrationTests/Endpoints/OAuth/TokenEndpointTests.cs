@@ -1,5 +1,6 @@
 using Api.Constants;
 using Api.Responses;
+using Application.Contracts;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -98,7 +99,7 @@ public class TokenEndpointTests
         var result = await sutClient.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
-         var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
+        var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
 
         var root = (TokenResponse)jsonResponse!;
 

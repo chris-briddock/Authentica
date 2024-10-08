@@ -3,7 +3,7 @@ using Api.Requests;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
+using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="CreateApplicationSecretEndpoint"/>
@@ -47,7 +47,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
         var appReadStore = Services.GetRequiredService<IApplicationReadStore>();
         var appWriteStore = Services.GetRequiredService<IApplicationWriteStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
@@ -69,12 +69,12 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
        if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
-        CreatedApplicationSecretEvent @event = new()
+        CreatedApplicationSecretActivity activity = new()
         {
             Payload = request
         };
 
-        await eventStore.SaveEventAsync(@event);
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok(new { result.Secret });
 

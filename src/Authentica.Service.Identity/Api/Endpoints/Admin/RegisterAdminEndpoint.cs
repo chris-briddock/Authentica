@@ -2,8 +2,8 @@ using Api.Constants;
 using Api.Requests;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,13 +16,13 @@ namespace Api.Endpoints.Admin;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public class RegisterAdminEndpoint : EndpointBaseAsync
-                                    .WithRequest<RegisterRequest>
-                                    .WithActionResult
+                                     .WithRequest<RegisterRequest>
+                                     .WithActionResult
 {
     /// <summary>
     /// Gets the service provider for resolving dependencies.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RegisterAdminEndpoint"/> class.
@@ -47,17 +47,10 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
                                                          CancellationToken cancellationToken = default)
     {
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
-
-        RegisterAdminEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
@@ -67,7 +60,13 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
             await userManager.AddToRoleAsync(result.User, RoleDefaults.Admin);
             await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
         }
-            
+        
+        RegisterAdminActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         // call token endpoint for a email confirmation token.
         return StatusCode(StatusCodes.Status201Created);

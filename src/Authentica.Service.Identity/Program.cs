@@ -13,11 +13,11 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Api.Constants;
 using ITimer = Application.Contracts.ITimer;
 using Microsoft.AspNetCore.Identity;
 using Domain.Aggregates.Identity;
 using Authentica.Common;
+using Application.Stores;
 
 
 namespace Authentica.Service.Identity;
@@ -55,9 +55,11 @@ public sealed class Program
         builder.Services.TryAddScoped<ISecretHasher, Argon2SecretHasher>();
         builder.Services.TryAddScoped<IPasswordHasher<User>, Argon2PasswordHasher<User>>();
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
+        builder.Services.TryAddScoped<ISessionWriteStore, SessionWriteStore>();
+        builder.Services.TryAddScoped<ISessionReadStore, SessionReadStore>();
         builder.Services.TryAddTransient<ITimer, TimerProvider>();
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
-        builder.Services.TryAddScoped<ITwoFactorTotpProvider, TwoFactorTotpProvider>();
+        builder.Services.TryAddScoped<IMultiFactorTotpProvider, MultiFactorTotpProvider>();
         builder.Services.AddFeatureManagement();
         builder.Services.AddBearerAuthentication();
         builder.Services.AddSessionCache();
@@ -85,13 +87,16 @@ public sealed class Program
         app.UseAuthorization();
         app.MapControllers();
         app.UseCustomHealthCheckMapping();
-        await app.UseDatabaseMigrationsAsync<AppDbContext>();
+        if (!app.Environment.IsProduction())
+        {
+            await app.UseDatabaseMigrationsAsync<AppDbContext>();
+            app.UseCors(CorsDefaults.PolicyName);
+        }
         await app.UseSeedDataAsync();
         if (app.Environment.IsDevelopment())
-        {
+        {           
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.UseCors(CorsDefaults.PolicyName);
             await app.UseSeedTestDataAsync();
         }
         await app.RunAsync();

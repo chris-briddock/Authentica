@@ -72,8 +72,8 @@ public sealed class ErrorHandlingMiddleware
             RequestId = context.TraceIdentifier,
             UserId = context.User?.Identity?.Name ?? "Anonymous",
             ServiceName = ServiceNameDefaults.ServiceName,
-            StackTrace = null!,
-            ExceptionType = null!,
+            StackTrace = context.Features.Get<IExceptionHandlerFeature>()?.Error.StackTrace ?? "Unknown",
+            ExceptionType = context.Features.Get<IExceptionHandlerFeature>()?.Error.GetType().ToString() ?? "Unknown",
             UserAgent = context.Request.Headers.UserAgent.ToString(),
             Method = context.Request.Method
         };

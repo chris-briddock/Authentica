@@ -1,7 +1,7 @@
 using Api.Constants;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,18 +38,16 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default!)
     {
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
-        var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
-        var readUserResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-
-        DeleteAccountEvent @event = new()
-        {
-            Email = readUserResult.User.Email!
-        };
-
-        await eventStore.SaveEventAsync(@event);
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var result = await userWriteStore.SoftDeleteUserAsync(User, cancellationToken);
+
+        DeleteAccountActivity activity = new()
+        {
+            Email = User.Identity?.Name ?? "Unknown"
+        };
+
+        await activityWriteStore.SaveActivityAsync(activity);
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);

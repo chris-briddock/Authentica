@@ -1,12 +1,12 @@
 namespace Api.Requests;
 
 /// <summary>
-/// Represents a request to disable two-factor authentication for a user.
+/// Represents a request to disable mfa for a user.
 /// </summary>
-public class DisableTwoFactorRequest
+public class DisableMultiFactorRequest
 {
     /// <summary>
-    /// Gets or sets the email address of the user for whom two-factor authentication will be disabled.
+    /// Gets or sets the email address of the user which mfa will be disabled.
     /// </summary>
     public string Email { get; set; } = default!;
 }

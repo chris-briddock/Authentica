@@ -5,7 +5,7 @@ using Application.DTOs;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
-using Domain.Events;
+using Application.Activities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +22,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AuthorizeEndpoint"/> class.
@@ -50,14 +50,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
 
         var randomStringProvider = Services.GetRequiredService<IRandomStringProvider>();
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
-
-        AuthorizeEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         ApplicationDto<AuthorizeRequest> dto = new()
         {
@@ -69,6 +62,13 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
 
         if (client is null)
             return Unauthorized();
+
+        AuthorizeActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         if (request.ResponseType == TokenConstants.AuthorizationCode)
         {

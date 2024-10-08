@@ -72,7 +72,7 @@ public class ApplicationPurgeBackgroundServiceTests
         var service = new ApplicationPurgeExposeProtected(scopeFactory, mockLogger.Object, mockTimer.Object);
 
         var oldDeletedApp = dbContext.ClientApplications
-        .Where(x => x.DeletedOnUtc <= DateTime.UtcNow.AddYears(-8))
+        .Where(x => x.EntityDeletionStatus.DeletedOnUtc <= DateTime.UtcNow.AddYears(-8))
         .FirstOrDefault()!;
 
         var recentDeletedApp = dbContext.ClientApplications

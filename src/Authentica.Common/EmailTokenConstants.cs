@@ -14,9 +14,9 @@ public static class EmailTokenConstants
     /// </summary>
     public const string ConfirmEmail = "confirm_email";
     /// <summary>
-    /// Two factor token type.
+    /// Multi factor token type.
     /// </summary>
-    public const string TwoFactor = "two_factor";
+    public const string MultiFactor = "multi_factor";
     /// <summary>
     /// Update email token type.
     /// </summary>

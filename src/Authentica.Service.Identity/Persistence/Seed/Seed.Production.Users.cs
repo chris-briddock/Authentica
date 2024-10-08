@@ -31,7 +31,9 @@ public static partial class Seed
             EmailConfirmed = true,
             LockoutEnabled = false,
             AccessFailedCount = 0,
-            CreatedBy = CreatedBy,
+            EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
+            EntityDeletionStatus = new(false, null, null),
+            EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
             Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
         };
 

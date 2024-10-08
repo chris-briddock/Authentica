@@ -1,4 +1,5 @@
 using Api.Constants;
+using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -26,7 +27,7 @@ public class AdminResetPasswordEndpointTests
 
         var request = new AdminPasswordResetRequest()
         {
-            Email = "admin@default.com",
+            Email = Seed.Test.AdminEmail,
             Password = "69{}'#ddksdjcdscdDs"
         };
         var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.ResetPassword}", request);
@@ -40,7 +41,7 @@ public class AdminResetPasswordEndpointTests
 
         var request = new AdminPasswordResetRequest()
         {
-            Email = "admin@defaul.com",
+            Email = "test@test.com",
             Password = "69{}'#ddksdjcdscdDs"
         };
         var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.ResetPassword}", request);

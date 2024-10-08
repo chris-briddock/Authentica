@@ -1,5 +1,6 @@
 using System.Text;
 using Api.Constants;
+using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -27,7 +28,7 @@ public class LoginEndpointTests
 
         var request = new LoginRequest()
         {
-            Email = "authorizeTest@default.com",
+            Email = Seed.Test.AuthorizeUserEmail,
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             RememberMe = true
         };
@@ -46,13 +47,13 @@ public class LoginEndpointTests
     }
 
     [Test]
-    public async Task LoginEndpoint_Returns200OK_WhenTwoFactorIsRequired()
+    public async Task LoginEndpoint_Returns200OK_WhenMultiFactorIsRequired()
     {
         var client = _fixture.WebApplicationFactory.CreateClient();
 
         var request = new LoginRequest()
         {
-            Email = "twoFactorTest@default.com",
+            Email = Seed.Test.MultiFactorUserEmail,
             Password = "Ar*P`w8R.WyXb7'UKxh;!-",
             RememberMe = true
         };
@@ -77,7 +78,7 @@ public class LoginEndpointTests
 
         var request = new LoginRequest()
         {
-            Email = "twoFactorTest@default.com",
+            Email = Seed.Test.MultiFactorUserEmail,
             Password = "Ar*P`w8R.WyXb7'UKxh-",
             RememberMe = true
         };
@@ -98,7 +99,7 @@ public class LoginEndpointTests
 
         var request = new LoginRequest()
         {
-            Email = "notfound@default.com",
+            Email = "notfound@test.com",
             Password = "Ar*P`w8R.WyXb7'UKxh-",
             RememberMe = true
         };

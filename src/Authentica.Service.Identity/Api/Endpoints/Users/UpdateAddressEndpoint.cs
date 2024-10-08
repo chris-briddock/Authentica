@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
-using Domain.Events;
+using Application.Activities;
 
 namespace Api.Endpoints.Users;
 
@@ -21,7 +21,7 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
     /// <summary>
     /// Gets the service provider instance for resolving services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UpdateAddressEndpoint"/> class.
@@ -48,24 +48,22 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var dbContext = Services.GetRequiredService<AppDbContext>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        UpdateAddressEvent @event = new()
+        var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
+
+        user.Address = request.Address;
+        user.EntityModificationStatus.ModifiedBy = user.Id;
+        user.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
+
+        dbContext.Users.Update(user);
+
+        UpdateAddressActivity activity = new()
         {
             Payload = request
         };
 
-        await eventStore.SaveEventAsync(@event);
-
-        var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
-
-        var user = userResult.User;
-
-        user.Address = request.Address;
-        user.ModifiedBy = user.Id;
-        user.ModifiedOnUtc = DateTime.UtcNow;
-
-        dbContext.Users.Update(user);
+        await activityWriteStore.SaveActivityAsync(activity);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

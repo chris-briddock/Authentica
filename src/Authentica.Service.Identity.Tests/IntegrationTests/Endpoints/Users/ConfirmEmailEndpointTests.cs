@@ -25,7 +25,7 @@ public class ConfirmEmailEndpointTests
     {
         var userReadStoreMock = new UserReadStoreMock();
         var userWriteStoreMock = new UserWriteStoreMock();
-        var email = "test@default.com";
+        var email = "test@test.com";
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
         .ReturnsAsync(UserStoreResult.Success(new User() { Email = "test@test.com"}));
@@ -62,7 +62,7 @@ public class ConfirmEmailEndpointTests
     {
         var userReadStoreMock = new UserReadStoreMock();
         var userWriteStoreMock = new UserWriteStoreMock();
-        var email = "test@default.com";
+        var email = "test@test.com";
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
         .ReturnsAsync(UserStoreResult.Success(new User() { Email = "test@test.com"}));

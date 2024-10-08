@@ -37,7 +37,7 @@ public class GetUserResponse
     public bool PhoneNumberConfirmed { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets a value indicating whether two-factor authentication is enabled.
+    /// Gets or sets a value indicating whether mfa authentication is enabled.
     /// </summary>
     public bool TwoFactorEnabled { get; set; } = default!;
 

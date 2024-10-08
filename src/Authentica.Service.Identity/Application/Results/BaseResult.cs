@@ -5,7 +5,7 @@ namespace Application.Results;
 /// <summary>
 /// Represents the result of an operation, indicating success or failure and any associated errors.
 /// </summary>
-public class BaseResult<TResult>
+public abstract class BaseResult<TResult>
 where TResult : BaseResult<TResult>, new()
 {
 
@@ -37,5 +37,16 @@ where TResult : BaseResult<TResult>, new()
             result._errors.AddRange(errors);
         }
         return result;
+    }
+    /// <summary>
+    /// Creates a new result indicating the success of an operation.
+    /// </summary>
+    /// <returns>A new successful result.</returns>
+    public static TResult Success()
+    {
+        return new TResult()
+        {
+            Succeeded = true
+        };
     }
 }

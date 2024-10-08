@@ -51,49 +51,49 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-  - job: Docker
-    displayName: 'Docker'
-    dependsOn: 'Build'
-    steps:
-    - checkout: self
-    - task: Bash@3
-      inputs:
-        filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
-        arguments: >-
-          --sql-hostname "$(SqlHostname)"
-          --sql-database "$(SqlDatabase)"
-          --sql-username "$(SqlUsername)"
-          --sql-password "$(SqlPassword)"
-          --redis-host "$(RedisHost)"
-          --jwt-audience "$(JwtAudience)"
-          --jwt-secret "$(JwtSecret)"
-          --jwt-expires "$(JwtExpires)"
-          --az-app-insights "$(AppInsightsConnectionString)"
-          --admin-email "$(AdminEmail)"
-          --admin-password "$(AdminPassword)"
-          --client-secret "$(ClientSecret)"
-          --client-callback-uri "$(ClientCallbackUri)"
-          --feature-cache "$(CacheEnabled)"
-          --feature-app-insights "$(ApplicationInsightsEnabled)"
-          --feature-service-bus "$(ServiceBusEnabled)"
-          --feature-rabbitmq "$(RabbitEnabled)"
-          --rabbit-host "$(RabbitHost)"
-          --rabbit-username "$(RabbitUsername)"
-          --rabbit-password "$(RabbitPassword)"
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: 'cat appsettings.json'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.service.identity -t $(DockerRegistry)/authentica-service-identity:latest .
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src'
-    - task: Bash@3
-      inputs: 
-        targetType: 'inline'
-        script: docker push $(DockerRegistry)/authentica-service-identity:latest
-        workingDirectory: '$(System.DefaultWorkingDirectory)/src'
+  # - job: Docker
+  #   displayName: 'Docker'
+  #   dependsOn: 'Build'
+  #   steps:
+  #   - checkout: self
+  #   - task: Bash@3
+  #     inputs:
+  #       filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
+  #       arguments: >-
+  #         --sql-hostname "$(SqlHostname)"
+  #         --sql-database "$(SqlDatabase)"
+  #         --sql-username "$(SqlUsername)"
+  #         --sql-password "$(SqlPassword)"
+  #         --redis-host "$(RedisHost)"
+  #         --jwt-audience "$(JwtAudience)"
+  #         --jwt-secret "$(JwtSecret)"
+  #         --jwt-expires "$(JwtExpires)"
+  #         --az-app-insights "$(AppInsightsConnectionString)"
+  #         --admin-email "$(AdminEmail)"
+  #         --admin-password "$(AdminPassword)"
+  #         --client-secret "$(ClientSecret)"
+  #         --client-callback-uri "$(ClientCallbackUri)"
+  #         --feature-cache "$(CacheEnabled)"
+  #         --feature-app-insights "$(ApplicationInsightsEnabled)"
+  #         --feature-service-bus "$(ServiceBusEnabled)"
+  #         --feature-rabbitmq "$(RabbitEnabled)"
+  #         --rabbit-host "$(RabbitHost)"
+  #         --rabbit-username "$(RabbitUsername)"
+  #         --rabbit-password "$(RabbitPassword)"
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
+  #   - task: Bash@3
+  #     inputs:
+  #       targetType: 'inline'
+  #       script: 'cat appsettings.json'
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
+  #   - task: Bash@3
+  #     inputs:
+  #       targetType: 'inline'
+  #       script: |
+  #         docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.service.identity -t $(DockerRegistry)/authentica-service-identity:latest .
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src'
+  #   - task: Bash@3
+  #     inputs: 
+  #       targetType: 'inline'
+  #       script: docker push $(DockerRegistry)/authentica-service-identity:latest
+  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src'

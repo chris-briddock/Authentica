@@ -3,8 +3,8 @@ using Api.Responses;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="ReadByNameApplicationEndpoint"/>
@@ -47,8 +47,8 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
     {
         var readStoreResult = Services.GetRequiredService<IApplicationReadStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         var userResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         if (userResult?.User?.Id is null)
             return BadRequest();
@@ -56,14 +56,13 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
         IEnumerable<ClientApplication> apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
 
         List<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
-        List<ReadApplicationResponse> redactedResponses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
 
-        ReadApplicationsEvent @event = new()
+        ReadApplicationsActivity activity = new()
         {
-            Payload = redactedResponses
+            Payload = responses
         };
 
-        await eventStore.SaveEventAsync(@event);
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok(responses);
     }

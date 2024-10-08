@@ -1,6 +1,7 @@
 using System.Text;
 using Api.Constants;
 using Application.Contracts;
+using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -35,7 +36,7 @@ public class ResetPasswordEndpointTests
 
         var request = new PasswordResetRequest()
         {
-            Email = "admin@default.com",
+            Email = Seed.Test.AdminEmail,
             Token = "ajdndjnksdn",
             Password = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
@@ -61,7 +62,7 @@ public class ResetPasswordEndpointTests
 
         var request = new PasswordResetRequest()
         {
-            Email = "admin@default.com",
+            Email = Seed.Test.AdminEmail,
             Token = "ajdndjnksdn",
             Password = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };

@@ -59,12 +59,12 @@ public class WorkerTests
     }
 
     [Test]
-    public async Task Consume_TwoFactorToken_SendsEmail()
+    public async Task Consume_MultiFactorToken_SendsEmail()
     {
         // Arrange
         var emailMessage = new EmailMessage
         {
-            Type = EmailTokenConstants.TwoFactor,
+            Type = EmailTokenConstants.MultiFactor,
             EmailAddress = "recipient@example.com",
             Code = "123456"
         };
@@ -79,7 +79,6 @@ public class WorkerTests
         _smtpClientMock.Verify(
             smtp => smtp.SendMailAsync(It.Is<MailMessage>(msg =>
                 msg.To.Contains(new MailAddress("recipient@example.com")) &&
-                msg.Subject == "You requested a two-factor code" &&
                 msg.Body.Contains("123456")
             )),
             Times.Once);

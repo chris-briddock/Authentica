@@ -55,16 +55,16 @@ public interface IUserWriteStore
     /// <exception cref="ArgumentException">Thrown if <paramref name="token"/> is null or whitespace.</exception>
     Task<UserStoreResult> ResetPasswordAsync(User user, string token, string newPassword);
     /// <summary>
-    /// Asynchronously redeems a two-factor recovery code for a user.
+    /// Asynchronously redeems a mfa recovery code for a user.
     /// </summary>
     /// <param name="user">The user attempting to redeem the recovery code.</param>
-    /// <param name="code">The two-factor recovery code.</param>
+    /// <param name="code">The mfa recovery code.</param>
     /// <returns>
     /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
     /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
     /// </returns>
     /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
-    Task<UserStoreResult> RedeemTwoFactorRecoveryCodeAsync(User user, string code);
+    Task<UserStoreResult> RedeemMultiFactorRecoveryCodeAsync(User user, string code);
     /// <summary>
     /// Asynchronously updates a user's email address using a confirmation token.
     /// </summary>

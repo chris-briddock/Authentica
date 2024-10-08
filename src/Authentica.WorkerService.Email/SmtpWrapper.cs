@@ -53,4 +53,6 @@ public sealed class SmtpClientWrapper : ISmtpClient
         _smtpClient.Dispose();
         GC.SuppressFinalize(this);
     }
+
+    ~SmtpClientWrapper() => Dispose();
 }

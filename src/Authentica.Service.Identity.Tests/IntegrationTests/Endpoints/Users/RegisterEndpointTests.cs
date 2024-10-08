@@ -1,6 +1,7 @@
 using System.Text;
 using Api.Constants;
 using Application.Contracts;
+using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -47,7 +48,7 @@ public class RegisterEndpointTests
 
         var request = new RegisterRequest()
         {
-            Email = "admin@default.com",
+            Email = Seed.Test.AdminEmail,
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             PhoneNumber = "+447760162366",
             Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")

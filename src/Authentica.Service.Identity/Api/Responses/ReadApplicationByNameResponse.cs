@@ -10,7 +10,6 @@ public class ReadApplicationResponse
     /// <summary>
     /// Gets or sets the client ID.
     /// </summary>
-    [SensitiveData]
     public string ClientId { get; set; } = default!;
 
     /// <summary>

@@ -1,6 +1,5 @@
 using Microsoft.ApplicationInsights.AspNetCore;
 using Microsoft.ApplicationInsights.DependencyCollector;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 
