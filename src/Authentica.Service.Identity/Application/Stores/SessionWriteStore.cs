@@ -1,5 +1,6 @@
 using Application.Contracts;
 using Domain.Aggregates.Identity;
+using Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
@@ -38,7 +39,7 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     }
 
     /// <summary>
-    /// Deletes a session from the store asynchronously.
+    /// Soft deletes a session from the store asynchronously.
     /// </summary>
     /// <param name="session">The session to delete.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
@@ -53,6 +54,7 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
                 .SetProperty(s => s.EndDateTime, s => DateTime.UtcNow)
                 .SetProperty(s => s.EntityDeletionStatus.DeletedBy, s => session.UserId)
                 .SetProperty(s => s.EntityDeletionStatus.DeletedOnUtc, s => DateTime.UtcNow)
+                .SetProperty(s => s.Status, s => SessionStatus.Terminated)
                 );
         }
         catch (Exception)

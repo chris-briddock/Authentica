@@ -57,18 +57,16 @@ public sealed class UpdateRoleEndpoint : EndpointBaseAsync
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var currentRole = await roleManager.Roles
-                                .Where(x => x.Name == request.Name)
+                                .Where(x => x.Name == request.CurrentName)
                                 .FirstAsync(cancellationToken);
         
-        var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
+        var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
-        currentRole.Name = request.Name;
-        currentRole.EntityModificationStatus.ModifiedBy = userReadResult.User.Id; 
+        currentRole.Name = request.NewName;
+        currentRole.EntityModificationStatus.ModifiedBy = user.Id; 
         currentRole.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
-        var result = await roleManager.UpdateAsync(currentRole);
-
-        if (!result.Succeeded)
-            return StatusCode(StatusCodes.Status500InternalServerError);
+        
+        await roleManager.UpdateAsync(currentRole);
 
         UpdateRoleActivity activity = new()
         {

@@ -43,7 +43,6 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public override async Task<ActionResult> HandleAsync(DeleteRoleRequest request,
                                                    CancellationToken cancellationToken = default)
     {
