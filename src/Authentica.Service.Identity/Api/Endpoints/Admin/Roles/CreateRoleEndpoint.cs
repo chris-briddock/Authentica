@@ -63,10 +63,7 @@ public class CreateRoleEndpoint : EndpointBaseAsync
             EntityModificationStatus = new(DateTime.UtcNow, user.Id)
         };
 
-        var result = await roleManager.CreateAsync(group);
-
-        if (!result.Succeeded)
-            return StatusCode(StatusCodes.Status500InternalServerError);
+        await roleManager.CreateAsync(group);
 
         CreateRoleActivity activity = new()
         {

@@ -55,10 +55,7 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
         
         var user = await userManager.FindByEmailAsync(request.Email);
 
-        if (user is null)
-            return BadRequest();
-
-        var result = await userManager.AddToRoleAsync(user, request.Role);
+        var result = await userManager.AddToRoleAsync(user!, request.Role);
 
         AddToRoleActivity activity = new()
         {

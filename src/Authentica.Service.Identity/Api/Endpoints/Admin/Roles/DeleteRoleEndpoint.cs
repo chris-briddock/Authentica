@@ -16,8 +16,8 @@ namespace Api.Endpoints.Admin.Roles;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public sealed class DeleteRoleEndpoint : EndpointBaseAsync
-                                          .WithRequest<DeleteRoleRequest>
-                                          .WithActionResult
+                                         .WithRequest<DeleteRoleRequest>
+                                         .WithActionResult
 {
     /// <summary>
     /// Gets or sets the service provider for dependency injection.
@@ -60,10 +60,7 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
         role.EntityDeletionStatus = new(true, DateTime.UtcNow, user.Id);
         role.EntityModificationStatus = new(DateTime.UtcNow, user.Id); 
 
-        var result = await roleManager.UpdateAsync(role);
-
-        if (!result.Succeeded)
-            return StatusCode(StatusCodes.Status500InternalServerError);
+        await roleManager.UpdateAsync(role);
 
         DeleteRoleActivity activity = new()
         {

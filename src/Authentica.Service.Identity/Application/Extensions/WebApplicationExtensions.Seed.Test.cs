@@ -15,6 +15,7 @@ public static partial class WebApplicationExtensions
     public static async Task UseSeedTestDataAsync(this WebApplication app)
     {
         await Seed.Test.SeedTestAdminUserAsync(app);
+        await Seed.Test.SeedTestRolesAsync(app);
         await Seed.Test.SeedTestClientApplicationAsync(app);
         await Seed.Test.SeedAuthorizeUser(app);
         await Seed.Test.SeedDeletedUser(app);

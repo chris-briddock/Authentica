@@ -46,8 +46,6 @@ public class TestFixture<TProgram> where TProgram : class
 
         var result = await Client.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
 
-        var errorContent = await result.Content.ReadAsStringAsync();
-
         result.EnsureSuccessStatusCode();
 
         var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
