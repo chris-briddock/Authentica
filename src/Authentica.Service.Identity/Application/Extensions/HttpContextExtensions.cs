@@ -6,17 +6,13 @@ namespace Application.Extensions;
 public static class HttpContextExtensions
 {
     /// <summary>
-    /// Gets the IP address of the client making the request.
+    /// Gets the client's IP address from the request.
     /// </summary>
     /// <param name="context">The HttpContext.</param>
-    /// <returns>
-    /// A string representing the IP address of the client.
-    /// Returns null if the IP address cannot be determined.
-    /// </returns>
+    /// <returns>Client's IP address or null if not determined.</returns>
     /// <remarks>
-    /// This method first checks the X-Forwarded-For header, which is typically set by proxies or load balancers.
-    /// If that header is not present, it falls back to the RemoteIpAddress from the connection.
-    /// Be aware that IP addresses can be spoofed, so this should not be used as a sole means of identification.
+    /// Checks X-Forwarded-For header first, then falls back to RemoteIpAddress.
+    /// Note: IP addresses can be spoofed.
     /// </remarks>
     public static string GetIpAddress(this HttpContext context)
     {

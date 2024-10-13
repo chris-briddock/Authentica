@@ -1,11 +1,15 @@
 using Domain.Constants;
+using Application.Contracts;
+using Domain.Aggregates.Identity;
+using System.Security.Claims;
+using Application.Extensions;
 
 namespace Api.Middlware;
 
 /// <summary>
 /// Middleware to ensure each HTTP session has a unique session ID.
 /// </summary>
-public class SessionMiddleware
+public sealed class SessionMiddleware
 {
     /// <summary>
     /// Delegate representing the next middleware in the request pipeline.
@@ -28,14 +32,30 @@ public class SessionMiddleware
     /// <returns>A task that represents the completion of request processing.</returns>
     public async Task InvokeAsync(HttpContext context)
     {
-        // Check if the session does not already contain a SequenceId.
         if (!context.Session.Keys.Contains(SessionConstants.SequenceId))
         {
-            // Generate a new guid and set it in the session
-            context.Session.SetString(SessionConstants.SequenceId, Guid.NewGuid().ToString());
+            var sessionId = Guid.NewGuid().ToString();
+            context.Session.SetString(SessionConstants.SequenceId, sessionId);
+
+            var scope = context.RequestServices.CreateAsyncScope();
+            var sessionWriteStore = scope.ServiceProvider.GetRequiredService<ISessionWriteStore>();
+
+            // Create a new Session object
+            Session session = new()
+            {
+                SessionId = sessionId,
+                UserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown",
+                IpAddress = context.GetIpAddress(),
+                UserAgent = context.Request.Headers.UserAgent.ToString(),
+                Status = SessionStatus.Active,
+                EntityCreationStatus = new(DateTime.UtcNow, context.User?.Identity?.Name ?? "SYSTEM"),
+                EntityDeletionStatus = new(false, null, null)
+            };
+
+            // Save the session to the database
+            await sessionWriteStore.CreateAsync(session);
         }
 
-        // Call the next middleware in the pipeline
         await Next(context);
     }
 }

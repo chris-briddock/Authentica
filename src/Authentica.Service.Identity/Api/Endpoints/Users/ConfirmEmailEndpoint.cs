@@ -1,8 +1,8 @@
 ﻿using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,29 +37,29 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override async Task<ActionResult> HandleAsync([FromQuery]ConfirmEmailRequest request,
+    public override async Task<ActionResult> HandleAsync([FromQuery] ConfirmEmailRequest request,
                                                          CancellationToken cancellationToken = default)
     {
-            var writeStore = Services.GetRequiredService<IUserWriteStore>();
-            var readStore = Services.GetRequiredService<IUserReadStore>();
-            var eventStore = Services.GetRequiredService<IEventStore>();
+        var writeStore = Services.GetRequiredService<IUserWriteStore>();
+        var readStore = Services.GetRequiredService<IUserReadStore>();
+        var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
-            var userResult = await readStore.GetUserByEmailAsync(request.Email);
+        var userResult = await readStore.GetUserByEmailAsync(request.Email);
 
-            // NOTE: This code should have been emailed to the user.
+        // NOTE: This code should have been emailed to the user.
 
-            var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
+        var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
 
-            ConfirmEmailEvent @event = new()
-            {
-                Payload = request
-            };
+        ConfirmEmailActivity activity = new()
+        {
+            Payload = request
+        };
 
-            await eventStore.SaveEventAsync(@event);
+        await activityWriteStore.SaveActivityAsync(activity);
 
-            if (result.Errors.Any() || !result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        if (result.Errors.Any() || !result.Succeeded)
+            return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
-            return Ok(); 
+        return Ok();
     }
 }

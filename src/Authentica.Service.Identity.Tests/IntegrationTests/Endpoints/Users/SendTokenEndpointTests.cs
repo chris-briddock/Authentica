@@ -1,4 +1,5 @@
 using Api.Constants;
+using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -19,7 +20,7 @@ public class SendTokenEndpointTests
         _fixture.OneTimeTearDown();
     }
 
-    [TestCase(EmailTokenConstants.TwoFactor)]
+    [TestCase(EmailTokenConstants.MultiFactor)]
     [TestCase(EmailTokenConstants.ConfirmEmail)]
     [TestCase(EmailTokenConstants.ResetPassword)]
     [TestCase(EmailTokenConstants.UpdateEmail)]
@@ -31,7 +32,7 @@ public class SendTokenEndpointTests
 
         var request = new SendTokenRequest()
         {
-            Email = "admin@default.com",
+            Email = Seed.Test.AdminEmail,
             TokenType = tokenType
         };
 

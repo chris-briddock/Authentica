@@ -1,3 +1,4 @@
+using Authentica.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Requests;
@@ -15,9 +16,7 @@ public sealed record SendTokenRequest
 
     /// <summary>
     /// The type of token to be generated.
-    /// Allowed values for this are: 
-    /// "reset_password", "confirm_email", 
-    /// "two_factor", "update_email", "update_phonenumber" 
+    /// Allowed values for this are: <see cref="EmailTokenConstants"/>
     /// </summary>
     [FromQuery(Name = "token_type")]
     public string TokenType { get; set; } = default!;

@@ -7,7 +7,7 @@ namespace Application.Publishers;
 
 /// <summary>
 /// Publishes a message to the message queue, for confirmation emails, 
-/// password reset codes, password reset links and two factor codes.
+/// password reset codes, password reset links and mfa codes.
 /// </summary>
 public sealed class EmailPublisher : IEmailPublisher
 {

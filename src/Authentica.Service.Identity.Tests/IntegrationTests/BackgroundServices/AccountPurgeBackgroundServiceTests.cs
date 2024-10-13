@@ -3,6 +3,7 @@ using Application.Contracts;
 using Application.Exceptions;
 using Application.Factories;
 using Persistence.Contexts;
+using Persistence.Seed;
 using ITimer = Application.Contracts.ITimer;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
@@ -72,11 +73,11 @@ public class AccountPurgeBackgroundServiceTests
         var service = new AccountPurgeExposeProtected(scopeFactory, mockLogger.Object, mockTimer.Object);
 
         var oldDeletedUser = dbContext.Users
-        .Where(s => s.Email == "deletedUser@default.com")
-        .Where(x => x.DeletedOnUtc <= DateTime.UtcNow.AddYears(-8))
+        .Where(s => s.Email == Seed.Test.OldDeletedUserEmail)
+        .Where(x => x.EntityDeletionStatus.DeletedOnUtc <= DateTime.UtcNow.AddYears(-8))
         .FirstOrDefault()!;
 
-        var recentDeletedUser = dbContext.Users.Where(s => s.Email == "recentlydeleted@default.com").First();
+        var recentDeletedUser = dbContext.Users.Where(s => s.Email == Seed.Test.RecentlyDeletedUserEmail).First();
 
         // Act
         await service.ExecuteTaskAsync(CancellationToken.None);

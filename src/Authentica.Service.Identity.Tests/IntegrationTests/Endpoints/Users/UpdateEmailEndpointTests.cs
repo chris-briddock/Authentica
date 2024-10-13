@@ -8,6 +8,8 @@ public class UpdateEmailEndpointTests
 {
     private TestFixture<Program> _fixture;
 
+    private const string Email = "administrator@test.com";
+
     [OneTimeSetUp]
     public async Task OneTimeSetup()
     {
@@ -34,7 +36,7 @@ public class UpdateEmailEndpointTests
 
         var request = new UpdateEmailRequest()
         {
-            Email = "administrator@default.com",
+            Email = Email,
             Token = "888888"
         };
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
@@ -57,7 +59,7 @@ public class UpdateEmailEndpointTests
 
         var request = new UpdateEmailRequest()
         {
-            Email = "administrator@default.com",
+            Email = Email,
             Token = "888888"
         };
 

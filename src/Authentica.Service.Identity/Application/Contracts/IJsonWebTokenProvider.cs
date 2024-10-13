@@ -1,6 +1,7 @@
 using Application.Results;
+using Application.Providers;
 
-namespace Application.Providers;
+namespace Application.Contracts;
 
 /// <summary>
 /// Defines a contract for the JWT Token Provider implementation <see cref="JsonWebTokenProvider"/>
@@ -26,7 +27,7 @@ public interface IJsonWebTokenProvider
                                                int expires,
                                                string subject,
                                                IList<string> roles,
-                                               IList<string>? scopes);
+                                               IList<string> scopes);
     /// <summary>
     /// Tries to create a new JWT (JSON Web Token) asynchronously.
     /// </summary>
@@ -46,7 +47,7 @@ public interface IJsonWebTokenProvider
                                         int expires,
                                         string subject,
                                         IList<string> roles,
-                                        IList<string>? scopes);
+                                        IList<string> scopes);
     /// <summary>
     /// Tries to validate a JWT (JSON Web Token) asynchronously.
     /// </summary>

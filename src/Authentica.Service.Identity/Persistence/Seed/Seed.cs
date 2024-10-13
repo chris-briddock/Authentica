@@ -1,10 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
-using Domain.Aggregates.Identity;
-using Domain.ValueObjects;
-using Microsoft.AspNetCore.Identity;
-using Persistence.Contexts;
-
 namespace Persistence.Seed;
 
 /// <summary>
@@ -20,10 +13,6 @@ public static partial class Seed
     /// Default value for an address.
     /// </summary>
     public const string AddressValue = "DEFAULT";
-    /// <summary>
-    /// Default admin email value for test data.
-    /// </summary>
-    public const string AdminEmail = "admin@default.com";
 
 
     /// <summary>
@@ -31,5 +20,29 @@ public static partial class Seed
     /// </summary>
     public static partial class Test
     {
+        /// <summary>
+        /// Default admin email value for test data.
+        /// </summary>
+        public const string AdminEmail = "admin@default.com";
+        /// <summary>
+        /// Deleted user for test data.
+        /// </summary>
+        public const string DeleteUserEmail = "deletedUser@default.com";
+        /// <summary>
+        /// User for test data.
+        /// </summary>
+        public const string AuthorizeUserEmail = "authorizeTest@default.com";
+        /// <summary>
+        /// User for mfa test data.
+        /// </summary>
+        public const string MultiFactorUserEmail = "multiFactorTest@default.com";
+        /// <summary>
+        /// User for account purge test data.
+        /// </summary>
+        public const string RecentlyDeletedUserEmail = "recentlydeleted@default.com";
+        /// <summary>
+        /// User for account purge test data.
+        /// </summary>
+        public const string OldDeletedUserEmail = "olddeleted@default.com";
     }
 }

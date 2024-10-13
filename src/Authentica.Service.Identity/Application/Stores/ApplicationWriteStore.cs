@@ -47,9 +47,9 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
         try
         {
-            var userReadResult = await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken);
+            var user = (await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken)).User;
 
-            if (userReadResult.User is null)
+            if (user is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
             var application = new ClientApplication
@@ -57,13 +57,14 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
                 Id = Guid.NewGuid().ToString(),
                 Name = dto.Request.Name,
                 CallbackUri = dto.Request.CallbackUri,
-                CreatedBy = userReadResult.User.Email!,
-                CreatedOnUtc = DateTime.UtcNow
+                EntityDeletionStatus = new(false, null, null),
+                EntityModificationStatus = new(DateTime.UtcNow, user.Id),
+                EntityCreationStatus = new(DateTime.UtcNow, user.Id)
             };
 
             var userClientApplication = new UserClientApplication
             {
-                UserId = userReadResult.User.Id,
+                UserId = user.Id,
                 ApplicationId = application.Id
             };
 
@@ -109,8 +110,8 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             application.Name = dto.Request.NewName ?? application.Name;
             application.CallbackUri = dto.Request.NewCallbackUri ?? application.CallbackUri;
-            application.ModifiedBy = userReadResult.User.Email ?? application.ModifiedBy;
-            application.ModifiedOnUtc = DateTime.UtcNow;
+            application.EntityModificationStatus.ModifiedBy = userReadResult.User.Email ?? application.EntityModificationStatus.ModifiedBy;
+            application.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
 
             DbContext.ClientApplications.Update(application);
             await DbContext.SaveChangesAsync(cancellationToken);
@@ -155,9 +156,9 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
 
             // Mark the application as deleted and set the deletion details
-            application.IsDeleted = true;
-            application.DeletedOnUtc = DateTime.UtcNow;
-            application.DeletedBy = userReadResult.User.Id;
+            application.EntityDeletionStatus.IsDeleted = true;
+            application.EntityDeletionStatus.DeletedOnUtc = DateTime.UtcNow;
+            application.EntityDeletionStatus.DeletedBy = userReadResult.User.Id;
 
             // Execute the SQL command to update the application
             DbContext.ClientApplications.Update(application);

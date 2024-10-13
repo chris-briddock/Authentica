@@ -7,9 +7,7 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a user in the identity system with additional auditing and soft deletion properties.
 /// </summary>
-public sealed class User : IdentityUser<string>,
-                           ISoftDeletableEntity<string>, 
-                           IAuditableEntity<string>
+public sealed class User : IdentityUser<string>, IEntityDeletionStatus<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the user.
@@ -17,59 +15,40 @@ public sealed class User : IdentityUser<string>,
     public override string Id { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
-    /// Gets or sets the last login time and date.
+    /// Gets or sets the creation status of the entity.
     /// </summary>
-    public DateTime? LastLoginDateTime { get; set; } = default!;
+    /// <remarks>
+    /// This property contains information about the creation of the entity.
+    /// It includes whether the creation was successful and any relevant messages.
+    /// </remarks>
+    public EntityCreationStatus<string> EntityCreationStatus { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets the last login ip address.
+    /// Gets or sets the deletion status of the entity.
     /// </summary>
-    public string? LastLoginIPAddress { get; set; } = default!;
+    /// <remarks>
+    /// This property tracks whether the entity has been soft-deleted, 
+    /// along with metadata about the deletion event (like the timestamp and user responsible).
+    /// </remarks>
+    public EntityDeletionStatus<string> EntityDeletionStatus { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets a value indicating whether the user is deleted.
+    /// Gets or sets the modification status of the entity.
     /// </summary>
-    public bool IsDeleted { get; set; }
-
-    /// <summary>
-    /// Gets or sets the date and time in UTC when the user was deleted.
-    /// </summary>
-    public DateTime? DeletedOnUtc { get; set; }
-
-    /// <summary>
-    /// Gets or sets the identifier of the user who deleted this user.
-    /// </summary>
-    public string? DeletedBy { get; set; }
-
-    /// <summary>
-    /// Gets or sets the date and time in UTC when the user was created.
-    /// </summary>
-    public DateTime CreatedOnUtc { get; set; }
-
-    /// <summary>
-    /// Gets or sets the identifier of the user who created this user.
-    /// </summary>
-    public string CreatedBy { get; set; } = default!;
-
-    /// <summary>
-    /// Gets or sets the date and time in UTC when the user was last modified.
-    /// </summary>
-    public DateTime? ModifiedOnUtc { get; set; }
-
-    /// <summary>
-    /// Gets or sets the identifier of the user who last modified this user.
-    /// </summary>
-    public string? ModifiedBy { get; set; }
-
+    /// <remarks>
+    /// This property stores information about when the entity was created and last modified,
+    /// and who performed the actions.
+    /// </remarks>
+    public EntityModificationStatus<string> EntityModificationStatus { get; set; } = default!;
     /// <summary>
     /// Gets or sets the address of the user.
     /// </summary>
     public Address Address { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets if the user has enabled application based TOTP codes.
+    /// Gets or sets if the user has enabled application based TOTPs.
     /// </summary>
-    public bool TwoFactorAuthenticatorEnabled { get; set; } = false;
+    public bool MultiFactorAuthenticatorEnabled { get; set; } = false;
 
     /// <summary>
     /// Gets or sets the collection of user roles associated with the user.

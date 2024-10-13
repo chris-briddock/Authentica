@@ -4,7 +4,7 @@ namespace Application.Contracts;
 
 /// <summary>
 /// Publishes a message to the message queue, for confirmation emails, 
-/// password reset codes, and two factor codes, update email codes, 
+/// password reset codes, and mfa codes, update email codes, 
 /// and update phone number codes
 /// </summary>
 public interface IEmailPublisher

@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.Contracts;
 using Application.Results;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,7 +21,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                                                      int expires,
                                                      string subject,
                                                      IList<string> roles,
-                                                     IList<string>? scopes)
+                                                     IList<string> scopes)
     {
         JwtResult result = new();
         try
@@ -39,17 +40,13 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim("role", role));
             }
 
-            if (scopes is not null)
+            foreach (var scope in scopes)
             {
-                foreach (var scope in scopes)
-                {
-                   claims.Add(new Claim("scp", scope));
-                }
+                claims.Add(new Claim("scp", scope));
             }
-            
 
             SigningCredentials signingCredentials = new(
                 new SymmetricSecurityKey(key),
@@ -129,7 +126,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                                                             int expires,
                                                             string subject,
                                                             IList<string> roles,
-                                                            IList<string>? scopes) => await TryCreateTokenAsync(email,
+                                                            IList<string> scopes) => await TryCreateTokenAsync(email,
                                                                                                                 jwtSecret,
                                                                                                                 issuer,
                                                                                                                 audience,

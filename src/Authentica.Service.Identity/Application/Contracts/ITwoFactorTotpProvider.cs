@@ -4,9 +4,9 @@ namespace Application.Contracts;
 
 /// <summary>
 /// Defines the contract for a provider that handles Time-based One-Time Password (TOTP) 
-/// generation, formatting, and validation for two-factor authentication.
+/// generation, formatting, and validation for mfa authentication.
 /// </summary>
-public interface ITwoFactorTotpProvider
+public interface IMultiFactorTotpProvider
 {
     /// <summary>
     /// Generates a new TOTP key for the specified user.

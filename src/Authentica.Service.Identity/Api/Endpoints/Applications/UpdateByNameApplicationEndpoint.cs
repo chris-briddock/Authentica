@@ -3,8 +3,8 @@ using Api.Requests;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
+using Application.Activities;
 using Domain.Aggregates.Identity;
-using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="UpdateByNameApplicationEndpoint"/>
@@ -48,17 +48,9 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         var userWriteStore = Services.GetRequiredService<IUserReadStore>();
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var userReadResult = await userWriteStore.GetUserByEmailAsync(User, cancellationToken);
-        var user = userReadResult.User;
-
-        UpdateApplicationByNameEvent @event = new()
-        {
-            Payload = request
-        };
-
-        await eventStore.SaveEventAsync(@event);
+        var user = (await userWriteStore.GetUserByEmailAsync(User, cancellationToken)).User;
         
         if (user is null)
             return BadRequest();
@@ -80,6 +72,13 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+
+        UpdateApplicationByNameActivity activity = new()
+        {
+            Payload = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok();
     }

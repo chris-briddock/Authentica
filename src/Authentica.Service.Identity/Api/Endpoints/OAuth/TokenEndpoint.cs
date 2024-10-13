@@ -2,12 +2,10 @@ using Api.Constants;
 using Api.Requests;
 using Api.Responses;
 using Application.Contracts;
-using Application.Providers;
 using Ardalis.ApiEndpoints;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
-using Domain.Events;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +25,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="TokenEndpoint"/>
@@ -60,7 +58,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
         var configuration = Services.GetRequiredService<IConfiguration>();
         var hasher = Services.GetRequiredService<ISecretHasher>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var scopeProvider = Services.GetRequiredService<IScopeProvider>();
@@ -155,27 +152,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             TokenType = "Bearer",
             Expires = expires.ToString()
         };
-
-        TokenEvent @event = new()
-        {
-            Request = new TokenRequest()
-            {
-                GrantType = request.GrantType,
-                ClientId = request.ClientId,
-                ClientSecret = request.ClientSecret,
-                Code = request.Code,
-                State = request.State
-            },
-            Response = new TokenResponse()
-            {
-                AccessToken = response.AccessToken,
-                RefreshToken = response.RefreshToken,
-                TokenType = "Bearer",
-                Expires = expires.ToString()
-            }
-        };
-
-        await eventStore.SaveEventAsync(@event);
 
         return Ok(response);
     }

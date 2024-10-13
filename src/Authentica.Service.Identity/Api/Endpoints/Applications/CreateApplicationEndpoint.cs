@@ -3,7 +3,7 @@ using Api.Requests;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Domain.Events;
+using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="CreateApplicationEndpoint"/>
@@ -47,7 +47,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
     {
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
-        var eventStore = Services.GetRequiredService<IEventStore>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var applicationExists = await readStore.CheckApplicationExistsAsync(request.Name, cancellationToken);
 
@@ -65,13 +65,13 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
-        CreatedApplicationEvent @event = new()
+        CreatedApplicationActivity activity = new()
         {
             Payload = request
         };
 
-        await eventStore.SaveEventAsync(@event);
-
+        await activityStore.SaveActivityAsync(activity);
+        
         return StatusCode(StatusCodes.Status201Created);
     }
 }

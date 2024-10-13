@@ -1,4 +1,5 @@
 using Api.Constants;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
@@ -25,7 +26,7 @@ public sealed class CreateDeviceCodeEndpoint : EndpointBaseAsync
     /// <summary>
     /// Provides access to application services.
     /// </summary>
-    public IServiceProvider Services { get; }
+    private IServiceProvider Services { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateDeviceCodeEndpoint"/> class.
@@ -52,12 +53,20 @@ public sealed class CreateDeviceCodeEndpoint : EndpointBaseAsync
         // Get required services
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         // Retrieve the user based on their email
         var result = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
         // Generate a unique device code for the user
         var code = await userManager.GenerateUserTokenAsync(result.User, TokenOptions.DefaultEmailProvider, TokenConstants.DeviceCode);
+
+        CreateDeviceCodeActivity activity = new()
+        {
+            Payload = User.Identity?.Name ?? "Unknown"
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         // Return the generated code
         return Ok(code);
