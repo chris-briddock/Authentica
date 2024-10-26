@@ -1,0 +1,3705 @@
+{
+  "source_base_path": "/home/runner/work/Authentica/Authentica",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "CODE_OF_CONDUCT.md",
+      "output": {
+        ".html": {
+          "relative_path": "CODE_OF_CONDUCT.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.RoleDefaults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.RoleDefaults.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.Admin.Roles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.Admin.Roles.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.Admin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.Admin.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.Applications.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.Applications.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.BaseRoute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.BaseRoute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.OAuth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.OAuth.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.Sessions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.Sessions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.Routes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.Routes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Constants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.DisableMultiFactorEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.DisableMultiFactorEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.ReadAllActivitiesEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.ReadAllActivitiesEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.ReadAllApplicationsEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.ReadAllApplicationsEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.ReadAllUsersEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.ReadAllUsersEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.RegisterAdminEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.RegisterAdminEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.ResetPasswordEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.ResetPasswordEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.Roles.AddToRoleEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.Roles.AddToRoleEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.Roles.CreateRoleEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.Roles.CreateRoleEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.Roles.DeleteRoleEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.Roles.DeleteRoleEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.Roles.ReadRolesEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.Roles.ReadRolesEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.Roles.UpdateRoleEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.Roles.UpdateRoleEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.Roles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.Roles.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Admin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Admin.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Applications.CreateApplicationEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Applications.CreateApplicationEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Applications.CreateApplicationSecretEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Applications.CreateApplicationSecretEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Applications.DeleteByNameApplicationEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Applications.DeleteByNameApplicationEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Applications.ReadApplicationsEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Applications.ReadApplicationsEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Applications.ReadByNameApplicationEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Applications.ReadByNameApplicationEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Applications.UpdateByNameApplicationEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Applications.UpdateByNameApplicationEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Applications.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Applications.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.DeleteSessionEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.DeleteSessionEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.OAuth.AuthorizeEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.OAuth.AuthorizeEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.OAuth.CreateDeviceCodeEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.OAuth.CreateDeviceCodeEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.OAuth.TokenEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.OAuth.TokenEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.OAuth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.OAuth.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.ReadSessionsEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.ReadSessionsEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.ConfirmEmailEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.ConfirmEmailEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.DeleteAccountEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.DeleteAccountEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.LoginEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.LoginEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.LogoutEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.LogoutEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.MultiFactorLoginEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.MultiFactorLoginEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.MultiFactorManageAuthenticatorEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.MultiFactorManageAuthenticatorEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.MultiFactorManageEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.MultiFactorManageEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.MultiFactorRecoveryCodeRedeemEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.MultiFactorRecoveryCodeRedeemEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.MultiFactorRecoveryCodesEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.MultiFactorRecoveryCodesEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.PasswordResetEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.PasswordResetEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.RegisterEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.RegisterEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.SendTokenEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.SendTokenEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.UpdateAddressEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.UpdateAddressEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.UpdateEmailEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.UpdateEmailEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.UpdatePhoneNumberEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.UpdatePhoneNumberEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Endpoints.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Endpoints.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Middlware.ErrorHandlingMiddleware.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Middlware.ErrorHandlingMiddleware.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Middlware.ExceptionMiddleware.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Middlware.ExceptionMiddleware.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Middlware.SessionMiddleware.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Middlware.SessionMiddleware.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Middlware.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Middlware.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.AddToRoleRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.AddToRoleRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.AdminPasswordResetRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.AdminPasswordResetRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.AuthorizeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.AuthorizeRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.ConfirmEmailRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.ConfirmEmailRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.CreateApplicationRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.CreateApplicationRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.CreateApplicationSecretRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.CreateApplicationSecretRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.CreateRoleRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.CreateRoleRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.DeleteApplicationByNameRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.DeleteApplicationByNameRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.DeleteRoleRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.DeleteRoleRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.DeleteSessionRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.DeleteSessionRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.DisableMultiFactorRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.DisableMultiFactorRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.LoginRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.LoginRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.MultiFactorLoginRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.MultiFactorLoginRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.MultiFactorManageAuthenticatorRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.MultiFactorManageAuthenticatorRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.MultiFactorManageRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.MultiFactorManageRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.MultiFactorRecoveryCodeRedeemRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.MultiFactorRecoveryCodeRedeemRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.PasswordResetRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.PasswordResetRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.ReadApplicationByNameRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.ReadApplicationByNameRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.RegisterRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.RegisterRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.SendTokenRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.SendTokenRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.TokenRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.TokenRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.UpdateAddressRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.UpdateAddressRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.UpdateApplicationByNameRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.UpdateApplicationByNameRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.UpdateEmailRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.UpdateEmailRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.UpdatePhoneNumberRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.UpdatePhoneNumberRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.UpdateRoleRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.UpdateRoleRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Requests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Requests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Responses.ActivityResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Responses.ActivityResponse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Responses.GetUserResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Responses.GetUserResponse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Responses.MultiFactorManageAuthenticatorResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Responses.MultiFactorManageAuthenticatorResponse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Responses.ReadApplicationResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Responses.ReadApplicationResponse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Responses.TokenResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Responses.TokenResponse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Api.Responses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Api.Responses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ActivityBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ActivityBase-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ActivityBase-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ActivityBase-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.AddToRoleActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.AddToRoleActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.AuthorizeActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.AuthorizeActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ConfirmEmailActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ConfirmEmailActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.CreateDeviceCodeActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.CreateDeviceCodeActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.CreateRoleActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.CreateRoleActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.CreatedApplicationActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.CreatedApplicationActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.CreatedApplicationSecretActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.CreatedApplicationSecretActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.DeleteAccountActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.DeleteAccountActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.DeleteApplicationActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.DeleteApplicationActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.DeleteRoleActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.DeleteRoleActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.DisableMultiFactorActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.DisableMultiFactorActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.LoginActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.LoginActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.LogoutActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.LogoutActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.MultiFactorLoginActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.MultiFactorLoginActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.MultiFactorManageActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.MultiFactorManageActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.MultiFactorRecoveryCodesActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.MultiFactorRecoveryCodesActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.MultiFactorRecoveryCodesRedeemActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.MultiFactorRecoveryCodesRedeemActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.PasswordResetActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.PasswordResetActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ReadAllActivitiesActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ReadAllActivitiesActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ReadAllApplicationsActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ReadAllApplicationsActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ReadAllUsersActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ReadAllUsersActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ReadApplicationByNameActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ReadApplicationByNameActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ReadApplicationsActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ReadApplicationsActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ReadRolesActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ReadRolesActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.RegisterActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.RegisterActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.RegisterAdminActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.RegisterAdminActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.ResetPasswordAdminActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.ResetPasswordAdminActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.SendTokenActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.SendTokenActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.TokenActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.TokenActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.UpdateAddressActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.UpdateAddressActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.UpdateApplicationByNameActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.UpdateApplicationByNameActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.UpdateEmailActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.UpdateEmailActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.UpdatePhoneNumberActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.UpdatePhoneNumberActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.UpdateRoleActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.UpdateRoleActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.Users.MultiFactorManageAuthenticatorActivity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.Users.MultiFactorManageAuthenticatorActivity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Activities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Activities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Attributes.SensitiveDataAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Attributes.SensitiveDataAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Attributes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Attributes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.BackgroundServices.AccountPurge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.BackgroundServices.AccountPurge.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.BackgroundServices.ApplicationPurge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.BackgroundServices.ApplicationPurge.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.BackgroundServices.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.BackgroundServices.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Constants.HasherDefaults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Constants.HasherDefaults.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Constants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IActivityReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IActivityReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IActivityWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IActivityWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IApplicationReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IApplicationReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IApplicationWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IApplicationWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IEmailPublisher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IEmailPublisher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IJsonWebTokenProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IJsonWebTokenProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IMultiFactorTotpProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IMultiFactorTotpProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IRandomStringProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IRandomStringProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IScopeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IScopeProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.ISecretHasher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.ISecretHasher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.ISessionReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.ISessionReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.ISessionWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.ISessionWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.ISharedStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.ISharedStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.ITimer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.ITimer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IUserReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IUserReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.IUserWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.IUserWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Contracts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Contracts.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Cryptography.Argon2PasswordHasher-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Cryptography.Argon2PasswordHasher-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Cryptography.Argon2SecretHasher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Cryptography.Argon2SecretHasher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Cryptography.Shared.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Cryptography.Shared.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Cryptography.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Cryptography.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.DTOs.ApplicationDto-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.DTOs.ApplicationDto-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.DTOs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.DTOs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Exceptions.PurgeFailureException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Exceptions.PurgeFailureException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Exceptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Exceptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Extensions.HealthCheckExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Extensions.HealthCheckExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Extensions.HttpContextExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Extensions.HttpContextExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Extensions.ServiceCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Extensions.ServiceCollectionExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Extensions.ValidationExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Extensions.ValidationExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Extensions.WebApplicationExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Extensions.WebApplicationExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Factories.IdentityErrorFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Factories.IdentityErrorFactory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Factories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Factories.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Mappers.ClientApplicationMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Mappers.ClientApplicationMapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Mappers.GetAllUsersMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Mappers.GetAllUsersMapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Mappers.ReadAllActivitiesMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Mappers.ReadAllActivitiesMapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Mappers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Mappers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Providers.JsonWebTokenProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Providers.JsonWebTokenProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Providers.MultiFactorTotpProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Providers.MultiFactorTotpProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Providers.RandomStringProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Providers.RandomStringProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Providers.ScopeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Providers.ScopeProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Providers.TimerProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Providers.TimerProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Providers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Providers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Publishers.EmailPublisher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Publishers.EmailPublisher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Publishers.NullEmailPublisher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Publishers.NullEmailPublisher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Publishers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Publishers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Redactors.ActivityDataRedactor.ReferenceEqualityComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Redactors.ActivityDataRedactor.ReferenceEqualityComparer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Redactors.ActivityDataRedactor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Redactors.ActivityDataRedactor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Redactors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Redactors.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Results.ApplicationStoreResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Results.ApplicationStoreResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Results.BaseResult-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Results.BaseResult-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Results.JwtResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Results.JwtResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Results.SessionStoreResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Results.SessionStoreResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Results.SharedStoreResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Results.SharedStoreResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Results.UserStoreResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Results.UserStoreResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Results.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Results.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.ActivityReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.ActivityReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.ActivityWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.ActivityWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.ApplicationReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.ApplicationReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.ApplicationWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.ApplicationWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.SessionReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.SessionReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.SessionWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.SessionWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.SharedStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.SharedStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.StoreBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.StoreBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.UserReadStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.UserReadStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.UserWriteStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.UserWriteStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Stores.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Stores.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.AddressValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.AddressValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.AuthorizeRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.AuthorizeRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.ConfirmEmailRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.ConfirmEmailRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.CreateApplicationRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.CreateApplicationRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.CreateApplicationSecretRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.CreateApplicationSecretRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.DeleteApplicationByNameRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.DeleteApplicationByNameRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.LoginRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.LoginRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.MultiFactorLoginRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.MultiFactorLoginRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.MultiFactorRecoveryCodeRedeemRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.MultiFactorRecoveryCodeRedeemRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.PasswordResetRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.PasswordResetRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.ReadApplicationByNameRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.ReadApplicationByNameRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.RegisterRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.RegisterRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.SendTokenRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.SendTokenRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.TokenRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.TokenRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.UpdateAddressRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.UpdateAddressRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.UpdateApplicationByNameRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.UpdateApplicationByNameRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.UpdateEmailRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.UpdateEmailRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.UpdatePhoneNumberRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.UpdatePhoneNumberRequestValidator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Validators.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Validators.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Common.EmailMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Common.EmailMessage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Common.EmailTokenConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Common.EmailTokenConstants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Common.FeatureFlagConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Common.FeatureFlagConstants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Common.ServiceCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Common.ServiceCollectionExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Common.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Persistence.Migrations.Initial.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Persistence.Migrations.Initial.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Persistence.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Persistence.Migrations.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Program.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.AccountPurgeBackgroundServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.AccountPurgeBackgroundServiceTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.AccountPurgeExposeProtected.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.AccountPurgeExposeProtected.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.ApplicationPurgeBackgroundServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.ApplicationPurgeBackgroundServiceTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.ApplicationPurgeExposeProtected.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.ApplicationPurgeExposeProtected.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.CustomWebApplicationFactory-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.CustomWebApplicationFactory-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.AddToRoleEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.AddToRoleEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.AdminResetPasswordEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.AdminResetPasswordEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.AuthorizeEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.AuthorizeEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ConfirmEmailEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ConfirmEmailEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateApplicationEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateApplicationEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateApplicationSecretEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateApplicationSecretEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateDeviceCodeEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateDeviceCodeEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateRoleEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.CreateRoleEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DeleteAccountEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DeleteAccountEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DeleteApplicationEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DeleteApplicationEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DeleteRoleEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DeleteRoleEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DisableMultiFactorEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.DisableMultiFactorEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.LoginEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.LoginEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.LogoutEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.LogoutEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorLoginEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorLoginEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorManageAuthenticatorEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorManageAuthenticatorEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorManageEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorManageEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorRecoveryCodesEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorRecoveryCodesEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorRecoveryCodesRedeemEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.MultiFactorRecoveryCodesRedeemEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadAllActivitiesEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadAllActivitiesEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadAllApplicationsEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadAllApplicationsEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadAllUsersEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadAllUsersEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadApplicationByNameEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadApplicationByNameEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadApplicationsEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadApplicationsEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadRolesEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ReadRolesEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.RegisterAdminEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.RegisterAdminEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.RegisterEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.RegisterEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ResetPasswordEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.ResetPasswordEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.SendTokenEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.SendTokenEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.TokenEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.TokenEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateAddressEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateAddressEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateApplicationByNameEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateApplicationByNameEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateEmailEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateEmailEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdatePhoneNumberEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdatePhoneNumberEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateRoleEndpointTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.UpdateRoleEndpointTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.Endpoints.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.TestFixture-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.TestFixture-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.IntegrationTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ApplicationReadStoreMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ApplicationReadStoreMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ApplicationWriteStoreMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ApplicationWriteStoreMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.BusMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.BusMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ClaimsPrincipalMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ClaimsPrincipalMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.DbContextMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.DbContextMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.DbSetMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.DbSetMock-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.EmailPublisherMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.EmailPublisherMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.FeatureManagerMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.FeatureManagerMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.HttpContextMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.HttpContextMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.IHttpContextAccessorMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.IHttpContextAccessorMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.IMockBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.IMockBase-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.JsonWebTokenProviderMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.JsonWebTokenProviderMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.JwtSecurityTokenHandlerMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.JwtSecurityTokenHandlerMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.LoggerMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.LoggerMock-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.RoleManagerMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.RoleManagerMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ServiceProviderMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.ServiceProviderMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.SignInManagerMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.SignInManagerMock-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.TimerMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.TimerMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.UserManagerMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.UserManagerMock-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.UserReadStoreMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.UserReadStoreMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.UserWriteStoreMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.UserWriteStoreMock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.Mocks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.Mocks.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.ApplicationWriteStoreTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.ApplicationWriteStoreTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.EmailPublisherTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.EmailPublisherTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.JsonWebTokenProviderTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.JsonWebTokenProviderTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.MultiFactorTotpProviderTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.MultiFactorTotpProviderTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.ScopeProviderTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.ScopeProviderTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.SessionWriteStoreTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.SessionWriteStoreTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.UserReadStoreTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.UserReadStoreTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.UserWriteStoreTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.UserWriteStoreTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.Tests.UnitTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.Service.Identity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.Service.Identity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.TestClient.Controllers.TestController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.TestClient.Controllers.TestController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.TestClient.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.TestClient.Controllers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.TestClient.Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.TestClient.Program.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.TestClient.ServiceCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.TestClient.ServiceCollectionExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.TestClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.TestClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.ISmtpClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.ISmtpClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.Program.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.ServiceNameDefaults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.ServiceNameDefaults.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.SmtpClientWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.SmtpClientWrapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.Tests.WorkerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.Tests.WorkerTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.Tests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.Tests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.Worker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.Worker.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Authentica.WorkerService.Email.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Authentica.WorkerService.Email.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.Activity-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.Activity-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.Activity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.Activity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.ClientApplication-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.ClientApplication-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.ClientApplication.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.ClientApplication.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.Role.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.RoleClaim.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.RoleClaim.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.Session.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.Session.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.User.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.User.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.UserClaim.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.UserClaim.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.UserClientApplication-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.UserClientApplication-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.UserClientApplication.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.UserClientApplication.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.UserRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.UserRole.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Aggregates.Identity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Aggregates.Identity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Constants.CorsDefaults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Constants.CorsDefaults.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Constants.ServiceNameDefaults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Constants.ServiceNameDefaults.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Constants.SessionConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Constants.SessionConstants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Constants.SessionStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Constants.SessionStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Constants.TokenConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Constants.TokenConstants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Constants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Contracts.IEntityDeletionStatus-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Contracts.IEntityDeletionStatus-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Contracts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Contracts.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Errors.CustomProblemDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Errors.CustomProblemDetails.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Errors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Errors.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.ValueObjects.Address.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.ValueObjects.Address.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.ValueObjects.EntityCreationStatus-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.ValueObjects.EntityCreationStatus-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.ValueObjects.EntityDeletionStatus-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.ValueObjects.EntityDeletionStatus-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.ValueObjects.EntityModificationStatus-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.ValueObjects.EntityModificationStatus-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.ValueObjects.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.ValueObjects.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.ActivityConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.ActivityConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.ClientApplicationConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.ClientApplicationConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.RoleClaimConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.RoleClaimConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.RoleConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.RoleConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.SessionConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.SessionConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.UserClaimConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.UserClaimConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.UserClientApplicationConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.UserClientApplicationConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.UserConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.UserConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.UserLoginConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.UserLoginConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.UserRoleConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.UserRoleConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.UserTokenConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.UserTokenConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Configurations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Configurations.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Contexts.AppDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Contexts.AppDbContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Contexts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Contexts.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Seed.Seed.Test.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Seed.Seed.Test.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Seed.Seed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Seed.Seed.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Persistence.Seed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Persistence.Seed.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "api/toc.json"
+        },
+        ".html": {
+          "relative_path": "api/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "toc.json"
+        },
+        ".html": {
+          "relative_path": "toc.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

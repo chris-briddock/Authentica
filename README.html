@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Authentica | Authentica </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Authentica | Authentica ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/chris-briddock/Authentica/blob/main/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="Authentica">
+            Authentica
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="authentica">Authentica</h1>
+
+<p>Secure your app with Authentica, featuring OAuth 2.0 authorization code grant, client credentials grant, device code grant, refresh token grant.</p>
+<p><a href="https://chris-briddock.github.io/Authentica/api/Api.Constants.html">Technical Documentation</a></p>
+<p><img src="https://img.shields.io/azure-devops/build/Authentica/c98bacd5-0436-4667-a21d-828fb19fb305/1" alt="Azure DevOps build">
+<img src="https://img.shields.io/azure-devops/coverage/Authentica/Authentica/1" alt="Azure DevOps Code Coverage"></p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#planned-improvements">Planned Improvements</a></li>
+<li><a href="#user-functionality">User Functionality</a></li>
+<li><a href="#technical-functionality">Technical Functionality</a></li>
+<li><a href="#endpoints">Endpoints</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h3 id="introduction">Introduction</h3>
+<p>Authentica plays a crucial role in your application's security infrastructure, providing essential features for user authentication, authorization, and identity management. This README provides an overview of the service, available endpoints, and instructions on getting started.</p>
+<h3 id="planned-improvements">Planned Improvements</h3>
+<ul>
+<li><strong>Multiple Tenants</strong></li>
+<li><strong>Passkeys Support (FIDO2, Fingerprint, FaceID)</strong></li>
+<li><strong>External OAuth2.0 Logins (Microsoft, Google)</strong></li>
+</ul>
+<h3 id="user-functionality">User Functionality</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application Authorization</strong></td>
+<td>Secure access to applications using OAuth 2.0.</td>
+</tr>
+<tr>
+<td><strong>Create Application</strong></td>
+<td>Register new applications within the system.</td>
+</tr>
+<tr>
+<td><strong>Delete Application</strong></td>
+<td>Remove applications from the system.</td>
+</tr>
+<tr>
+<td><strong>Read All Applications</strong></td>
+<td>Retrieve a list of all applications associated with your user account.</td>
+</tr>
+<tr>
+<td><strong>Read Application by Name</strong></td>
+<td>Fetch details of a specific application by its name.</td>
+</tr>
+<tr>
+<td><strong>Update Application Details</strong></td>
+<td>Modify the properties and settings of an existing application.</td>
+</tr>
+<tr>
+<td><strong>Confirm Email</strong></td>
+<td>Verify and confirm your email address.</td>
+</tr>
+<tr>
+<td><strong>Delete Account</strong></td>
+<td>Permanently remove your user account from the system.</td>
+</tr>
+<tr>
+<td><strong>Logout</strong></td>
+<td>Sign out from the application.</td>
+</tr>
+<tr>
+<td><strong>Refresh Bearer Token</strong></td>
+<td>Obtain a new bearer token to maintain authenticated sessions.</td>
+</tr>
+<tr>
+<td><strong>Register</strong></td>
+<td>Create a new user account.</td>
+</tr>
+<tr>
+<td><strong>Update Password</strong></td>
+<td>Change your account password.</td>
+</tr>
+<tr>
+<td><strong>Reset Password</strong></td>
+<td>Initiate a password reset process.</td>
+</tr>
+<tr>
+<td><strong>Update Email Address</strong></td>
+<td>Modify the email address associated with your account.</td>
+</tr>
+<tr>
+<td><strong>Two-Step Verification</strong></td>
+<td>Enable or manage two-step authentication for enhanced security.</td>
+</tr>
+<tr>
+<td><strong>Two-Factor Recovery Codes</strong></td>
+<td>Generate and manage recovery codes for two-factor authentication.</td>
+</tr>
+<tr>
+<td><strong>Account Lockout</strong></td>
+<td>Temporary lockout of the account after 3 failed login attempts for 10 minutes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="technical-functionality">Technical Functionality</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RabbitMQ and Azure Service Bus Support</strong></td>
+<td>Integration with RabbitMQ and Azure Service Bus for messaging.</td>
+</tr>
+<tr>
+<td><strong>API Health Checks</strong></td>
+<td>Regular health checks to monitor the API's status.</td>
+</tr>
+<tr>
+<td><strong>Secure JWT Bearer Authentication</strong></td>
+<td>Implementation of secure JWT bearer tokens for authentication.</td>
+</tr>
+<tr>
+<td><strong>Optional Azure Application Insights Support</strong></td>
+<td>Optional monitoring and diagnostics using Azure Application Insights.</td>
+</tr>
+<tr>
+<td><strong>Logging, Tracing, and Metrics</strong></td>
+<td>Advanced logging, tracing, and metrics with .NET Aspire.</td>
+</tr>
+<tr>
+<td><strong>Resilient SQL Server Connections</strong></td>
+<td>Reliable connections to Microsoft SQL Server using Entity Framework Core.</td>
+</tr>
+<tr>
+<td><strong>Hashed User Passwords</strong></td>
+<td>Protection of user passwords through irreversable hashing, using Argon2.</td>
+</tr>
+<tr>
+<td><strong>Hashed Application Secrets</strong></td>
+<td>Protection of application secrets through irreversable hashing, using Argon2.</td>
+</tr>
+<tr>
+<td><strong>HTTP/3 Support</strong></td>
+<td>Utilizes HTTP/3 protocol with fallback to HTTP/2 and HTTP/1 1.</td>
+</tr>
+<tr>
+<td><strong>Soft deletable entries</strong></td>
+<td>Utilizes soft deletions to ensure no data is permenantly lost.</td>
+</tr>
+<tr>
+<td><strong>Auditable Entries</strong></td>
+<td>To enable auditable entries, I have used CreatedBy, CreatedOn, ModifiedOn, and ModifiedBy columns. These columns help track who created and modified each record and when the changes occurred, ensuring comprehensive audit trails for data changes.</td>
+</tr>
+<tr>
+<td><strong>Data purge after 7 years, if soft deleted</strong></td>
+<td>Data purges happen once an entry is over 7 years old. These are implemented as Background Services and run on a seperate thread, using a Periodic Timer.</td>
+</tr>
+<tr>
+<td><strong>Temporal tables</strong></td>
+<td>When an entry in a table changes, we can tell when that changed, but also have a record of what changed, through these system versioned history tables</td>
+</tr>
+<tr>
+<td><strong>Worker Services</strong></td>
+<td>Utilizes loosley coupled worker services so this is independently scalable from the main service</td>
+</tr>
+<tr>
+<td><strong>Security Features</strong></td>
+<td>Implementations of security features such as concurrency stamps, security stamps, last logged in IP address, and last logged in date/time ensure security by providing mechanisms to detect and prevent unauthorized access, track user activity, and maintain data integrity.</td>
+</tr>
+<tr>
+<td><strong>Activity Logging</strong></td>
+<td>Utilized Activities to log every user action, ensuring the system state is rebuildable and replayable. Collected information includes the action taken, the request payload, and the timestamp. By implementing session middleware that generates a GUID as a Sequence ID, it is possible to track all actions a user takes within their session.</td>
+</tr>
+<tr>
+<td><strong>Integration Testing</strong></td>
+<td>Utilized NUnit and Moq for integration testing to ensure system behavior is as expected by testing the interaction between various components in a production-like environment. This approach helps in identifying issues that may not be apparent in unit tests and ensures that the system works correctly as a whole.</td>
+</tr>
+<tr>
+<td><strong>Unit Testing</strong></td>
+<td>Utilized NUnit and Moq for unit testing to ensure individual components function correctly by isolating each part of the code and testing it independently. This approach helps in identifying bugs early in the development process, verifying logic, and ensuring code reliability and maintainability.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="endpoints">Endpoints</h3>
+<ul>
+<li><strong>/oauth2/authorize</strong>: GET Endpoint for user authorization.</li>
+<li><strong>/oauth2/token</strong>: POST Endpoint for obtaining OAuth tokens.</li>
+<li><strong>/oauth2/device</strong>: GET Endpoint for creating a token to be used on your Smart TV, Smart Fridge and other Smart devices that lack a keyboard and mouse.</li>
+<li><strong>/users/logout</strong>: POST Endpoint for user logout.</li>
+<li><strong>/users/login</strong>: POST Endpoint for user login.</li>
+<li><strong>/users</strong>: GET Endpoint for reading a user by email.</li>
+<li><strong>/users/register</strong>: POST Endpoint for user registration.</li>
+<li><strong>/users/delete</strong>: POST Endpoint for deleting a user by email.</li>
+<li><strong>/users/confirm-email</strong>: POST Endpoint for confirming user email.</li>
+<li><strong>/users/reset-password</strong>: POST Endpoint for resetting user passwords.</li>
+<li><strong>/users/2fa/login</strong>: POST Endpoint for logging in with two-factor authentication.</li>
+<li><strong>/users/2fa/manage</strong>: POST Endpoint for enabling/disabling two-factor authentication settings</li>
+<li><strong>/users/2fa/manage/authenticator</strong>: POST Endpoint for enabling/disabling two factor via an authenticator app.</li>
+<li><strong>/users/2fa/recovery/codes</strong>: GET Endpoint for generating two-factor recovery codes.</li>
+<li><strong>/users/2fa/recovery</strong>: POST Endpoint for redeeming two-factor recovery codes.</li>
+<li><strong>/users/details/email</strong>: PUT Endpoint for updating a user's email.</li>
+<li><strong>/users/details/number</strong>: PUT Endpoint for updating a user's phone number.</li>
+<li><strong>/users/details/address</strong>: PUT Endpoint for updating a user's address.</li>
+<li><strong>/users/tokens</strong>: POST Endpoint for managing user tokens.</li>
+<li><strong>/applications</strong>: GET Endpoint for reading an application by name.</li>
+<li><strong>/applications/all</strong>: GET Endpoint for reading all applications.</li>
+<li><strong>/applications</strong>: POST Endpoint for creating a new application.</li>
+<li><strong>/applications</strong>: PUT Endpoint for updating an application by name.</li>
+<li><strong>/applications</strong>: DELETE Endpoint for deleting an application by name.</li>
+<li><strong>/applications/secrets</strong>: PUT Endpoint for managing application secrets.</li>
+</ul>
+<h3 id="getting-started">Getting Started</h3>
+<p>To get started with Authentica, follow these steps:</p>
+<ol>
+<li>Clone the repository: <code>git clone https://github.com/chris-briddock/Authentica.git</code></li>
+<li>Open the solution.</li>
+<li>Ensure you have added migrations for the project with Entity Framework Core.</li>
+<li>Replace all required values in appsettings.development.json. SQL Server, Redis and RabbitMQ will be configured already.</li>
+<li>Using the docker compose file, will start a local SQL Server container, RabbitMQ, Redis and a .NET Aspire Standalone Dashboard.</li>
+<li>Start hacking, enjoy!</li>
+</ol>
+<h3 id="license">License</h3>
+<p>This project is licensed under the MIT License.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/chris-briddock/Authentica/blob/main/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

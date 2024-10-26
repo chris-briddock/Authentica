@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Interface IApplicationWriteStore | Authentica </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Interface IApplicationWriteStore | Authentica ">
+      
+      <meta name="description" content="Defines a contract which handles operations related to creating new client applications and updating existing client applications.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/chris-briddock/Authentica/new/main/apiSpec/new?filename=Application_Contracts_IApplicationWriteStore.md&amp;value=---%0Auid%3A%20Application.Contracts.IApplicationWriteStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Authentica">
+            Authentica
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Application.Contracts.IApplicationWriteStore">
+
+
+
+  <h1 id="Application_Contracts_IApplicationWriteStore" data-uid="Application.Contracts.IApplicationWriteStore" class="text-break">
+Interface IApplicationWriteStore  <a class="header-action link-secondary" title="View source" href="https://github.com/chris-briddock/Authentica/blob/main/src/Authentica.Service.Identity/Application/Contracts/IApplicationWriteStore.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Application.html">Application</a>.<a class="xref" href="Application.Contracts.html">Contracts</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Authentica.Service.Identity.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Defines a contract which handles operations related to creating new client applications
+and updating existing client applications.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IApplicationWriteStore</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Application_Contracts_IApplicationWriteStore_CreateClientApplicationAsync_" data-uid="Application.Contracts.IApplicationWriteStore.CreateClientApplicationAsync*"></a>
+
+  <h3 id="Application_Contracts_IApplicationWriteStore_CreateClientApplicationAsync_Application_DTOs_ApplicationDto_Api_Requests_CreateApplicationRequest__System_Threading_CancellationToken_" data-uid="Application.Contracts.IApplicationWriteStore.CreateClientApplicationAsync(Application.DTOs.ApplicationDto{Api.Requests.CreateApplicationRequest},System.Threading.CancellationToken)">
+  CreateClientApplicationAsync(ApplicationDto&lt;CreateApplicationRequest&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/chris-briddock/Authentica/blob/main/src/Authentica.Service.Identity/Application/Contracts/IApplicationWriteStore.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously adds a new client application to the system based on the provided data transfer object (DTO).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ApplicationStoreResult&gt; CreateClientApplicationAsync(ApplicationDto&lt;CreateApplicationRequest&gt; dto, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dto</code> <a class="xref" href="Application.DTOs.ApplicationDto-1.html">ApplicationDto</a>&lt;<a class="xref" href="Api.Requests.CreateApplicationRequest.html">CreateApplicationRequest</a>&gt;</dt>
+    <dd><p>The data transfer object containing the details of the client application to be created.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>A token that can be used to cancel the asynchronous operation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Application.Results.ApplicationStoreResult.html">ApplicationStoreResult</a>&gt;</dt>
+    <dd><p>A task that represents the asynchronous operation. The task result contains an <a class="xref" href="Application.Results.ApplicationStoreResult.html">ApplicationStoreResult</a> which indicates the success or failure of the operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">dto</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown when an error occurs during the process of adding the client application.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Application_Contracts_IApplicationWriteStore_SoftDeleteApplicationAsync_" data-uid="Application.Contracts.IApplicationWriteStore.SoftDeleteApplicationAsync*"></a>
+
+  <h3 id="Application_Contracts_IApplicationWriteStore_SoftDeleteApplicationAsync_Application_DTOs_ApplicationDto_Api_Requests_DeleteApplicationByNameRequest__System_Threading_CancellationToken_" data-uid="Application.Contracts.IApplicationWriteStore.SoftDeleteApplicationAsync(Application.DTOs.ApplicationDto{Api.Requests.DeleteApplicationByNameRequest},System.Threading.CancellationToken)">
+  SoftDeleteApplicationAsync(ApplicationDto&lt;DeleteApplicationByNameRequest&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/chris-briddock/Authentica/blob/main/src/Authentica.Service.Identity/Application/Contracts/IApplicationWriteStore.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Soft deletes an existing client application based on the provided application name.
+The deletion is marked with the current user and timestamp.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ApplicationStoreResult&gt; SoftDeleteApplicationAsync(ApplicationDto&lt;DeleteApplicationByNameRequest&gt; dto, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dto</code> <a class="xref" href="Application.DTOs.ApplicationDto-1.html">ApplicationDto</a>&lt;<a class="xref" href="Api.Requests.DeleteApplicationByNameRequest.html">DeleteApplicationByNameRequest</a>&gt;</dt>
+    <dd><p>A dto which encapsulates the request and its related objects to this operation.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>A token that can be used to cancel the asynchronous operation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Application.Results.ApplicationStoreResult.html">ApplicationStoreResult</a>&gt;</dt>
+    <dd><p>A task that represents the asynchronous operation. The task result contains an <a class="xref" href="Application.Results.ApplicationStoreResult.html">ApplicationStoreResult</a> which indicates the success or failure of the operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">dto</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown when an error occurs during the process of soft deleting the client application.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Application_Contracts_IApplicationWriteStore_UpdateApplicationAsync_" data-uid="Application.Contracts.IApplicationWriteStore.UpdateApplicationAsync*"></a>
+
+  <h3 id="Application_Contracts_IApplicationWriteStore_UpdateApplicationAsync_Application_DTOs_ApplicationDto_Api_Requests_UpdateApplicationByNameRequest__System_Threading_CancellationToken_" data-uid="Application.Contracts.IApplicationWriteStore.UpdateApplicationAsync(Application.DTOs.ApplicationDto{Api.Requests.UpdateApplicationByNameRequest},System.Threading.CancellationToken)">
+  UpdateApplicationAsync(ApplicationDto&lt;UpdateApplicationByNameRequest&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/chris-briddock/Authentica/blob/main/src/Authentica.Service.Identity/Application/Contracts/IApplicationWriteStore.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously updates an existing client application in the system based on the provided data transfer object (DTO).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ApplicationStoreResult&gt; UpdateApplicationAsync(ApplicationDto&lt;UpdateApplicationByNameRequest&gt; dto, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dto</code> <a class="xref" href="Application.DTOs.ApplicationDto-1.html">ApplicationDto</a>&lt;<a class="xref" href="Api.Requests.UpdateApplicationByNameRequest.html">UpdateApplicationByNameRequest</a>&gt;</dt>
+    <dd><p>The data transfer object containing the updated details of the client application.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>A token that can be used to cancel the asynchronous operation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Application.Results.ApplicationStoreResult.html">ApplicationStoreResult</a>&gt;</dt>
+    <dd><p>A task that represents the asynchronous operation. The task result contains an <a class="xref" href="Application.Results.ApplicationStoreResult.html">ApplicationStoreResult</a> which indicates the success or failure of the operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">dto</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown when an error occurs during the process of updating the client application.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Application_Contracts_IApplicationWriteStore_UpdateClientSecretAsync_" data-uid="Application.Contracts.IApplicationWriteStore.UpdateClientSecretAsync*"></a>
+
+  <h3 id="Application_Contracts_IApplicationWriteStore_UpdateClientSecretAsync_Application_DTOs_ApplicationDto_Api_Requests_CreateApplicationSecretRequest__System_Threading_CancellationToken_" data-uid="Application.Contracts.IApplicationWriteStore.UpdateClientSecretAsync(Application.DTOs.ApplicationDto{Api.Requests.CreateApplicationSecretRequest},System.Threading.CancellationToken)">
+  UpdateClientSecretAsync(ApplicationDto&lt;CreateApplicationSecretRequest&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/chris-briddock/Authentica/blob/main/src/Authentica.Service.Identity/Application/Contracts/IApplicationWriteStore.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a new client secret and updates the client application with the hashed secret.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ApplicationStoreResult&gt; UpdateClientSecretAsync(ApplicationDto&lt;CreateApplicationSecretRequest&gt; dto, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dto</code> <a class="xref" href="Application.DTOs.ApplicationDto-1.html">ApplicationDto</a>&lt;<a class="xref" href="Api.Requests.CreateApplicationSecretRequest.html">CreateApplicationSecretRequest</a>&gt;</dt>
+    <dd><p>The ID of the client application to update.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>A token to cancel the operation if needed. The default value is <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken.none">None</a>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Application.Results.ApplicationStoreResult.html">ApplicationStoreResult</a>&gt;</dt>
+    <dd><p>A task that represents the asynchronous operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown if <code class="paramref">dto</code> is <code>null</code> or empty.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/chris-briddock/Authentica/blob/main/src/Authentica.Service.Identity/Application/Contracts/IApplicationWriteStore.cs/#L11" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
