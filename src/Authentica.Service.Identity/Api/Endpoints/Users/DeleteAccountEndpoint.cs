@@ -17,7 +17,7 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
                                             .WithActionResult
 {
     /// <summary>
-    /// The application's service provider.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

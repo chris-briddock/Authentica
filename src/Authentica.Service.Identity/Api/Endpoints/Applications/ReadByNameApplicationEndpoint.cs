@@ -20,8 +20,8 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
                                                     .WithRequest<ReadApplicationByNameRequest>
                                                     .WithActionResult
 {
-    /// <summary>
-    /// Provides access to application services.
+     /// <summary>
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

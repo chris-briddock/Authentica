@@ -23,7 +23,7 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
     }
 
     [Test]
-    public async Task MultiFactoryRecoveryReedem_Returns200OK_WhenRedeemIsSuccessful()
+    public async Task MultiFactorRecoveryReedem_Returns200OK_WhenRedeemIsSuccessful()
     {
         var userWriteStore = new UserWriteStoreMock();
         userWriteStore.Setup(x => x.RedeemMultiFactorRecoveryCodeAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Success());
@@ -47,7 +47,7 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
     }
 
     [Test]
-    public async Task MultiFactoryRecoveryReedem_Returns400BadRequest_WhenRedeemIsUnsuccessful()
+    public async Task MultiFactorRecoveryReedem_Returns400BadRequest_WhenRedeemIsUnsuccessful()
     {
         var userWriteStore = new UserWriteStoreMock();
         userWriteStore.Setup(x => x.RedeemMultiFactorRecoveryCodeAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Failed());

@@ -24,7 +24,7 @@ public sealed class CreateDeviceCodeEndpoint : EndpointBaseAsync
                                                .WithActionResult
 {
     /// <summary>
-    /// Provides access to application services.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

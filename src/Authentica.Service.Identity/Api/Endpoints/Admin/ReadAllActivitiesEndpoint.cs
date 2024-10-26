@@ -7,8 +7,8 @@ using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Contexts;
+using Domain.Aggregates.Identity;
+using System.Collections.Immutable;
 
 namespace Api.Endpoints.Admin;
 
@@ -44,19 +44,19 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     public override async Task<ActionResult<IList<ActivityResponse>>> HandleAsync(CancellationToken cancellationToken = default)
     {
-        var dbContext = Services.GetRequiredService<AppDbContext>();
-        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var readStore = Services.GetRequiredService<IActivityReadStore>();
+        var writeStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var activities = await dbContext.Activities.ToListAsync(cancellationToken);
+        ImmutableList<Activity> activities = readStore.GetActivities();
 
-        var responses = new ReadAllActivitiesMapper().ToResponse(activities);
+        ImmutableList<ActivityResponse> responses = new ReadAllActivitiesMapper().ToResponse(activities);
         
         ReadAllActivitiesActivity activity = new()
         {
             Email = User.Identity?.Name ?? "Unknown"
         };
 
-        await activityStore.SaveActivityAsync(activity);
+        await writeStore.SaveActivityAsync(activity);
 
         return Ok(responses);
     }

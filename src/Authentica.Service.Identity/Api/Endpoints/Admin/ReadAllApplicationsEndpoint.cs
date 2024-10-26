@@ -51,10 +51,11 @@ public class ReadAllApplicationsEndpoint : EndpointBaseAsync
         IList<ClientApplication> apps = await dbContext.ClientApplications.ToListAsync(cancellationToken);
 
         IList<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
+        IList<ReadApplicationResponse> redacted = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
 
         ReadAllApplicationsActivity activity = new()
         {
-            Payload = responses
+            Payload = redacted
         };
 
         await activityStore.SaveActivityAsync(activity);

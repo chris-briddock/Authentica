@@ -13,6 +13,22 @@ namespace Application.Providers;
 /// </summary>
 public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
 {
+
+    /// <summary>
+    /// Gets the <see cref="JwtSecurityTokenHandler"/> instance used for creating and validating JWT tokens.
+    /// </summary>
+    private JwtSecurityTokenHandler TokenHandler { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JsonWebTokenProvider"/> class with a specified 
+    /// <see cref="JwtSecurityTokenHandler"/> for handling JWT operations.
+    /// </summary>
+    /// <param name="tokenHandler">The token handler used for generating and validating JWT tokens.</param>
+    public JsonWebTokenProvider(JwtSecurityTokenHandler tokenHandler)
+    {
+        TokenHandler = tokenHandler;
+    }
+
     /// <inheritdoc/>
     public async Task<JwtResult> TryCreateTokenAsync(string email,
                                                      string jwtSecret,
@@ -26,8 +42,6 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
         JwtResult result = new();
         try
         {
-
-            var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(jwtSecret);
             var expiryMinutesToAdd = expires;
 
@@ -65,14 +79,14 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
 
             JwtSecurityToken tokenDescriptor = new(header, payload);
             result.Success = true;
-            result.Token = tokenHandler.WriteToken(tokenDescriptor);
+            result.Token = TokenHandler.WriteToken(tokenDescriptor);
         }
         catch (Exception ex)
         {
             result.Error = ex.Message;
             result.Success = false;
         }
-
+        
         return await Task.FromResult(result);
     }
 
@@ -85,7 +99,6 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
         JwtResult result = new();
         try
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(jwtSecret);
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -99,7 +112,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                 ClockSkew = TimeSpan.Zero
             };
 
-            TokenValidationResult validationResult = await tokenHandler.ValidateTokenAsync(token, tokenValidationParameters);
+            TokenValidationResult validationResult = await TokenHandler.ValidateTokenAsync(token, tokenValidationParameters);
 
 
             // If the validation succeeds, the JWT is both well-formed and has a valid signature.
@@ -108,15 +121,15 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
                 result.Success = true;
                 result.Token = token;
             }
-
-            return result;
         }
         catch (SecurityTokenException ex)
         {
             result.Error = ex.Message;
             result.Success = false;
-            throw;
+            
         }
+        
+        return await Task.FromResult(result);
     }
     /// <inheritdoc/>
     public async Task<JwtResult> TryCreateRefreshTokenAsync(string email,

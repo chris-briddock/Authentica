@@ -19,7 +19,7 @@ public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
                                                      .WithActionResult
 {
     /// <summary>
-    /// The application service provider.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

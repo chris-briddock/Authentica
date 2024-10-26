@@ -15,5 +15,5 @@ public partial class GetAllUsersMapper
     /// </summary>
     /// <param name="Users">The list of users to convert.</param>
     /// <returns>A list of <see cref="GetUserResponse"/> objects representing the users.</returns>
-    public partial List<GetUserResponse> ToResponse(List<User> Users);
+    public partial List<GetUserResponse> ToResponse(IList<User> Users);
 }

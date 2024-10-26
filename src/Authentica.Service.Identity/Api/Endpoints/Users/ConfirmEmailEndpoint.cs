@@ -16,7 +16,9 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
                                            .WithRequest<ConfirmEmailRequest>
                                            .WithActionResult
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Gets the service provider used to resolve dependencies.
+    /// </summary>
     private IServiceProvider Services { get; }
 
     /// <summary>
@@ -46,7 +48,7 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
 
         var userResult = await readStore.GetUserByEmailAsync(request.Email);
 
-        // NOTE: This code should have been emailed to the user.
+        // NOTE: This code should have been emailed to the user. 
 
         var result = await writeStore.ConfirmEmailAsync(userResult.User, request.Token);
 

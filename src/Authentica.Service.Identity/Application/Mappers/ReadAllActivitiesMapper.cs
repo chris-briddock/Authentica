@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Api.Responses;
 using Domain.Aggregates.Identity;
 using Riok.Mapperly.Abstractions;
@@ -15,5 +16,5 @@ public partial class ReadAllActivitiesMapper
     /// </summary>
     /// <param name="activities">The list of activity domain models to be mapped.</param>
     /// <returns>A list of activity response models.</returns>
-    public partial List<ActivityResponse> ToResponse(List<Activity> activities);
+    public partial ImmutableList<ActivityResponse> ToResponse(ImmutableList<Activity> activities);
 }

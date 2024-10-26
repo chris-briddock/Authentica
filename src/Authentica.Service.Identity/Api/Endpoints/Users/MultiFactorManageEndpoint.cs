@@ -20,7 +20,7 @@ public sealed class MultiFactorManageEndpoint : EndpointBaseAsync
                                                 .WithActionResult
 {
     /// <summary>
-    /// Gets the service provider.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

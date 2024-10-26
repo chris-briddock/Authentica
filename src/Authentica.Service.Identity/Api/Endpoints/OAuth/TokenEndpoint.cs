@@ -1,6 +1,7 @@
 using Api.Constants;
 using Api.Requests;
 using Api.Responses;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using ChristopherBriddock.AspNetCore.Extensions;
@@ -23,7 +24,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 {
 
     /// <summary>
-    /// Provides access to application services.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 
@@ -61,6 +62,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var scopeProvider = Services.GetRequiredService<IScopeProvider>();
+        var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         string issuer = configuration.GetRequiredValueOrThrow("Jwt:Issuer");
         string secret = configuration.GetRequiredValueOrThrow("Jwt:Secret");
@@ -90,20 +92,25 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         if (!User.Identity!.IsAuthenticated)
         {
-            roles = await userReadStore.GetUserRolesAsync(userReadResult.User.Email!);
-            subject = userReadResult.User.Email!;
-            email = userReadResult.User.Email!;
+            var userEmail = userReadResult.User.Email!;
+            roles = await userReadStore.GetUserRolesAsync(userEmail);
+            subject = userEmail;
+            email = userEmail;
         }
         else 
         {
-            roles = await userReadStore.GetUserRolesAsync(User.Identity.Name!);
-            subject = User.Identity.Name!;
-            email = User.Identity.Name!;
+            var userEmail = User.Identity.Name!;
+            roles = await userReadStore.GetUserRolesAsync(userEmail);
+            subject = userEmail;
+            email = userEmail;
         }
 
         if (request.GrantType == TokenConstants.DeviceCode)
         {
-            var result = await userManager.VerifyUserTokenAsync(userReadResult.User, TokenOptions.DefaultEmailProvider, TokenConstants.DeviceCode, request.DeviceCode!);
+            var result = await userManager.VerifyUserTokenAsync(userReadResult.User,
+                                                                TokenOptions.DefaultEmailProvider,
+                                                                TokenConstants.DeviceCode,
+                                                                request.DeviceCode!);
 
             if (!result)
                 return Unauthorized();
@@ -152,6 +159,13 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             TokenType = "Bearer",
             Expires = expires.ToString()
         };
+
+        TokenActivity activity = new()
+        {
+            Request = request
+        };
+
+        await activityStore.SaveActivityAsync(activity);
 
         return Ok(response);
     }

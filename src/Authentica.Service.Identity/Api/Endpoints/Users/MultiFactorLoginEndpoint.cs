@@ -19,8 +19,8 @@ public sealed class MultiFactorLoginEndpoint : EndpointBaseAsync
                                                .WithRequest<MultiFactorLoginRequest>
                                                .WithActionResult
 {
-    /// <summary>
-    /// Gets the service provider for dependency injection.
+     /// <summary>
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

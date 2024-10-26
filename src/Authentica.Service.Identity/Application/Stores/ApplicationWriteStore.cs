@@ -49,9 +49,6 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
         {
             var user = (await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken)).User;
 
-            if (user is null)
-                return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
-
             var application = new ClientApplication
             {
                 Id = Guid.NewGuid().ToString(),
@@ -161,7 +158,8 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             application.EntityDeletionStatus.DeletedBy = userReadResult.User.Id;
 
             // Execute the SQL command to update the application
-            DbContext.ClientApplications.Update(application);
+            var dbSet = DbContext.Set<ClientApplication>();
+            dbSet.Update(application);
             await DbContext.SaveChangesAsync(cancellationToken);
 
             // Return success result

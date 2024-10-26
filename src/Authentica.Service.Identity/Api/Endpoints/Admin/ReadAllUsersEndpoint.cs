@@ -7,8 +7,7 @@ using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Contexts;
+using Domain.Aggregates.Identity;
 
 namespace Api.Endpoints.Admin;
 
@@ -21,7 +20,7 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
                                            .WithActionResult<IList<GetUserResponse>>
 {
     /// <summary>
-    /// Provides access to application services.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 
@@ -43,10 +42,10 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status200OK)]
     public override async Task<ActionResult<IList<GetUserResponse>>> HandleAsync(CancellationToken cancellationToken = default)
     {
-        var dbContext = Services.GetRequiredService<AppDbContext>();
+        var readStore = Services.GetRequiredService<IUserReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var query = await dbContext.Users.ToListAsync(cancellationToken);
+        IList<User> query = await readStore.GetAllUsersAsync();
 
         var response = new GetAllUsersMapper().ToResponse(query);
 

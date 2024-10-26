@@ -9,13 +9,16 @@ namespace Persistence.Contexts;
 /// <summary>
 /// Main database context for the application.
 /// </summary>
-public sealed class AppDbContext : DbContext 
+public class AppDbContext : DbContext 
 {
     /// <summary>
     /// Configuration instance for the DbContext.
     /// </summary>
     public IConfiguration Configuration { get; }
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AppDbContext"/> class.
+    /// </summary>
+    public AppDbContext(){}
     /// <summary>
     /// Initializes a new instance of the <see cref="AppDbContext"/> class.
     /// </summary>

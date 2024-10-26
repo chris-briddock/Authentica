@@ -18,16 +18,15 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     /// </remarks>
     public ActivityReadStore(IServiceProvider services) : base(services) {}
     /// <inheritdoc/>
-    public ImmutableList<Activity> GetActivitiesBySessionId(string sessionId)
+    public ImmutableList<Activity> GetActivities()
     {
-        var events = DbContext.Activities.Where(x => x.SequenceId == sessionId)
-                    .OrderBy(x => x.CreatedOn)
-                    .ToImmutableList();
+        var activities = DbContext.Activities.ToImmutableList();
 
-        return events;
+        return activities;
     }
+
     /// <inheritdoc/>
-    public ImmutableList<Activity> GetActivitiesByTimeStamp(DateTime timeStamp)
+    public ImmutableList<Activity> GetActivitiesByDateTimeStamp(DateTime timeStamp)
     {
         var events = DbContext.Activities.Where(x => x.CreatedOn == timeStamp)
                     .OrderBy(x => x.CreatedOn)

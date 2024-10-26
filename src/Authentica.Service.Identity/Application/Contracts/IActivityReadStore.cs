@@ -13,13 +13,11 @@ public interface IActivityReadStore
     /// Retrieves a list of activities that occurred at or after the specified timestamp.
     /// </summary>
     /// <param name="timeStamp">The timestamp to filter activities.</param>
-    /// <returns>An immutable list of events that match the timestamp criteria.</returns>
-    ImmutableList<Activity> GetActivitiesByTimeStamp(DateTime timeStamp);
-
+    /// <returns>An immutable list of activities that match the timestamp criteria.</returns>
+    ImmutableList<Activity> GetActivitiesByDateTimeStamp(DateTime timeStamp);
     /// <summary>
-    /// Retrieves a list of activities associated with the specified session ID.
+    /// Retrieves a list of all activities.
     /// </summary>
-    /// <param name="sessionId">The session ID to filter activities.</param>
-    /// <returns>An immutable list of activities that match the session ID criteria.</returns>
-    ImmutableList<Activity> GetActivitiesBySessionId(string sessionId);
+    /// <returns>An immutable list of activities.</returns>
+    ImmutableList<Activity> GetActivities();
 }

@@ -1,5 +1,5 @@
 using FluentValidation;
-using Api.Requests; // Include the namespace for the request
+using Api.Requests;
 
 namespace Application.Validators;
 
