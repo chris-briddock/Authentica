@@ -22,8 +22,5 @@ public class AuthorizeRequestValidator : AbstractValidator<AuthorizeRequest>
             .NotEmpty().WithMessage("callback_uri is required.")
             .Must(uri => uri.BeAValidUri()).WithMessage("callback_uri must be a valid URI.");
 
-        RuleFor(request => request.ResponseType)
-            .NotEmpty().WithMessage("response_type is required.");
-
     }
 }

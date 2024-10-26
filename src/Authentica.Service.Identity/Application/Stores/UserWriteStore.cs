@@ -84,11 +84,12 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
 
         var tokenVerificationResult = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ResetPassword, token);
+        var passwordHasher = Services.GetRequiredService<IPasswordHasher<User>>();
 
         if (!tokenVerificationResult)
             return UserStoreResult.Failed(new IdentityErrorFactory().InvalidToken());
 
-        user.PasswordHash = UserManager.PasswordHasher.HashPassword(user, newPassword);
+        user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
         
         await UserManager.UpdateAsync(user);
 
@@ -160,4 +161,6 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
+
+    
 }

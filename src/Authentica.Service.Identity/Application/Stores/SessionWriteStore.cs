@@ -27,7 +27,8 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     {
         try
         {
-            await DbContext.Sessions.AddAsync(session);
+            var dbSet = DbContext.Set<Session>();
+            await dbSet.AddAsync(session);
             await DbContext.SaveChangesAsync();
         }
         catch (Exception)
@@ -47,7 +48,8 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     {
         try
         {
-            await DbContext.Sessions.Where(x => x.SessionId == session.Id)
+            var dbSet = DbContext.Set<Session>();
+            await dbSet.Where(x => x.SessionId == session.Id)
                 .ExecuteUpdateAsync(
                 x => x
                 .SetProperty(s => s.EntityDeletionStatus.IsDeleted, s => true)

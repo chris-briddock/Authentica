@@ -23,9 +23,9 @@ public class UserReadStore : StoreBase, IUserReadStore
     /// <inheritdoc/>
     public async Task<UserStoreResult> GetUserByEmailAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken = default)
     {
-        var userClaimsPrincipal = claimsPrincipal.FindFirst(ClaimTypes.Email)!;
+        Claim? userClaimsPrincipal = claimsPrincipal.FindFirst(ClaimTypes.Email)!;
 
-        var user = await UserManager.FindByEmailAsync(userClaimsPrincipal.Value);
+        User? user = await UserManager.FindByEmailAsync(userClaimsPrincipal.Value);
 
         if (user is null)
             return UserStoreResult.Failed(IdentityErrorFactory.UserNotFound());
@@ -39,7 +39,7 @@ public class UserReadStore : StoreBase, IUserReadStore
     {
         try
         {
-            var user = await UserManager.FindByEmailAsync(email);
+            User? user = await UserManager.FindByEmailAsync(email);
 
             if (user is null)
                 return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
@@ -54,7 +54,7 @@ public class UserReadStore : StoreBase, IUserReadStore
     /// <inheritdoc/>
     public async Task<UserStoreResult> GetUserByIdAsync(string Id)
     {
-        var user = await UserManager.FindByIdAsync(Id);
+        User? user = await UserManager.FindByIdAsync(Id);
 
         if (user is null)
             return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
@@ -64,14 +64,14 @@ public class UserReadStore : StoreBase, IUserReadStore
     /// <inheritdoc />
     public async Task<IList<string>> GetUserRolesAsync(string email)
     {
-        var user = await UserManager.FindByEmailAsync(email) ?? null!;
+        User? user = await UserManager.FindByEmailAsync(email) ?? null!;
         return await UserManager.GetRolesAsync(user);
     }
 
     /// <inheritdoc />
     public async Task<IList<User>> GetAllUsersAsync()
     {
-        var users = await UserManager.GetUsersInRoleAsync(RoleDefaults.User);
+        IList<User> users = await UserManager.GetUsersInRoleAsync(RoleDefaults.User);
         return users;
     }
 }

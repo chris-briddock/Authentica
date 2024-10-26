@@ -18,8 +18,8 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
                                                .WithRequest<CreateApplicationSecretRequest>
                                                .WithActionResult
 {
-    /// <summary>
-    /// Provides access to application services.
+     /// <summary>
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

@@ -3,7 +3,7 @@ using Api.Constants;
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 [TestFixture]
-public class MultiFactorManageAuthenticatoEndpointTests
+public class MultiFactorManageAuthenticatorEndpointTests
 {
     private TestFixture<Program> _fixture;
 

@@ -2,13 +2,11 @@ using Api.Constants;
 using Api.Requests;
 using Application.Activities;
 using Application.Contracts;
-using Application.Extensions;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Contexts;
 
 namespace Api.Endpoints.Users;
 
@@ -21,7 +19,7 @@ public sealed class LoginEndpoint : EndpointBaseAsync
                                     .WithActionResult
 {
     /// <summary>
-    /// Provides access to application services.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 
@@ -53,7 +51,6 @@ public sealed class LoginEndpoint : EndpointBaseAsync
     {
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
-        var dbContext = Services.GetRequiredService<AppDbContext>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
 
         // Set the authentication scheme

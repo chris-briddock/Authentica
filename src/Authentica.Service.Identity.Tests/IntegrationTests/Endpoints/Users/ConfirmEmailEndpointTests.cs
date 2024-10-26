@@ -28,7 +28,7 @@ public class ConfirmEmailEndpointTests
         var email = "test@test.com";
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
-        .ReturnsAsync(UserStoreResult.Success(new User() { Email = "test@test.com"}));
+        .ReturnsAsync(UserStoreResult.Success(new User() { Email = email}));
         
         userWriteStoreMock.Setup(x => x.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
         .ReturnsAsync(UserStoreResult.Success());

@@ -42,7 +42,7 @@ public static partial class Seed
                     CallbackUri = "https://localhost:7256/callback",
                     EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
                     EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
-                    EntityDeletionStatus = new(true, DateTime.UtcNow.AddYears(-8), user!.Id),
+                    EntityDeletionStatus = new(false, null, null),
                     ClientSecret = hashedSecret,
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 };

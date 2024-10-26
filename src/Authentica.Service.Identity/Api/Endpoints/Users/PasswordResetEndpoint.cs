@@ -17,7 +17,7 @@ public sealed class PasswordResetEndpoint : EndpointBaseAsync
                                             .WithActionResult
 {
     /// <summary>
-    /// The application service provier.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 

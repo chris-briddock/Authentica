@@ -20,7 +20,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
                                         .WithActionResult
 {
     /// <summary>
-    /// Provides access to application services.
+    /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
 
@@ -70,19 +70,13 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
 
         await activityStore.SaveActivityAsync(activity);
 
-        if (request.ResponseType == TokenConstants.AuthorizationCode)
-        {
-            var state = randomStringProvider.GenerateAlphanumeric(64);
-            HttpContext.Session.SetString($"{request.ClientId}_state", state);
-            var code = randomStringProvider.GenerateAlphanumeric(64);
-            HttpContext.Session.SetString($"{request.ClientId}_code", code);
-            await HttpContext.Session.CommitAsync(cancellationToken);
+        var state = randomStringProvider.GenerateAlphanumeric(64);
+        HttpContext.Session.SetString($"{request.ClientId}_state", state);
+        var code = randomStringProvider.GenerateAlphanumeric(64);
+        HttpContext.Session.SetString($"{request.ClientId}_code", code);
+        await HttpContext.Session.CommitAsync(cancellationToken);
 
-            var redirectUri = $"{request.CallbackUri}/?code={code}&state={state}";
-            return Redirect(redirectUri);
-        }
-
-        return Unauthorized();
-
+        var redirectUri = $"{request.CallbackUri}/?code={code}&state={state}";
+        return Redirect(redirectUri);
     }
 }

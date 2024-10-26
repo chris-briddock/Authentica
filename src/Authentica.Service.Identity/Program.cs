@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using Domain.Aggregates.Identity;
 using Authentica.Common;
 using Application.Stores;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace Authentica.Service.Identity;
@@ -27,12 +28,9 @@ namespace Authentica.Service.Identity;
 /// </summary>
 public sealed class Program
 { 
-    private Program(){}
     /// <summary>
     /// The entry method for the web application.
     /// </summary>
-    /// <param name="args"></param>
-    /// <returns></returns>
     public static async Task Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -58,6 +56,7 @@ public sealed class Program
         builder.Services.TryAddScoped<ISessionWriteStore, SessionWriteStore>();
         builder.Services.TryAddScoped<ISessionReadStore, SessionReadStore>();
         builder.Services.TryAddTransient<ITimer, TimerProvider>();
+        builder.Services.TryAddScoped<JwtSecurityTokenHandler>();
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
         builder.Services.TryAddScoped<IMultiFactorTotpProvider, MultiFactorTotpProvider>();
         builder.Services.AddFeatureManagement();

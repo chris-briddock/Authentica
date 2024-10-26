@@ -19,7 +19,7 @@ public class ResetPasswordEndpoint : EndpointBaseAsync
                                      .WithRequest<AdminPasswordResetRequest>
                                      .WithActionResult
 {
-     /// <summary>
+    /// <summary>
     /// Gets the service provider for resolving dependencies.
     /// </summary>
     private IServiceProvider Services { get; }

@@ -1,6 +1,7 @@
 using System.Text;
 using Api.Constants;
 using Application.Contracts;
+using Application.Factories;
 using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -64,7 +65,9 @@ public class RegisterEndpointTests
     {
         var userWriteStoreMock = new UserWriteStoreMock();
 
-        userWriteStoreMock.Setup(x => x.CreateUserAsync(It.IsAny<RegisterRequest>(), It.IsAny<CancellationToken>()));
+        userWriteStoreMock.Setup(x => x.CreateUserAsync(It.IsAny<RegisterRequest>(),
+                                                        It.IsAny<CancellationToken>()))
+                                                        .ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception("error occured."))));
 
         var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c => 
         {

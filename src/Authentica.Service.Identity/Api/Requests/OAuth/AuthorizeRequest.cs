@@ -23,20 +23,6 @@ public sealed record AuthorizeRequest
     public string CallbackUri { get; init; } = default!;
 
     /// <summary>
-    /// Gets or sets the scope of the access request. 
-    /// This is a space-delimited list of strings.
-    /// </summary>
-    [FromQuery(Name = "scope")]
-    public string? Scope { get; init; } = default!;
-
-    /// <summary>
-    /// Gets or sets the response type, which determines the authorization processing flow to be used.
-    /// Typical values are "code" for the authorization code flow, "client_credentials" for the client credentials flow.
-    /// </summary>
-    [FromQuery(Name = "response_type")]
-    public string ResponseType { get; init; } = default!;
-
-    /// <summary>
     /// Gets or sets the code challenge used in the PKCE (Proof Key for Code Exchange) extension to OAuth 2.0.
     /// This is relevant for the authorization code flow.
     /// </summary>

@@ -19,8 +19,8 @@ namespace Api.Endpoints.Users;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
-                                                    .WithRequest<MultiFactorManageAuthenticatorRequest>
-                                                    .WithActionResult
+                                                      .WithRequest<MultiFactorManageAuthenticatorRequest>
+                                                      .WithActionResult
 {
     /// <summary>
     /// Gets the service provider used to resolve dependencies.
