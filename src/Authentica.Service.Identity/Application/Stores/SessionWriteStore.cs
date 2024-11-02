@@ -49,15 +49,15 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
         try
         {
             var dbSet = DbContext.Set<Session>();
-            await dbSet.Where(x => x.SessionId == session.Id)
-                .ExecuteUpdateAsync(
-                x => x
-                .SetProperty(s => s.EntityDeletionStatus.IsDeleted, s => true)
-                .SetProperty(s => s.EndDateTime, s => DateTime.UtcNow)
-                .SetProperty(s => s.EntityDeletionStatus.DeletedBy, s => session.UserId)
-                .SetProperty(s => s.EntityDeletionStatus.DeletedOnUtc, s => DateTime.UtcNow)
-                .SetProperty(s => s.Status, s => SessionStatus.Terminated)
-                );
+
+            var entry = dbSet.Where(x => x.SessionId == session.SessionId);
+
+            await entry.ExecuteUpdateAsync(x => x
+                .SetProperty(s => s.EntityDeletionStatus.IsDeleted, true)
+                .SetProperty(s => s.EndDateTime, DateTime.UtcNow)
+                .SetProperty(s => s.EntityDeletionStatus.DeletedBy, session.UserId)
+                .SetProperty(s => s.EntityDeletionStatus.DeletedOnUtc, DateTime.UtcNow)
+                .SetProperty(s => s.Status, SessionStatus.Terminated));
         }
         catch (Exception)
         {

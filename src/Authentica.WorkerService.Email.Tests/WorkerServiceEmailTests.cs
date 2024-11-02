@@ -2,7 +2,6 @@ using Authentica.Common;
 
 namespace Authentica.WorkerService.Email.Tests;
 
-[TestFixture]
 public class WorkerTests
 {
     private Mock<ILogger<Worker>> _loggerMock;

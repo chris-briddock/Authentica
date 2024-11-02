@@ -8,6 +8,8 @@ namespace Application.Stores;
 /// </summary>
 public sealed class SessionReadStore : StoreBase, ISessionReadStore
 {
+
+    private DbSet<Session> DbSet => DbContext.Set<Session>();
     /// <summary>
     /// Initializes a new instance of the <see cref="SessionWriteStore"/> class.
     /// </summary>
@@ -16,13 +18,15 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
     {
     }
     /// <inheritdoc/>
-    public async Task<IList<Session>> GetAsync(string UserId)
+    public async Task<List<Session>> GetAsync(string userId)
     {
-        return await DbContext.Sessions.Where(x => x.UserId == UserId).ToListAsync();
+        var result = await DbSet.Where(x => x.UserId == userId).ToListAsync();
+        return result;
     }
     /// <inheritdoc/>
-    public async Task<Session> GetByIdAsync(string SessionId)
+    public async Task<Session?> GetByIdAsync(string sessionId)
     {
-        return await DbContext.Sessions.Where(x => x.SessionId == SessionId).FirstAsync();
+        var result = await DbSet.Where(x => x.SessionId == sessionId).FirstAsync();
+        return result;
     }
 }

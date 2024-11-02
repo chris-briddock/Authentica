@@ -72,7 +72,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailTokenConstants .MultiFactor:
+            case EmailTokenConstants.MultiFactor:
                 message.Subject = $"You requested a multi factor authorization code";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -95,7 +95,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailTokenConstants .ResetPassword:
+            case EmailTokenConstants.ResetPassword:
                 message.Subject = $"Password Reset Request";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -118,7 +118,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailTokenConstants .UpdateEmail:
+            case EmailTokenConstants.UpdateEmail:
                 message.Subject = $"Update Your Email Address";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -141,7 +141,7 @@ public class Worker(ILogger<Worker> logger,
 </html>";
                 break;
 
-            case EmailTokenConstants .UpdatePhoneNumber:
+            case EmailTokenConstants.UpdatePhoneNumber:
                 message.Subject = $"Update Your Phone Number";
                 message.Body = $@"<!DOCTYPE html>
 <html lang=""en"">

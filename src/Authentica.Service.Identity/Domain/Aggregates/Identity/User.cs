@@ -7,7 +7,11 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a user in the identity system with additional auditing and soft deletion properties.
 /// </summary>
-public sealed class User : IdentityUser<string>, IEntityDeletionStatus<string>
+public sealed class User : 
+    IdentityUser<string>, 
+    IEntityDeletionStatus<string>,
+    IEntityCreationStatus<string>,
+    IEntityModificationStatus<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the user.
@@ -46,11 +50,6 @@ public sealed class User : IdentityUser<string>, IEntityDeletionStatus<string>
     public Address Address { get; set; } = default!;
 
     /// <summary>
-    /// Gets or sets if the user has enabled application based TOTPs.
-    /// </summary>
-    public bool MultiFactorAuthenticatorEnabled { get; set; } = false;
-
-    /// <summary>
     /// Gets or sets the collection of user roles associated with the user.
     /// </summary>
     public ICollection<UserRole> UserRoles { get; set; } = default!;
@@ -64,4 +63,12 @@ public sealed class User : IdentityUser<string>, IEntityDeletionStatus<string>
     /// Gets or sets the collection of user-client application links associated with the user.
     /// </summary>
     public ICollection<UserClientApplication> UserClientApplications { get; set; } = default!;
+
+    /// <summary>
+    /// Gets or sets the multi-factor authentication settings for the user.
+    /// </summary>
+    public UserMultiFactorSettings UserMultiFactorSettings { get; set; } = default!;
+
+    public PasskeyChallenge PasskeyChallenge { get; set; } = default!;
+    public PasskeyCredential PasskeyCredential { get; set; } = default!;
 }

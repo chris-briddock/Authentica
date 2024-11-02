@@ -6,7 +6,7 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configuration class for the entity framework mapping of <see cref="RoleClaim"/>.
 /// </summary>
-public class RoleClaimConfiguration : IEntityTypeConfiguration<RoleClaim>
+public sealed class RoleClaimConfiguration : IEntityTypeConfiguration<RoleClaim>
 {
     /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<RoleClaim> builder)

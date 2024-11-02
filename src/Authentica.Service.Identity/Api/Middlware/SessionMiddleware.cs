@@ -1,8 +1,9 @@
 using Domain.Constants;
-using Application.Contracts;
 using Domain.Aggregates.Identity;
 using System.Security.Claims;
 using Application.Extensions;
+using Authentica.Service.Identity.Application.Contracts.Stores;
+using Application.Contracts;
 
 namespace Api.Middlware;
 
@@ -11,15 +12,17 @@ namespace Api.Middlware;
 /// </summary>
 public sealed class SessionMiddleware
 {
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+
     /// <summary>
-    /// Delegate representing the next middleware in the request pipeline.
+    /// Invokes the next middleware in the request pipeline.
     /// </summary>
     private RequestDelegate Next { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SessionMiddleware"/> class.
+    /// Initializes a new instance of <see cref="SessionMiddleware"/>
     /// </summary>
-    /// <param name="next">The next middleware in the request pipeline.</param>
+    /// <param name="next">Invokes the next middleware in the request pipeline.</param>
     public SessionMiddleware(RequestDelegate next)
     {
         Next = next;
@@ -32,28 +35,60 @@ public sealed class SessionMiddleware
     /// <returns>A task that represents the completion of request processing.</returns>
     public async Task InvokeAsync(HttpContext context)
     {
-        if (!context.Session.Keys.Contains(SessionConstants.SequenceId))
+        string? emailAddress = context.User.FindFirst(ClaimTypes.Email)?.Value;
+        bool shouldCreate = false;
+        using AsyncServiceScope scope = context.RequestServices.CreateAsyncScope();
+
+        try
         {
-            var sessionId = Guid.NewGuid().ToString();
-            context.Session.SetString(SessionConstants.SequenceId, sessionId);
+            await _semaphore.WaitAsync();
+            string? currentSessionId = context.Session.GetString(SessionConstants.SequenceId);
+            var sessionReadStore = scope.ServiceProvider.GetRequiredService<ISessionReadStore>();
 
-            var scope = context.RequestServices.CreateAsyncScope();
-            var sessionWriteStore = scope.ServiceProvider.GetRequiredService<ISessionWriteStore>();
+            if (currentSessionId is null)
+                shouldCreate = true;
 
-            // Create a new Session object
-            Session session = new()
+            if (currentSessionId is not null)
             {
-                SessionId = sessionId,
-                UserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown",
-                IpAddress = context.GetIpAddress(),
-                UserAgent = context.Request.Headers.UserAgent.ToString(),
-                Status = SessionStatus.Active,
-                EntityCreationStatus = new(DateTime.UtcNow, context.User?.Identity?.Name ?? "SYSTEM"),
-                EntityDeletionStatus = new(false, null, null)
-            };
+                Session? storedSession = await sessionReadStore.GetByIdAsync(currentSessionId);
 
-            // Save the session to the database
-            await sessionWriteStore.CreateAsync(session);
+                if (storedSession is not null &&
+                    storedSession.UserId == "Unknown")
+                    shouldCreate = true;
+
+            }
+
+            if (shouldCreate)
+            {
+                string? userId = null!;    
+                var sessionId = Guid.NewGuid().ToString();
+                context.Session.SetString(SessionConstants.SequenceId, sessionId);
+                var sessionWriteStore = scope.ServiceProvider.GetRequiredService<ISessionWriteStore>();
+                var userReadStore = scope.ServiceProvider.GetRequiredService<IUserReadStore>();
+
+                if (emailAddress is not null)
+                    userId = (await userReadStore.GetUserByEmailAsync(emailAddress)).User.Id;
+
+                // Create a new Session object
+                Session session = new()
+                {
+                    SessionId = sessionId,
+                    UserId = userId ?? "Unknown",
+                    IpAddress = context.GetIpAddress(),
+                    UserAgent = context.Request.Headers.UserAgent.ToString(),
+                    Status = SessionStatus.Active,
+                    EntityCreationStatus = new(DateTime.UtcNow, context.User?.Identity?.Name ?? "SYSTEM"),
+                    EntityDeletionStatus = new(false, null, null)
+                };
+
+                // Save the session to the database
+                await sessionWriteStore.CreateAsync(session);
+            }
+
+        }
+        finally
+        {
+            _semaphore.Release();
         }
 
         await Next(context);

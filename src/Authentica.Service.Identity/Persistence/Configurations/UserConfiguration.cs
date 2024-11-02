@@ -7,7 +7,7 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configuration class for the entity framework mapping of <see cref="User"/>.
 /// </summary>
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
        /// <summary>
        /// Configures the entity framework mapping for <see cref="User"/>.
@@ -83,9 +83,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
               builder.Property(u => u.TwoFactorEnabled)
                      .HasColumnName("multi_factor_enabled");
-              
-              builder.Property(u => u.MultiFactorAuthenticatorEnabled)
-                     .HasColumnName("multi_factor_app_enabled");
 
               builder.ComplexProperty(u => u.Address)
                   .Property(a => a.Name).HasColumnName("address_name").HasMaxLength(64);
@@ -155,5 +152,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                      .WithOne(uca => uca.User)
                      .HasForeignKey(uca => uca.UserId)
                      .OnDelete(DeleteBehavior.Cascade);
-       }
+
+    }
 }

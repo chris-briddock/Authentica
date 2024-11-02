@@ -1,10 +1,10 @@
-using ITimer = Application.Contracts.ITimer;
+using Application.Contracts;
 
 namespace Authentica.Service.Identity.Tests.Mocks;
 
-public class TimerMock : Mock<ITimer>, IMockBase<Mock<ITimer>>
+public class TimerMock : Mock<ITimerProvider>, IMockBase<Mock<ITimerProvider>>
 {
-    public Mock<ITimer> Mock()
+    public Mock<ITimerProvider> Mock()
     {
         return this;
     }

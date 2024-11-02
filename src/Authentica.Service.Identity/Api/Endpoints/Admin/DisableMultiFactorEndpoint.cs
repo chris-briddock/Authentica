@@ -1,8 +1,8 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -16,8 +16,8 @@ namespace Api.Endpoints.Admin;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
-                                               .WithRequest<DisableMultiFactorRequest>
-                                               .WithActionResult
+                                                 .WithRequest<DisableMultiFactorRequest>
+                                                 .WithActionResult
 {
     /// <summary>
     /// Gets the service provider used to resolve dependencies.
@@ -38,7 +38,7 @@ public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
     /// </summary>
     /// <param name="request">The object which encapsulates the request.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-     /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
+    /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
     [HttpPost($"{Routes.Admin.DisableMultiFactor}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,7 +50,7 @@ public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-       var user = await userManager.FindByEmailAsync(request.Email);
+        var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
             return BadRequest();

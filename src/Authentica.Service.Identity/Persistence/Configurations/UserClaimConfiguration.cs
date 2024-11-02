@@ -7,7 +7,7 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configuration class for the entity framework mapping of <see cref="UserClaim"/>.
 /// </summary>
-public class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
+public sealed class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
 {
     /// <summary>
     /// Configures the entity framework mapping for <see cref="UserClaim"/>.

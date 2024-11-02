@@ -13,7 +13,6 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using ITimer = Application.Contracts.ITimer;
 using Microsoft.AspNetCore.Identity;
 using Domain.Aggregates.Identity;
 using Authentica.Common;
@@ -55,10 +54,11 @@ public sealed class Program
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
         builder.Services.TryAddScoped<ISessionWriteStore, SessionWriteStore>();
         builder.Services.TryAddScoped<ISessionReadStore, SessionReadStore>();
-        builder.Services.TryAddTransient<ITimer, TimerProvider>();
+        builder.Services.TryAddTransient<ITimerProvider, TimerProvider>();
         builder.Services.TryAddScoped<JwtSecurityTokenHandler>();
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
         builder.Services.TryAddScoped<IMultiFactorTotpProvider, MultiFactorTotpProvider>();
+        builder.Services.AddPasskeys();
         builder.Services.AddFeatureManagement();
         builder.Services.AddBearerAuthentication();
         builder.Services.AddSessionCache();
@@ -74,6 +74,9 @@ public sealed class Program
         builder.Services.AddRedisHealthCheck();
 
         WebApplication app = builder.Build();
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseSession();
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseMiddleware<SessionMiddleware>();
@@ -81,9 +84,6 @@ public sealed class Program
         app.UseHsts();
         app.UseResponseCaching();
         app.UseHttpsRedirection();
-        app.UseRouting();
-        app.UseAuthentication();
-        app.UseAuthorization();
         app.MapControllers();
         app.UseCustomHealthCheckMapping();
         if (!app.Environment.IsProduction())

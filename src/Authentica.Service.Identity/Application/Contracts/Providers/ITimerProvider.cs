@@ -1,9 +1,9 @@
 namespace Application.Contracts;
 
 /// <summary>
-/// Defines an contract for a timer that waits for the next tick.
+/// Defines a contract for a timer that waits for the next tick.
 /// </summary>
-public interface ITimer
+public interface ITimerProvider
 {
     /// <summary>
     /// Asynchronously waits for the next tick of the timer.

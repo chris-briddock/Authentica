@@ -7,7 +7,7 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configuration class for the entity framework mapping of <see cref="ClientApplication"/>.
 /// </summary>
-public class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApplication>
+public sealed class ClientApplicationConfiguration : IEntityTypeConfiguration<ClientApplication>
 {
        /// <summary>
        /// Configures the entity framework mapping for <see cref="ClientApplication"/>.

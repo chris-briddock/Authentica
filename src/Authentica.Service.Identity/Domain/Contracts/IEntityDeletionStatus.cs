@@ -3,13 +3,15 @@ using Domain.ValueObjects;
 namespace Domain.Contracts;
 
 /// <summary>
-/// Defines a contract for a soft-deletable entity.
+/// Defines a contract for an entity that supports soft deletion.
 /// </summary>
 /// <remarks>
-/// This contract enables a generic method in our shared store to purge entries in the database,
-/// as we need a type constraint to access the properties when representing this as a generic method. 
+/// This contract is used to allow soft deletion functionality for entities, where an entity is marked 
+/// as deleted but remains in the database. It also enables the use of generic methods in shared 
+/// repositories, where a type constraint is needed to access the deletion status properties.
 /// </remarks>
-/// <typeparam name="TKey"></typeparam>
+/// <typeparam name="TKey">The type of the unique identifier for the entity, which must implement 
+/// <see cref="System.IEquatable{TKey}"/> for proper equality checks in deletion operations.</typeparam>
 public interface IEntityDeletionStatus<TKey> where TKey : IEquatable<TKey>
 {
     /// <summary>

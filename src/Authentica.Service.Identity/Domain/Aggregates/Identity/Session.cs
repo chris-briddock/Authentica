@@ -1,3 +1,4 @@
+using Domain.Contracts;
 using Domain.ValueObjects;
 
 namespace Domain.Aggregates.Identity;
@@ -5,7 +6,9 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a user session within the system.
 /// </summary>
-public sealed class Session
+public sealed class Session : 
+    IEntityDeletionStatus<string>,
+    IEntityCreationStatus<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the session entity.

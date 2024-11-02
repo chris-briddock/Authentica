@@ -5,7 +5,11 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a client application in the system.
 /// </summary>
-public sealed class ClientApplication : ClientApplication<string>, IEntityDeletionStatus<string>
+public sealed class ClientApplication : 
+    ClientApplication<string>, 
+    IEntityDeletionStatus<string>, 
+    IEntityCreationStatus<string>, 
+    IEntityModificationStatus<string> 
 {
     /// <summary>
     /// Gets or sets the unique identifier for the client application.
@@ -47,7 +51,7 @@ public sealed class ClientApplication : ClientApplication<string>, IEntityDeleti
     /// <summary>
     /// Gets or sets the collection of user-client application links associated with this client application.
     /// </summary>
-    public ICollection<UserClientApplication> UserClientApplications { get; set; } = new List<UserClientApplication>();
+    public ICollection<UserClientApplication> UserClientApplications { get; set; } = [];
 }
 
 /// <summary>

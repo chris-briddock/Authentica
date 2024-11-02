@@ -7,7 +7,7 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configures the properties and relationships of the <see cref="Session"/> entity.
 /// </summary>
-public class SessionConfiguration : IEntityTypeConfiguration<Session>
+public sealed class SessionConfiguration : IEntityTypeConfiguration<Session>
 {
     /// <summary>
     /// Configures the entity of type <see cref="Session"/>.

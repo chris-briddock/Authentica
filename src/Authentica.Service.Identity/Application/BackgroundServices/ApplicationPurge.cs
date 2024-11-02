@@ -1,7 +1,6 @@
 using Application.Contracts;
 using Application.Exceptions;
 using Domain.Aggregates.Identity;
-using ITimer = Application.Contracts.ITimer;
 
 namespace Application.BackgroundServices;
 
@@ -22,7 +21,7 @@ public class ApplicationPurge : BackgroundService
     /// <summary>
     /// A periodic timer.
     /// </summary>
-    public readonly ITimer _timer;
+    public readonly ITimerProvider _timer;
 
     /// <summary>
     /// Initializes a new instance of <see cref="ApplicationPurge"/>
@@ -32,7 +31,7 @@ public class ApplicationPurge : BackgroundService
     /// <param name="timer"></param>
     public ApplicationPurge(IServiceScopeFactory serviceScopeFactory,
                             ILogger<ApplicationPurge> logger,
-                            ITimer timer)
+                            ITimerProvider timer)
     {
         ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));

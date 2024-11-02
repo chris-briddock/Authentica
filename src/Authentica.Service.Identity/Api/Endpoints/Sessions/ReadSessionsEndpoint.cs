@@ -1,11 +1,12 @@
 ﻿using Api.Constants;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
+using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Endpoints;
+namespace Api.Endpoints.Sessions;
 
 /// <summary>
 /// Endpoint for reading all sessions associated to a user.
@@ -43,7 +44,7 @@ public sealed class ReadSessionsEndpoint : EndpointBaseAsync
 
         var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
-        var sessions = sessionStore.GetAsync(user.Id);
+        List<Session> sessions = await sessionStore.GetAsync(user.Id);
 
         return Ok(sessions);
     }

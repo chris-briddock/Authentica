@@ -1,3 +1,4 @@
+using Domain.Contracts;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
@@ -6,7 +7,11 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a claim associated with a user in the identity system.
 /// </summary>
-public sealed class UserClaim : IdentityUserClaim<string>
+public sealed class UserClaim : 
+    IdentityUserClaim<string>,
+    IEntityDeletionStatus<string>,
+    IEntityCreationStatus<string>,
+    IEntityModificationStatus<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the user claim.

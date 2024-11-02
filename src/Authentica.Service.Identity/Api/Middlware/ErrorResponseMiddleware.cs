@@ -9,12 +9,11 @@ namespace Api.Middlware;
 /// Middleware to intercept 4xx and 5xx response codes and return a CustomProblemDetails.
 /// </summary>
 public sealed class ErrorHandlingMiddleware
-{
+{ 
     /// <summary>
-    /// Delegate representing the next middleware in the request pipeline.
+    /// Invokes the next middleware in the request pipeline.
     /// </summary>
     private RequestDelegate Next { get; }
-
     /// <summary>
     /// Logger for logging exception details.
     /// </summary>
@@ -23,13 +22,12 @@ public sealed class ErrorHandlingMiddleware
     /// <summary>
     /// Initializes a new instance of the <see cref="ErrorHandlingMiddleware"/> class.
     /// </summary>
-    /// <param name="next">The next middleware in the request pipeline.</param>
     /// <param name="logger">The logger for logging error details.</param>
-    public ErrorHandlingMiddleware(RequestDelegate next,
-                                   ILogger<ErrorHandlingMiddleware> logger)
+    /// <param name="next">Invokes the next middleware in the request pipeline.</param>
+    public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger, RequestDelegate next)
     {
-        Next = next ?? throw new ArgumentNullException(nameof(next));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        Next = next ?? throw new ArgumentNullException(nameof(next));
     }
 
     /// <summary>

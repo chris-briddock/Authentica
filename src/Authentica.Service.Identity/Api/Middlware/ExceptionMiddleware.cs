@@ -10,10 +10,9 @@ namespace Api.Middlware;
 public sealed class ExceptionMiddleware
 {
     /// <summary>
-    /// Delegate representing the next middleware in the request pipeline.
+    /// Invokes the next middleware in the request pipeline.
     /// </summary>
     private RequestDelegate Next { get; }
-
     /// <summary>
     /// Logger for logging exception details.
     /// </summary>
@@ -22,14 +21,12 @@ public sealed class ExceptionMiddleware
     /// <summary>
     /// Initializes a new instance of the <see cref="ExceptionMiddleware"/> class.
     /// </summary>
-    /// <param name="next">The next middleware in the request pipeline.</param>
     /// <param name="logger">The logger for logging exception details.</param>
     /// <exception cref="ArgumentNullException">Thrown when next or logger is null.</exception>
-    public ExceptionMiddleware(RequestDelegate next,
-                               ILogger<ExceptionMiddleware> logger)
+    public ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, RequestDelegate next)
     {
-        Next = next ?? throw new ArgumentNullException(nameof(next));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        Next = next ?? throw new ArgumentNullException(nameof(next));
     }
 
     /// <summary>

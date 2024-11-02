@@ -4,7 +4,6 @@ using Application.Exceptions;
 using Application.Factories;
 using Persistence.Contexts;
 using Persistence.Seed;
-using ITimer = Application.Contracts.ITimer;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
 
@@ -12,7 +11,7 @@ public class AccountPurgeExposeProtected : AccountPurge
 {
     public AccountPurgeExposeProtected(IServiceScopeFactory serviceScopeFactory,
                                        ILogger<AccountPurge> logger,
-                                       ITimer timer)
+                                       ITimerProvider timer)
         : base(serviceScopeFactory, logger, timer)
     { }
 
@@ -23,7 +22,7 @@ public class AccountPurgeExposeProtected : AccountPurge
     }
 }
 
-[TestFixture]
+
 public class AccountPurgeBackgroundServiceTests
 {
     private TestFixture<Program> _fixture;
@@ -119,7 +118,7 @@ public class AccountPurgeBackgroundServiceTests
         {
             builder.ConfigureServices(services =>
             {
-                services.Replace(new ServiceDescriptor(typeof(ITimer), mockTimer.Object));
+                services.Replace(new ServiceDescriptor(typeof(ITimerProvider), mockTimer.Object));
             });
         });
 

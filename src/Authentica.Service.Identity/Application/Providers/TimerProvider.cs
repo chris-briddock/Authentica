@@ -1,11 +1,11 @@
-using ITimer = Application.Contracts.ITimer;
+using Application.Contracts;
 
 namespace Application.Providers;
 
 /// <summary>
 /// Provides a timer that ticks at regular intervals and allows waiting for the next tick.
 /// </summary>
-public sealed class TimerProvider : ITimer
+public sealed class TimerProvider : ITimerProvider
 {
     private readonly PeriodicTimer _timer;
 

@@ -1,3 +1,4 @@
+using Domain.Contracts;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
@@ -6,7 +7,11 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a role in the identity system with additional auditing and soft deletion properties.
 /// </summary>
-public sealed class Role : IdentityRole<string>
+public sealed class Role : 
+    IdentityRole<string>,
+    IEntityDeletionStatus<string>,
+    IEntityCreationStatus<string>,
+    IEntityModificationStatus<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the role.

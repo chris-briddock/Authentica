@@ -13,8 +13,8 @@ using Persistence.Contexts;
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241006200642_Initial")]
-    partial class Initial
+    [Migration("20241031070614_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -495,10 +495,6 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("lockout_end");
 
-                    b.Property<bool>("MultiFactorAuthenticatorEnabled")
-                        .HasColumnType("bit")
-                        .HasColumnName("multi_factor_app_enabled");
-
                     b.Property<string>("NormalizedEmail")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -822,6 +818,58 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                             }));
                 });
 
+            modelBuilder.Entity("Domain.Aggregates.Identity.UserMultiFactorSettings", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("MultiFactorAuthenticatorEnabled")
+                        .HasColumnType("bit")
+                        .HasColumnName("authenticator_enabled");
+
+                    b.Property<bool>("MultiFactorEmailEnabled")
+                        .HasColumnType("bit")
+                        .HasColumnName("email_enabled");
+
+                    b.Property<bool>("MultiFactorPasskeysEnabled")
+                        .HasColumnType("bit")
+                        .HasColumnName("passkeys_enabled");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("PeriodEnd");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("PeriodStart");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("SYSTEM_IDENTITY_USER_MFA_SETTINGS", (string)null);
+
+                    b.ToTable(tb => tb.IsTemporal(ttb =>
+                            {
+                                ttb.UseHistoryTable("SYSTEM_IDENTITY_USER_MFA_SETTINGSHistory");
+                                ttb
+                                    .HasPeriodStart("PeriodStart")
+                                    .HasColumnName("PeriodStart");
+                                ttb
+                                    .HasPeriodEnd("PeriodEnd")
+                                    .HasColumnName("PeriodEnd");
+                            }));
+                });
+
             modelBuilder.Entity("Domain.Aggregates.Identity.UserRole", b =>
                 {
                     b.Property<string>("RoleId")
@@ -983,6 +1031,17 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Aggregates.Identity.UserMultiFactorSettings", b =>
+                {
+                    b.HasOne("Domain.Aggregates.Identity.User", "User")
+                        .WithOne("UserMultiFactorSettings")
+                        .HasForeignKey("Domain.Aggregates.Identity.UserMultiFactorSettings", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Aggregates.Identity.UserRole", b =>
                 {
                     b.HasOne("Domain.Aggregates.Identity.Role", "Role")
@@ -1019,6 +1078,9 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                     b.Navigation("UserClaims");
 
                     b.Navigation("UserClientApplications");
+
+                    b.Navigation("UserMultiFactorSettings")
+                        .IsRequired();
 
                     b.Navigation("UserRoles");
                 });

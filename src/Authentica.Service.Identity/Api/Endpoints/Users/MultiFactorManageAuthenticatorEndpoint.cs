@@ -54,6 +54,7 @@ public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var totpProvider = Services.GetRequiredService<IMultiFactorTotpProvider>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var userMultiFactorStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
         string formattedKey = string.Empty;
         string uri = string.Empty;
 
@@ -62,9 +63,10 @@ public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
         if (!user.TwoFactorEnabled)
             return BadRequest("User does not have mfa enabled.");
 
-        user.MultiFactorAuthenticatorEnabled = request.IsEnabled;
+        var enableAuthenticator = await userMultiFactorStore.SetAutheticatorAsync(request.IsEnabled, user.Id);
 
-        await userManager.UpdateAsync(user);
+        if (!enableAuthenticator.Succeeded)
+            return StatusCode(StatusCodes.Status500InternalServerError);
 
         if (request.IsEnabled)
         {

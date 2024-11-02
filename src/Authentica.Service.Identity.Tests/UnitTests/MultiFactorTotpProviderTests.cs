@@ -2,7 +2,7 @@ using System.Text.Encodings.Web;
 
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
-[TestFixture, Category("MultiFactorTotpProvider")]
+[Category("MultiFactorTotpProvider")]
 public class MultiFactorTotpProviderTests
 {
     private Mock<IServiceProvider> _serviceProviderMock;

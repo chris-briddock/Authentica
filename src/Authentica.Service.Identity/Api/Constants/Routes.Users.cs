@@ -61,6 +61,14 @@ public static partial class Routes
         /// </summary>
         public const string MultiFactorRedeemRecoveryCodes = "users/mfa/recovery";
         /// <summary>
+        /// Route for passkey login. 
+        /// </summary>
+        public const string MultiFactorPasskeyLogin = "users/mfa/passkeys";
+        /// <summary>
+        /// Route for passkey verification.
+        /// </summary>
+        public const string MultiFactorPasskeyVerification = "users/mfa/passkeys/verify";
+        /// <summary>
         /// Route for updating a user's email.
         /// </summary>
         public const string UpdateEmail = "users/details/email";

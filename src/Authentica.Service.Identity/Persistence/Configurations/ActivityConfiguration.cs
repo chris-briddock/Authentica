@@ -7,7 +7,7 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configures the properties and relationships of the <see cref="Activity"/> entity.
 /// </summary>
-public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
+public sealed class ActivityConfiguration : IEntityTypeConfiguration<Activity>
 {
     /// <summary>
     /// Configures the entity of type <see cref="Activity"/>.

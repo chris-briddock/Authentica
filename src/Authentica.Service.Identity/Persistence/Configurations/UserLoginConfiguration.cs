@@ -7,7 +7,7 @@ namespace Persistence.Configurations;
 /// <summary>
 /// Configuration class for the entity framework mapping of <see cref="IdentityUserLogin{TKey}"/>.
 /// </summary>
-public class UserLoginConfiguration : IEntityTypeConfiguration<IdentityUserLogin<string>>
+public sealed class UserLoginConfiguration : IEntityTypeConfiguration<IdentityUserLogin<string>>
 {
     /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<IdentityUserLogin<string>> builder)
