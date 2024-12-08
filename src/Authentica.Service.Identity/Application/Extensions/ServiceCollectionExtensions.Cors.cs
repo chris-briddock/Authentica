@@ -2,7 +2,7 @@ using Domain.Constants;
 
 namespace Application.Extensions;
 
-public static partial class ServiceCollectionExtensions 
+public static partial class ServiceCollectionExtensions
 {
     /// <summary>
     /// Adds cross-origin policies for the application.

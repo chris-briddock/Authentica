@@ -1,9 +1,9 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
                                                .WithRequest<CreateApplicationSecretRequest>
                                                .WithActionResult
 {
-     /// <summary>
+    /// <summary>
     /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
@@ -66,7 +66,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
 
         var result = await appWriteStore.UpdateClientSecretAsync(dto, cancellationToken);
 
-       if (result.Errors.Any())
+        if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
 
         CreatedApplicationSecretActivity activity = new()

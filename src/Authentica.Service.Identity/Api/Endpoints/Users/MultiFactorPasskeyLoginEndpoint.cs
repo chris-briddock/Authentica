@@ -3,6 +3,8 @@ using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+namespace Api.Endpoints.Users;
+
 /// <summary>
 /// Endpoint for managing passkey-based login for MFA.
 /// </summary>

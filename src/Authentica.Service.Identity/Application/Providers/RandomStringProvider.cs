@@ -1,6 +1,6 @@
+using Application.Contracts;
 using System.Security.Cryptography;
 using System.Text;
-using Application.Contracts;
 
 namespace Application.Providers;
 
@@ -17,9 +17,9 @@ public sealed class RandomStringProvider : IRandomStringProvider
         using var rng = RandomNumberGenerator.Create();
 
         byte[] byteArray = new byte[length];
-        
+
         rng.GetBytes(byteArray);
-        
+
         foreach (byte b in byteArray)
         {
             sb.Append(chars[b % chars.Length]);

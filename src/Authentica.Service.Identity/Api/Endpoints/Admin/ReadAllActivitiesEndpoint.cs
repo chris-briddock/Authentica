@@ -1,13 +1,13 @@
 using Api.Constants;
 using Api.Responses;
+using Application.Activities;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
+using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Aggregates.Identity;
 using System.Collections.Immutable;
 
 namespace Api.Endpoints.Admin;
@@ -38,7 +38,7 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
     /// Handles reading all events in the system.
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-     /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
+    /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
     [HttpGet($"{Routes.Admin.ReadAllActivities}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
@@ -50,7 +50,7 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
         ImmutableList<Activity> activities = readStore.GetActivities();
 
         ImmutableList<ActivityResponse> responses = new ReadAllActivitiesMapper().ToResponse(activities);
-        
+
         ReadAllActivitiesActivity activity = new()
         {
             Email = User.Identity?.Name ?? "Unknown"

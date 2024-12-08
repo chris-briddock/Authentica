@@ -29,7 +29,7 @@ public class ReadSessionsEndpointTests
         using var response = await client.GetAsync($"api/v1/{Routes.Sessions.Name}");
 
         // Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK)); 
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
 
     [Test, Order(2)]

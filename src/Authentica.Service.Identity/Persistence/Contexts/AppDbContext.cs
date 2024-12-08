@@ -1,15 +1,15 @@
-using System.Reflection;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Persistence.Contexts;
 
 /// <summary>
 /// Main database context for the application.
 /// </summary>
-public class AppDbContext : DbContext 
+public class AppDbContext : DbContext
 {
     /// <summary>
     /// Configuration instance for the DbContext.
@@ -18,7 +18,7 @@ public class AppDbContext : DbContext
     /// <summary>
     /// Initializes a new instance of the <see cref="AppDbContext"/> class.
     /// </summary>
-    public AppDbContext(){}
+    public AppDbContext() { }
     /// <summary>
     /// Initializes a new instance of the <see cref="AppDbContext"/> class.
     /// </summary>
@@ -35,8 +35,8 @@ public class AppDbContext : DbContext
     /// </summary>
     /// <param name="optionsBuilder">The options builder used to configure DbContext options.</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {  
-        optionsBuilder.UseSqlServer(Configuration.GetConnectionStringOrThrow("Default"), opt => 
+    {
+        optionsBuilder.UseSqlServer(Configuration.GetConnectionStringOrThrow("Default"), opt =>
         {
             opt.EnableRetryOnFailure();
         });

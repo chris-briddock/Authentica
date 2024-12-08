@@ -1,6 +1,6 @@
-﻿using MassTransit;
+﻿using Authentica.Common;
+using MassTransit;
 using Microsoft.FeatureManagement;
-using Authentica.Common;
 
 namespace Authentica.WorkerService.Email;
 

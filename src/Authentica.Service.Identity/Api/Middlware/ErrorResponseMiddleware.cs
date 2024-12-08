@@ -1,7 +1,7 @@
-using System.Text.Json;
 using Domain.Constants;
 using Domain.Errors;
 using Microsoft.AspNetCore.Diagnostics;
+using System.Text.Json;
 
 namespace Api.Middlware;
 
@@ -9,7 +9,7 @@ namespace Api.Middlware;
 /// Middleware to intercept 4xx and 5xx response codes and return a CustomProblemDetails.
 /// </summary>
 public sealed class ErrorHandlingMiddleware
-{ 
+{
     /// <summary>
     /// Invokes the next middleware in the request pipeline.
     /// </summary>
@@ -77,7 +77,7 @@ public sealed class ErrorHandlingMiddleware
         };
 
         var result = JsonSerializer.Serialize(problemDetails);
-        
+
         Logger.LogError("An error occurred. {errorDetails}", result);
 
         await context.Response.WriteAsync(result);

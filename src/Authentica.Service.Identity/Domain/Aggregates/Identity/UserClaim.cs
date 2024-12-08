@@ -7,7 +7,7 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a claim associated with a user in the identity system.
 /// </summary>
-public sealed class UserClaim : 
+public sealed class UserClaim :
     IdentityUserClaim<string>,
     IEntityDeletionStatus<string>,
     IEntityCreationStatus<string>,

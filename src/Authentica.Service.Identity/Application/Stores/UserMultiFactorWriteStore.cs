@@ -1,13 +1,15 @@
 ﻿
+using Application.Contracts;
 using Application.Factories;
 using Application.Results;
-using Application.Contracts;
 using Domain.Aggregates.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
 
-
+/// <summary>
+/// 
+/// </summary>
 public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWriteStore
 {
     /// <summary>

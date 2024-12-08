@@ -1,4 +1,3 @@
-using Api.Endpoints.Applications;
 using Api.Requests;
 using Api.Responses;
 

@@ -16,10 +16,7 @@ public sealed class ActivityConfiguration : IEntityTypeConfiguration<Activity>
     public void Configure(EntityTypeBuilder<Activity> builder)
     {
         // Set the table name and enable temporal table support
-        builder.ToTable("SYSTEM_IDENTITY_ACTIVITIES", opt =>
-        {
-            opt.IsTemporal();
-        });
+        builder.ToTable("SYSTEM_IDENTITY_ACTIVITIES", opt => opt.IsTemporal());
 
         // Configure the primary key
         builder.HasKey(e => e.Id);
@@ -38,13 +35,13 @@ public sealed class ActivityConfiguration : IEntityTypeConfiguration<Activity>
         builder.Property(e => e.ActivityType)
                .HasColumnName("activity_type")
                .HasMaxLength(100);
-        
+
         // Configure the CreatedOn property
         builder.Property(e => e.CreatedOn)
                .HasColumnName("created_on")
                .HasDefaultValueSql("GETUTCDATE()")
                .ValueGeneratedOnAddOrUpdate();
-        
+
         // Configure the Data property
         builder.Property(e => e.Data)
                .HasColumnName("data");

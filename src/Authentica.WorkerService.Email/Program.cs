@@ -1,14 +1,14 @@
-using System.Net.Mail;
+using Authentica.Common;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Microsoft.FeatureManagement;
-using Authentica.Common;
+using System.Net.Mail;
 
 namespace Authentica.WorkerService.Email;
 
 public sealed class Program
 {
-    private Program(){}
-    
+    private Program() { }
+
     public static async Task Main(string[] args)
     {
         var builder = Host.CreateApplicationBuilder(args);

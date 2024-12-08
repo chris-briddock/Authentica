@@ -1,7 +1,7 @@
-using System.Text;
 using Api.Constants;
 using Application.Contracts;
 using Persistence.Seed;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -27,8 +27,8 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
     {
         var userWriteStore = new UserWriteStoreMock();
         userWriteStore.Setup(x => x.RedeemMultiFactorRecoveryCodeAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Success());
-        
-        using var client = _fixture.CreateAuthenticatedClient(x => 
+
+        using var client = _fixture.CreateAuthenticatedClient(x =>
         {
             x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStore.Object));
         });
@@ -52,7 +52,7 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
         var userWriteStore = new UserWriteStoreMock();
         userWriteStore.Setup(x => x.RedeemMultiFactorRecoveryCodeAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Failed());
 
-        using var client = _fixture.CreateAuthenticatedClient(x => 
+        using var client = _fixture.CreateAuthenticatedClient(x =>
         {
             x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStore.Object));
         });

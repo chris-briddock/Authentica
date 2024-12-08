@@ -19,5 +19,5 @@ public class Argon2PasswordHasher<TUser> : IPasswordHasher<TUser> where TUser : 
     {
         return Shared.Verify(providedPassword, hashedPassword) ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
     }
-    
+
 }

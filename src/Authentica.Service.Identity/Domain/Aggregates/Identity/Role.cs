@@ -7,7 +7,7 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a role in the identity system with additional auditing and soft deletion properties.
 /// </summary>
-public sealed class Role : 
+public sealed class Role :
     IdentityRole<string>,
     IEntityDeletionStatus<string>,
     IEntityCreationStatus<string>,

@@ -26,7 +26,7 @@ public class MultiFactorManageAuthenticatorEndpointTests
 
         using var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorManageAuthenticator}?is_enabled=true", null!);
 
-         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
 
     [Test, Order(2)]
@@ -38,6 +38,6 @@ public class MultiFactorManageAuthenticatorEndpointTests
 
         using var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorManageAuthenticator}?is_enabled=true", null!);
 
-         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
 }

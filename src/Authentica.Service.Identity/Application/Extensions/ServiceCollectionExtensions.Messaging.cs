@@ -7,7 +7,7 @@ using Microsoft.FeatureManagement;
 
 namespace Application.Extensions;
 
-public static partial class ServiceCollectionExtensions 
+public static partial class ServiceCollectionExtensions
 {
     /// <summary>
     /// Adds publisher messaging for rabbitmq or azure service bus.

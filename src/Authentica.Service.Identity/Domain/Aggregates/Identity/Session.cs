@@ -6,7 +6,7 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a user session within the system.
 /// </summary>
-public sealed class Session : 
+public sealed class Session :
     IEntityDeletionStatus<string>,
     IEntityCreationStatus<string>
 {

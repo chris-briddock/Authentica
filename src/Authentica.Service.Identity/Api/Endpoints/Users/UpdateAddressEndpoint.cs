@@ -1,12 +1,12 @@
-using Api.Requests;
 using Api.Constants;
+using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
-using Application.Activities;
 
 namespace Api.Endpoints.Users;
 

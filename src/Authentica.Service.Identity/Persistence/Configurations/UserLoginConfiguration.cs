@@ -12,10 +12,8 @@ public sealed class UserLoginConfiguration : IEntityTypeConfiguration<IdentityUs
     /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<IdentityUserLogin<string>> builder)
     {
-        builder.ToTable("SYSTEM_IDENTITY_USER_LOGIN", opt => 
-        {
-            opt.IsTemporal();
-        });
+        builder.ToTable("SYSTEM_IDENTITY_USER_LOGIN", opt => opt.IsTemporal());
+
         builder.HasKey(l => new { l.LoginProvider, l.ProviderKey });
     }
 }

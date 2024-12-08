@@ -52,7 +52,7 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
-        
+
         var user = await userManager.FindByEmailAsync(request.Email);
 
         var result = await userManager.AddToRoleAsync(user!, request.Role);

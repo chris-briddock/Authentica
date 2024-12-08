@@ -3,7 +3,7 @@ using Microsoft.FeatureManagement;
 
 namespace Application.Extensions;
 
-public static partial class ServiceCollectionExtensions 
+public static partial class ServiceCollectionExtensions
 {
     /// <summary>
     /// Adds custom session configuration to the application.
@@ -43,12 +43,12 @@ public static partial class ServiceCollectionExtensions
 
         if (!featureManager.IsEnabledAsync(FeatureFlagConstants.Cache).Result)
             return services;
-        
+
         services.AddStackExchangeRedisCache(opt =>
         {
             opt.Configuration = configuration.GetConnectionString("Redis");
         });
-        
+
         return services;
     }
 }

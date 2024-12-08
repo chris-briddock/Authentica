@@ -11,7 +11,7 @@ public sealed class UserStoreResult : BaseResult<UserStoreResult>
     /// Gets the user associated with the result.
     /// </summary>
     public User User { get; private set; } = default!;
-    
+
     /// <summary>
     /// Creates a successful result with the specified user.
     /// </summary>

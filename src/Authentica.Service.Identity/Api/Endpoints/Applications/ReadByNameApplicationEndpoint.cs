@@ -1,10 +1,10 @@
 using Api.Constants;
 using Api.Requests;
 using Api.Responses;
+using Application.Activities;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +20,7 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
                                                     .WithRequest<ReadApplicationByNameRequest>
                                                     .WithActionResult
 {
-     /// <summary>
+    /// <summary>
     /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
@@ -45,7 +45,7 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public override async Task<ActionResult> HandleAsync([FromQuery]ReadApplicationByNameRequest request,
+    public override async Task<ActionResult> HandleAsync([FromQuery] ReadApplicationByNameRequest request,
                                                          CancellationToken cancellationToken = default)
     {
         var readStoreResult = Services.GetRequiredService<IApplicationReadStore>();

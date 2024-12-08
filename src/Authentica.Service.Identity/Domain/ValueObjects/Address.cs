@@ -45,7 +45,7 @@ public sealed class Address
     /// </summary>
     public Address()
     {
-        
+
     }
 
     /// <summary>

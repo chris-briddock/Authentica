@@ -40,7 +40,7 @@ public class DeleteRoleEndpointTests
     [Test]
     public async Task DeleteRole_Returns400BadRequest_WhenRoleIsNotFound()
     {
-         // Arrange
+        // Arrange
         var client = _fixture.CreateAuthenticatedClient();
 
         var request = new DeleteRoleRequest()

@@ -1,5 +1,5 @@
-using Application.Results;
 using Application.Providers;
+using Application.Results;
 
 namespace Application.Contracts;
 

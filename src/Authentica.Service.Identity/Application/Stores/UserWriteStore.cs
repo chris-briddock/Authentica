@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Api.Requests;
 using Application.Contracts;
 using Application.Factories;
@@ -6,6 +5,7 @@ using Application.Results;
 using Authentica.Common;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Application.Stores;
 
@@ -74,7 +74,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         user.EmailConfirmed = true;
 
         await UserManager.UpdateAsync(user);
-            
+
         return UserStoreResult.Success();
     }
 
@@ -90,13 +90,13 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             return UserStoreResult.Failed(new IdentityErrorFactory().InvalidToken());
 
         user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
-        
+
         await UserManager.UpdateAsync(user);
 
         return UserStoreResult.Success();
     }
 
-   /// <inheritdoc/>
+    /// <inheritdoc/>
     public async Task<UserStoreResult> RedeemMultiFactorRecoveryCodeAsync(User user, string code)
     {
         try
@@ -150,7 +150,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             if (!result)
                 return UserStoreResult.Failed();
 
-             user.PhoneNumber = phoneNumber;
+            user.PhoneNumber = phoneNumber;
 
             await UserManager.UpdateAsync(user);
 
@@ -162,5 +162,5 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         }
     }
 
-    
+
 }

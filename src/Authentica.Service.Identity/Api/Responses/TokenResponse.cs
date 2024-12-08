@@ -15,7 +15,7 @@ public sealed class TokenResponse
     /// <summary>
     /// Gets or sets the refresh token.
     /// </summary>
-    [SensitiveData] 
+    [SensitiveData]
     public string RefreshToken { get; set; } = default!;
     /// <summary>
     /// Gets or sets the expiration of the token.

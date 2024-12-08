@@ -1,9 +1,3 @@
-using Api.Constants;
-using Ardalis.ApiEndpoints;
-using Microsoft.AspNetCore.Authorization;
-
-using Microsoft.AspNetCore.Mvc;
-
 /// <summary>
 /// Endpoint for verifying passkey-based login for MFA.
 /// </summary>

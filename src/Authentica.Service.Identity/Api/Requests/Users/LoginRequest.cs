@@ -1,5 +1,4 @@
 using Application.Attributes;
-using Microsoft.AspNetCore.Identity;
 
 namespace Api.Requests;
 

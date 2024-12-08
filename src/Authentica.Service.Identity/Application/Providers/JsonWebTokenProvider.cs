@@ -1,9 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Application.Contracts;
 using Application.Results;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Application.Providers;
 
@@ -86,7 +86,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
             result.Error = ex.Message;
             result.Success = false;
         }
-        
+
         return await Task.FromResult(result);
     }
 
@@ -126,9 +126,9 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
         {
             result.Error = ex.Message;
             result.Success = false;
-            
+
         }
-        
+
         return await Task.FromResult(result);
     }
     /// <inheritdoc/>

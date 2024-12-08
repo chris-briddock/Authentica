@@ -1,6 +1,6 @@
-using System.Text;
 using Api.Constants;
 using Persistence.Seed;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -34,9 +34,9 @@ public class LoginEndpointTests
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        
+
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
-        
+
         var cookies = result.Headers.GetValues("Set-Cookie");
 
         bool hasMyCookie = cookies.Any(header => header.Contains(IdentityConstants.ApplicationScheme));
@@ -59,9 +59,9 @@ public class LoginEndpointTests
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        
+
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
-        
+
         var cookies = result.Headers.GetValues("Set-Cookie");
 
         bool hasMyCookie = cookies.Any(header => header.Contains(IdentityConstants.TwoFactorUserIdScheme));
@@ -84,9 +84,9 @@ public class LoginEndpointTests
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        
+
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
-    
+
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
@@ -105,7 +105,7 @@ public class LoginEndpointTests
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        
+
         var result = await client.PostAsync($"/api/v1/{Routes.Users.Login}", jsonContent);
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));

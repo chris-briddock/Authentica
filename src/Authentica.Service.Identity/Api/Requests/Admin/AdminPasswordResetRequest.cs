@@ -9,7 +9,7 @@ public class AdminPasswordResetRequest
     /// Gets or sets the email address associated with the admin account.
     /// </summary>
     public string Email { get; set; } = default!;
-     /// <summary>
+    /// <summary>
     /// Gets or sets the new password. 
     /// </summary>
     public string Password { get; set; } = default!;

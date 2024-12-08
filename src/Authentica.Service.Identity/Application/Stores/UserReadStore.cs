@@ -1,9 +1,9 @@
-using System.Security.Claims;
 using Api.Constants;
 using Application.Contracts;
 using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
+using System.Security.Claims;
 
 namespace Application.Stores;
 

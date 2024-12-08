@@ -1,6 +1,6 @@
-using System.Collections.Immutable;
 using Application.Contracts;
 using Domain.Aggregates.Identity;
+using System.Collections.Immutable;
 
 namespace Application.Stores;
 
@@ -16,7 +16,7 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     /// <remarks>
     /// This constructor initializes the <see cref="ActivityReadStore"/> instance by calling the base constructor with the provided service provider.
     /// </remarks>
-    public ActivityReadStore(IServiceProvider services) : base(services) {}
+    public ActivityReadStore(IServiceProvider services) : base(services) { }
     /// <inheritdoc/>
     public ImmutableList<Activity> GetActivities()
     {

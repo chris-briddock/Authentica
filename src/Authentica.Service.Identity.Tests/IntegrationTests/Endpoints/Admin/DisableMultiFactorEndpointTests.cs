@@ -26,7 +26,7 @@ public class DisableMultiFactorEndpointTests
         var request = new DisableMultiFactorRequest()
         {
             Email = Seed.Test.MultiFactorUserEmail
-        }; 
+        };
 
         var client = _fixture.CreateAuthenticatedClient();
 

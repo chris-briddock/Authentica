@@ -1,16 +1,16 @@
-using System.Text;
 using Application.Contracts;
 using Application.Providers;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Application.Extensions;
 
-public static partial class ServiceCollectionExtensions 
+public static partial class ServiceCollectionExtensions
 {
-    
+
     /// <summary>
     /// Adds bearer authentication services.
     /// </summary>
@@ -27,7 +27,7 @@ public static partial class ServiceCollectionExtensions
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-        .AddJwtBearer(options => 
+        .AddJwtBearer(options =>
         {
             // Retrieve the JWT secret from the application configuration
             string issuer = configuration.GetRequiredValueOrThrow("Jwt:Issuer");

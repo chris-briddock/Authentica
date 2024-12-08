@@ -1,11 +1,10 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
-using Domain.Constants;
-using Application.Activities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

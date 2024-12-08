@@ -4,20 +4,20 @@ using Application.Contracts;
 using Application.Cryptography;
 using Application.Extensions;
 using Application.Providers;
+using Application.Stores;
+using Authentica.Common;
 using ChristopherBriddock.AspNetCore.Extensions;
 using ChristopherBriddock.AspNetCore.HealthChecks;
+using Domain.Aggregates.Identity;
 using Domain.Constants;
-using Microsoft.FeatureManagement;
-using Persistence.Contexts;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Domain.Aggregates.Identity;
-using Authentica.Common;
-using Application.Stores;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.FeatureManagement;
+using Persistence.Contexts;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 
 
 namespace Authentica.Service.Identity;
@@ -26,7 +26,7 @@ namespace Authentica.Service.Identity;
 /// The entry point for the Web Application.
 /// </summary>
 public sealed class Program
-{ 
+{
     /// <summary>
     /// The entry method for the web application.
     /// </summary>
@@ -46,7 +46,7 @@ public sealed class Program
         builder.Services.AddMetrics();
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        builder.Services.AddVersioning(1,0);
+        builder.Services.AddVersioning(1, 0);
         builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSwaggerGen($"{ServiceNameDefaults.ServiceName}.xml");
         builder.Services.TryAddScoped<ISecretHasher, Argon2SecretHasher>();
@@ -93,7 +93,7 @@ public sealed class Program
         }
         await app.UseSeedDataAsync();
         if (app.Environment.IsDevelopment())
-        {           
+        {
             app.UseSwagger();
             app.UseSwaggerUI();
             await app.UseSeedTestDataAsync();

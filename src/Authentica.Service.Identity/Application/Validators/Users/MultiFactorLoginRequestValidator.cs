@@ -15,6 +15,6 @@ public class MultiFactorLoginRequestValidator : AbstractValidator<MultiFactorLog
     {
         RuleFor(request => request.Token)
             .NotEmpty().WithMessage("MFA token is required.")
-            .Length(6, 6).WithMessage("MFA token must be exactly 6 characters long."); 
+            .Length(6, 6).WithMessage("MFA token must be exactly 6 characters long.");
     }
 }

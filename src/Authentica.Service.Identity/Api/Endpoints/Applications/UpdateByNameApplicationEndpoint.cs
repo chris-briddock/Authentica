@@ -1,9 +1,9 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -51,7 +51,7 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         var user = (await userWriteStore.GetUserByEmailAsync(User, cancellationToken)).User;
-        
+
         if (user is null)
             return BadRequest();
 

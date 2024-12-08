@@ -15,9 +15,9 @@ public sealed class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
     /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<UserClaim> builder)
     {
-        builder.ToTable("SYSTEM_IDENTITY_USER_CLAIMS", opt => 
+        builder.ToTable("SYSTEM_IDENTITY_USER_CLAIMS", opt =>
         {
-              opt.IsTemporal();
+            opt.IsTemporal();
         });
 
         builder.HasKey(uc => uc.Id);
@@ -30,11 +30,11 @@ public sealed class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
                .HasColumnName("user_id")
                .HasMaxLength(36)
                .IsRequired();
-       
-       builder.Property(uc => uc.ConcurrencyStamp)
-              .HasMaxLength(36)
-              .HasColumnName("concurrency_stamp")
-              .IsConcurrencyToken();
+
+        builder.Property(uc => uc.ConcurrencyStamp)
+               .HasMaxLength(36)
+               .HasColumnName("concurrency_stamp")
+               .IsConcurrencyToken();
 
         builder.Property(uc => uc.ClaimType)
                .HasColumnName("claim_type")
@@ -44,40 +44,40 @@ public sealed class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
                .HasColumnName("claim_value")
                .HasMaxLength(100);
 
-       builder.ComplexProperty(u => u.EntityCreationStatus)
-                     .Property(x => x.CreatedBy)
-                     .HasColumnName("created_by")
-                     .HasMaxLength(36);
+        builder.ComplexProperty(u => u.EntityCreationStatus)
+               .Property(x => x.CreatedBy)
+               .HasColumnName("created_by")
+               .HasMaxLength(36);
 
-              builder.ComplexProperty(u => u.EntityCreationStatus)
-                     .Property(x => x.CreatedOnUtc)
-                     .HasColumnName("created_on_utc")
-                     .HasDefaultValueSql("GETUTCDATE()")
-                     .ValueGeneratedOnAdd();
+        builder.ComplexProperty(u => u.EntityCreationStatus)
+               .Property(x => x.CreatedOnUtc)
+               .HasColumnName("created_on_utc")
+               .HasDefaultValueSql("GETUTCDATE()")
+               .ValueGeneratedOnAdd();
 
-              builder.ComplexProperty(u => u.EntityModificationStatus)
-                     .Property(x => x.ModifiedBy)
-                     .HasColumnName("modified_by")
-                     .HasMaxLength(36);
-              
-              builder.ComplexProperty(u => u.EntityModificationStatus)
-                     .Property(x => x.ModifiedOnUtc)
-                     .HasColumnName("modified_on_utc")
-                     .HasDefaultValueSql("GETUTCDATE()")
-                     .ValueGeneratedOnUpdate();
+        builder.ComplexProperty(u => u.EntityModificationStatus)
+               .Property(x => x.ModifiedBy)
+               .HasColumnName("modified_by")
+               .HasMaxLength(36);
 
-              builder.ComplexProperty(u => u.EntityDeletionStatus)
-                     .Property(x => x.DeletedBy)
-                     .HasColumnName("deleted_by")
-                     .HasMaxLength(36);
+        builder.ComplexProperty(u => u.EntityModificationStatus)
+               .Property(x => x.ModifiedOnUtc)
+               .HasColumnName("modified_on_utc")
+               .HasDefaultValueSql("GETUTCDATE()")
+               .ValueGeneratedOnUpdate();
 
-              builder.ComplexProperty(u => u.EntityDeletionStatus)
-                     .Property(x => x.DeletedOnUtc)
-                     .HasColumnName("deleted_on_utc");
+        builder.ComplexProperty(u => u.EntityDeletionStatus)
+               .Property(x => x.DeletedBy)
+               .HasColumnName("deleted_by")
+               .HasMaxLength(36);
 
-              builder.ComplexProperty(u => u.EntityDeletionStatus)
-                     .Property(x => x.IsDeleted)
-                     .HasColumnName("is_deleted")
-                     .IsRequired();
+        builder.ComplexProperty(u => u.EntityDeletionStatus)
+               .Property(x => x.DeletedOnUtc)
+               .HasColumnName("deleted_on_utc");
+
+        builder.ComplexProperty(u => u.EntityDeletionStatus)
+               .Property(x => x.IsDeleted)
+               .HasColumnName("is_deleted")
+               .IsRequired();
     }
 }

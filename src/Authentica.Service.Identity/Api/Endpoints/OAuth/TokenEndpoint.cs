@@ -97,7 +97,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             subject = userEmail;
             email = userEmail;
         }
-        else 
+        else
         {
             var userEmail = User.Identity.Name!;
             roles = await userReadStore.GetUserRolesAsync(userEmail);

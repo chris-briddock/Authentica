@@ -74,9 +74,9 @@ public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
 
             if (string.IsNullOrEmpty(unformattedKey))
             {
-                 await userManager.ResetAuthenticatorKeyAsync(user);
-                 unformattedKey = await totpProvider.GenerateKeyAsync(user);
-            } 
+                await userManager.ResetAuthenticatorKeyAsync(user);
+                unformattedKey = await totpProvider.GenerateKeyAsync(user);
+            }
             formattedKey = totpProvider.FormatKey(unformattedKey);
             uri = await totpProvider.GenerateQrCodeUriAsync(user);
         }

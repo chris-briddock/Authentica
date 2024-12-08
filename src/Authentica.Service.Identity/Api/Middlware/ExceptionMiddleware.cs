@@ -22,6 +22,7 @@ public sealed class ExceptionMiddleware
     /// Initializes a new instance of the <see cref="ExceptionMiddleware"/> class.
     /// </summary>
     /// <param name="logger">The logger for logging exception details.</param>
+    /// <param name="next"></param>
     /// <exception cref="ArgumentNullException">Thrown when next or logger is null.</exception>
     public ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, RequestDelegate next)
     {
@@ -44,7 +45,7 @@ public sealed class ExceptionMiddleware
         {
             if (!context.Response.HasStarted)
             {
-                 var result = await HandleExceptionAsync(context, ex);
+                var result = await HandleExceptionAsync(context, ex);
                 Logger.LogError("An exception has occurred. {exceptionDetails}", result);
             }
         }
@@ -80,7 +81,7 @@ public sealed class ExceptionMiddleware
         context.Response.ContentType = "application/problem+json";
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         var result = JsonSerializer.Serialize(problemDetails);
-        
+
         await context.Response.WriteAsync(result);
 
         return result;

@@ -13,8 +13,8 @@ public class SendTokenRequestValidator : AbstractValidator<SendTokenRequest>
     /// <summary>
     /// List of allowed token types for validation.
     /// </summary>
-    private static readonly string[] AllowedTokenTypes = 
-    { 
+    private static readonly string[] AllowedTokenTypes =
+    {
         EmailTokenConstants.ResetPassword,
         EmailTokenConstants.MultiFactor,
         EmailTokenConstants.ConfirmEmail,

@@ -1,5 +1,3 @@
-using Application.Attributes;
-
 namespace Api.Responses;
 
 /// <summary>

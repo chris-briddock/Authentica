@@ -386,10 +386,10 @@ public class UserWriteStoreTests
         _serviceProviderMock.Mock()
             .Setup(x => x.GetService(typeof(UserManager<User>)))
             .Returns(_userManagerMock.Object);
-        
-         _serviceProviderMock.Mock()
-            .Setup(x => x.GetService(typeof(IPasswordHasher<User>)))
-            .Returns(passwordHasherMock.Object);
+
+        _serviceProviderMock.Mock()
+           .Setup(x => x.GetService(typeof(IPasswordHasher<User>)))
+           .Returns(passwordHasherMock.Object);
 
         // Act
         var result = await _sut.ResetPasswordAsync(_applicationUser, token, newPassword);
@@ -587,12 +587,12 @@ public class UserWriteStoreTests
         // Arrange
         var token = "valid-token";
         var newPhoneNumber = "1234567890";
-        
+
         _userManagerMock
             .Setup(x => x.VerifyUserTokenAsync(
-                It.IsAny<User>(), 
-                TokenOptions.DefaultEmailProvider, 
-                EmailTokenConstants.UpdatePhoneNumber, 
+                It.IsAny<User>(),
+                TokenOptions.DefaultEmailProvider,
+                EmailTokenConstants.UpdatePhoneNumber,
                 token))
             .ReturnsAsync(true);
 
@@ -625,9 +625,9 @@ public class UserWriteStoreTests
 
         _userManagerMock
             .Setup(x => x.VerifyUserTokenAsync(
-                It.IsAny<User>(), 
-                TokenOptions.DefaultEmailProvider, 
-                EmailTokenConstants.UpdatePhoneNumber, 
+                It.IsAny<User>(),
+                TokenOptions.DefaultEmailProvider,
+                EmailTokenConstants.UpdatePhoneNumber,
                 token))
             .ReturnsAsync(false);
 
@@ -656,9 +656,9 @@ public class UserWriteStoreTests
 
         _userManagerMock
             .Setup(x => x.VerifyUserTokenAsync(
-                It.IsAny<User>(), 
-                TokenOptions.DefaultEmailProvider, 
-                EmailTokenConstants.UpdatePhoneNumber, 
+                It.IsAny<User>(),
+                TokenOptions.DefaultEmailProvider,
+                EmailTokenConstants.UpdatePhoneNumber,
                 token))
             .ThrowsAsync(exception);
 

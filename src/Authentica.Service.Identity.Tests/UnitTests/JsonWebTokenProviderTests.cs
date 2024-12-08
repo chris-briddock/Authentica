@@ -1,5 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
@@ -13,7 +13,7 @@ public class JsonWebTokenProviderTests
     private readonly string _subject = "John Doe";
 
     private readonly IList<string> _roles = ["Admin"];
-    private readonly IList<string> _scopes = [ "read", "write"];
+    private readonly IList<string> _scopes = ["read", "write"];
 
     [Test]
     public async Task TryCreateTokenAsync_ShouldCreateToken_WhenValidParametersAreProvided()
@@ -110,9 +110,9 @@ public class JsonWebTokenProviderTests
     [Test]
     public async Task TryValidateTokenAsync_ShouldFail_WhenExceptionIsThrown()
     {
-        
+
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
-         var invalidToken = "invalidToken";
+        var invalidToken = "invalidToken";
 
         tokenHandler.Setup(x => x.WriteToken(It.IsAny<SecurityToken>())).Returns(invalidToken);
         tokenHandler.Setup(x => x.ValidateTokenAsync(It.IsAny<string>(),

@@ -1,8 +1,8 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -59,13 +59,13 @@ public sealed class UpdateRoleEndpoint : EndpointBaseAsync
         var currentRole = await roleManager.Roles
                                 .Where(x => x.Name == request.CurrentName)
                                 .FirstAsync(cancellationToken);
-        
+
         var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         currentRole.Name = request.NewName;
-        currentRole.EntityModificationStatus.ModifiedBy = user.Id; 
+        currentRole.EntityModificationStatus.ModifiedBy = user.Id;
         currentRole.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
-        
+
         await roleManager.UpdateAsync(currentRole);
 
         UpdateRoleActivity activity = new()

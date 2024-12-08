@@ -1,8 +1,8 @@
+using Api.Constants;
+using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.ValueObjects;
-using ChristopherBriddock.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Api.Constants;
 
 namespace Persistence.Seed;
 

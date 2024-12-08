@@ -101,8 +101,8 @@ public class AccountPurgeBackgroundServiceTests
         var serviceProviderMock = new Mock<IServiceProvider>();
         var sharedStoreMock = new Mock<ISharedStore>();
 
-         sharedStoreMock.Setup(x => x.PurgeEntriesAsync<User>(It.IsAny<CancellationToken>()))
-        .ReturnsAsync(SharedStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
+        sharedStoreMock.Setup(x => x.PurgeEntriesAsync<User>(It.IsAny<CancellationToken>()))
+       .ReturnsAsync(SharedStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
         serviceScopeMock.Setup(x => x.ServiceProvider.GetService(typeof(ISharedStore))).Returns(sharedStoreMock.Object);
         serviceScopeFactoryMock.Setup(x => x.CreateScope()).Returns(serviceScopeMock.Object);
 
@@ -123,7 +123,7 @@ public class AccountPurgeBackgroundServiceTests
         });
 
         var service = new AccountPurgeExposeProtected(serviceScopeFactoryMock.Object, mockLogger.Object, mockTimer.Object);
-       
+
         Assert.ThrowsAsync<PurgeFailureException>(async () => await service.ExecuteTaskAsync(CancellationToken.None));
     }
 

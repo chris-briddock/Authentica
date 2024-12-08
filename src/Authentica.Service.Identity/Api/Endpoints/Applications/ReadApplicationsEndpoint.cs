@@ -1,9 +1,9 @@
 using Api.Constants;
 using Api.Responses;
+using Application.Activities;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +19,7 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
                                                .WithoutRequest
                                                .WithActionResult
 {
-     /// <summary>
+    /// <summary>
     /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }

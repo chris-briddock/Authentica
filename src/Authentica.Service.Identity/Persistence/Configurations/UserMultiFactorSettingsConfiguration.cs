@@ -1,6 +1,6 @@
 ﻿using Domain.Aggregates.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
@@ -19,7 +19,7 @@ public sealed class UserMultiFactorSettingsConfiguration : IEntityTypeConfigurat
         builder.HasKey(mfa => mfa.Id);
 
         builder.HasOne(mfa => mfa.User)
-               .WithOne(u => u.UserMultiFactorSettings) 
+               .WithOne(u => u.UserMultiFactorSettings)
                .HasForeignKey<UserMultiFactorSettings>(mfa => mfa.UserId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);

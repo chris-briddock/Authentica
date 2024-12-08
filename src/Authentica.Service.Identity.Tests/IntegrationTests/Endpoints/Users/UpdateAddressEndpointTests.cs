@@ -1,6 +1,6 @@
-using System.Text;
 using Api.Constants;
 using Domain.ValueObjects;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 

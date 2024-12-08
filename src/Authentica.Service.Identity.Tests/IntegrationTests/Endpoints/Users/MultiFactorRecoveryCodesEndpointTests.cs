@@ -29,7 +29,7 @@ public class MultiFactorRecoveryCodesEndpointTests
         var userReadStoreMock = new UserReadStoreMock();
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
-        .ReturnsAsync(UserStoreResult.Success(new User() { Email = Seed.Test.MultiFactorUserEmail, TwoFactorEnabled = true}));
+        .ReturnsAsync(UserStoreResult.Success(new User() { Email = Seed.Test.MultiFactorUserEmail, TwoFactorEnabled = true }));
 
         using var sut = await client.GetAsync($"api/v1/{Routes.Users.MultiFactorRecoveryCodes}");
 

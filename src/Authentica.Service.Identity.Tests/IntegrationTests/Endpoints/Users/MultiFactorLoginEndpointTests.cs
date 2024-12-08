@@ -1,6 +1,6 @@
-using System.Text;
 using Api.Constants;
 using Persistence.Seed;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -28,10 +28,10 @@ public class MultiFactorLoginEndpointTests
 
         signInManagerMock.Setup(x => x.GetTwoFactorAuthenticationUserAsync()).ReturnsAsync(new User());
         signInManagerMock.Setup(x => x.TwoFactorSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).ReturnsAsync(SignInResult.Success);
-        
-        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c => 
+
+        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c =>
         {
-            c.ConfigureServices(s => 
+            c.ConfigureServices(s =>
             {
                 s.Replace(new ServiceDescriptor(typeof(SignInManager<User>), signInManagerMock.Object));
             });
@@ -56,10 +56,10 @@ public class MultiFactorLoginEndpointTests
 
         signInManagerMock.Setup(x => x.GetTwoFactorAuthenticationUserAsync());
         signInManagerMock.Setup(x => x.TwoFactorSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).ReturnsAsync(SignInResult.Success);
-        
-        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c => 
+
+        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c =>
         {
-            c.ConfigureServices(s => 
+            c.ConfigureServices(s =>
             {
                 s.Replace(new ServiceDescriptor(typeof(SignInManager<User>), signInManagerMock.Object));
             });
@@ -72,7 +72,7 @@ public class MultiFactorLoginEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.MultiFactorLogin}", jsonContent);   
+        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.MultiFactorLogin}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -82,12 +82,12 @@ public class MultiFactorLoginEndpointTests
     {
         var signInManagerMock = new SignInManagerMock<User>().Mock();
 
-        signInManagerMock.Setup(x => x.GetTwoFactorAuthenticationUserAsync()).ReturnsAsync(new User() { Email = Seed.Test.MultiFactorUserEmail, TwoFactorEnabled = true} );
+        signInManagerMock.Setup(x => x.GetTwoFactorAuthenticationUserAsync()).ReturnsAsync(new User() { Email = Seed.Test.MultiFactorUserEmail, TwoFactorEnabled = true });
         signInManagerMock.Setup(x => x.TwoFactorSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).ReturnsAsync(SignInResult.Success);
-        
-        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c => 
+
+        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c =>
         {
-            c.ConfigureServices(s => 
+            c.ConfigureServices(s =>
             {
                 s.Replace(new ServiceDescriptor(typeof(SignInManager<User>), signInManagerMock.Object));
             });
@@ -112,12 +112,12 @@ public class MultiFactorLoginEndpointTests
     {
         var signInManagerMock = new SignInManagerMock<User>().Mock();
 
-        signInManagerMock.Setup(x => x.GetTwoFactorAuthenticationUserAsync()).ReturnsAsync(new User() { Email = Seed.Test.MultiFactorUserEmail, TwoFactorEnabled = true} );
+        signInManagerMock.Setup(x => x.GetTwoFactorAuthenticationUserAsync()).ReturnsAsync(new User() { Email = Seed.Test.MultiFactorUserEmail, TwoFactorEnabled = true });
         signInManagerMock.Setup(x => x.TwoFactorSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).ReturnsAsync(SignInResult.Failed);
-        
-        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c => 
+
+        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c =>
         {
-            c.ConfigureServices(s => 
+            c.ConfigureServices(s =>
             {
                 s.Replace(new ServiceDescriptor(typeof(SignInManager<User>), signInManagerMock.Object));
             });

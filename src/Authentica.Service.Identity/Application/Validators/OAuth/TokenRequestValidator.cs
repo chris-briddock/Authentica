@@ -1,5 +1,5 @@
-using Application.Extensions;
 using Api.Requests;
+using Application.Extensions;
 using FluentValidation;
 
 namespace Application.Validators;

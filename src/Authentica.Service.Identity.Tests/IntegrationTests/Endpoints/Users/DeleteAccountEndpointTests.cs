@@ -24,25 +24,25 @@ public class DeleteAccountEndpointTests
     [Test]
     public async Task DeleteAccount_Returns204NoContent_WhenSoftDeletionIsSuccessful()
     {
-       var client = _fixture.CreateAuthenticatedClient();
+        var client = _fixture.CreateAuthenticatedClient();
 
-       var result = await client.DeleteAsync($"api/v1/{Routes.Users.DeleteByEmail}");
+        var result = await client.DeleteAsync($"api/v1/{Routes.Users.DeleteByEmail}");
 
-       Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
 
     [Test]
     public async Task DeleteAccount_Returns500InternalServerError_WhenSoftDeletionFails()
     {
-       var mockWriteStore = new UserWriteStoreMock();
-       
-       mockWriteStore.Setup(x => x.SoftDeleteUserAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
-       .ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
+        var mockWriteStore = new UserWriteStoreMock();
 
-       var client = _fixture.CreateAuthenticatedClient(x => x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), mockWriteStore.Object)));
+        mockWriteStore.Setup(x => x.SoftDeleteUserAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
-       var result = await client.DeleteAsync($"api/v1/{Routes.Users.DeleteByEmail}");
+        var client = _fixture.CreateAuthenticatedClient(x => x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), mockWriteStore.Object)));
 
-       Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+        var result = await client.DeleteAsync($"api/v1/{Routes.Users.DeleteByEmail}");
+
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }
 }

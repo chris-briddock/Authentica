@@ -1,6 +1,6 @@
-using System.Text;
 using Api.Constants;
 using Application.Contracts;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -40,7 +40,7 @@ public class UpdateEmailEndpointTests
             Token = "888888"
         };
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        
+
         using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdateEmail}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));

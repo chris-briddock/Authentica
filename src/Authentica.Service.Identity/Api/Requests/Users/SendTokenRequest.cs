@@ -20,5 +20,5 @@ public sealed record SendTokenRequest
     /// </summary>
     [FromQuery(Name = "token_type")]
     public string TokenType { get; set; } = default!;
-  
+
 }

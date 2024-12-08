@@ -11,23 +11,20 @@ public sealed class RoleClaimConfiguration : IEntityTypeConfiguration<RoleClaim>
     /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<RoleClaim> builder)
     {
-        builder.ToTable("SYSTEM_IDENTITY_ROLE_CLAIMS", opt =>
-        {
-            opt.IsTemporal();
-        });
+        builder.ToTable("SYSTEM_IDENTITY_ROLE_CLAIMS", opt => opt.IsTemporal());
 
         builder.HasKey(rc => rc.Id);
 
         builder.Property(rc => rc.Id)
-                .HasColumnName("id")
-                .HasMaxLength(36);
-        
+               .HasColumnName("id")
+               .HasMaxLength(36);
+
         builder.Property(rc => rc.RoleId)
                .HasColumnName("role_id")
-                .HasMaxLength(36);
+               .HasMaxLength(36);
 
         builder.Property(rc => rc.ClaimType)
-                .HasColumnName("claim_type")
+               .HasColumnName("claim_type")
                .HasMaxLength(100);
 
         builder.Property(rc => rc.ClaimValue)
@@ -38,12 +35,5 @@ public sealed class RoleClaimConfiguration : IEntityTypeConfiguration<RoleClaim>
                .HasMaxLength(36)
                .HasColumnName("concurrency_stamp")
                .IsConcurrencyToken();
-
-        // Configure the relationship with Role
-        builder.HasOne(rc => rc.Role)
-               .WithMany(r => r.RoleClaims)
-               .HasForeignKey(rc => rc.RoleId)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.Cascade);
     }
 }

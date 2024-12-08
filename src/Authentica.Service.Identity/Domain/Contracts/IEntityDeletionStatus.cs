@@ -17,5 +17,5 @@ public interface IEntityDeletionStatus<TKey> where TKey : IEquatable<TKey>
     /// <summary>
     /// The deletion status of an entity.
     /// </summary>
-    public EntityDeletionStatus<TKey> EntityDeletionStatus { get; set; } 
+    public EntityDeletionStatus<TKey> EntityDeletionStatus { get; set; }
 }

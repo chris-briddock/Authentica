@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Api.Requests;
 using Application.Results;
 using Domain.Aggregates.Identity;
+using System.Security.Claims;
 
 namespace Application.Contracts;
 

@@ -7,8 +7,8 @@ namespace Domain.Aggregates.Identity;
 /// <summary>
 /// Represents a user in the identity system with additional auditing and soft deletion properties.
 /// </summary>
-public sealed class User : 
-    IdentityUser<string>, 
+public sealed class User :
+    IdentityUser<string>,
     IEntityDeletionStatus<string>,
     IEntityCreationStatus<string>,
     IEntityModificationStatus<string>
@@ -68,7 +68,12 @@ public sealed class User :
     /// Gets or sets the multi-factor authentication settings for the user.
     /// </summary>
     public UserMultiFactorSettings UserMultiFactorSettings { get; set; } = default!;
-
-    public PasskeyChallenge PasskeyChallenge { get; set; } = default!;
-    public PasskeyCredential PasskeyCredential { get; set; } = default!;
+    /// <summary>
+    /// Gets or sets the collection of user-passkeychallenge link associated with the user.
+    /// </summary>
+    public ICollection<UserPasskeyChallenge> UserPasskeyChallenges { get; set; } = default!;
+    /// <summary>
+    /// Gets or sets the collection of user-passkeycredential link associated with the user.
+    /// </summary>
+    public ICollection<UserPasskeyCredential> UserPasskeyCredentials { get; set; } = default!;
 }

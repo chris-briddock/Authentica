@@ -1,7 +1,6 @@
 ﻿using Api.Constants;
 using Api.Requests;
 using Application.Contracts;
-using Application.Contracts.Stores;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,7 +47,7 @@ public sealed class DeleteSessionEndpoint : EndpointBaseAsync
         var sessionWriteStore = Services.GetRequiredService<ISessionWriteStore>();
 
         Session? session = await sessionReadStore.GetByIdAsync(request.SessionId);
-        
+
         if (session is null)
             return StatusCode(StatusCodes.Status500InternalServerError);
 

@@ -1,13 +1,13 @@
 using Api.Constants;
 using Api.Responses;
+using Application.Activities;
 using Application.Contracts;
 using Application.Mappers;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
+using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Aggregates.Identity;
 
 namespace Api.Endpoints.Admin;
 
@@ -56,6 +56,6 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
 
         await activityStore.SaveActivityAsync(activity);
 
-        return Ok(response);        
+        return Ok(response);
     }
 }

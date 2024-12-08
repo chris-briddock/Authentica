@@ -19,7 +19,7 @@ public sealed class MultiFactorLoginEndpoint : EndpointBaseAsync
                                                .WithRequest<MultiFactorLoginRequest>
                                                .WithActionResult
 {
-     /// <summary>
+    /// <summary>
     /// Gets the service provider used to resolve dependencies.
     /// </summary>
     private IServiceProvider Services { get; }
@@ -50,7 +50,7 @@ public sealed class MultiFactorLoginEndpoint : EndpointBaseAsync
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         SignInResult result;
 
-         var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
+        var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
 
         if (user is null)
             return BadRequest();
@@ -63,7 +63,7 @@ public sealed class MultiFactorLoginEndpoint : EndpointBaseAsync
         if (request.UseAuthenticator)
             result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultAuthenticatorProvider, request.Token, true, true);
         else
-             result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
+            result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
 
         MultiFactorLoginActivity activity = new()
         {
@@ -71,10 +71,10 @@ public sealed class MultiFactorLoginEndpoint : EndpointBaseAsync
         };
 
         await activityWriteStore.SaveActivityAsync(activity);
-    
+
         if (!result.Succeeded)
-                return Unauthorized();
-            
+            return Unauthorized();
+
         return Ok();
     }
 }

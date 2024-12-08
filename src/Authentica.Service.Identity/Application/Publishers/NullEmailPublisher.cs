@@ -1,6 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using Application.Contracts;
 using Authentica.Common;
+using System.Diagnostics.CodeAnalysis;
 namespace Application.Publishers;
 
 /// <summary>

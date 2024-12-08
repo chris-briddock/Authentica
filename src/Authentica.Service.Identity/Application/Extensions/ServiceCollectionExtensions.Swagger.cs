@@ -2,7 +2,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Application.Extensions;
 
-public static partial class ServiceCollectionExtensions 
+public static partial class ServiceCollectionExtensions
 {
     /// <summary>
     /// Adds Swagger with custom configuration.

@@ -65,7 +65,7 @@ public class TestFixture<TProgram> where TProgram : class
             });
         }).CreateClient(new WebApplicationFactoryClientOptions()
         {
-            AllowAutoRedirect = true    
+            AllowAutoRedirect = true
         });
 
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);

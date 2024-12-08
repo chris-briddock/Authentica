@@ -28,8 +28,8 @@ public class ConfirmEmailEndpointTests
         var email = "test@test.com";
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
-        .ReturnsAsync(UserStoreResult.Success(new User() { Email = email}));
-        
+        .ReturnsAsync(UserStoreResult.Success(new User() { Email = email }));
+
         userWriteStoreMock.Setup(x => x.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
         .ReturnsAsync(UserStoreResult.Success());
 
@@ -65,7 +65,7 @@ public class ConfirmEmailEndpointTests
         var email = "test@test.com";
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
-        .ReturnsAsync(UserStoreResult.Success(new User() { Email = "test@test.com"}));
+        .ReturnsAsync(UserStoreResult.Success(new User() { Email = "test@test.com" }));
 
         userWriteStoreMock.Setup(x => x.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
@@ -80,7 +80,7 @@ public class ConfirmEmailEndpointTests
 
         ConfirmEmailRequest request = new()
         {
-            Email= email,
+            Email = email,
             Token = "dklcmsdklmdsmk"
         };
 
@@ -88,5 +88,5 @@ public class ConfirmEmailEndpointTests
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }
-    
+
 }

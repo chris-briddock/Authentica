@@ -36,7 +36,7 @@ public class ReadApplicationsEndpointTests
 
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()));
 
-        using var sutClient = _fixture.CreateAuthenticatedClient(x => 
+        using var sutClient = _fixture.CreateAuthenticatedClient(x =>
         {
             x.Replace(new ServiceDescriptor(typeof(IUserReadStore), userReadStoreMock.Object));
         });

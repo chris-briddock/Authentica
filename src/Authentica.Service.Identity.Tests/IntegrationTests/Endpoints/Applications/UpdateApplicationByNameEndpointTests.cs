@@ -1,14 +1,14 @@
-using System.Text;
 using Api.Constants;
 using Application.Contracts;
 using Application.DTOs;
 using Application.Factories;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 public class UpdateApplicationByNameEndpointTests
-{   
-     private TestFixture<Program> _fixture;
+{
+    private TestFixture<Program> _fixture;
 
     [OneTimeSetUp]
     public async Task OneTimeSetup()
@@ -27,7 +27,7 @@ public class UpdateApplicationByNameEndpointTests
     public async Task UpdateApplication_Returns200OK_WhenUpdateIsSuccessful()
     {
         using var sutClient = _fixture.CreateAuthenticatedClient();
-        
+
         var request = new UpdateApplicationByNameRequest()
         {
             CurrentName = "Default Test Application",
@@ -49,7 +49,7 @@ public class UpdateApplicationByNameEndpointTests
 
         storeMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>())).ReturnsAsync(UserStoreResult.Failed());
 
-        using var sutClient = _fixture.CreateAuthenticatedClient(s => 
+        using var sutClient = _fixture.CreateAuthenticatedClient(s =>
         {
             s.Replace(new ServiceDescriptor(typeof(IUserReadStore), storeMock.Object));
         });
@@ -77,7 +77,7 @@ public class UpdateApplicationByNameEndpointTests
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<CancellationToken>()));
 
-        using var sutClient = _fixture.CreateAuthenticatedClient(s => 
+        using var sutClient = _fixture.CreateAuthenticatedClient(s =>
         {
             s.Replace(new ServiceDescriptor(typeof(IApplicationReadStore), storeMock.Object));
         });
@@ -104,11 +104,11 @@ public class UpdateApplicationByNameEndpointTests
         userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ApplicationDto<UpdateApplicationByNameRequest>>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
-         using var sutClient = _fixture.CreateAuthenticatedClient(s => 
-        {
-            s.Replace(new ServiceDescriptor(typeof(IApplicationWriteStore), userWriteStoreMock.Object));
-        });
-        
+        using var sutClient = _fixture.CreateAuthenticatedClient(s =>
+       {
+           s.Replace(new ServiceDescriptor(typeof(IApplicationWriteStore), userWriteStoreMock.Object));
+       });
+
         var request = new UpdateApplicationByNameRequest()
         {
             CurrentName = "Default Recent Deleted Application",

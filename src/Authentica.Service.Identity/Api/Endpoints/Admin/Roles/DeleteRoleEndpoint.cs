@@ -1,13 +1,13 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Domain.Aggregates.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Api.Endpoints.Admin.Roles;
 
@@ -57,7 +57,7 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
             return BadRequest();
 
         role.EntityDeletionStatus = new(true, DateTime.UtcNow, user.Id);
-        role.EntityModificationStatus = new(DateTime.UtcNow, user.Id); 
+        role.EntityModificationStatus = new(DateTime.UtcNow, user.Id);
 
         await roleManager.UpdateAsync(role);
 

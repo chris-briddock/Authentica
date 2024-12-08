@@ -10,6 +10,6 @@ public sealed record DeleteRoleRequest
     /// <summary>
     /// Gets or sets the name of the group to be deleted.
     /// </summary>
-    [FromQuery(Name = "name")] 
+    [FromQuery(Name = "name")]
     public string Name { get; set; } = default!;
 }

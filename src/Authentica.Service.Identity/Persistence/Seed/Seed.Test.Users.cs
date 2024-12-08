@@ -48,7 +48,7 @@ public static partial class Seed
             }
 
         }
-    
+
         /// <summary>
         /// Seeds an deleted user into the database if it doesn't already exist.
         /// </summary>

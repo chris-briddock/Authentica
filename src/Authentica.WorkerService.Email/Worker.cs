@@ -1,6 +1,6 @@
+using Authentica.Common;
 using MassTransit;
 using System.Net.Mail;
-using Authentica.Common;
 
 namespace Authentica.WorkerService.Email;
 

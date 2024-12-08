@@ -1,8 +1,8 @@
-using System.Text.Json;
 using Application.Contracts;
 using Application.Redactors;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
+using System.Text.Json;
 
 namespace Application.Stores;
 
@@ -18,7 +18,7 @@ public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
     /// <remarks>
     /// This constructor initializes the <see cref="ActivityReadStore"/> instance by calling the base constructor with the provided service provider.
     /// </remarks>
-    public ActivityWriteStore(IServiceProvider services) : base(services) {}
+    public ActivityWriteStore(IServiceProvider services) : base(services) { }
 
     /// <inheritdoc/>
     public async Task SaveActivityAsync<T>(T activity) where T : class

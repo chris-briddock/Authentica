@@ -1,8 +1,8 @@
 namespace Authentica.TestClient;
 public class Program
 {
-    private Program(){}
-    
+    private Program() { }
+
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);

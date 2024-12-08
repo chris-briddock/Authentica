@@ -1,8 +1,8 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -60,7 +60,7 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
             await userManager.AddToRoleAsync(result.User, RoleDefaults.Admin);
             await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
         }
-        
+
         RegisterAdminActivity activity = new()
         {
             Payload = request

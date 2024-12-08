@@ -109,11 +109,11 @@ public class ApplicationPurgeBackgroundServiceTests
             });
         sharedStoreMock.Setup(x => x.PurgeEntriesAsync<ClientApplication>(It.IsAny<CancellationToken>()))
         .ReturnsAsync(SharedStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
-        
+
         serviceScopeMock.Setup(x => x.ServiceProvider.GetService(typeof(ISharedStore))).Returns(sharedStoreMock.Object);
-        
+
         serviceScopeFactoryMock.Setup(x => x.CreateScope()).Returns(serviceScopeMock.Object);
-        
+
         var webAppFactory = _fixture.WebApplicationFactory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>

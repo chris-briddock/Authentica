@@ -49,13 +49,24 @@ public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var multiFactorWriteStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
 
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
             return BadRequest();
 
+        // Disable MFA within the SYSTEM_IDENTITY_USERS table.
         await userManager.SetTwoFactorEnabledAsync(user, false);
+
+        // Now disable MFA from the SYSTEM_IDENTITY_USER_MFA_SETTINGS table.
+
+        await multiFactorWriteStore.SetPasskeysAsync(false, user.Id);
+        await multiFactorWriteStore.SetEmailAsync(false, user.Id);
+        await multiFactorWriteStore.SetAutheticatorAsync(false, user.Id);
+
+        // TODO: Now delete all passkeys.
+
 
         DisableMultiFactorActivity activity = new()
         {

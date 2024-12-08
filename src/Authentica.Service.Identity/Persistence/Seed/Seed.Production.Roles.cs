@@ -35,4 +35,4 @@ public static partial class Seed
                 await roleManager.CreateAsync(newRole);
         }
     }
-}   
+}

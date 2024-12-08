@@ -1,9 +1,8 @@
-using Domain.Constants;
-using Domain.Aggregates.Identity;
-using System.Security.Claims;
-using Application.Extensions;
-using Authentica.Service.Identity.Application.Contracts.Stores;
 using Application.Contracts;
+using Application.Extensions;
+using Domain.Aggregates.Identity;
+using Domain.Constants;
+using System.Security.Claims;
 
 namespace Api.Middlware;
 
@@ -60,7 +59,7 @@ public sealed class SessionMiddleware
 
             if (shouldCreate)
             {
-                string? userId = null!;    
+                string? userId = null!;
                 var sessionId = Guid.NewGuid().ToString();
                 context.Session.SetString(SessionConstants.SequenceId, sessionId);
                 var sessionWriteStore = scope.ServiceProvider.GetRequiredService<ISessionWriteStore>();

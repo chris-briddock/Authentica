@@ -5,5 +5,5 @@ namespace Application.Results;
 /// </summary>
 public sealed class SessionStoreResult : BaseResult<SessionStoreResult>
 {
-    
+
 }

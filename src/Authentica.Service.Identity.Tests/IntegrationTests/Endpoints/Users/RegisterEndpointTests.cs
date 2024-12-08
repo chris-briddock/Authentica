@@ -1,8 +1,8 @@
-using System.Text;
 using Api.Constants;
 using Application.Contracts;
 using Application.Factories;
 using Persistence.Seed;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -24,7 +24,7 @@ public class RegisterEndpointTests
     }
 
     [Test]
-    public async Task Register_Returns201Created_WhenUserRegistrationIsSuccessful() 
+    public async Task Register_Returns201Created_WhenUserRegistrationIsSuccessful()
     {
         var client = _fixture.WebApplicationFactory.CreateClient();
 
@@ -43,7 +43,7 @@ public class RegisterEndpointTests
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Created));
     }
     [Test]
-    public async Task Register_Returns409Conflict_WhenUserIsAlreadyRegistered() 
+    public async Task Register_Returns409Conflict_WhenUserIsAlreadyRegistered()
     {
         var client = _fixture.WebApplicationFactory.CreateClient();
 
@@ -61,7 +61,7 @@ public class RegisterEndpointTests
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
     [Test]
-    public async Task Register_Returns500InternalServerError_WhenCreateFails() 
+    public async Task Register_Returns500InternalServerError_WhenCreateFails()
     {
         var userWriteStoreMock = new UserWriteStoreMock();
 
@@ -69,9 +69,9 @@ public class RegisterEndpointTests
                                                         It.IsAny<CancellationToken>()))
                                                         .ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception("error occured."))));
 
-        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c => 
+        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(c =>
         {
-            c.ConfigureServices(s => 
+            c.ConfigureServices(s =>
             {
                 s.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStoreMock.Object));
             });
@@ -86,7 +86,7 @@ public class RegisterEndpointTests
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        
+
         var sut = await client.PostAsync($"/api/v1/{Routes.Users.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));

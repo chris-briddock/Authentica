@@ -1,7 +1,7 @@
-using System.Text;
 using Api.Constants;
 using Application.Contracts;
 using Persistence.Seed;
+using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
@@ -28,8 +28,8 @@ public class ResetPasswordEndpointTests
         var userWriteStoreMock = new UserWriteStoreMock();
 
         userWriteStoreMock.Setup(x => x.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Success);
-        
-        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(x => 
+
+        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(x =>
         {
             x.ConfigureTestServices(s => s.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStoreMock.Object)));
         }).CreateClient();
@@ -54,8 +54,8 @@ public class ResetPasswordEndpointTests
         var userWriteStoreMock = new UserWriteStoreMock();
 
         userWriteStoreMock.Setup(x => x.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Failed());
-        
-        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(x => 
+
+        var client = _fixture.WebApplicationFactory.WithWebHostBuilder(x =>
         {
             x.ConfigureTestServices(s => s.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStoreMock.Object)));
         }).CreateClient();
@@ -69,7 +69,7 @@ public class ResetPasswordEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent);;
+        var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent); ;
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

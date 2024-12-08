@@ -5,7 +5,7 @@ using Persistence.Contexts;
 
 namespace Application.Extensions;
 
-public static partial class ServiceCollectionExtensions 
+public static partial class ServiceCollectionExtensions
 {
     /// <summary>
     /// Adds the persistence services to the service collection.

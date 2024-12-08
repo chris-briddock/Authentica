@@ -1,9 +1,9 @@
 using Api.Constants;
 using Api.Requests;
+using Application.Activities;
 using Application.Contracts;
 using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Application.Activities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -71,7 +71,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
-        
+
         return StatusCode(StatusCodes.Status201Created);
     }
 }

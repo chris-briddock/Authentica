@@ -13,7 +13,7 @@ public sealed class TimerProvider : ITimerProvider
     /// Initializes a new instance of the <see cref="TimerProvider"/> class.
     /// The timer is set to tick every day.
     /// </summary>
-    public TimerProvider() =>  _timer = new PeriodicTimer(TimeSpan.FromDays(1));
+    public TimerProvider() => _timer = new PeriodicTimer(TimeSpan.FromDays(1));
 
     /// <summary>
     /// Waits asynchronously for the next tick of the timer.

@@ -1,6 +1,6 @@
-using System.Security.Claims;
 using Application.Results;
 using Domain.Aggregates.Identity;
+using System.Security.Claims;
 
 namespace Application.Contracts;
 
@@ -52,5 +52,5 @@ public interface IUserReadStore
     /// <returns>
     /// A task that represents the asynchronous operation. The task result contains a list of all users.
     /// </returns>
-    Task<IList<User>> GetAllUsersAsync(); 
+    Task<IList<User>> GetAllUsersAsync();
 }

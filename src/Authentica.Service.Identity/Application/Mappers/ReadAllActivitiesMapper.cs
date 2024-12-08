@@ -1,7 +1,7 @@
-using System.Collections.Immutable;
 using Api.Responses;
 using Domain.Aggregates.Identity;
 using Riok.Mapperly.Abstractions;
+using System.Collections.Immutable;
 
 namespace Application.Mappers;
 
