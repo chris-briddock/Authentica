@@ -1,5 +1,3 @@
-using Application.Contracts;
-
 namespace Authentica.Service.Identity.Tests.Mocks;
 
 public class ApplicationReadStoreMock : Mock<IApplicationReadStore>, IMockBase<Mock<IApplicationReadStore>>

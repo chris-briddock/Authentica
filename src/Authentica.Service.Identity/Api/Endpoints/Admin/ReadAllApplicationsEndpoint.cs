@@ -1,10 +1,9 @@
 using Api.Constants;
-using Api.Responses;
 using Application.Activities;
-using Application.Contracts;
-using Application.Mappers;
+using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,18 +47,44 @@ public class ReadAllApplicationsEndpoint : EndpointBaseAsync
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        IList<ClientApplication> apps = await dbContext.ClientApplications.ToListAsync(cancellationToken);
+        var apps = await dbContext.ClientApplications
+                                  .Select(x => new ApplicationReadDto
+                                  {
+                                      ClientId = x.ClientId,
+                                      EntityCreationStatus = x.EntityCreationStatus,
+                                      EntityDeletionStatus = x.EntityDeletionStatus,
+                                      EntityModificationStatus = x.EntityModificationStatus,
+                                      CallbackUri = x.CallbackUri,
+                                      Name = x.Name
+                                  })
+                                  .ToListAsync(cancellationToken);
 
-        IList<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
-        IList<ReadApplicationResponse> redacted = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
+        IList<ReadApplicationResponse> response = [];
+
+        foreach (var item in apps)
+        {
+            response.Add(new ReadApplicationResponse()
+            {
+                ClientId = item.ClientId,
+                CallbackUri = item.CallbackUri,
+                Name = item.Name,
+                IsDeleted = item.EntityDeletionStatus.IsDeleted,
+                DeletedBy = item.EntityDeletionStatus.DeletedBy,
+                DeletedOnUtc = item.EntityDeletionStatus.DeletedOnUtc,
+                ModifiedBy = item.EntityModificationStatus.ModifiedBy,
+                ModifiedOnUtc = item.EntityModificationStatus.ModifiedOnUtc,
+                CreatedBy = item.EntityCreationStatus.CreatedBy,
+                CreatedOnUtc = item.EntityCreationStatus.CreatedOnUtc
+            });
+        }
 
         ReadAllApplicationsActivity activity = new()
         {
-            Payload = redacted
+            Payload = response
         };
 
         await activityStore.SaveActivityAsync(activity);
 
-        return Ok(responses);
+        return Ok(response);
     }
 }

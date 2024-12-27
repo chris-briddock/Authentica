@@ -1,5 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
 using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -39,7 +37,7 @@ public class UpdatePhoneNumberEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", jsonContent);
+        using var sut = await client.PutAsync($"api/v1/{Routes.Users.Details.UpdatePhoneNumber}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -62,7 +60,7 @@ public class UpdatePhoneNumberEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdatePhoneNumber}", jsonContent);
+        using var sut = await client.PutAsync($"api/v1/{Routes.Users.Details.UpdatePhoneNumber}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

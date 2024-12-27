@@ -1,4 +1,4 @@
-﻿using Application.Contracts;
+﻿using Domain.Contracts;
 
 namespace Authentica.Service.Identity.Tests.Mocks;
 

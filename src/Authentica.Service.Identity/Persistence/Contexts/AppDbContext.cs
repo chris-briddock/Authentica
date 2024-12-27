@@ -16,11 +16,11 @@ public class AppDbContext : DbContext
     /// </summary>
     public IConfiguration Configuration { get; }
     /// <summary>
-    /// Initializes a new instance of the <see cref="AppDbContext"/> class.
+    /// Initializes a new instance of the <see cref="AppDbContext"/>
     /// </summary>
     public AppDbContext() { }
     /// <summary>
-    /// Initializes a new instance of the <see cref="AppDbContext"/> class.
+    /// Initializes a new instance of the <see cref="AppDbContext"/>
     /// </summary>
     /// <param name="opt">DbContext options.</param>
     /// <param name="configuration">Configuration instance.</param>
@@ -40,6 +40,8 @@ public class AppDbContext : DbContext
         {
             opt.EnableRetryOnFailure();
         });
+
+        optionsBuilder.ConfigureWarnings(warnings => { warnings.Log(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning); });
     }
 
     /// <summary>

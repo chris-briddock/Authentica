@@ -1,7 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
-using Application.Factories;
-
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 public class RegisterAdminEndpointTests
@@ -31,7 +27,7 @@ public class RegisterAdminEndpointTests
             Email = AdminEmail,
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             PhoneNumber = "+447760162366",
-            Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+            Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
         };
 
         using var client = _fixture.CreateAuthenticatedClient();
@@ -49,7 +45,7 @@ public class RegisterAdminEndpointTests
             Email = AdminEmail,
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             PhoneNumber = "+447760162366",
-            Address = new Domain.ValueObjects.Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
+            Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
         };
 
         var userWriteStoreMock = new UserWriteStoreMock();

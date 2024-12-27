@@ -1,4 +1,3 @@
-using Api.Constants;
 using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;

@@ -1,9 +1,9 @@
 using Api.Constants;
-using Api.Requests;
 using Application.Activities;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +42,7 @@ public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
     /// Returns <see cref="StatusCodes.Status200OK"/> if the recovery code was successfully redeemed.
     /// Returns <see cref="StatusCodes.Status400BadRequest"/> if the email is not found or the recovery code redemption fails.
     /// </returns>
-    [HttpPost($"{Routes.Users.MultiFactorRedeemRecoveryCodes}")]
+    [HttpPost($"{Routes.Users.MultiFactorAuthentication.RecoveryCodes}")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

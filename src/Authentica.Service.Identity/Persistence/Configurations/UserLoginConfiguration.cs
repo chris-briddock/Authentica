@@ -9,7 +9,10 @@ namespace Persistence.Configurations;
 /// </summary>
 public sealed class UserLoginConfiguration : IEntityTypeConfiguration<IdentityUserLogin<string>>
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Configures the entity framework mapping for <see cref="IdentityUserLogin{TKey}"/>.
+    /// </summary>
+    /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<IdentityUserLogin<string>> builder)
     {
         builder.ToTable("SYSTEM_IDENTITY_USER_LOGIN", opt => opt.IsTemporal());

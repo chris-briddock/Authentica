@@ -2,11 +2,11 @@ namespace Authentica.Service.Identity.Tests.IntegrationTests;
 
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
-    private MsSqlContainer _msSqlContainer = new MsSqlBuilder()
-                                                .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-                                                .WithWaitStrategy(Wait.ForUnixContainer().UntilMessageIsLogged("SQL Server is now ready for client connections"))
-                                                .WithAutoRemove(true)
-                                                .Build();
+    private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder()
+                                                     .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+                                                     .WithWaitStrategy(Wait.ForUnixContainer().UntilMessageIsLogged("SQL Server is now ready for client connections"))
+                                                     .WithAutoRemove(true)
+                                                     .Build();
 
     public void StartTestContainer()
     {

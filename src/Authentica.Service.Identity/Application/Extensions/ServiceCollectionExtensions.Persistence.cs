@@ -1,5 +1,5 @@
-using Application.Contracts;
 using Application.Stores;
+using Domain.Contracts.Stores;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Persistence.Contexts;
 
@@ -23,7 +23,13 @@ public static partial class ServiceCollectionExtensions
         services.TryAddScoped<IActivityReadStore, ActivityReadStore>();
         services.TryAddScoped<IActivityWriteStore, ActivityWriteStore>();
         services.TryAddScoped<ISharedStore, SharedStore>();
+        services.TryAddScoped<ISessionWriteStore, SessionWriteStore>();
+        services.TryAddScoped<ISessionReadStore, SessionReadStore>();
+        services.TryAddScoped<IPasskeyCredentialReadStore, PasskeyCredentialReadStore>();
+        services.TryAddScoped<IPasskeyCredentialWriteStore, PasskeyCredentialWriteStore>();
 
         return services;
     }
+
+
 }

@@ -74,31 +74,44 @@ Authentica plays a crucial role in your application's security infrastructure, p
 
 ### Endpoints
 
-* **/oauth2/authorize**: GET Endpoint for user authorization.
-* **/oauth2/token**: POST Endpoint for obtaining OAuth tokens.
-* **/oauth2/device**: GET Endpoint for creating a token to be used on your Smart TV, Smart Fridge and other Smart devices that lack a keyboard and mouse.
-* **/users/logout**: POST Endpoint for user logout.
-* **/users/login**: POST Endpoint for user login.
-* **/users**: GET Endpoint for reading a user by email.
-* **/users/register**: POST Endpoint for user registration.
-* **/users/delete**: POST Endpoint for deleting a user by email.
-* **/users/confirm-email**: POST Endpoint for confirming user email.
-* **/users/reset-password**: POST Endpoint for resetting user passwords.
-* **/users/2fa/login**: POST Endpoint for logging in with two-factor authentication.
-* **/users/2fa/manage**: POST Endpoint for enabling/disabling two-factor authentication settings
-* **/users/2fa/manage/authenticator**: POST Endpoint for enabling/disabling two factor via an authenticator app.
-* **/users/2fa/recovery/codes**: GET Endpoint for generating two-factor recovery codes.
-* **/users/2fa/recovery**: POST Endpoint for redeeming two-factor recovery codes.
-* **/users/details/email**: PUT Endpoint for updating a user's email.
-* **/users/details/number**: PUT Endpoint for updating a user's phone number.
-* **/users/details/address**: PUT Endpoint for updating a user's address.
-* **/users/tokens**: POST Endpoint for managing user tokens.
-* **/applications**: GET Endpoint for reading an application by name.
-* **/applications/all**: GET Endpoint for reading all applications.
-* **/applications**: POST Endpoint for creating a new application.
-* **/applications**: PUT Endpoint for updating an application by name.
-* **/applications**: DELETE Endpoint for deleting an application by name.
-* **/applications/secrets**: PUT Endpoint for managing application secrets.
+#### OAuth2 Endpoints
+
+* **GET /oauth2/authorize**: User authorization.
+* **POST /oauth2/token**: Obtain OAuth tokens.
+* **GET /oauth2/device**: Create tokens for devices.
+
+#### User Endpoints
+
+* **POST /users/logout**: Logout.
+* **POST /users/login**: Login.
+* **GET /users**: Retrieve user details by email.
+* **POST /users/register**: Register a new user.
+* **POST /users/delete**: Delete a user by email.
+* **POST /users/confirm-email**: Confirm email.
+* **POST /users/reset-password**: Reset password.
+* **POST /users/mfa/login**: Login with multi-factor authentication.
+* **POST /users/mfa/manage**: Enable/disable multi-factor authentication settings.
+* **POST /users/mfa/manage/authenticator**: Manage authenticator-based MFA.
+* **GET /users/mfa/recovery/codes**: Generate recovery codes.
+* **POST /users/mfa/recovery**: Redeem recovery codes.
+* **PUT /users/details/email**: Update email.
+* **PUT /users/details/number**: Update phone number.
+* **PUT /users/details/address**: Update address.
+* **POST /users/tokens**: Manage user tokens.
+
+#### Application Endpoints
+
+* **GET /applications**: Retrieve application by name.
+* **GET /applications/all**: Retrieve all applications.
+* **POST /applications**: Create an application.
+* **PUT /applications**: Update an application.
+* **DELETE /applications**: Delete an application.
+* **PUT /applications/secrets**: Manage application secrets.
+
+#### Session Endpoints
+
+* **GET /sessions**: Get all sessions associated with a user.
+* **DELETE /sessions**: Delete a session by ID.
 
 ### Getting Started
 

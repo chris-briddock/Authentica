@@ -29,15 +29,11 @@ public static partial class ServiceCollectionExtensions
     /// Add the required services for in-memory and redis services, if redis is enabled in the feature flags.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to which services will be added.</param>
+    /// <param name="configuration">The application's configuration.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddSessionCache(this IServiceCollection services)
+    public static IServiceCollection AddSessionCache(this IServiceCollection services, IConfiguration configuration)
     {
-        IConfiguration configuration = services
-                                      .BuildServiceProvider()
-                                      .GetService<IConfiguration>()!;
-        IFeatureManager featureManager = services
-                                        .BuildServiceProvider()
-                                        .GetService<IFeatureManager>()!;
+        IFeatureManager featureManager = services.Configure
 
         services.AddDistributedMemoryCache();
 

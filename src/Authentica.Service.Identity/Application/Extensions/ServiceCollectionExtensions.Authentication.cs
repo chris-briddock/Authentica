@@ -1,6 +1,6 @@
-using Application.Contracts;
 using Application.Providers;
 using ChristopherBriddock.AspNetCore.Extensions;
+using Domain.Contracts.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -15,10 +15,10 @@ public static partial class ServiceCollectionExtensions
     /// Adds bearer authentication services.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to which services will be added.</param>
+    /// <param name="configuration">The application's configuration.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddBearerAuthentication(this IServiceCollection services)
+    public static IServiceCollection AddBearerAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
 
         services.TryAddScoped<IJsonWebTokenProvider, JsonWebTokenProvider>();
         services.AddAuthentication(opt =>

@@ -1,14 +1,13 @@
-﻿
-using Application.Contracts;
-using Application.Factories;
+﻿using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
 
 /// <summary>
-/// 
+/// Represents a store for user's multi factor preferences.
 /// </summary>
 public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWriteStore
 {
@@ -20,7 +19,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
     {
     }
     /// <inheritdoc/>
-    public async Task<UserMultiFactorResult> SetEmailAsync(bool isEnabled, string userId)
+    public async Task<UserMultiFactorStoreResult> SetEmailAsync(bool isEnabled, string userId)
     {
         try
         {
@@ -29,16 +28,16 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
             await dbSet.Where(x => x.UserId == userId)
                         .ExecuteUpdateAsync(x =>
                                             x.SetProperty(s => s.MultiFactorEmailEnabled, s => isEnabled));
-            return UserMultiFactorResult.Success();
+            return UserMultiFactorStoreResult.Success();
         }
         catch (Exception ex)
         {
-            return UserMultiFactorResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+            return UserMultiFactorStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
 
     }
     /// <inheritdoc/>
-    public async Task<UserMultiFactorResult> SetAutheticatorAsync(bool isEnabled, string userId)
+    public async Task<UserMultiFactorStoreResult> SetAutheticatorAsync(bool isEnabled, string userId)
     {
         try
         {
@@ -47,15 +46,16 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
             await dbSet.Where(x => x.UserId == userId)
                         .ExecuteUpdateAsync(x =>
                                             x.SetProperty(s => s.MultiFactorAuthenticatorEnabled, s => isEnabled));
-            return UserMultiFactorResult.Success();
+            return UserMultiFactorStoreResult.Success();
         }
         catch (Exception ex)
         {
-            return UserMultiFactorResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+            return UserMultiFactorStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
     /// <inheritdoc/>
-    public async Task<UserMultiFactorResult> SetPasskeysAsync(bool isEnabled, string userId)
+    public async Task<UserMultiFactorStoreResult> SetPasskeysAsync(bool isEnabled,
+                                                              string userId)
     {
         try
         {
@@ -64,11 +64,11 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
             await dbSet.Where(x => x.UserId == userId)
                         .ExecuteUpdateAsync(x =>
                                             x.SetProperty(s => s.MultiFactorPasskeysEnabled, s => isEnabled));
-            return UserMultiFactorResult.Success();
+            return UserMultiFactorStoreResult.Success();
         }
         catch (Exception ex)
         {
-            return UserMultiFactorResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+            return UserMultiFactorStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
 }

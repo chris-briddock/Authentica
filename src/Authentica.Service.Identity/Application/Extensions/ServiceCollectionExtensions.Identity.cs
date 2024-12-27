@@ -1,4 +1,5 @@
 using Application.Factories;
+using Application.Providers;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -32,6 +33,7 @@ public static partial class ServiceCollectionExtensions
             opt.Password.RequireUppercase = true;
             opt.User.RequireUniqueEmail = false;
             opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+
         })
         .AddEntityFrameworkStores<AppDbContext>()
         .AddErrorDescriber<IdentityErrorFactory>()
@@ -41,6 +43,7 @@ public static partial class ServiceCollectionExtensions
         .AddRoles<Role>()
         .AddRoleStore<RoleStore<Role, AppDbContext, string, UserRole, RoleClaim>>()
         .AddUserStore<UserStore<User, Role, AppDbContext, string, UserClaim, UserRole, IdentityUserLogin<string>, IdentityUserToken<string>, RoleClaim>>()
+        .AddTokenProvider<PasskeyTokenProvider<User>>("passkey")
         .AddDefaultTokenProviders();
 
         return services;

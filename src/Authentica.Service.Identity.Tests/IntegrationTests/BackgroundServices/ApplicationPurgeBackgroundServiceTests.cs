@@ -1,8 +1,5 @@
 using Application.BackgroundServices;
-using Application.Contracts;
 using Application.Exceptions;
-using Application.Factories;
-using Persistence.Contexts;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
 

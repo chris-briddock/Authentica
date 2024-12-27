@@ -1,10 +1,9 @@
 using Api.Constants;
-using Api.Requests;
 using Application.Activities;
-using Application.Contracts;
-using Application.DTOs;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,13 +61,7 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        var dto = new ApplicationDto<UpdateApplicationByNameRequest>()
-        {
-            Request = request,
-            ClaimsPrincipal = User
-        };
-
-        var result = await writeStore.UpdateApplicationAsync(dto, cancellationToken);
+        var result = await writeStore.UpdateApplicationAsync(User, request.NewName, request.NewCallbackUri, cancellationToken);
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);

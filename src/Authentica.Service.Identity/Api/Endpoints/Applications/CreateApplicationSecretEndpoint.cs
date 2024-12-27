@@ -1,9 +1,8 @@
 using Api.Constants;
-using Api.Requests;
 using Application.Activities;
-using Application.Contracts;
-using Application.DTOs;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,13 +57,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        ApplicationDto<CreateApplicationSecretRequest> dto = new()
-        {
-            Request = request,
-            ClaimsPrincipal = User
-        };
-
-        var result = await appWriteStore.UpdateClientSecretAsync(dto, cancellationToken);
+        var result = await appWriteStore.UpdateClientSecretAsync(User, request.Name, cancellationToken);
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);

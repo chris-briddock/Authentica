@@ -1,7 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-
-namespace Authentica.Service.Identity.Tests.UnitTests;
+﻿namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class JsonWebTokenProviderTests
 {

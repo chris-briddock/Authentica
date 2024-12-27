@@ -1,7 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
-using Application.Factories;
-
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 public class DeleteAccountEndpointTests

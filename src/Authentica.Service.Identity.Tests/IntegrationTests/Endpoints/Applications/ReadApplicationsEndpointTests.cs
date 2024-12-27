@@ -1,6 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
-
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 public class ReadApplicationsEndpointTests

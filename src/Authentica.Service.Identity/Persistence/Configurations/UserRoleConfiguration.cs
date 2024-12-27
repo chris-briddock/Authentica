@@ -9,7 +9,10 @@ namespace Persistence.Configurations;
 /// </summary>
 public sealed class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Configures the entity framework mapping for <see cref="UserRole"/>.
+    /// </summary>
+    /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<UserRole> builder)
     {
         builder.ToTable("SYSTEM_LINK_IDENTITY_USER_ROLES", opt => opt.IsTemporal());

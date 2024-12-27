@@ -1,6 +1,3 @@
-using Api.Constants;
-using Application.Stores;
-
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class UserReadStoreTests

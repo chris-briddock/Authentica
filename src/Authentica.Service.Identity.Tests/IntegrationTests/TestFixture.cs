@@ -1,5 +1,4 @@
-using Api.Constants;
-using Api.Responses;
+using Domain.Responses;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
 
@@ -22,7 +21,7 @@ public class TestFixture<TProgram> where TProgram : class
             AllowAutoRedirect = true,
             HandleCookies = true
         });
-        await GenerateTokenAsync();
+        await GenerateTokenAsync(); 
     }
 
     [OneTimeTearDown]

@@ -1,5 +1,5 @@
-using Api.Requests;
 using Authentica.Common;
+using Domain.Requests;
 using FluentValidation;
 
 namespace Application.Validators;

@@ -1,10 +1,11 @@
 using Api.Constants;
-using Api.Requests;
-using Api.Responses;
 using Application.Activities.Users;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Providers;
+using Domain.Contracts.Stores;
+using Domain.Requests;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -46,7 +47,7 @@ public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
     /// <returns>An <see cref="ActionResult"/> containing the formatted authenticator key and QR code URI if 2FA is enabled, or an error message if not.</returns>
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpPost($"{Routes.Users.MultiFactorManageAuthenticator}")]
+    [HttpPost($"{Routes.Users.MultiFactorAuthentication.ManageAuthenticator}")]
     public override async Task<ActionResult> HandleAsync(MultiFactorManageAuthenticatorRequest request,
                                                          CancellationToken cancellationToken = default)
     {

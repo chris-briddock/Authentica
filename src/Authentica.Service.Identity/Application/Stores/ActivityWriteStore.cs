@@ -1,7 +1,9 @@
-using Application.Contracts;
+using Application.Factories;
 using Application.Redactors;
+using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
+using Domain.Contracts.Stores;
 using System.Text.Json;
 
 namespace Application.Stores;
@@ -21,19 +23,28 @@ public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
     public ActivityWriteStore(IServiceProvider services) : base(services) { }
 
     /// <inheritdoc/>
-    public async Task SaveActivityAsync<T>(T activity) where T : class
+    public async Task<ActivityStoreResult> SaveActivityAsync<T>(T activity) where T : class
     {
-        var redactedEvent = ActivityDataRedactor.RedactSensitiveData(activity);
-        var eventData = JsonSerializer.Serialize(redactedEvent);
-
-        Activity record = new()
+        try
         {
-            ActivityType = activity.GetType().Name,
-            Data = eventData,
-            SequenceId = HttpContext.Session.GetString(SessionConstants.SequenceId)!
-        };
+            var redactedEvent = ActivityDataRedactor.RedactSensitiveData(activity);
+            var eventData = JsonSerializer.Serialize(redactedEvent);
 
-        await DbContext.Activities.AddAsync(record);
-        await DbContext.SaveChangesAsync();
+            Activity record = new()
+            {
+                ActivityType = activity.GetType().Name,
+                Data = eventData,
+                SequenceId = HttpContext.Session.GetString(SessionConstants.SequenceId)!
+            };
+
+            await DbContext.Activities.AddAsync(record);
+            await DbContext.SaveChangesAsync();
+
+            return ActivityStoreResult.Success();
+        }
+        catch (Exception ex)
+        {
+            return ActivityStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
     }
 }

@@ -1,10 +1,8 @@
 using Api.Constants;
-using Api.Responses;
 using Application.Activities;
-using Application.Contracts;
-using Application.Mappers;
 using Ardalis.ApiEndpoints;
-using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,9 +51,27 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
         if (userResult?.User?.Id is null)
             return BadRequest();
 
-        IEnumerable<ClientApplication> apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
+        var apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
 
-        List<ReadApplicationResponse> responses = apps.Select(app => new ClientApplicationMapper().ToResponse(app)).ToList();
+        List<ReadApplicationResponse> responses = [];
+
+        foreach (var app in apps)
+        {
+            responses.Add(new ReadApplicationResponse()
+            {
+                ClientId = app.ClientId,
+                CallbackUri = app.CallbackUri,
+                Name = app.Name,
+                IsDeleted = app.EntityDeletionStatus.IsDeleted,
+                DeletedOnUtc = app.EntityDeletionStatus.DeletedOnUtc,
+                DeletedBy = app.EntityDeletionStatus.DeletedBy,
+                CreatedOnUtc = app.EntityCreationStatus.CreatedOnUtc,
+                CreatedBy = app.EntityCreationStatus.CreatedBy,
+                ModifiedBy = app.EntityModificationStatus.ModifiedBy,
+                ModifiedOnUtc = app.EntityModificationStatus.ModifiedOnUtc
+
+            });
+        }
 
         ReadApplicationsActivity activity = new()
         {

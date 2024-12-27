@@ -1,11 +1,12 @@
 namespace Api.Constants;
 
+/// <inheritdoc/>
 public static partial class Routes
 {
     /// <summary>
     /// Routes related to user operations.
     /// </summary>
-    public static class Users
+    public static partial class Users
     {
         /// <summary>
         /// Route for logging out using OAuth.
@@ -41,47 +42,7 @@ public static partial class Routes
         /// </summary>
         public const string ResetPassword = "users/reset-password";
         /// <summary>
-        /// Route for logging in with mfa authentication.
-        /// </summary>
-        public const string MultiFactorLogin = "users/mfa/login";
-        /// <summary>
-        /// Route for managing mfa authentication.
-        /// </summary>
-        public const string MultiFactorManage = "users/mfa/manage";
-        /// <summary>
-        /// Route for managing mfa codes using an application like Google or Microsoft Authenticator. 
-        /// </summary>
-        public const string MultiFactorManageAuthenticator = "users/mfa/manage/authenticator";
-        /// <summary>
-        /// Route for generating mfa recovery codes.
-        /// </summary>
-        public const string MultiFactorRecoveryCodes = "users/mfa/recovery/codes";
-        /// <summary>
-        /// Route for redeeming mfa recovery codes.
-        /// </summary>
-        public const string MultiFactorRedeemRecoveryCodes = "users/mfa/recovery";
-        /// <summary>
-        /// Route for passkey login. 
-        /// </summary>
-        public const string MultiFactorPasskeyLogin = "users/mfa/passkeys";
-        /// <summary>
-        /// Route for passkey verification.
-        /// </summary>
-        public const string MultiFactorPasskeyVerification = "users/mfa/passkeys/verify";
-        /// <summary>
-        /// Route for updating a user's email.
-        /// </summary>
-        public const string UpdateEmail = "users/details/email";
-        /// <summary>
-        /// Route for updating a user's phone number.
-        /// </summary>
-        public const string UpdatePhoneNumber = "users/details/number";
-        /// <summary>
-        /// Route for updating a user's address.
-        /// </summary>
-        public const string UpdateAddress = "users/details/address";
-        /// <summary>
-        /// Route for tokens.
+        /// Route for mfa tokens.
         /// </summary>
         public const string Tokens = "users/tokens";
     }

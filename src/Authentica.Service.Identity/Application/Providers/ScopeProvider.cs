@@ -1,4 +1,4 @@
-using Application.Contracts;
+using Domain.Contracts.Providers;
 
 namespace Application.Providers;
 

@@ -1,4 +1,4 @@
-using Api.Responses;
+using Domain.Responses;
 
 namespace Application.Activities;
 

@@ -9,7 +9,10 @@ namespace Persistence.Configurations;
 /// </summary>
 public class UserPasskeyCredentialConfiguration : IEntityTypeConfiguration<UserPasskeyCredential>
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Configures the entity framework mapping for <see cref="UserPasskeyCredential"/>.
+    /// </summary>
+    /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<UserPasskeyCredential> builder)
     {
         builder.ToTable("SYSTEM_LINK_IDENTITY_USER_PASSKEY_CREDENTIAL", opt => opt.IsTemporal());

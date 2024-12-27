@@ -1,6 +1,4 @@
-using Api.Constants;
-using Api.Responses;
-using Application.Contracts;
+using Domain.Responses;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 

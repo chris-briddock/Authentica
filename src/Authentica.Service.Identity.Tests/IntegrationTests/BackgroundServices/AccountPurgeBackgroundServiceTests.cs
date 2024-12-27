@@ -1,10 +1,3 @@
-using Application.BackgroundServices;
-using Application.Contracts;
-using Application.Exceptions;
-using Application.Factories;
-using Persistence.Contexts;
-using Persistence.Seed;
-
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
 
 public class AccountPurgeExposeProtected : AccountPurge

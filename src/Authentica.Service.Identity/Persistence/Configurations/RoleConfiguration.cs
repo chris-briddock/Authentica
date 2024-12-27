@@ -9,7 +9,10 @@ namespace Persistence.Configurations;
 /// </summary>
 public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Configures the entity framework mapping for <see cref="Role"/>.
+    /// </summary>
+    /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable("SYSTEM_IDENTITY_ROLES", opt => opt.IsTemporal());

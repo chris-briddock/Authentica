@@ -9,7 +9,10 @@ namespace Persistence.Configurations;
 /// </summary>
 public sealed class UserMultiFactorSettingsConfiguration : IEntityTypeConfiguration<UserMultiFactorSettings>
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Configures the entity framework mapping for <see cref="UserMultiFactorSettings"/>.
+    /// </summary>
+    /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<UserMultiFactorSettings> builder)
     {
         // Define the table name and schema

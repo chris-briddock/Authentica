@@ -1,11 +1,10 @@
 using Api.Constants;
-using Api.Requests;
-using Api.Responses;
 using Application.Activities;
-using Application.Contracts;
-using Application.Mappers;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Requests;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +59,20 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        ReadApplicationResponse response = new ClientApplicationMapper().ToResponse(app);
+        ReadApplicationResponse response = new()
+        {
+            ClientId = app.ClientId,
+            CallbackUri = app.CallbackUri,
+            Name = app.Name,
+            IsDeleted = app.EntityDeletionStatus.IsDeleted,
+            DeletedOnUtc = app.EntityDeletionStatus.DeletedOnUtc,
+            DeletedBy = app.EntityDeletionStatus.DeletedBy,
+            CreatedOnUtc = app.EntityCreationStatus.CreatedOnUtc,
+            CreatedBy = app.EntityCreationStatus.CreatedBy,
+            ModifiedBy = app.EntityModificationStatus.ModifiedBy,
+            ModifiedOnUtc = app.EntityModificationStatus.ModifiedOnUtc
+
+        };
 
         ReadApplicationByNameActivity activity = new()
         {

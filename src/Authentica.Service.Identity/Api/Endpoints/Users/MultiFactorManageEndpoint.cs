@@ -1,9 +1,9 @@
 using Api.Constants;
-using Api.Requests;
 using Application.Activities;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -40,7 +40,7 @@ public sealed class MultiFactorManageEndpoint : EndpointBaseAsync
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation, containing the action result.</returns>
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpPost($"{Routes.Users.MultiFactorManage}")]
+    [HttpPost($"{Routes.Users.MultiFactorAuthentication.Manage}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public override async Task<ActionResult> HandleAsync(MultiFactorManageRequest request, CancellationToken cancellationToken = default)

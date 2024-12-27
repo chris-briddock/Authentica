@@ -1,7 +1,6 @@
-using Api.Requests;
-using Application.Contracts;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
@@ -19,81 +18,109 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     {
     }
 
-    /// <summary>
-    /// Checks if an application with the specified name exists.
-    /// </summary>
-    /// <param name="applicationName">The name of the application to check.</param>
-    /// <param name="cancellationToken">The cancellation token to observe.</param>
-    /// <returns>A task that represents the asynchronous operation, containing a boolean indicating if the application exists.</returns>
-    public async Task<bool> CheckApplicationExistsAsync(string applicationName, CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public async Task<bool> CheckApplicationExistsByNameAsync(string applicationName, CancellationToken cancellationToken = default)
     {
         return await DbContext.ClientApplications.AnyAsync(a => a.Name == applicationName, cancellationToken);
     }
 
-    /// <summary>
-    /// Retrieves a client application by its name and associated user ID.
-    /// </summary>
-    /// <param name="name">The name of the client application to retrieve.</param>
-    /// <param name="userId">The user ID to check for association.</param>
-    /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
-    /// <returns>The client application if found, otherwise null.</returns>
-    public async Task<ClientApplication?> GetClientApplicationByNameAndUserIdAsync(string name, string userId, CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public async Task<ClientApplication?> GetClientApplicationByNameAndUserIdAsync(string name,
+                                                                                    string userId,
+                                                                                    CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(userId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
         var clientApplication = await DbContext.ClientApplications
             .Join(
                 DbContext.UserClientApplications,
                 app => app.Id,
                 userApp => userApp.ApplicationId,
-                (app, userApp) => new { app, userApp }
+                (app, userApp) => new { app, userApp.UserId }
             )
-            .Where(joined => joined.app.Name == name && joined.userApp.UserId == userId)
+            .Where(joined => joined.app.Name == name && joined.UserId == userId)
             .Select(joined => joined.app)
             .FirstOrDefaultAsync(cancellationToken);
 
         return clientApplication;
     }
-    /// <summary>
-    /// Retrieves a client application by its client ID specified in the provided DTO.
-    /// </summary>
-    /// <param name="dto">The data transfer object containing the authorization request and claims principal.</param>
-    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-    /// <returns>
-    /// A task that represents the asynchronous operation, containing the client application if found;
-    /// otherwise, null.
-    /// </returns>
-    public async Task<ClientApplication?> GetClientApplicationByClientIdAndCallbackUri(ApplicationDto<AuthorizeRequest> dto, CancellationToken cancellationToken)
+    /// <inheritdoc/>
+    public async Task<ApplicationReadDto?> GetClientApplicationByClientIdAndCallbackUri(string clientId,
+                                                                                        string callbackUri,
+                                                                                        CancellationToken cancellationToken = default!)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(clientId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(callbackUri);
+
         return await DbContext.ClientApplications
-            .Where(x => x.ClientId == dto.Request.ClientId)
-            .Where(x => x.CallbackUri == dto.Request.CallbackUri)
+            .Where(x => x.ClientId == clientId)
+            .Where(x => x.CallbackUri == callbackUri)
+            .Select(x => new ApplicationReadDto
+            {
+                ClientId = x.ClientId,
+                EntityDeletionStatus = x.EntityDeletionStatus,
+                EntityCreationStatus = x.EntityCreationStatus,
+                EntityModificationStatus = x.EntityModificationStatus,
+                CallbackUri = x.CallbackUri,
+                Name = x.Name
+            })
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    /// <summary>
-    /// Retrieves all client applications associated with a given user ID.
-    /// </summary>
-    /// <param name="userId">The user ID to check for association.</param>
-    /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
-    /// <returns>A list of client applications associated with the specified user ID.</returns>
-    public async Task<IEnumerable<ClientApplication>> GetAllClientApplicationsByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public async Task<IList<ApplicationReadDto>> GetAllClientApplicationsByUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(userId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
         var clientApplications = await DbContext.ClientApplications
             .Join(
                 DbContext.UserClientApplications,
                 app => app.Id,
                 userApp => userApp.ApplicationId,
-                (app, userApp) => new { app, userApp }
+                (app, userApp) => new { app, userApp.UserId }
             )
-            .Where(joined => joined.userApp.UserId == userId)
-            .Select(joined => joined.app)
+            .Where(joined => joined.UserId == userId)
+            .Select(joined => new ApplicationReadDto
+            {
+                ClientId = joined.app.ClientId,
+                EntityDeletionStatus = joined.app.EntityDeletionStatus,
+                EntityCreationStatus = joined.app.EntityCreationStatus,
+                EntityModificationStatus = joined.app.EntityModificationStatus,
+                CallbackUri = joined.app.CallbackUri,
+                Name = joined.app.Name
+            })
             .ToListAsync(cancellationToken);
 
         return clientApplications;
     }
+    /// <inheritdoc/>
+    public async Task<ApplicationReadDto> GetClientApplicationByClientId(string clientId, CancellationToken cancellationToken = default)
+    {
+        var result = await DbContext.Set<ClientApplication>()
+                                    .Join(DbContext.Set<UserClientApplication>(),
+                                        client => client.Id,
+                                        userClient => userClient.ApplicationId,
+                                        (client, userClient) => new { client, userClient })
+                                    .Where(x => x.client.ClientId == clientId)
+                                    .Select(x => new ApplicationReadDto
+                                    {
+                                        CallbackUri = x.client.CallbackUri,
+                                        EntityDeletionStatus = x.client.EntityDeletionStatus,
+                                        EntityModificationStatus = x.client.EntityModificationStatus,
+                                        EntityCreationStatus = x.client.EntityCreationStatus,
+                                        Name = x.client.Name,
+                                        ClientId = x.client.ClientId,
+                                        ClientSecret = x.client.ClientSecret,
+                                        UserId = x.userClient.UserId
+                                    })
+                                   .FirstAsync(cancellationToken);
 
+        return result;
+    }
+    /// <inheritdoc/>
+    public async Task<bool> CheckApplicationExistsByClientIdAsync(string clientId, CancellationToken cancellationToken = default)
+    {
+        return await DbContext.Set<ClientApplication>().AnyAsync(x => x.ClientId == clientId, cancellationToken);
+    }
 }

@@ -1,8 +1,8 @@
 using Api.Constants;
-using Api.Requests;
 using Application.Activities;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +40,7 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
     /// <param name="cancellationToken">A token to cancel the operation if needed. The default value is <see cref="CancellationToken.None"/>.</param>
     /// <returns>An <see cref="ActionResult"/> indicating the result of the operation.</returns>
     /// <response code="200">The user's address was successfully updated.</response>
-    [HttpPut($"{Routes.Users.UpdateAddress}")]
+    [HttpPut($"{Routes.Users.Details.UpdateAddress}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public override async Task<ActionResult> HandleAsync(UpdateAddressRequest request,

@@ -1,7 +1,7 @@
-using Application.Contracts;
 using Application.Factories;
 using Application.Results;
 using Domain.Contracts;
+using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
@@ -19,13 +19,7 @@ public class SharedStore : StoreBase, ISharedStore
     {
     }
 
-    /// <summary>
-    /// Purges entries of type <typeparamref name="TEntity"/> that were soft-deleted more than seven years ago.
-    /// </summary>
-    /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-    /// <returns>A <see cref="SharedStoreResult"/> indicating the result of the purge operation.</returns>
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<SharedStoreResult> PurgeEntriesAsync<TEntity>(CancellationToken cancellationToken)
     where TEntity : class, IEntityDeletionStatus<string>
     {

@@ -1,9 +1,8 @@
 using Api.Constants;
-using Api.Requests;
 using Application.Activities;
-using Application.Contracts;
-using Application.DTOs;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,18 +48,12 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var applicationExists = await readStore.CheckApplicationExistsAsync(request.Name, cancellationToken);
+        var applicationExists = await readStore.CheckApplicationExistsByNameAsync(request.Name, cancellationToken);
 
         if (applicationExists)
             return BadRequest("Application with this name already exists.");
 
-        var dto = new ApplicationDto<CreateApplicationRequest>()
-        {
-            Request = request,
-            ClaimsPrincipal = User
-        };
-
-        var result = await writeStore.CreateClientApplicationAsync(dto, cancellationToken);
+        var result = await writeStore.CreateClientApplicationAsync(User, request.Name, request.CallbackUri, cancellationToken);
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);

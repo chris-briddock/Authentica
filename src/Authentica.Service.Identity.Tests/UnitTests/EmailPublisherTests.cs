@@ -1,7 +1,4 @@
-﻿using MassTransit;
-using Microsoft.FeatureManagement;
-
-namespace Authentica.Service.Identity.Tests.UnitTests;
+﻿namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class EmailPublisherTests
 {

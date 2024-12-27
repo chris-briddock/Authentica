@@ -1,6 +1,7 @@
-using Application.Contracts;
 using Application.Exceptions;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Providers;
+using Domain.Contracts.Stores;
 
 namespace Application.BackgroundServices;
 

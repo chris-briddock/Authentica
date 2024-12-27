@@ -1,5 +1,5 @@
-using Application.Contracts;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Contexts;
 

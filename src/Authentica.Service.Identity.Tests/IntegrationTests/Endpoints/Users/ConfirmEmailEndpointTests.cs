@@ -1,6 +1,3 @@
-using Api.Constants;
-using Application.Factories;
-
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 
 public class ConfirmEmailEndpointTests

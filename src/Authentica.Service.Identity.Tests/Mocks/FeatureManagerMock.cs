@@ -1,6 +1,4 @@
-﻿using Microsoft.FeatureManagement;
-
-namespace Authentica.Service.Identity.Tests.Mocks;
+﻿namespace Authentica.Service.Identity.Tests.Mocks;
 
 public class FeatureManagerMock : Mock<IFeatureManager>, IMockBase<FeatureManagerMock>
 {

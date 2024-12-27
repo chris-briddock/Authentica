@@ -1,4 +1,4 @@
-using Api.Requests;
+using Domain.Requests;
 
 namespace Application.Activities;
 

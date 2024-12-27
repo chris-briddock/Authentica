@@ -1,5 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
 using Persistence.Seed;
 using System.Text;
 
@@ -41,7 +39,7 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorRedeemRecoveryCodes}", jsonContent);
+        var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorAuthentication.RecoveryCodes}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -65,7 +63,7 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorRedeemRecoveryCodes}", jsonContent);
+        var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorAuthentication.RecoveryCodes}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

@@ -1,4 +1,3 @@
-using Api.Constants;
 using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;

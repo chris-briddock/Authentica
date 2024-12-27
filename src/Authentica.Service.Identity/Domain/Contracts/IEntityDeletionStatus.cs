@@ -11,7 +11,7 @@ namespace Domain.Contracts;
 /// repositories, where a type constraint is needed to access the deletion status properties.
 /// </remarks>
 /// <typeparam name="TKey">The type of the unique identifier for the entity, which must implement 
-/// <see cref="System.IEquatable{TKey}"/> for proper equality checks in deletion operations.</typeparam>
+/// <see cref="IEquatable{TKey}"/> for proper equality checks in deletion operations.</typeparam>
 public interface IEntityDeletionStatus<TKey> where TKey : IEquatable<TKey>
 {
     /// <summary>

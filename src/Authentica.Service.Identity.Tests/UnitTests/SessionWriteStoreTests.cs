@@ -1,7 +1,3 @@
-using Application.Stores;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Persistence.Contexts;
-
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class SessionWriteStoreTests

@@ -1,5 +1,5 @@
-using Api.Requests;
-using Api.Responses;
+using Domain.Requests;
+using Domain.Responses;
 
 namespace Application.Activities;
 

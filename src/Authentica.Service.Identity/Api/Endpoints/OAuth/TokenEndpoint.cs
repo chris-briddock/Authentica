@@ -1,16 +1,16 @@
 using Api.Constants;
-using Api.Requests;
-using Api.Responses;
 using Application.Activities;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
+using Domain.Contracts.Cryptography;
+using Domain.Contracts.Providers;
+using Domain.Contracts.Stores;
+using Domain.Requests;
+using Domain.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Contexts;
 
 namespace Api.Endpoints.OAuth;
 
@@ -55,7 +55,6 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         IList<string> roles = [];
         IList<string> scopes = [];
 
-        var dbContext = Services.GetRequiredService<AppDbContext>();
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
         var configuration = Services.GetRequiredService<IConfiguration>();
         var hasher = Services.GetRequiredService<ISecretHasher>();
@@ -63,31 +62,26 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var scopeProvider = Services.GetRequiredService<IScopeProvider>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var applicationReadStore = Services.GetRequiredService<IApplicationReadStore>();
 
         string issuer = configuration.GetRequiredValueOrThrow("Jwt:Issuer");
         string secret = configuration.GetRequiredValueOrThrow("Jwt:Secret");
         string audience = configuration.GetRequiredValueOrThrow("Jwt:Audience");
         int expires = Convert.ToInt16(configuration.GetRequiredValueOrThrow("Jwt:Expires"));
 
-
-        ClientApplication? client = await dbContext
-                                          .Set<ClientApplication>()
-                                          .Where(x => x.ClientId == request.ClientId)
-                                          .FirstAsync(cancellationToken);
-
-        UserClientApplication userClientLink = await dbContext
-                                               .Set<UserClientApplication>()
-                                               .Where(x => x.ApplicationId == client.Id)
-                                               .FirstAsync(cancellationToken);
-
-        var userReadResult = await userReadStore.GetUserByIdAsync(userClientLink.UserId);
-
-        var hashResult = hasher.Verify(request.ClientSecret, client.ClientSecret!);
-
-        if (!hashResult)
+        var exists = await applicationReadStore.CheckApplicationExistsByClientIdAsync(request.ClientId,
+                                                                                      cancellationToken);
+        if (!exists)
             return Unauthorized();
 
-        if (client is null)
+
+        var application = await applicationReadStore.GetClientApplicationByClientId(request.ClientId);
+
+        var userReadResult = await userReadStore.GetUserByIdAsync(application.UserId!);
+
+        var hashResult = hasher.Verify(request.ClientSecret, application.ClientSecret!);
+
+        if (!hashResult)
             return Unauthorized();
 
         if (!User.Identity!.IsAuthenticated)
@@ -127,10 +121,10 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         if (request.GrantType == TokenConstants.AuthorizationCode)
         {
-            var storedState = HttpContext.Session.GetString($"{client.ClientId}_state");
+            var storedState = HttpContext.Session.GetString($"{application.ClientId}_state");
             if (storedState != request.State)
                 return Unauthorized();
-            var storedCode = HttpContext.Session.GetString($"{client.ClientId}_code");
+            var storedCode = HttpContext.Session.GetString($"{application.ClientId!}_code");
             if (storedCode != request.Code)
                 return Unauthorized();
         }
@@ -162,7 +156,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         TokenActivity activity = new()
         {
-            Request = request
+            Payload = request
         };
 
         await activityStore.SaveActivityAsync(activity);

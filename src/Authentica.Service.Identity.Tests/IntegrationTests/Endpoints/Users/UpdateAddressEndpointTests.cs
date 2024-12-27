@@ -1,5 +1,3 @@
-using Api.Constants;
-using Domain.ValueObjects;
 using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -33,7 +31,7 @@ public class UpdateAddressEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PutAsync($"api/v1/{Routes.Users.UpdateAddress}", jsonContent);
+        var sut = await client.PutAsync($"api/v1/{Routes.Users.Details.UpdateAddress}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 

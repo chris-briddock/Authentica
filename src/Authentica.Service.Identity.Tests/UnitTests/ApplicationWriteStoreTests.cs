@@ -1,10 +1,3 @@
-using Application.Contracts;
-using Application.DTOs;
-using Application.Factories;
-using Application.Stores;
-using Domain.ValueObjects;
-using Persistence.Contexts;
-
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class ApplicationWriteStoreTests
@@ -36,14 +29,11 @@ public class ApplicationWriteStoreTests
     public async Task CreateClientApplicationAsync_Should_ReturnFailedResult_WhenExceptionThrown()
     {
         // Arrange
-        var dto = new ApplicationDto<CreateApplicationRequest>
+        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
+        var request = new CreateApplicationRequest()
         {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new CreateApplicationRequest
-            {
-                Name = "Test App",
-                CallbackUri = "http://callback.com"
-            }
+            Name = "Test App",
+            CallbackUri = "http://callback.com"
         };
 
         // Simulate an exception being thrown during GetUserByEmailAsync
@@ -51,7 +41,7 @@ public class ApplicationWriteStoreTests
             .ThrowsAsync(new Exception("Test exception"));
 
         // Act
-        var result = await _sut.CreateClientApplicationAsync(dto, CancellationToken.None);
+        var result = await _sut.CreateClientApplicationAsync(claimsPrincipal, request.Name, request.CallbackUri, CancellationToken.None);
 
         Assert.Multiple(() =>
         {
@@ -65,21 +55,18 @@ public class ApplicationWriteStoreTests
     public async Task UpdateApplicationAsync_Should_ReturnFailedResult_When_UserIsNull()
     {
         // Arrange
-        var dto = new ApplicationDto<UpdateApplicationByNameRequest>
+        var claimsPrincipal = new ClaimsPrincipal();
+        var request = new UpdateApplicationByNameRequest
         {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new UpdateApplicationByNameRequest
-            {
-                CurrentName = "OldAppName",
-                NewName = "NewAppName"
-            }
+            CurrentName = "OldAppName",
+            NewName = "NewAppName"
         };
 
         _userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(UserStoreResult.Failed());
 
         // Act
-        var result = await _sut.UpdateApplicationAsync(dto);
+        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, request.CurrentName, "callback.com");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -90,14 +77,11 @@ public class ApplicationWriteStoreTests
     public async Task UpdateApplicationAsync_Should_ReturnFailedResult_When_ApplicationIsNull()
     {
         // Arrange
-        var dto = new ApplicationDto<UpdateApplicationByNameRequest>
+        var claimsPrincipal = new ClaimsPrincipal();
+        var request = new UpdateApplicationByNameRequest
         {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new UpdateApplicationByNameRequest
-            {
-                CurrentName = "OldAppName",
-                NewName = "NewAppName"
-            }
+            CurrentName = "OldAppName",
+            NewName = "NewAppName"
         };
 
         var user = new User { Id = "test-user-id" };
@@ -105,11 +89,11 @@ public class ApplicationWriteStoreTests
                           .ReturnsAsync(UserStoreResult.Failed());
 
         _applicationReadStoreMock.Setup(x => x.GetClientApplicationByNameAndUserIdAsync(
-            dto.Request.CurrentName, user.Id, It.IsAny<CancellationToken>()))
+            request.CurrentName, user.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync((ClientApplication)null!);
 
         // Act
-        var result = await _sut.UpdateApplicationAsync(dto);
+        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, request.CurrentName, "callback-test");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -120,26 +104,18 @@ public class ApplicationWriteStoreTests
     public async Task UpdateApplicationAsync_Should_ReturnFailedResult_When_ExceptionIsThrown()
     {
         // Arrange
-        var dto = new ApplicationDto<UpdateApplicationByNameRequest>
-        {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new UpdateApplicationByNameRequest
-            {
-                CurrentName = "OldAppName",
-                NewName = "NewAppName"
-            }
-        };
+        ClaimsPrincipal claimsPrincipal = new();
 
         var user = new User { Id = "test-user-id" };
         _userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(UserStoreResult.Success(user));
 
         _applicationReadStoreMock.Setup(x => x.GetClientApplicationByNameAndUserIdAsync(
-            dto.Request.CurrentName, user.Id, It.IsAny<CancellationToken>()))
+            "appName", user.Id, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Test exception"));
 
         // Act
-        var result = await _sut.UpdateApplicationAsync(dto);
+        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, "appName", "callback.com");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -150,20 +126,13 @@ public class ApplicationWriteStoreTests
     public async Task SoftDeleteApplicationAsync_Should_ReturnFailedResult_When_UserIsNull()
     {
         // Arrange
-        var dto = new ApplicationDto<DeleteApplicationByNameRequest>
-        {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new DeleteApplicationByNameRequest
-            {
-                Name = "AppName"
-            }
-        };
+        ClaimsPrincipal claimsPrincipal = new();
 
         _userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(UserStoreResult.Failed());
 
         // Act
-        var result = await _sut.SoftDeleteApplicationAsync(dto);
+        var result = await _sut.SoftDeleteApplicationAsync(claimsPrincipal, "appName");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -174,25 +143,18 @@ public class ApplicationWriteStoreTests
     public async Task SoftDeleteApplicationAsync_Should_ReturnFailedResult_When_ApplicationIsNull()
     {
         // Arrange
-        var dto = new ApplicationDto<DeleteApplicationByNameRequest>
-        {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new DeleteApplicationByNameRequest
-            {
-                Name = "AppName"
-            }
-        };
+        ClaimsPrincipal claimsPrincipal = new();
 
         var user = new User { Id = "test-user-id" };
         _userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(UserStoreResult.Success(user));
 
         _applicationReadStoreMock.Setup(x => x.GetClientApplicationByNameAndUserIdAsync(
-            dto.Request.Name, user.Id, It.IsAny<CancellationToken>()))
+            "appName", user.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync((ClientApplication)null!);
 
         // Act
-        var result = await _sut.SoftDeleteApplicationAsync(dto);
+        var result = await _sut.SoftDeleteApplicationAsync(claimsPrincipal, "appName");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -203,28 +165,21 @@ public class ApplicationWriteStoreTests
     public async Task SoftDeleteApplicationAsync_Should_ReturnFailedResult_When_ExceptionIsThrown()
     {
         // Arrange
-        var dto = new ApplicationDto<DeleteApplicationByNameRequest>
-        {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new DeleteApplicationByNameRequest
-            {
-                Name = "AppName"
-            }
-        };
+        ClaimsPrincipal claimsPrincipal = new();
 
         var user = new User { Id = "test-user-id" };
         _userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(UserStoreResult.Success(user));
 
         _applicationReadStoreMock.Setup(x => x.GetClientApplicationByNameAndUserIdAsync(
-            dto.Request.Name, user.Id, It.IsAny<CancellationToken>()))
+            "appName", user.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ClientApplication());
 
         _dbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
                       .ThrowsAsync(new Exception("Test exception"));
 
         // Act
-        var result = await _sut.SoftDeleteApplicationAsync(dto);
+        var result = await _sut.SoftDeleteApplicationAsync(claimsPrincipal, "appName");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -235,14 +190,7 @@ public class ApplicationWriteStoreTests
     public async Task SoftDeleteApplicationAsync_Should_ReturnSuccess_When_ApplicationIsDeleted()
     {
         // Arrange
-        var dto = new ApplicationDto<DeleteApplicationByNameRequest>
-        {
-            ClaimsPrincipal = new ClaimsPrincipal(),
-            Request = new DeleteApplicationByNameRequest
-            {
-                Name = "AppName"
-            }
-        };
+        ClaimsPrincipal claimsPrincipal = new();
 
         var user = new User { Id = "test-user-id" };
         var application = new ClientApplication
@@ -269,11 +217,11 @@ public class ApplicationWriteStoreTests
 
         // Set up application read store mock
         _applicationReadStoreMock.Setup(x => x.GetClientApplicationByNameAndUserIdAsync(
-            dto.Request.Name, user.Id, It.IsAny<CancellationToken>()))
+            "appName", user.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(application);
 
         // Act
-        var result = await _sut.SoftDeleteApplicationAsync(dto);
+        var result = await _sut.SoftDeleteApplicationAsync(claimsPrincipal, "appName");
 
         // Assert
         Assert.Multiple(() =>

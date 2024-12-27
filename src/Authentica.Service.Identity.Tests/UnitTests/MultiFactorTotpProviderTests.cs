@@ -1,5 +1,3 @@
-using System.Text.Encodings.Web;
-
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 [Category("MultiFactorTotpProvider")]

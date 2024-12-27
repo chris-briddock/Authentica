@@ -1,11 +1,10 @@
-using Application.Contracts;
 using Application.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
+using Domain.Contracts.Stores;
 using System.Security.Claims;
 
 namespace Api.Middlware;
-
 /// <summary>
 /// Middleware to ensure each HTTP session has a unique session ID.
 /// </summary>
@@ -49,7 +48,7 @@ public sealed class SessionMiddleware
 
             if (currentSessionId is not null)
             {
-                Session? storedSession = await sessionReadStore.GetByIdAsync(currentSessionId);
+                var storedSession = await sessionReadStore.GetByIdAsync(currentSessionId);
 
                 if (storedSession is not null &&
                     storedSession.UserId == "Unknown")
@@ -60,8 +59,7 @@ public sealed class SessionMiddleware
             if (shouldCreate)
             {
                 string? userId = null!;
-                var sessionId = Guid.NewGuid().ToString();
-                context.Session.SetString(SessionConstants.SequenceId, sessionId);
+                context.Session.SetString(SessionConstants.SequenceId, context.Session.Id);
                 var sessionWriteStore = scope.ServiceProvider.GetRequiredService<ISessionWriteStore>();
                 var userReadStore = scope.ServiceProvider.GetRequiredService<IUserReadStore>();
 
@@ -71,7 +69,7 @@ public sealed class SessionMiddleware
                 // Create a new Session object
                 Session session = new()
                 {
-                    SessionId = sessionId,
+                    SessionId = context.Session.Id,
                     UserId = userId ?? "Unknown",
                     IpAddress = context.GetIpAddress(),
                     UserAgent = context.Request.Headers.UserAgent.ToString(),

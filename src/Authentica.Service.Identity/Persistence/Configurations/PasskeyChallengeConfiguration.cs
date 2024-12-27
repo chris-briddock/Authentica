@@ -9,7 +9,10 @@ namespace Persistence.Configurations;
 /// </summary>
 public class PasskeyChallengeConfiguration : IEntityTypeConfiguration<PasskeyChallenge>
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Configures the entity framework mapping for <see cref="PasskeyChallenge"/>.
+    /// </summary>
+    /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<PasskeyChallenge> builder)
     {
         // Set the table name and enable temporal table support

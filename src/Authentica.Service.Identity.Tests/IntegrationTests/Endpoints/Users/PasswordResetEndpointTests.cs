@@ -1,5 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
 using Persistence.Seed;
 using System.Text;
 

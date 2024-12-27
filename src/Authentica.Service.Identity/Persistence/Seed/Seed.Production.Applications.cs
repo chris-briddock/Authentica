@@ -1,6 +1,6 @@
-using Application.Contracts;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Cryptography;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Contexts;
 

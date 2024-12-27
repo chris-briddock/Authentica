@@ -1,6 +1,6 @@
-using Application.Contracts;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
+using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
@@ -18,11 +18,7 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     {
     }
 
-    /// <summary>
-    /// Creates a new session in the store asynchronously.
-    /// </summary>
-    /// <param name="session">The session to create.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the created session.</returns>
+    /// <inheritdoc />
     public async Task<Session> CreateAsync(Session session)
     {
         try
@@ -39,11 +35,7 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
         return session;
     }
 
-    /// <summary>
-    /// Soft deletes a session from the store asynchronously.
-    /// </summary>
-    /// <param name="session">The session to delete.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <inheritdoc />
     public async Task DeleteAsync(Session session)
     {
         try

@@ -1,10 +1,9 @@
 using Api.Constants;
-using Api.Responses;
 using Application.Activities;
-using Application.Contracts;
-using Application.Mappers;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,10 +43,9 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
     {
         var readStore = Services.GetRequiredService<IUserReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        IList<GetUserResponse> response = [];
 
-        IList<User> query = await readStore.GetAllUsersAsync();
-
-        var response = new GetAllUsersMapper().ToResponse(query);
+        IList<User> users = await readStore.GetAllUsersAsync();
 
         ReadAllUsersActivity activity = new()
         {
@@ -55,6 +53,31 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        foreach (var user in users)
+        {
+            response.Add(new GetUserResponse()
+            {
+                Id = user.Id,
+                UserName = user.UserName!,
+                Email = user.Email!,
+                EmailConfirmed = user.EmailConfirmed,
+                PhoneNumber = user.PhoneNumber!,
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                TwoFactorEnabled = user.TwoFactorEnabled,
+                LockoutEnd = user.LockoutEnd,
+                LockoutEnabled = user.LockoutEnabled,
+                AccessFailedCount = user.AccessFailedCount,
+                IsDeleted = user.EntityDeletionStatus.IsDeleted,
+                DeletedOnUtc = user.EntityDeletionStatus.DeletedOnUtc,
+                DeletedBy = user.EntityDeletionStatus.DeletedBy,
+                CreatedBy = user.EntityCreationStatus.CreatedBy,
+                CreatedOnUtc = user.EntityCreationStatus.CreatedOnUtc,
+                ModifiedOnUtc = user.EntityModificationStatus.ModifiedOnUtc,
+                ModifiedBy = user.EntityModificationStatus.ModifiedBy,
+                Address = user.Address
+            });
+        }
 
         return Ok(response);
     }

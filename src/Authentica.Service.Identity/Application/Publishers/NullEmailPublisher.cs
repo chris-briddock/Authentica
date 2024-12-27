@@ -1,5 +1,5 @@
-using Application.Contracts;
 using Authentica.Common;
+using Domain.Contracts;
 using System.Diagnostics.CodeAnalysis;
 namespace Application.Publishers;
 

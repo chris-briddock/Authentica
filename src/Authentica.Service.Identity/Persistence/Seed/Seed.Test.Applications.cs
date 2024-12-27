@@ -1,5 +1,6 @@
-using Application.Contracts;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Cryptography;
+using Domain.Contracts.Providers;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Contexts;
 

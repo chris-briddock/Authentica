@@ -1,6 +1,6 @@
-using Application.Contracts;
 using Application.Publishers;
 using Authentica.Common;
+using Domain.Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
@@ -13,14 +13,12 @@ public static partial class ServiceCollectionExtensions
     /// Adds publisher messaging for rabbitmq or azure service bus.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to which services will be added.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddPublisherMessaging(this IServiceCollection services)
+    public static IServiceCollection AddPublisherMessaging(this IServiceCollection services, IConfiguration configuration)
     {
-        var configuration = services.BuildServiceProvider()
-                                    .GetService<IConfiguration>()!;
 
-        var featureManager = services.BuildServiceProvider()
-                                     .GetService<IFeatureManager>()!;
+        var featureManager = services.BuildServiceProvider().GetRequiredService<IFeatureManager>();
 
         var rabbitMqEnabled = featureManager.IsEnabledAsync(FeatureFlagConstants.RabbitMq).Result;
 

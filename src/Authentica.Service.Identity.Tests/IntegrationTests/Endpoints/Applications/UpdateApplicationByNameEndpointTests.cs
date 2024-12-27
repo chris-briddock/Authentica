@@ -1,7 +1,3 @@
-using Api.Constants;
-using Application.Contracts;
-using Application.DTOs;
-using Application.Factories;
 using System.Text;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -101,7 +97,7 @@ public class UpdateApplicationByNameEndpointTests
     {
         var userWriteStoreMock = new ApplicationWriteStoreMock();
 
-        userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ApplicationDto<UpdateApplicationByNameRequest>>(), It.IsAny<CancellationToken>()))
+        userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
         using var sutClient = _fixture.CreateAuthenticatedClient(s =>

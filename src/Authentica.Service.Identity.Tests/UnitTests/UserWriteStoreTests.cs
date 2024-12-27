@@ -1,6 +1,3 @@
-using Application.Contracts;
-using Application.Stores;
-
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class UserWriteStoreTests

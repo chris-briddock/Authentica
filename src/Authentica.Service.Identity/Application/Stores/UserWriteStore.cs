@@ -1,9 +1,9 @@
-using Api.Requests;
-using Application.Contracts;
 using Application.Factories;
 using Application.Results;
 using Authentica.Common;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -24,7 +24,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
 
     /// <inheritdoc/>
     public async Task<UserStoreResult> SoftDeleteUserAsync(ClaimsPrincipal user,
-                                                CancellationToken cancellationToken = default)
+                                                           CancellationToken cancellationToken = default)
     {
         var updatedUser = (await UserReadStore.GetUserByEmailAsync(user, cancellationToken)).User;
 
@@ -63,7 +63,8 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         return UserStoreResult.Success(user);
     }
     /// <inheritdoc/>
-    public async Task<UserStoreResult> ConfirmEmailAsync(User user, string token)
+    public async Task<UserStoreResult> ConfirmEmailAsync(User user,
+                                                         string token)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
         var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ConfirmEmail, token);
@@ -79,7 +80,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     }
 
     /// <inheritdoc/>
-    public async Task<UserStoreResult> ResetPasswordAsync(User user, string token, string newPassword)
+    public async Task<UserStoreResult> ResetPasswordAsync(User user,
+                                                          string token,
+                                                          string newPassword)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
 
@@ -97,7 +100,8 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     }
 
     /// <inheritdoc/>
-    public async Task<UserStoreResult> RedeemMultiFactorRecoveryCodeAsync(User user, string code)
+    public async Task<UserStoreResult> RedeemMultiFactorRecoveryCodeAsync(User user,
+                                                                          string code)
     {
         try
         {
@@ -115,7 +119,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     }
 
     /// <inheritdoc/>
-    public async Task<UserStoreResult> UpdateEmailAsync(User user, string newEmail, string token)
+    public async Task<UserStoreResult> UpdateEmailAsync(User user,
+                                                        string newEmail,
+                                                        string token)
     {
         try
         {
@@ -141,7 +147,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     }
 
     /// <inheritdoc/>
-    public async Task<UserStoreResult> UpdatePhoneNumberAsync(User user, string phoneNumber, string token)
+    public async Task<UserStoreResult> UpdatePhoneNumberAsync(User user,
+                                                              string phoneNumber,
+                                                              string token)
     {
         try
         {

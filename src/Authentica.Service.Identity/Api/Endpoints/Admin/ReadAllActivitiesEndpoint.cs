@@ -1,10 +1,9 @@
 using Api.Constants;
-using Api.Responses;
 using Application.Activities;
-using Application.Contracts;
-using Application.Mappers;
+using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,16 +46,27 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IActivityReadStore>();
         var writeStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        ImmutableList<Activity> activities = readStore.GetActivities();
+        ImmutableList<ActivityDto> activities = readStore.GetActivities();
 
-        ImmutableList<ActivityResponse> responses = new ReadAllActivitiesMapper().ToResponse(activities);
-
-        ReadAllActivitiesActivity activity = new()
+        ReadAllActivitiesActivity record = new()
         {
             Email = User.Identity?.Name ?? "Unknown"
         };
 
-        await writeStore.SaveActivityAsync(activity);
+        IList<ActivityResponse> responses = [];
+
+        foreach(var activity in activities)
+        {
+            responses.Add(new ActivityResponse()
+            {
+                SequenceId = activity.SequenceId,
+                ActivityType = activity.ActivityType,
+                CreatedOn = activity.CreatedOn,
+                Data = activity.Data
+            });
+        }
+
+        await writeStore.SaveActivityAsync(record);
 
         return Ok(responses);
     }

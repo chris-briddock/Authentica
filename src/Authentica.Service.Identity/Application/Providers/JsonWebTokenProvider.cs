@@ -1,5 +1,5 @@
-using Application.Contracts;
 using Application.Results;
+using Domain.Contracts.Providers;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

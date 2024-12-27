@@ -1,10 +1,10 @@
-using Api.Requests;
-using Application.Contracts;
-using Application.DTOs;
 using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
-using Microsoft.AspNetCore.Identity;
+using Domain.Contracts.Cryptography;
+using Domain.Contracts.Providers;
+using Domain.Contracts.Stores;
+using System.Security.Claims;
 
 namespace Application.Stores;
 
@@ -19,41 +19,27 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     /// Initializes a new instance of the <see cref="ApplicationWriteStore"/> class.
     /// </summary>
     /// <param name="services">The service provider to retrieve required services for the write store operations.</param>
-    /// <remarks>
-    /// This constructor initializes the <see cref="ApplicationWriteStore"/> instance by calling the base constructor with the provided service provider.
-    /// </remarks>
     public ApplicationWriteStore(IServiceProvider services) : base(services)
     {
     }
-    /// <summary>
-    /// Adds a new client application to the database and associates it with a user.
-    /// </summary>
-    /// <param name="dto">A data transfer object containing the information for the client application and the user context.</param>
-    /// <param name="cancellationToken">A token to cancel the operation if needed. The default value is <see cref="CancellationToken.None"/>.</param>
-    /// <returns>An <see cref="ApplicationStoreResult"/> representing the outcome of the operation. It includes the newly created user if successful.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dto"/> is <c>null</c>.</exception>
-    /// <remarks>
-    /// This method performs the following steps:
-    /// 1. Retrieves the user's email from the claims principal contained in the <paramref name="dto"/>.
-    /// 2. Finds the user by their email using the <see cref="UserManager{User}"/>.
-    /// 3. Creates a new <see cref="ClientApplication"/> and <see cref="UserClientApplication"/> with the provided data.
-    /// 4. Inserts the new client application and user-client association into the database.
-    /// 5. Uses a transaction to ensure that both insert operations are atomic.
-    /// 6. Rolls back the transaction if an exception occurs, and returns an error result.
-    /// </remarks>
-    public async Task<ApplicationStoreResult> CreateClientApplicationAsync(ApplicationDto<CreateApplicationRequest> dto, CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public async Task<ApplicationStoreResult> CreateClientApplicationAsync(ClaimsPrincipal claimsPrincipal,
+                                                                          string name,
+                                                                          string callbackUri,
+                                                                          CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(dto);
+        ArgumentException.ThrowIfNullOrWhiteSpace(callbackUri);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         try
         {
-            var user = (await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken)).User;
+            var user = (await UserReadStore.GetUserByEmailAsync(claimsPrincipal, cancellationToken)).User;
 
             var application = new ClientApplication
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = dto.Request.Name,
-                CallbackUri = dto.Request.CallbackUri,
+                Name = name,
+                CallbackUri = callbackUri,
                 EntityDeletionStatus = new(false, null, null),
                 EntityModificationStatus = new(DateTime.UtcNow, user.Id),
                 EntityCreationStatus = new(DateTime.UtcNow, user.Id)
@@ -78,35 +64,32 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     }
 
 
-    /// <summary>
-    /// Asynchronously updates an existing client application based on the provided data transfer object (DTO).
-    /// </summary>
-    /// <param name="dto">The data transfer object containing the details of the client application to be updated.</param>
-    /// <param name="cancellationToken">A token that can be used to cancel the asynchronous operation.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationStoreResult"/> which indicates the success or failure of the operation.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="dto"/> is <c>null</c>.</exception>
-    /// <exception cref="Exception">Thrown when an error occurs during the process of updating the client application.</exception>
-    public async Task<ApplicationStoreResult> UpdateApplicationAsync(ApplicationDto<UpdateApplicationByNameRequest> dto,
+    /// <inheritdoc/>
+    public async Task<ApplicationStoreResult> UpdateApplicationAsync(ClaimsPrincipal claimsPrincipal,
+                                                                     string? name,
+                                                                     string? callbackUri,
                                                                      CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(dto);
+        ArgumentNullException.ThrowIfNull(claimsPrincipal);
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(callbackUri);
 
         try
         {
-            var userReadResult = await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken);
+            var userReadResult = await UserReadStore.GetUserByEmailAsync(claimsPrincipal, cancellationToken);
 
             if (userReadResult.User is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
-            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(dto.Request.CurrentName,
+            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(name,
                                                                                                   userReadResult.User.Id,
                                                                                                   cancellationToken);
 
             if (application is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
 
-            application.Name = dto.Request.NewName ?? application.Name;
-            application.CallbackUri = dto.Request.NewCallbackUri ?? application.CallbackUri;
+            application.Name = name ?? application.Name;
+            application.CallbackUri = callbackUri ?? application.CallbackUri;
             application.EntityModificationStatus.ModifiedBy = userReadResult.User.Email ?? application.EntityModificationStatus.ModifiedBy;
             application.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
 
@@ -122,29 +105,23 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     }
 
 
-    /// <summary>
-    /// Soft deletes a client application by marking it as deleted in the database.
-    /// </summary>
-    /// <param name="dto">The data transfer object containing the application name to be deleted and the claims principal of the user performing the action.</param>
-    /// <param name="cancellationToken">A token that can be used to cancel the asynchronous operation. The default value is <see cref="CancellationToken.None"/>.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationStoreResult"/> which indicates the success or failure of the operation.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="dto"/> is <c>null</c>.</exception>
-    /// <exception cref="Exception">Thrown when an error occurs during the process of soft deleting the client application.</exception>
-    public async Task<ApplicationStoreResult> SoftDeleteApplicationAsync(ApplicationDto<DeleteApplicationByNameRequest> dto,
+    /// <inheritdoc/>
+    public async Task<ApplicationStoreResult> SoftDeleteApplicationAsync(ClaimsPrincipal claimsPrincipal,
+                                                                         string name,
                                                                          CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(dto);
+        ArgumentNullException.ThrowIfNull(claimsPrincipal);
 
         try
         {
-            var userReadResult = await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken);
+            var userReadResult = await UserReadStore.GetUserByEmailAsync(claimsPrincipal, cancellationToken);
 
             // Check if the user exists
             if (userReadResult.User is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
             // Retrieve the application to be deleted based on the provided name and user ID
-            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(dto.Request.Name,
+            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(name,
                                                                                                   userReadResult.User.Id,
                                                                                                   cancellationToken);
 
@@ -173,30 +150,26 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     }
 
 
-    /// <summary>
-    /// Generates a new client secret and updates the client application with the hashed secret.
-    /// </summary>
-    /// <param name="dto">The ID of the client application to update.</param>
-    /// <param name="cancellationToken">A token to cancel the operation if needed. The default value is <see cref="CancellationToken.None"/>.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dto"/> is <c>null</c> or empty.</exception>
-    public async Task<ApplicationStoreResult> UpdateClientSecretAsync(ApplicationDto<CreateApplicationSecretRequest> dto, CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public async Task<ApplicationStoreResult> UpdateClientSecretAsync(ClaimsPrincipal claimsPrincipal,
+                                                                      string applicationName,
+                                                                      CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(dto);
+        ArgumentNullException.ThrowIfNull(claimsPrincipal);
 
         try
         {
             var randomStringProvider = Services.GetRequiredService<IRandomStringProvider>();
             var hasher = Services.GetRequiredService<ISecretHasher>();
 
-            var userReadResult = await UserReadStore.GetUserByEmailAsync(dto.ClaimsPrincipal, cancellationToken);
+            var userReadResult = await UserReadStore.GetUserByEmailAsync(claimsPrincipal, cancellationToken);
 
             // Check if the user exists
             if (userReadResult.User is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
             // Retrieve the application to be updated based on the provided name and user ID.
-            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(dto.Request.Name,
+            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(applicationName,
                                                                                                   userReadResult.User.Id,
                                                                                                   cancellationToken);
 

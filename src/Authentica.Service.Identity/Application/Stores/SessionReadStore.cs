@@ -1,5 +1,6 @@
-using Application.Contracts;
+using Application.DTOs;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Stores;
@@ -18,15 +19,26 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
     {
     }
     /// <inheritdoc/>
-    public async Task<List<Session>> GetAsync(string userId)
+    public async Task<List<SessionDto>> GetAsync(string userId)
     {
-        var result = await DbSet.Where(x => x.UserId == userId).ToListAsync();
+        var result = await DbSet.Where(x => x.UserId == userId)
+                                .Select(s => new SessionDto
+                                {
+                                    Status = s.Status,
+                                    UserId = s.UserId,
+                                    StartDateTime = s.StartDateTime,
+                                    EndDateTime = s.EndDateTime,
+                                    UserAgent = s.UserAgent,
+                                    IpAddress = s.IpAddress,
+                                })
+                               .ToListAsync();
         return result;
     }
     /// <inheritdoc/>
-    public async Task<Session?> GetByIdAsync(string sessionId)
+    public async Task<Session> GetByIdAsync(string sessionId)
     {
-        var result = await DbSet.Where(x => x.SessionId == sessionId).FirstAsync();
+        var result = await DbSet.Where(x => x.SessionId == sessionId)
+                                .FirstAsync();
         return result;
     }
 }

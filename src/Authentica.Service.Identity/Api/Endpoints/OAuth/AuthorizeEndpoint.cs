@@ -1,10 +1,9 @@
 using Api.Constants;
-using Api.Requests;
 using Application.Activities;
-using Application.Contracts;
-using Application.DTOs;
 using Ardalis.ApiEndpoints;
-using Domain.Aggregates.Identity;
+using Domain.Contracts.Providers;
+using Domain.Contracts.Stores;
+using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,13 +50,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        ApplicationDto<AuthorizeRequest> dto = new()
-        {
-            Request = request,
-            ClaimsPrincipal = User
-        };
-
-        ClientApplication? client = await readStore.GetClientApplicationByClientIdAndCallbackUri(dto, cancellationToken);
+        var client = await readStore.GetClientApplicationByClientIdAndCallbackUri(request.ClientId, request.CallbackUri, cancellationToken);
 
         if (client is null)
             return Unauthorized();

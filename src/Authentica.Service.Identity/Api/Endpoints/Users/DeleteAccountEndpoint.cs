@@ -1,7 +1,7 @@
 using Api.Constants;
 using Application.Activities;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 using Api.Constants;
 using Application.Activities;
-using Application.Contracts;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -37,7 +37,7 @@ public class MultiFactorRecoveryCodesEndpoint : EndpointBaseAsync
     /// </summary>
     /// <param name="cancellationToken">The cancellation token to observe.</param>
     /// <returns>An <see cref="ActionResult"/> containing the newly generated recovery codes or an error status.</returns>
-    [HttpGet($"{Routes.Users.MultiFactorRecoveryCodes}")]
+    [HttpGet($"{Routes.Users.MultiFactorAuthentication.RecoveryCodes}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default)

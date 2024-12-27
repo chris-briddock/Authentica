@@ -1,4 +1,3 @@
-using Api.Constants;
 using Persistence.Seed;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
@@ -31,7 +30,7 @@ public class MultiFactorRecoveryCodesEndpointTests
         userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(UserStoreResult.Success(new User() { Email = Seed.Test.MultiFactorUserEmail, TwoFactorEnabled = true }));
 
-        using var sut = await client.GetAsync($"api/v1/{Routes.Users.MultiFactorRecoveryCodes}");
+        using var sut = await client.GetAsync($"api/v1/{Routes.Users.MultiFactorAuthentication.RecoveryCodes}");
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }

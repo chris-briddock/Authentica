@@ -1,5 +1,5 @@
-using Application.Contracts;
-using Domain.Aggregates.Identity;
+using Application.DTOs;
+using Domain.Contracts.Stores;
 using System.Collections.Immutable;
 
 namespace Application.Stores;
@@ -18,19 +18,34 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     /// </remarks>
     public ActivityReadStore(IServiceProvider services) : base(services) { }
     /// <inheritdoc/>
-    public ImmutableList<Activity> GetActivities()
+    public ImmutableList<ActivityDto> GetActivities()
     {
-        var activities = DbContext.Activities.ToImmutableList();
+        var activities = DbContext.Activities
+                                  .Select(x => new ActivityDto
+                                  {
+                                      SequenceId = x.SequenceId,
+                                      ActivityType = x.ActivityType,
+                                      CreatedOn = x.CreatedOn,
+                                      Data = x.Data
+                                  })
+                                   .ToImmutableList();
 
         return activities;
     }
 
     /// <inheritdoc/>
-    public ImmutableList<Activity> GetActivitiesByDateTimeStamp(DateTime timeStamp)
+    public ImmutableList<ActivityDto> GetActivitiesByDateTimeStamp(DateTime timeStamp)
     {
         var events = DbContext.Activities.Where(x => x.CreatedOn == timeStamp)
-                    .OrderBy(x => x.CreatedOn)
-                    .ToImmutableList();
+                                         .Select(x => new ActivityDto
+                                         {
+                                             SequenceId = x.SequenceId,
+                                             ActivityType = x.ActivityType,
+                                             CreatedOn = x.CreatedOn,
+                                             Data = x.Data
+                                         })
+                                         .OrderBy(x => x.CreatedOn)
+                                         .ToImmutableList();
 
         return events;
     }
