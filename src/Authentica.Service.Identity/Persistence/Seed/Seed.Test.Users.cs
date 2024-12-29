@@ -1,5 +1,6 @@
 using Api.Constants;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,7 +19,8 @@ public static partial class Seed
         {
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-
+            var userMultiFactorStore = scope.ServiceProvider.GetRequiredService<IUserMultiFactorWriteStore>();
+            
             User adminUser = new()
             {
                 UserName = AdminEmail,
@@ -42,6 +44,7 @@ public static partial class Seed
             if (existingUser is null)
             {
                 await userManager.CreateAsync(adminUser);
+                await userMultiFactorStore.CreateAsync(adminUser.Id);
                 // Add roles to the admin user.
                 await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
                 await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);
@@ -58,6 +61,7 @@ public static partial class Seed
         {
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var userMultiFactorStore = scope.ServiceProvider.GetRequiredService<IUserMultiFactorWriteStore>();
 
             var userEmail = DeleteUserEmail;
 
@@ -84,6 +88,7 @@ public static partial class Seed
             if (existingUser is null)
             {
                 await userManager.CreateAsync(user);
+                await userMultiFactorStore.CreateAsync(user.Id);
                 await userManager.AddToRoleAsync(user, RoleDefaults.User);
             }
 
@@ -100,6 +105,7 @@ public static partial class Seed
         {
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var userMultiFactorStore = scope.ServiceProvider.GetRequiredService<IUserMultiFactorWriteStore>();
 
             var userEmail = AuthorizeUserEmail;
 
@@ -124,6 +130,7 @@ public static partial class Seed
             if (existingUser is null)
             {
                 await userManager.CreateAsync(user);
+                await userMultiFactorStore.CreateAsync(user.Id);
                 await userManager.AddToRoleAsync(user, RoleDefaults.User);
             }
         }
@@ -175,6 +182,7 @@ public static partial class Seed
         {
             using var scope = app.Services.CreateAsyncScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var userMultiFactorStore = scope.ServiceProvider.GetRequiredService<IUserMultiFactorWriteStore>();
 
             var oldDeletedUserEmail = OldDeletedUserEmail;
             var recentDeletedUserEmail = RecentlyDeletedUserEmail;
@@ -222,6 +230,8 @@ public static partial class Seed
             {
                 await userManager.CreateAsync(oldDeletedUser);
                 await userManager.CreateAsync(recentDeletedUser);
+                await userMultiFactorStore.CreateAsync(oldDeletedUser.Id);
+                await userMultiFactorStore.CreateAsync(recentDeletedUser.Id);
 
                 await userManager.AddToRoleAsync(oldDeletedUser, RoleDefaults.User);
                 await userManager.AddToRoleAsync(recentDeletedUser, RoleDefaults.User);

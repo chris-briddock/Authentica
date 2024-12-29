@@ -52,6 +52,7 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var userMultiFactorStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
 
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 
@@ -59,6 +60,9 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
             return StatusCode(StatusCodes.Status409Conflict, "User is deleted, or already exists.");
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
+
+        // create related security settings for the user
+        await userMultiFactorStore.CreateAsync(result.User.Id);
 
         RegisterActivity activity = new()
         {

@@ -30,4 +30,11 @@ public interface IUserMultiFactorWriteStore
     /// <param name="userId">The unique identifier of the user.</param>
     /// <returns>A task that represents the asynchronous operation, containing the result of the MFA operation.</returns>
     Task<UserMultiFactorStoreResult> SetPasskeysAsync(bool isEnabled, string userId);
+
+    /// <summary>
+    /// Creates a new user multi factor settings.
+    /// </summary>
+    /// <param name="userId">The ID of the user.</param>
+    /// <returns>A result indicating whether the operation was successful.</returns>
+    Task<UserMultiFactorStoreResult> CreateAsync(string userId);
 }

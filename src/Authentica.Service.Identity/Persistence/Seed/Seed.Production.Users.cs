@@ -1,6 +1,7 @@
 using Api.Constants;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
+using Domain.Contracts.Stores;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,6 +19,7 @@ public static partial class Seed
         using var scope = app.Services.CreateAsyncScope();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+        var userMultiFactorStore = scope.ServiceProvider.GetRequiredService<IUserMultiFactorWriteStore>();
 
         var adminEmail = configuration.GetRequiredValueOrThrow("Defaults:AdminEmail");
         var adminPassword = configuration.GetRequiredValueOrThrow("Defaults:AdminPassword");
@@ -45,6 +47,7 @@ public static partial class Seed
         if (existingUser is null)
         {
             await userManager.CreateAsync(adminUser);
+            await userMultiFactorStore.CreateAsync(adminUser.Id);
             // Add roles to the admin user.
             await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
             await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);

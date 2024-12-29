@@ -1,5 +1,7 @@
 using Application.DTOs;
+using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
 
 namespace Application.Stores;
@@ -9,6 +11,11 @@ namespace Application.Stores;
 /// </summary>
 public sealed class ActivityReadStore : StoreBase, IActivityReadStore
 {
+    
+    /// <summary>
+    /// Gets the Activity DbSet.
+    /// </summary>
+    private DbSet<Activity> DbSet => DbContext.Set<Activity>();
     /// <summary>
     /// Initializes a new instance of the <see cref="ActivityReadStore"/> class.
     /// </summary>
@@ -20,15 +27,14 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     /// <inheritdoc/>
     public ImmutableList<ActivityDto> GetActivities()
     {
-        var activities = DbContext.Activities
-                                  .Select(x => new ActivityDto
-                                  {
-                                      SequenceId = x.SequenceId,
-                                      ActivityType = x.ActivityType,
-                                      CreatedOn = x.CreatedOn,
-                                      Data = x.Data
-                                  })
-                                   .ToImmutableList();
+        var activities = DbSet.Select(x => new ActivityDto
+        {
+            SequenceId = x.SequenceId,
+            ActivityType = x.ActivityType,
+            CreatedOn = x.CreatedOn,
+            Data = x.Data
+        })
+        .ToImmutableList();
 
         return activities;
     }
@@ -36,7 +42,7 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     /// <inheritdoc/>
     public ImmutableList<ActivityDto> GetActivitiesByDateTimeStamp(DateTime timeStamp)
     {
-        var events = DbContext.Activities.Where(x => x.CreatedOn == timeStamp)
+        var events = DbSet.Where(x => x.CreatedOn == timeStamp)
                                          .Select(x => new ActivityDto
                                          {
                                              SequenceId = x.SequenceId,

@@ -27,6 +27,7 @@ public static partial class ServiceCollectionExtensions
         services.TryAddScoped<ISessionReadStore, SessionReadStore>();
         services.TryAddScoped<IPasskeyCredentialReadStore, PasskeyCredentialReadStore>();
         services.TryAddScoped<IPasskeyCredentialWriteStore, PasskeyCredentialWriteStore>();
+        services.TryAddScoped<IUserMultiFactorWriteStore, UserMultiFactorWriteStore>();
 
         return services;
     }

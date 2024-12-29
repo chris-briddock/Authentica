@@ -33,7 +33,9 @@ public static partial class ServiceCollectionExtensions
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
     public static IServiceCollection AddSessionCache(this IServiceCollection services, IConfiguration configuration)
     {
-        IFeatureManager featureManager = services.Configure
+        IFeatureManager featureManager = services
+                                        .BuildServiceProvider()
+                                        .GetRequiredService<IFeatureManager>();
 
         services.AddDistributedMemoryCache();
 

@@ -15,7 +15,7 @@ public sealed class Activity : Activity<string>
 /// Represents a generic event with a key of type <typeparamref name="TKey"/>.
 /// </summary>
 /// <typeparam name="TKey">The type of the key.</typeparam>
-public class Activity<TKey> where TKey : IEquatable<TKey>
+public abstract class Activity<TKey> where TKey : IEquatable<TKey>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the activity.

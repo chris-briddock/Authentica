@@ -10,6 +10,7 @@ namespace Application.Stores;
 
 public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
 {
+    private DbSet<Session> DbSet => DbContext.Set<Session>();
     /// <summary>
     /// Initializes a new instance of the <see cref="SessionWriteStore"/> class.
     /// </summary>
@@ -23,8 +24,7 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     {
         try
         {
-            var dbSet = DbContext.Set<Session>();
-            await dbSet.AddAsync(session);
+            await DbSet.AddAsync(session);
             await DbContext.SaveChangesAsync();
         }
         catch (Exception)
@@ -40,9 +40,8 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     {
         try
         {
-            var dbSet = DbContext.Set<Session>();
 
-            var entry = dbSet.Where(x => x.SessionId == session.SessionId);
+            var entry = DbSet.Where(x => x.SessionId == session.SessionId);
 
             await entry.ExecuteUpdateAsync(x => x
                 .SetProperty(s => s.EntityDeletionStatus.IsDeleted, true)

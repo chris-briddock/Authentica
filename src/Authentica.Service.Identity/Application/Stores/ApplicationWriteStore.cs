@@ -4,6 +4,7 @@ using Domain.Aggregates.Identity;
 using Domain.Contracts.Cryptography;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Application.Stores;
@@ -14,6 +15,12 @@ namespace Application.Stores;
 /// </summary>
 public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 {
+
+    /// <summary>
+    /// Gets the App DbSet.
+    /// </summary>
+    private DbSet<ClientApplication> MainDbSet => DbContext.Set<ClientApplication>();
+    private DbSet<UserClientApplication> LinkDbSet => DbContext.Set<UserClientApplication>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApplicationWriteStore"/> class.
@@ -51,8 +58,8 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
                 ApplicationId = application.Id
             };
 
-            DbContext.ClientApplications.Add(application);
-            DbContext.UserClientApplications.Add(userClientApplication);
+            MainDbSet.Add(application);
+            LinkDbSet.Add(userClientApplication);
             await DbContext.SaveChangesAsync(cancellationToken);
 
             return ApplicationStoreResult.Success();
@@ -93,7 +100,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             application.EntityModificationStatus.ModifiedBy = userReadResult.User.Email ?? application.EntityModificationStatus.ModifiedBy;
             application.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;
 
-            DbContext.ClientApplications.Update(application);
+            MainDbSet.Update(application);
             await DbContext.SaveChangesAsync(cancellationToken);
 
             return ApplicationStoreResult.Success();
@@ -135,8 +142,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             application.EntityDeletionStatus.DeletedBy = userReadResult.User.Id;
 
             // Execute the SQL command to update the application
-            var dbSet = DbContext.Set<ClientApplication>();
-            dbSet.Update(application);
+            MainDbSet.Update(application);
             await DbContext.SaveChangesAsync(cancellationToken);
 
             // Return success result
@@ -183,7 +189,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             // Update the client secret
             application.ClientSecret = hashedSecret;
-            DbContext.ClientApplications.Update(application);
+            MainDbSet.Update(application);
             await DbContext.SaveChangesAsync(cancellationToken);
 
             // Return success result

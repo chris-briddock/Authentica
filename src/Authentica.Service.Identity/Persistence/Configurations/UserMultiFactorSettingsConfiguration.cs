@@ -48,6 +48,28 @@ public sealed class UserMultiFactorSettingsConfiguration : IEntityTypeConfigurat
                .HasColumnName("passkeys_enabled")
                .IsRequired();
 
+       builder.ComplexProperty(u => u.EntityCreationStatus)
+               .Property(x => x.CreatedBy)
+               .HasColumnName("created_by")
+               .HasMaxLength(36);
+
+        builder.ComplexProperty(u => u.EntityCreationStatus)
+               .Property(x => x.CreatedOnUtc)
+               .HasColumnName("created_on_utc")
+               .HasDefaultValueSql("GETUTCDATE()")
+               .ValueGeneratedOnAdd();
+
+        builder.ComplexProperty(u => u.EntityModificationStatus)
+               .Property(x => x.ModifiedBy)
+               .HasColumnName("modified_by")
+               .HasMaxLength(36);
+
+        builder.ComplexProperty(u => u.EntityModificationStatus)
+               .Property(x => x.ModifiedOnUtc)
+               .HasColumnName("modified_on_utc")
+               .HasDefaultValueSql("GETUTCDATE()")
+               .ValueGeneratedOnUpdate();
+
         // Add a unique index on UserId.
         builder.HasIndex(mfa => mfa.UserId)
                .IsUnique();

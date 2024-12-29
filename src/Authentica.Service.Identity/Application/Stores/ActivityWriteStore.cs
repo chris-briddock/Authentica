@@ -4,6 +4,7 @@ using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
 using Domain.Contracts.Stores;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace Application.Stores;
@@ -13,6 +14,10 @@ namespace Application.Stores;
 /// </summary>
 public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
 {
+    /// <summary>
+    /// Gets the Activity DbSet.
+    /// </summary>
+    private DbSet<Activity> DbSet => DbContext.Set<Activity>();
     /// <summary>
     /// Initializes a new instance of the <see cref="ActivityReadStore"/> class.
     /// </summary>
@@ -37,7 +42,7 @@ public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
                 SequenceId = HttpContext.Session.GetString(SessionConstants.SequenceId)!
             };
 
-            await DbContext.Activities.AddAsync(record);
+            await DbSet.AddAsync(record);
             await DbContext.SaveChangesAsync();
 
             return ActivityStoreResult.Success();

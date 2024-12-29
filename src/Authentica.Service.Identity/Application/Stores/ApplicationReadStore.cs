@@ -18,10 +18,20 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     {
     }
 
+    /// <summary>
+    /// Gets the ClientApplication DbSet.
+    /// </summary>
+    public DbSet<ClientApplication> MainDbSet => DbContext.Set<ClientApplication>();
+
+    /// <summary>
+    /// Gets the UserClientApplication DbSet.
+    /// </summary>
+    public DbSet<UserClientApplication> LinkDbSet => DbContext.Set<UserClientApplication>();
+
     /// <inheritdoc/>
     public async Task<bool> CheckApplicationExistsByNameAsync(string applicationName, CancellationToken cancellationToken = default)
     {
-        return await DbContext.ClientApplications.AnyAsync(a => a.Name == applicationName, cancellationToken);
+        return await MainDbSet.AnyAsync(a => a.Name == applicationName, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -32,9 +42,9 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
-        var clientApplication = await DbContext.ClientApplications
+        var clientApplication = await MainDbSet
             .Join(
-                DbContext.UserClientApplications,
+                LinkDbSet,
                 app => app.Id,
                 userApp => userApp.ApplicationId,
                 (app, userApp) => new { app, userApp.UserId }
@@ -53,7 +63,7 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
         ArgumentException.ThrowIfNullOrWhiteSpace(clientId);
         ArgumentException.ThrowIfNullOrWhiteSpace(callbackUri);
 
-        return await DbContext.ClientApplications
+        return await MainDbSet
             .Where(x => x.ClientId == clientId)
             .Where(x => x.CallbackUri == callbackUri)
             .Select(x => new ApplicationReadDto
@@ -73,9 +83,9 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
-        var clientApplications = await DbContext.ClientApplications
+        var clientApplications = await MainDbSet
             .Join(
-                DbContext.UserClientApplications,
+                LinkDbSet,
                 app => app.Id,
                 userApp => userApp.ApplicationId,
                 (app, userApp) => new { app, userApp.UserId }
@@ -97,8 +107,7 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     /// <inheritdoc/>
     public async Task<ApplicationReadDto> GetClientApplicationByClientId(string clientId, CancellationToken cancellationToken = default)
     {
-        var result = await DbContext.Set<ClientApplication>()
-                                    .Join(DbContext.Set<UserClientApplication>(),
+        var result = await MainDbSet.Join(LinkDbSet,
                                         client => client.Id,
                                         userClient => userClient.ApplicationId,
                                         (client, userClient) => new { client, userClient })
@@ -121,6 +130,6 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     /// <inheritdoc/>
     public async Task<bool> CheckApplicationExistsByClientIdAsync(string clientId, CancellationToken cancellationToken = default)
     {
-        return await DbContext.Set<ClientApplication>().AnyAsync(x => x.ClientId == clientId, cancellationToken);
+        return await MainDbSet.AnyAsync(x => x.ClientId == clientId, cancellationToken);
     }
 }

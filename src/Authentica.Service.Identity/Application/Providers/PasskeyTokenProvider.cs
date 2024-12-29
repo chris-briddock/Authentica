@@ -194,7 +194,6 @@ public sealed class PasskeyTokenProvider<TUser> : IPasskeyTokenProvider<TUser>
 
         PasskeyCredentialReadDto credential = new();
 
-
         List<PasskeyCredentialReadDto> result = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
 
         for (int i = 0; i < result.Count; i++)

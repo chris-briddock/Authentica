@@ -49,11 +49,16 @@ public sealed class MultiFactorManageEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
+        var userMultiFactorWriteStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
 
         if (!userReadResult.Succeeded)
             return BadRequest();
 
         await userManager.SetTwoFactorEnabledAsync(userReadResult.User, request.IsEnabled);
+
+        // enable email two factor by default.
+        await userMultiFactorWriteStore.SetEmailAsync(request.IsEnabled, userReadResult.User.Id);
+
 
         MultiFactorManageActivity activity = new()
         {
