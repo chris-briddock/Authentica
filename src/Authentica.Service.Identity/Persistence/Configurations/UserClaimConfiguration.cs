@@ -15,10 +15,7 @@ public sealed class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
     /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<UserClaim> builder)
     {
-        builder.ToTable("SYSTEM_IDENTITY_USER_CLAIMS", opt =>
-        {
-            opt.IsTemporal();
-        });
+        builder.ToTable("SYSTEM_IDENTITY_USER_CLAIMS", opt => opt.IsTemporal());
 
         builder.HasKey(uc => uc.Id);
 

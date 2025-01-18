@@ -61,8 +61,11 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
 
-        // create related security settings for the user
         await userMultiFactorStore.CreateAsync(result.User.Id);
+
+        // Enable email two factor by default.
+        await userManager.SetTwoFactorEnabledAsync(result.User, true);
+        await userMultiFactorStore.SetEmailAsync(true, result.User.Id);
 
         RegisterActivity activity = new()
         {
@@ -78,7 +81,6 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
             await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
 
 
-        // Send confirmation email - trigger domain event.
         return StatusCode(StatusCodes.Status201Created);
     }
 }

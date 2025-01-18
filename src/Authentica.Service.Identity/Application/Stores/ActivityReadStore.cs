@@ -25,7 +25,7 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     /// </remarks>
     public ActivityReadStore(IServiceProvider services) : base(services) { }
     /// <inheritdoc/>
-    public ImmutableList<ActivityDto> GetActivities()
+    public List<ActivityDto> GetActivities()
     {
         var activities = DbSet.Select(x => new ActivityDto
         {
@@ -34,13 +34,13 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
             CreatedOn = x.CreatedOn,
             Data = x.Data
         })
-        .ToImmutableList();
+        .ToList();
 
         return activities;
     }
 
     /// <inheritdoc/>
-    public ImmutableList<ActivityDto> GetActivitiesByDateTimeStamp(DateTime timeStamp)
+    public List<ActivityDto> GetActivitiesByDateTimeStamp(DateTime timeStamp)
     {
         var events = DbSet.Where(x => x.CreatedOn == timeStamp)
                                          .Select(x => new ActivityDto
@@ -51,7 +51,7 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
                                              Data = x.Data
                                          })
                                          .OrderBy(x => x.CreatedOn)
-                                         .ToImmutableList();
+                                         .ToList();
 
         return events;
     }

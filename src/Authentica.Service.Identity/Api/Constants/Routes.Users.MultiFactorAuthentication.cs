@@ -18,10 +18,6 @@ public static partial class Routes
             /// </summary>
             public const string LoginAuthenticator = "users/mfa/login/authenticator";
             /// <summary>
-            /// Route for logging in with mfa authentication.
-            /// </summary>
-            public const string LoginPasskeys = "users/mfa/login/passkeys";
-            /// <summary>
             /// Route for managing mfa authentication.
             /// </summary>
             public const string Manage = "users/mfa/manage";

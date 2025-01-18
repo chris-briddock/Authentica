@@ -115,8 +115,6 @@ public sealed class PasskeyTokenProvider<TUser> : IPasskeyTokenProvider<TUser>
 
         return options.ToJson();
 
-        // at this point in the controller, add these options to the httpcontext session.
-
     }
 
     /// <summary>
@@ -213,7 +211,7 @@ public sealed class PasskeyTokenProvider<TUser> : IPasskeyTokenProvider<TUser>
         };
         var res = await Fido2Lib.MakeAssertionAsync(response, options, credential.PublicKey, signatureCount, callback);
 
-        // update the counter
+        res.Counter++;
 
         // return the result
 

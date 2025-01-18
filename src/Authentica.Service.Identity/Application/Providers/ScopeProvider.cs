@@ -13,16 +13,15 @@ public sealed class ScopeProvider : IScopeProvider
     private static readonly char[] separator = [' '];
 
     /// <inheritdoc/>
-    public IList<string> ParseScopes(string scopeString)
+    public List<string> ParseScopes(string scopeString)
     {
         if (string.IsNullOrWhiteSpace(scopeString))
         {
             return [];
         }
 
-        return scopeString.Split(separator, StringSplitOptions.RemoveEmptyEntries)
+        return [.. scopeString.Split(separator, StringSplitOptions.RemoveEmptyEntries)
                           .Select(s => s.Trim())
-                          .Where(s => !string.IsNullOrEmpty(s))
-                          .ToList();
+                          .Where(s => !string.IsNullOrEmpty(s))];
     }
 }

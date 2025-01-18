@@ -16,11 +16,8 @@ public sealed class SessionConfiguration : IEntityTypeConfiguration<Session>
     public void Configure(EntityTypeBuilder<Session> builder)
     {
         // Set the table name and enable temporal table support
-        builder.ToTable("SYSTEM_IDENTITY_SESSIONS", opt =>
-        {
-            opt.IsTemporal();
-        });
-
+        builder.ToTable("SYSTEM_IDENTITY_SESSIONS", opt => opt.IsTemporal());
+       
         // Configure the Id property
         builder.Property(e => e.Id)
                .HasColumnName("id")

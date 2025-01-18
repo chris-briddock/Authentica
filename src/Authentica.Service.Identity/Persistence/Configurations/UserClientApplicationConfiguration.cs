@@ -15,10 +15,7 @@ public sealed class UserClientApplicationConfiguration : IEntityTypeConfiguratio
     /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<UserClientApplication> builder)
     {
-        builder.ToTable("SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS", opt =>
-        {
-            opt.IsTemporal();
-        });
+        builder.ToTable("SYSTEM_LINK_IDENTITY_USER_CLIENT_APPLICATIONS", opt => opt.IsTemporal());
 
         builder.HasKey(uca => uca.Id);
 

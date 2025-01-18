@@ -52,7 +52,7 @@ public interface IApplicationReadStore
     /// <param name="userId">The user ID to check for association.</param>
     /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
     /// <returns>A list of client applications associated with the specified user ID.</returns>
-    Task<IList<ApplicationReadDto>> GetAllClientApplicationsByUserIdAsync(string userId, CancellationToken cancellationToken = default);
+    Task<List<ApplicationReadDto>> GetAllClientApplicationsByUserIdAsync(string userId, CancellationToken cancellationToken = default);
     /// <summary>
     /// Retrieves a client application by client id.
     /// </summary>
@@ -60,5 +60,12 @@ public interface IApplicationReadStore
     /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
     /// <returns>A client application with the specified client id, which is associated to a user.</returns>
     Task<ApplicationReadDto> GetClientApplicationByClientId(string clientId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets all applications.
+    /// </summary>
+    /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>A list of client applications.</returns>
+    Task<List<ApplicationReadDto>> GetAllApplications(CancellationToken cancellationToken = default);
 }
 

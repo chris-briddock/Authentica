@@ -50,10 +50,10 @@ public sealed class TokenEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(TokenRequest request,
                                                          CancellationToken cancellationToken = default)
     {
-        string email = string.Empty;
-        string subject = string.Empty;
-        IList<string> roles = [];
-        IList<string> scopes = [];
+        List<string> roles = [];
+        List<string> scopes = new(request.Scopes.Length);
+        string subject;
+        string email;
 
         var jwtProvider = Services.GetRequiredService<IJsonWebTokenProvider>();
         var configuration = Services.GetRequiredService<IConfiguration>();

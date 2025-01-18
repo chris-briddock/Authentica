@@ -21,7 +21,8 @@ public class UserReadStore : StoreBase, IUserReadStore
     }
 
     /// <inheritdoc/>
-    public async Task<UserStoreResult> GetUserByEmailAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken = default)
+    public async Task<UserStoreResult> GetUserByEmailAsync(ClaimsPrincipal claimsPrincipal,
+                                                           CancellationToken cancellationToken = default)
     {
         Claim? userClaimsPrincipal = claimsPrincipal.FindFirst(ClaimTypes.Email)!;
 
@@ -62,16 +63,17 @@ public class UserReadStore : StoreBase, IUserReadStore
         return UserStoreResult.Success(user);
     }
     /// <inheritdoc />
-    public async Task<IList<string>> GetUserRolesAsync(string email)
+    public async Task<List<string>> GetUserRolesAsync(string email)
     {
         User? user = await UserManager.FindByEmailAsync(email) ?? null!;
-        return await UserManager.GetRolesAsync(user);
+        return [.. await UserManager.GetRolesAsync(user)];
     }
 
     /// <inheritdoc />
-    public async Task<IList<User>> GetAllUsersAsync()
+    public async Task<List<User>> GetAllUsersAsync()
     {
-        IList<User> users = await UserManager.GetUsersInRoleAsync(RoleDefaults.User);
+        List<User> users = [.. await UserManager.GetUsersInRoleAsync(RoleDefaults.User)];
+
         return users;
     }
 }

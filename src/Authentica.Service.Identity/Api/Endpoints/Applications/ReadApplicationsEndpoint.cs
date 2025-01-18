@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
@@ -53,10 +54,13 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
 
         var apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
 
-        List<ReadApplicationResponse> responses = [];
+        List<ReadApplicationResponse> responses = new(apps.Count);
 
-        foreach (var app in apps)
+        var appsSpan = CollectionsMarshal.AsSpan(apps);
+
+        for (int i = 0; i < appsSpan.Length; i++)
         {
+            var app = appsSpan[i];
             responses.Add(new ReadApplicationResponse()
             {
                 ClientId = app.ClientId,

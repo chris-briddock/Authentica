@@ -10,5 +10,5 @@ public interface IScopeProvider
     /// </summary>
     /// <param name="scopeString">The space-delimited string of scopes to parse.</param>
     /// <returns>An IList&lt;string&gt; containing individual scopes. Returns an empty list if the input is null, empty, or whitespace.</returns>
-    IList<string> ParseScopes(string scopeString);
+    List<string> ParseScopes(string scopeString);
 }

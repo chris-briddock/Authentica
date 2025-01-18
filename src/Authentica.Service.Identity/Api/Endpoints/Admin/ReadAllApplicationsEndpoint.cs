@@ -1,14 +1,12 @@
+using System.Runtime.InteropServices;
 using Api.Constants;
 using Application.Activities;
-using Application.DTOs;
 using Ardalis.ApiEndpoints;
 using Domain.Contracts.Stores;
 using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Contexts;
 
 namespace Api.Endpoints.Admin;
 
@@ -44,25 +42,18 @@ public class ReadAllApplicationsEndpoint : EndpointBaseAsync
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = RoleDefaults.Admin)]
     public override async Task<ActionResult<IList<ReadApplicationResponse>>> HandleAsync(CancellationToken cancellationToken = default)
     {
-        var dbContext = Services.GetRequiredService<AppDbContext>();
+        var applicationReadStore = Services.GetRequiredService<IApplicationReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var apps = await dbContext.ClientApplications
-                                  .Select(x => new ApplicationReadDto
-                                  {
-                                      ClientId = x.ClientId,
-                                      EntityCreationStatus = x.EntityCreationStatus,
-                                      EntityDeletionStatus = x.EntityDeletionStatus,
-                                      EntityModificationStatus = x.EntityModificationStatus,
-                                      CallbackUri = x.CallbackUri,
-                                      Name = x.Name
-                                  })
-                                  .ToListAsync(cancellationToken);
+        var apps = await applicationReadStore.GetAllApplications(cancellationToken);
 
-        IList<ReadApplicationResponse> response = [];
+        List<ReadApplicationResponse> response = new(apps.Count);
 
-        foreach (var item in apps)
+        var appsSpan = CollectionsMarshal.AsSpan(apps);
+
+        for (int i = 0; i < appsSpan.Length; i++)
         {
+            var item = appsSpan[i];
             response.Add(new ReadApplicationResponse()
             {
                 ClientId = item.ClientId,

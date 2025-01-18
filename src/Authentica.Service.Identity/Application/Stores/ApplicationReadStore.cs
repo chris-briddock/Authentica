@@ -79,7 +79,7 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     }
 
     /// <inheritdoc/>
-    public async Task<IList<ApplicationReadDto>> GetAllClientApplicationsByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<List<ApplicationReadDto>> GetAllClientApplicationsByUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
@@ -132,4 +132,21 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     {
         return await MainDbSet.AnyAsync(x => x.ClientId == clientId, cancellationToken);
     }
+
+    /// <inheritdoc/>
+    public async Task<List<ApplicationReadDto>> GetAllApplications(CancellationToken cancellationToken = default)
+    {
+        return await DbContext.ClientApplications
+                                  .Select(x => new ApplicationReadDto
+                                  {
+                                      ClientId = x.ClientId,
+                                      EntityCreationStatus = x.EntityCreationStatus,
+                                      EntityDeletionStatus = x.EntityDeletionStatus,
+                                      EntityModificationStatus = x.EntityModificationStatus,
+                                      CallbackUri = x.CallbackUri,
+                                      Name = x.Name
+                                  })
+                                  .ToListAsync(cancellationToken);
+    }
+
 }

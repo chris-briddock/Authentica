@@ -59,8 +59,6 @@ public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
         // Disable MFA within the SYSTEM_IDENTITY_USERS table.
         await userManager.SetTwoFactorEnabledAsync(user, false);
 
-        // Now disable MFA from the SYSTEM_IDENTITY_USER_MFA_SETTINGS table.
-
         await multiFactorWriteStore.SetPasskeysAsync(false, user.Id);
         await multiFactorWriteStore.SetEmailAsync(false, user.Id);
         await multiFactorWriteStore.SetAutheticatorAsync(false, user.Id);

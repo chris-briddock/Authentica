@@ -7,7 +7,7 @@ using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 
 namespace Api.Endpoints.Admin;
 
@@ -46,17 +46,21 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IActivityReadStore>();
         var writeStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        ImmutableList<ActivityDto> activities = readStore.GetActivities();
+        List<ActivityDto> activities = readStore.GetActivities();
 
         ReadAllActivitiesActivity record = new()
         {
             Email = User.Identity?.Name ?? "Unknown"
         };
 
-        IList<ActivityResponse> responses = [];
+        List<ActivityResponse> responses = new(activities.Count);
 
-        foreach(var activity in activities)
+        Span<ActivityDto> activitySpan = CollectionsMarshal.AsSpan(activities);
+
+        for (int i = 0; i < activitySpan.Length; i++)
         {
+            var activity = activitySpan[i];
+
             responses.Add(new ActivityResponse()
             {
                 SequenceId = activity.SequenceId,

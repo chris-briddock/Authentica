@@ -15,10 +15,7 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
     /// <param name="builder">The entity type builder used to configure the entity.</param>
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("SYSTEM_IDENTITY_USERS", opt =>
-        {
-            opt.IsTemporal();
-        });
+        builder.ToTable("SYSTEM_IDENTITY_USERS", opt => opt.IsTemporal());
 
         builder.HasKey(u => u.Id);
 

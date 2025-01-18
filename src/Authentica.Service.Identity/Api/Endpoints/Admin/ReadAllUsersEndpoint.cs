@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
@@ -43,9 +44,14 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
     {
         var readStore = Services.GetRequiredService<IUserReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
-        IList<GetUserResponse> response = [];
 
-        IList<User> users = await readStore.GetAllUsersAsync();
+        List<User> users = await readStore.GetAllUsersAsync();
+
+        // Preallocate the response list with the known capacity.
+        var response = new List<GetUserResponse>(users.Count);
+
+        // Obtain a Span<User> from the list.
+        Span<User> userSpan = CollectionsMarshal.AsSpan(users);
 
         ReadAllUsersActivity activity = new()
         {
@@ -54,8 +60,9 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
 
         await activityStore.SaveActivityAsync(activity);
 
-        foreach (var user in users)
+        for (int i = 0; i < userSpan.Length; i++)
         {
+            var user = userSpan[i];
             response.Add(new GetUserResponse()
             {
                 Id = user.Id,
