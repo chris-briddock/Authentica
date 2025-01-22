@@ -14,7 +14,7 @@ public class NullEmailPublisher : IEmailPublisher
 {
     /// <inheritdoc/>
     [ExcludeFromCodeCoverage]
-    public async Task Publish(EmailMessage emailMessage, CancellationToken cancellationToken)
+    public async Task PublishAsync(EmailMessage emailMessage, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
     }

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Authentica.Service.Identity.Persistence
+namespace Authentica.Service.Identity.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,7 +23,8 @@ namespace Authentica.Service.Identity.Persistence
                     sequence_id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     activity_type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     created_on = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    data = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    data = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,7 +56,7 @@ namespace Authentica.Service.Identity.Persistence
                     client_secret = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     callback_uri = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true, defaultValueSql: "NEWID()")
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,6 +110,7 @@ namespace Authentica.Service.Identity.Persistence
                     ip_address = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: true),
                     user_agent = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     status = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
                         .Annotation("SqlServer:TemporalIsPeriodEndColumn", true),
                     PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -160,7 +162,8 @@ namespace Authentica.Service.Identity.Persistence
                     challenge_id = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     challenge = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     status = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    expires_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 12, 28, 6, 20, 3, 89, DateTimeKind.Utc).AddTicks(2083)),
+                    expires_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2025, 1, 22, 12, 45, 5, 623, DateTimeKind.Utc).AddTicks(3936)),
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
                         .Annotation("SqlServer:TemporalIsPeriodEndColumn", true),
                     PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -193,7 +196,8 @@ namespace Authentica.Service.Identity.Persistence
                     signature_counter = table.Column<long>(type: "bigint", nullable: false),
                     cred_type = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "public-key"),
                     created_on_utc = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    authenticator_id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
+                    authenticator_id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -281,7 +285,7 @@ namespace Authentica.Service.Identity.Persistence
                 columns: table => new
                 {
                     id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
                         .Annotation("SqlServer:TemporalIsPeriodEndColumn", true),
                     PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -312,7 +316,7 @@ namespace Authentica.Service.Identity.Persistence
                 {
                     id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     user_id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
                         .Annotation("SqlServer:TemporalIsPeriodEndColumn", true),
                     PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -353,9 +357,14 @@ namespace Authentica.Service.Identity.Persistence
                         .Annotation("SqlServer:TemporalIsPeriodEndColumn", true),
                     PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false)
                         .Annotation("SqlServer:TemporalIsPeriodStartColumn", true),
+                    created_by = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
+                    created_on_utc = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    modified_by = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
+                    modified_on_utc = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETUTCDATE()"),
                     email_enabled = table.Column<bool>(type: "bit", nullable: false),
                     authenticator_enabled = table.Column<bool>(type: "bit", nullable: false),
-                    passkeys_enabled = table.Column<bool>(type: "bit", nullable: false)
+                    passkeys_enabled = table.Column<bool>(type: "bit", nullable: false),
+                    concurrency_stamp = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {

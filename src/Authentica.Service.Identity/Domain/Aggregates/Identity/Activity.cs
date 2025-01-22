@@ -41,4 +41,9 @@ public abstract class Activity<TKey> where TKey : IEquatable<TKey>
     /// Gets or sets the request associated with the activity.
     /// </summary>
     public string? Data { get; set; } = default!;
+    
+    /// <summary>
+    /// A random value that should change whenever the entity is persisted.
+    /// </summary>
+    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 }

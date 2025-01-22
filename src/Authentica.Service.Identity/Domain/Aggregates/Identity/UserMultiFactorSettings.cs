@@ -57,6 +57,11 @@ where TKey : IEquatable<TKey>
     /// </summary>
     /// <remarks>This flag determines whether the user has enabled passkeys for MFA.</remarks>
     public virtual bool MultiFactorPasskeysEnabled { get; set; } = default!;
+
+    /// <summary>
+    /// A random value that should change whenever the entity is persisted.
+    /// </summary>
+    public virtual string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
     /// <summary>
     /// Gets or sets the creation status of the entity.
     /// </summary>

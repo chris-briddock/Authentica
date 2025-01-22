@@ -84,6 +84,11 @@ public sealed class Session :
     public string Status { get; set; } = default!;
 
     /// <summary>
+    /// A random value that should change whenever the entity is persisted.
+    /// </summary>
+    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+
+    /// <summary>
     /// Gets or sets the deletion status of the entity.
     /// </summary>
     /// <remarks>

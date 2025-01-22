@@ -50,15 +50,15 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
         // Preallocate the response list with the known capacity.
         var response = new List<GetUserResponse>(users.Count);
 
-        // Obtain a Span<User> from the list.
-        Span<User> userSpan = CollectionsMarshal.AsSpan(users);
-
         ReadAllUsersActivity activity = new()
         {
             Email = User.Identity?.Name ?? "Unknown"
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        // Obtain a Span<User> from the list.
+        var userSpan = CollectionsMarshal.AsSpan(users);
 
         for (int i = 0; i < userSpan.Length; i++)
         {

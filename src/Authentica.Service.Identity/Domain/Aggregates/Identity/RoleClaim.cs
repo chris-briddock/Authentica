@@ -13,12 +13,13 @@ public sealed class RoleClaim : IdentityRoleClaim<string>
     public new string Id { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
-    /// A random value that should change whenever a role is persisted to the store.
+    /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string? ConcurrencyStamp { get; set; } = default!;
+    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
     /// Gets or sets the role associated with this claim.
     /// </summary>
     public Role Role { get; set; } = default!;
+
 }

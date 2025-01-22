@@ -46,7 +46,7 @@ public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IActivityReadStore>();
         var writeStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        List<ActivityDto> activities = readStore.GetActivities();
+        List<ActivityDto> activities = await readStore.GetActivitiesAsync();
 
         ReadAllActivitiesActivity record = new()
         {

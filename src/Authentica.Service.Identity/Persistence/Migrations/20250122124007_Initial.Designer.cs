@@ -13,8 +13,8 @@ using Persistence.Contexts;
 namespace Authentica.Service.Identity.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241228232302_userMFA")]
-    partial class userMFA
+    [Migration("20250122124007_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,13 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("activity_type");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("concurrency_stamp");
 
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAddOrUpdate()
@@ -106,11 +113,11 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnName("client_secret");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)")
-                        .HasColumnName("concurrency_stamp")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasColumnName("concurrency_stamp");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -212,10 +219,17 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasColumnName("challenge_id");
 
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("concurrency_stamp");
+
                     b.Property<DateTime>("ExpiresAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 28, 23, 28, 1, 77, DateTimeKind.Utc).AddTicks(9555))
+                        .HasDefaultValue(new DateTime(2025, 1, 22, 12, 45, 5, 623, DateTimeKind.Utc).AddTicks(3936))
                         .HasColumnName("expires_at");
 
                     b.Property<DateTime>("PeriodEnd")
@@ -278,6 +292,13 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)")
                         .HasColumnName("authenticator_id");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("concurrency_stamp");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -460,6 +481,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)")
                         .HasColumnName("concurrency_stamp");
@@ -504,6 +526,13 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)")
                         .HasColumnName("id");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("concurrency_stamp");
 
                     b.Property<DateTime?>("EndDateTime")
                         .HasColumnType("datetime2")
@@ -824,6 +853,7 @@ namespace Authentica.Service.Identity.Persistence.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)")
                         .HasColumnName("concurrency_stamp");
@@ -966,6 +996,13 @@ namespace Authentica.Service.Identity.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("id");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("concurrency_stamp");
 
                     b.Property<bool>("MultiFactorAuthenticatorEnabled")
                         .HasColumnType("bit")

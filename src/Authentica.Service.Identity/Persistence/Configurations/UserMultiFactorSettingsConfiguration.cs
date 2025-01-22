@@ -69,7 +69,11 @@ public sealed class UserMultiFactorSettingsConfiguration : IEntityTypeConfigurat
                .HasColumnName("modified_on_utc")
                .HasDefaultValueSql("GETUTCDATE()")
                .ValueGeneratedOnUpdate();
-
+        
+        builder.Property(e => e.ConcurrencyStamp)
+              .HasColumnName("concurrency_stamp")
+              .HasMaxLength(36)
+              .IsConcurrencyToken();
         // Add a unique index on UserId.
         builder.HasIndex(mfa => mfa.UserId)
                .IsUnique();

@@ -2,12 +2,14 @@ using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using System.Text.Json;
 
 namespace Application.Stores;
 
 /// <summary>
-/// Provides write operations to the event log.
+/// Provides write operations to the activity log.
 /// </summary>
 public sealed class ActivityReadStore : StoreBase, IActivityReadStore
 {
@@ -23,26 +25,71 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     /// <remarks>
     /// This constructor initializes the <see cref="ActivityReadStore"/> instance by calling the base constructor with the provided service provider.
     /// </remarks>
-    public ActivityReadStore(IServiceProvider services) : base(services) { }
+    public ActivityReadStore(IServiceProvider services) : base(services) {}
     /// <inheritdoc/>
-    public List<ActivityDto> GetActivities()
-    {
-        var activities = DbSet.Select(x => new ActivityDto
+    public async Task<List<ActivityDto>> GetActivitiesAsync(CancellationToken token = default)
+    { 
+        const string cacheKey = "activities";
+
+        // Check in-memory cache
+        if (MemoryCache.TryGetValue(cacheKey, out List<ActivityDto>? activities))
+            return activities!;
+
+        // Check Redis cache
+        if (IsRedisEnabled)
+        {
+            var redisData = DistributedCache.GetString(cacheKey);
+
+            if (redisData is not null)
+            {
+                activities = JsonSerializer.Deserialize<List<ActivityDto>>(redisData);
+                // Store in-memory cache for future requests
+                MemoryCache.Set(cacheKey, activities);
+                return activities!;
+            }
+        }
+
+        var result = await DbSet.Select(x => new ActivityDto
         {
             SequenceId = x.SequenceId,
             ActivityType = x.ActivityType,
             CreatedOn = x.CreatedOn,
             Data = x.Data
-        })
-        .ToList();
+        }).ToListAsync(token);
 
-        return activities;
+        MemoryCache.Set(cacheKey, activities);
+        
+        if (IsRedisEnabled)
+            await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(activities), token);
+
+        return result;
     }
 
     /// <inheritdoc/>
-    public List<ActivityDto> GetActivitiesByDateTimeStamp(DateTime timeStamp)
+    public async Task<List<ActivityDto>> GetActivitiesByDateTimeStampAsync(DateTime timeStamp,
+                                                                           CancellationToken token = default)
     {
-        var events = DbSet.Where(x => x.CreatedOn == timeStamp)
+        string cacheKey = $"activities_{timeStamp:yyyyMMddHHmmss}";
+
+        // Check in-memory cache.
+        if (MemoryCache.TryGetValue(cacheKey, out List<ActivityDto>? events))
+            return await Task.FromResult(events!);
+
+        // Check redis cache if enabled.
+        if (IsRedisEnabled)
+        {
+            var redisData = DistributedCache.GetString(cacheKey);
+
+            if (redisData is not null)
+            {
+                events = JsonSerializer.Deserialize<List<ActivityDto>>(redisData);
+                MemoryCache.Set(cacheKey, events);
+                return await Task.FromResult(events!);
+            }
+        }
+
+        // Query the database.
+        var result = await DbSet.Where(x => x.CreatedOn == timeStamp)
                                          .Select(x => new ActivityDto
                                          {
                                              SequenceId = x.SequenceId,
@@ -51,8 +98,13 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
                                              Data = x.Data
                                          })
                                          .OrderBy(x => x.CreatedOn)
-                                         .ToList();
+                                         .ToListAsync(token);
+        
+        MemoryCache.Set(cacheKey, events);
+        
+        if (IsRedisEnabled)
+            await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(events), token);
 
-        return events;
+        return result;
     }
 }

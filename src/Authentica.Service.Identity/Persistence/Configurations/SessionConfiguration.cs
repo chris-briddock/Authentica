@@ -82,5 +82,10 @@ public sealed class SessionConfiguration : IEntityTypeConfiguration<Session>
                .Property(x => x.IsDeleted)
                .HasColumnName("is_deleted")
                .IsRequired();
+       
+       builder.Property(e => e.ConcurrencyStamp)
+              .HasColumnName("concurrency_stamp")
+              .HasMaxLength(36)
+              .IsConcurrencyToken();
     }
 }

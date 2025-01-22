@@ -62,11 +62,6 @@ public class GetUserResponse
     public DateTime? LastLoginDateTime { get; set; }
 
     /// <summary>
-    /// Gets or sets the last login IP address.
-    /// </summary>
-    public string LastLoginIPAddress { get; set; } = default!;
-
-    /// <summary>
     /// Gets or sets a value indicating whether the user is deleted.
     /// </summary>
     public bool IsDeleted { get; set; } = default!;

@@ -45,7 +45,7 @@ public class ReadAllApplicationsEndpoint : EndpointBaseAsync
         var applicationReadStore = Services.GetRequiredService<IApplicationReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var apps = await applicationReadStore.GetAllApplications(cancellationToken);
+        var apps = await applicationReadStore.GetAllApplicationsAsync(cancellationToken);
 
         List<ReadApplicationResponse> response = new(apps.Count);
 

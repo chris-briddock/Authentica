@@ -41,6 +41,11 @@ public sealed class ActivityConfiguration : IEntityTypeConfiguration<Activity>
                .HasColumnName("created_on")
                .HasDefaultValueSql("GETUTCDATE()")
                .ValueGeneratedOnAddOrUpdate();
+       
+       builder.Property(e => e.ConcurrencyStamp)
+              .HasColumnName("concurrency_stamp")
+              .HasMaxLength(36)
+              .IsConcurrencyToken();
 
         // Configure the Data property
         builder.Property(e => e.Data)

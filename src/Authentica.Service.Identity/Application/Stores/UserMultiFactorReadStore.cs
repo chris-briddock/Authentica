@@ -1,7 +1,10 @@
+using System.Text.Json;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Stores;
 
@@ -20,11 +23,13 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     }
 
     /// <inheritdoc/>
-    public async Task<UserMultiFactorReadDto> GetAsync(string userId)
+    public async Task<UserMultiFactorReadDto> GetAsync(string userId, CancellationToken token = default)
     {
-        try
-        {
-            var settings = await DbSet
+            // Check in memory cache
+            if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
+                return settings!;
+
+            settings = await DbSet
                 .Where(x => x.UserId == userId)
                 .Select(x => new UserMultiFactorReadDto
                 {
@@ -32,67 +37,122 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
                     MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled,
                     MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(token);
+            // Store the result in memory cache
+            MemoryCache.Set(userId, settings);
+            // Store the result in redis cache
+            if (IsRedisEnabled)
+                await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
 
-            return settings ?? null! ;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("Failed to get user multi factor settings", ex);
-        }
+        return settings!;
     }
 
     /// <inheritdoc/>
-    public async Task<bool> IsEmailEnabledAsync(string userId)
+    public async Task<UserMultiFactorReadDto> IsEmailEnabledAsync(string userId, CancellationToken token = default)
     {
-        try
-        {
-            var settings = await DbSet
-                .Where(x => x.UserId == userId)
-                .Select(x => x.MultiFactorEmailEnabled)
-                .FirstOrDefaultAsync();
+        // check in memory cache
+        if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
+            return settings!;
 
-            return settings;
-        }
-        catch (Exception ex)
+        // check in redis cache
+        if (IsRedisEnabled)
         {
-            throw new Exception("Failed to check if email is enabled", ex);
+            var cacheValue = await DistributedCache.GetStringAsync(userId, token);
+            if (cacheValue is not null)
+            {
+                settings = JsonSerializer.Deserialize<UserMultiFactorReadDto>(cacheValue);
+                return settings!;
+            }
         }
+        
+        settings = await DbSet
+                .Where(x => x.UserId == userId)
+                .Select(x => new UserMultiFactorReadDto
+                {
+                    MultiFactorEmailEnabled = x.MultiFactorEmailEnabled
+                }).FirstOrDefaultAsync(token);
+        // Store the result in memory cache
+        MemoryCache.Set(userId, settings);
+        // Store the result in redis cache
+        if (IsRedisEnabled)
+        {
+            await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
+        }
+
+        return settings!;
     }
 
     /// <inheritdoc/>
-    public async Task<bool> IsAuthenticatorEnabledAsync(string userId)
+    public async Task<UserMultiFactorReadDto> IsAuthenticatorEnabledAsync(string userId, CancellationToken token)
     {
-        try
-        {
-            bool settings = await DbSet
-                .Where(x => x.UserId == userId)
-                .Select(x => x.MultiFactorAuthenticatorEnabled)
-                .FirstOrDefaultAsync();
+        // check in memory cache
+        if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
+            return settings!;
 
-            return settings;
-        }
-        catch (Exception ex)
+        // check in redis cache
+        if (IsRedisEnabled)
         {
-            throw new Exception("Failed to check if authenticator is enabled", ex);
+            var cacheValue = await DistributedCache.GetStringAsync(userId, token);
+            if (cacheValue != null)
+            {
+                settings = JsonSerializer.Deserialize<UserMultiFactorReadDto>(cacheValue);
+                return settings!;
+            }
         }
+
+        settings =  await DbSet
+                .Where(x => x.UserId == userId)
+                .Select(x => new UserMultiFactorReadDto()
+                {
+                    MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled
+                }).FirstOrDefaultAsync(token);
+
+        // Store the result in memory cache
+        MemoryCache.Set(userId, settings);
+        
+        // store the result in redis cache
+        if (IsRedisEnabled)
+            await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
+
+        return settings!;
     }
 
     /// <inheritdoc/>
-    public async Task<bool> IsPasskeysEnabledAsync(string userId)
+    public async Task<UserMultiFactorReadDto> IsPasskeysEnabledAsync(string userId, CancellationToken token)
     {
-        try
+        // check in memory cache
+        if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
         {
-            bool settings = await DbSet
-                .Where(x => x.UserId == userId)
-                .Select(x => x.MultiFactorPasskeysEnabled)
-                .FirstOrDefaultAsync();
+            return settings!;
+        }
 
-            return settings;
-        }
-        catch (Exception ex)
+        // check in redis cache
+        if (IsRedisEnabled)
         {
-            throw new Exception("Failed to check if passkeys is enabled", ex);
+            var cacheValue = await DistributedCache.GetStringAsync(userId, token);
+            if (cacheValue != null)
+            {
+                settings = JsonSerializer.Deserialize<UserMultiFactorReadDto>(cacheValue);
+                return settings!;
+            }
         }
+        
+        settings = await DbSet
+                .Where(x => x.UserId == userId)
+                .Select(x => new UserMultiFactorReadDto()
+                {
+                    MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
+                }).FirstOrDefaultAsync(token);
+
+        // Store the result in memory cache
+        MemoryCache.Set(userId, settings);
+
+        // Store the result in redis cache
+        if (IsRedisEnabled)
+        {
+            await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
+        }
+        return settings!;
+
     }
 }

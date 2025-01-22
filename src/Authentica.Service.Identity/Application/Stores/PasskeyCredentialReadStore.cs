@@ -1,7 +1,10 @@
-﻿using Application.DTOs;
+﻿using System.Text.Json;
+using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Stores;
 
@@ -21,7 +24,24 @@ public class PasskeyCredentialReadStore : StoreBase, IPasskeyCredentialReadStore
     public async Task<List<PasskeyCredentialReadDto>> GetPasskeyCredentialsAsync(string UserId, CancellationToken token = default)
 
     {
-           return await DbContext.Set<PasskeyCredential>()
+         // Check in memory cache
+        if (MemoryCache.TryGetValue(UserId, out List<PasskeyCredentialReadDto>? passkeyCredentials))
+            return passkeyCredentials!;
+        
+        // Check redis cache
+        if (IsRedisEnabled)
+        {
+            var redisData = DistributedCache.GetString(UserId);
+            if (redisData is not null)
+            {
+                passkeyCredentials = JsonSerializer.Deserialize<List<PasskeyCredentialReadDto>>(redisData);
+                // Store in-memory cache for future requests
+                MemoryCache.Set(UserId, passkeyCredentials);
+                return passkeyCredentials!;
+            }
+        }
+
+           var result =  await DbContext.Set<PasskeyCredential>()
                                  .Join(DbContext.Set<UserPasskeyCredential>(),
                                      pc => pc.Id,
                                     upc => upc.PasskeyCredentialId,
@@ -36,5 +56,13 @@ public class PasskeyCredentialReadStore : StoreBase, IPasskeyCredentialReadStore
                                     
                                 })
                                 .ToListAsync(token);
+            // Cache the result
+            MemoryCache.Set(UserId, result);
+            if (IsRedisEnabled)
+            {
+                var redisData = JsonSerializer.Serialize(result);
+                await DistributedCache.SetStringAsync(UserId, redisData, token);
+            }
+            return result;
     }
 }

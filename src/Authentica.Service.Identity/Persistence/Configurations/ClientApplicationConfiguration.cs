@@ -40,7 +40,6 @@ public sealed class ClientApplicationConfiguration : IEntityTypeConfiguration<Cl
         builder.Property(ca => ca.ConcurrencyStamp)
                .HasMaxLength(36)
                .HasColumnName("concurrency_stamp")
-               .HasDefaultValueSql("NEWID()")
                .ValueGeneratedOnAddOrUpdate();
 
         builder.ComplexProperty(u => u.EntityCreationStatus)

@@ -22,7 +22,7 @@ public class EmailPublisherTests
         EmailPublisher publisher = new(serviceProviderMock.Object);
 
         // Act
-        await publisher.Publish(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>());
+        await publisher.PublishAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>());
 
         // Assert
         busMock.Verify(bus => bus.Publish(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()), Times.Once);

@@ -25,7 +25,7 @@ public sealed class EmailPublisher : IEmailPublisher
     }
 
     /// <inheritdoc/>
-    public async Task Publish(EmailMessage emailMessage,
+    public async Task PublishAsync(EmailMessage emailMessage,
                               CancellationToken cancellationToken)
     {
 

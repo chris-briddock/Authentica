@@ -1,7 +1,10 @@
+using System.Text.Json;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Stores;
 
@@ -42,6 +45,25 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
+        string cacheKey = $"clientApp_{name}_{userId}";
+
+        // Check in-memory cache
+        if (MemoryCache.TryGetValue(cacheKey, out ClientApplication? cachedApplication))
+            return cachedApplication;
+
+        // Check redis cache
+        if (IsRedisEnabled)
+        {
+            var redisData = await DistributedCache.GetStringAsync(cacheKey, cancellationToken);
+
+            if (redisData is not null)
+            {
+                cachedApplication = JsonSerializer.Deserialize<ClientApplication>(redisData);
+                MemoryCache.Set(cacheKey, cachedApplication);
+                return cachedApplication;
+            }
+        }
+
         var clientApplication = await MainDbSet
             .Join(
                 LinkDbSet,
@@ -53,19 +75,46 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
             .Select(joined => joined.app)
             .FirstOrDefaultAsync(cancellationToken);
 
+        // Cache the result
+        if (clientApplication != null)
+        {
+            MemoryCache.Set(cacheKey, clientApplication);
+            if (IsRedisEnabled)
+                await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(clientApplication), cancellationToken);
+        }
+
         return clientApplication;
     }
+
     /// <inheritdoc/>
-    public async Task<ApplicationReadDto?> GetClientApplicationByClientIdAndCallbackUri(string clientId,
+    public async Task<ApplicationReadDto?> GetClientAppByClientIdAndCallbackUriAsync(string clientId,
                                                                                         string callbackUri,
                                                                                         CancellationToken cancellationToken = default!)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clientId);
         ArgumentException.ThrowIfNullOrWhiteSpace(callbackUri);
 
-        return await MainDbSet
-            .Where(x => x.ClientId == clientId)
-            .Where(x => x.CallbackUri == callbackUri)
+        var cacheKey = $"clientApp_{clientId}_{callbackUri}";
+
+        // Check in-memory cache
+        if (MemoryCache.TryGetValue(cacheKey, out ApplicationReadDto? cachedApplication))
+            return cachedApplication;
+        
+        // Check redis cache
+        if (IsRedisEnabled)
+        {
+            var redisData = await DistributedCache.GetStringAsync(cacheKey, cancellationToken);
+
+            if (redisData is not null)
+            {
+                cachedApplication = JsonSerializer.Deserialize<ApplicationReadDto>(redisData);
+                MemoryCache.Set(cacheKey, cachedApplication);
+                return cachedApplication;
+            }
+        }
+
+        var application = await MainDbSet
+            .Where(x => x.ClientId == clientId && x.CallbackUri == callbackUri)
             .Select(x => new ApplicationReadDto
             {
                 ClientId = x.ClientId,
@@ -76,6 +125,16 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                 Name = x.Name
             })
             .FirstOrDefaultAsync(cancellationToken);
+
+        // Cache the result
+        if (application is not null)
+        {
+            MemoryCache.Set(cacheKey, application);
+            if (IsRedisEnabled)
+                await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(application), cancellationToken);
+        }
+
+        return application;
     }
 
     /// <inheritdoc/>
@@ -83,6 +142,25 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
+        var cacheKey = $"clientApps_{userId}";
+
+        // Check in-memory cache.
+        if (MemoryCache.TryGetValue(cacheKey, out List<ApplicationReadDto>? applications))
+            return applications!;
+        
+        // Check redis cache.
+        if (IsRedisEnabled)
+        {
+            var redisData = await DistributedCache.GetStringAsync(cacheKey);
+
+            if (redisData is not null)
+            {
+                applications = JsonSerializer.Deserialize<List<ApplicationReadDto>>(redisData);
+                MemoryCache.Set(cacheKey, applications);
+                return applications!;
+            }
+        }
+        // Query the database if both caches are empty.
         var clientApplications = await MainDbSet
             .Join(
                 LinkDbSet,
@@ -99,14 +177,39 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                 EntityModificationStatus = joined.app.EntityModificationStatus,
                 CallbackUri = joined.app.CallbackUri,
                 Name = joined.app.Name
-            })
-            .ToListAsync(cancellationToken);
+            }).ToListAsync(cancellationToken);
+
+        // Cache the result in memory.
+        MemoryCache.Set(cacheKey, clientApplications);
+        // Cache the result in redis.
+        if (IsRedisEnabled)
+            await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(clientApplications), cancellationToken);
 
         return clientApplications;
     }
+
     /// <inheritdoc/>
-    public async Task<ApplicationReadDto> GetClientApplicationByClientId(string clientId, CancellationToken cancellationToken = default)
+    public async Task<ApplicationReadDto> GetClientApplicationByClientIdAsync(string clientId, CancellationToken cancellationToken = default)
     {
+        var cacheKey = $"clientApp_{clientId}";
+
+        // Check in-memory cache
+        if (MemoryCache.TryGetValue(cacheKey, out ApplicationReadDto? applications))
+            return applications!;
+
+        // Check redis cache.
+        if (IsRedisEnabled)
+        {
+            var redisData = DistributedCache.GetString(cacheKey);
+
+            if (redisData is not null)
+            {
+                applications = JsonSerializer.Deserialize<ApplicationReadDto>(redisData);
+                MemoryCache.Set(cacheKey, applications);
+                return applications!;
+            }
+        }
+
         var result = await MainDbSet.Join(LinkDbSet,
                                         client => client.Id,
                                         userClient => userClient.ApplicationId,
@@ -125,8 +228,14 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                                     })
                                    .FirstAsync(cancellationToken);
 
+        // Cache the result
+        MemoryCache.Set(cacheKey, result);
+        if (IsRedisEnabled)
+            await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(result), cancellationToken);
+
         return result;
     }
+
     /// <inheritdoc/>
     public async Task<bool> CheckApplicationExistsByClientIdAsync(string clientId, CancellationToken cancellationToken = default)
     {
@@ -134,9 +243,27 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     }
 
     /// <inheritdoc/>
-    public async Task<List<ApplicationReadDto>> GetAllApplications(CancellationToken cancellationToken = default)
+    public async Task<List<ApplicationReadDto>> GetAllApplicationsAsync(CancellationToken cancellationToken = default)
     {
-        return await DbContext.ClientApplications
+        var cacheKey = "allApplications";
+
+        // Check in-memory cache
+        if (MemoryCache.TryGetValue(cacheKey, out List<ApplicationReadDto>? applications))
+            return applications!;
+
+        // Check redis cache.
+        if (IsRedisEnabled)
+        {
+            var redisData = DistributedCache.GetString(cacheKey);
+
+            if (redisData is not null)
+            {
+                applications = JsonSerializer.Deserialize<List<ApplicationReadDto>>(redisData);
+                MemoryCache.Set(cacheKey, applications);
+                return applications!;
+            }
+        }
+        var result = await DbContext.ClientApplications
                                   .Select(x => new ApplicationReadDto
                                   {
                                       ClientId = x.ClientId,
@@ -145,8 +272,13 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                                       EntityModificationStatus = x.EntityModificationStatus,
                                       CallbackUri = x.CallbackUri,
                                       Name = x.Name
-                                  })
-                                  .ToListAsync(cancellationToken);
-    }
+                                  }).ToListAsync(cancellationToken);
 
+        // Cache the result
+        MemoryCache.Set(cacheKey, applications);
+        if (IsRedisEnabled)
+            await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(applications), cancellationToken);
+
+        return result;
+    }
 }

@@ -48,6 +48,11 @@ public class PasskeyChallengeConfiguration : IEntityTypeConfiguration<PasskeyCha
                .HasColumnName("created_by")
                .HasMaxLength(36);
 
+         builder.Property(e => e.ConcurrencyStamp)
+                .HasColumnName("concurrency_stamp")
+                .HasMaxLength(36)
+                .IsConcurrencyToken();
+
         builder.ComplexProperty(u => u.EntityCreationStatus)
                .Property(x => x.CreatedOnUtc)
                .HasColumnName("created_on_utc")

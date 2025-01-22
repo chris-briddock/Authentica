@@ -12,11 +12,13 @@ public interface IActivityReadStore
     /// Retrieves a list of activities that occurred at or after the specified timestamp.
     /// </summary>
     /// <param name="timeStamp">The timestamp to filter activities.</param>
-    /// <returns>An immutable list of activities that match the timestamp criteria.</returns>
-    List<ActivityDto> GetActivitiesByDateTimeStamp(DateTime timeStamp);
+    /// <param name="token">Propigates the notification of a cancelled Task</param>
+    /// <returns>An list of activities that match the timestamp criteria.</returns>
+    Task<List<ActivityDto>> GetActivitiesByDateTimeStampAsync(DateTime timeStamp,
+                                                              CancellationToken token = default);
     /// <summary>
     /// Retrieves a list of all activities.
     /// </summary>
-    /// <returns>An immutable list of activities.</returns>
-    List<ActivityDto> GetActivities();
+    /// <returns>An list of activities.</returns>
+    Task<List<ActivityDto>> GetActivitiesAsync(CancellationToken token = default);
 }

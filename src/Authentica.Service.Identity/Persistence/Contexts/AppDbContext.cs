@@ -36,7 +36,7 @@ public class AppDbContext : DbContext
     /// <param name="optionsBuilder">The options builder used to configure DbContext options.</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(Configuration.GetConnectionStringOrThrow("Default"), opt =>
+        optionsBuilder.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"], opt =>
         {
             opt.EnableRetryOnFailure();
         });

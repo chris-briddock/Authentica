@@ -75,7 +75,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             return Unauthorized();
 
 
-        var application = await applicationReadStore.GetClientApplicationByClientId(request.ClientId);
+        var application = await applicationReadStore.GetClientApplicationByClientIdAsync(request.ClientId, cancellationToken);
 
         var userReadResult = await userReadStore.GetUserByIdAsync(application.UserId!);
 

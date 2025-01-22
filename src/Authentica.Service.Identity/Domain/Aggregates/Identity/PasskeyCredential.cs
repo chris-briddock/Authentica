@@ -58,6 +58,11 @@ public abstract class PasskeyCredential<TKey> where TKey : class
     public string AaGuid { get; set; }
 
     /// <summary>
+    /// A random value that should change whenever the entity is persisted.
+    /// </summary>
+    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+
+    /// <summary>
     /// The user associated with this credential.
     /// </summary>
     public ICollection<UserPasskeyCredential> UserPasskeyCredential { get; set; } = default!;

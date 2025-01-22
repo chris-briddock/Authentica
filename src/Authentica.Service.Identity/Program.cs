@@ -31,7 +31,7 @@ public sealed class Program
     /// </summary>
     public static async Task Main(string[] args)
     {
-        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateSlimBuilder();
         builder.ConfigureOpenTelemetry(ServiceNameDefaults.ServiceName);
         builder.Services.Configure<HostOptions>(x =>
         {
@@ -40,17 +40,21 @@ public sealed class Program
         });
         builder.Services.Configure<DataProtectionTokenProviderOptions>(x => x.TokenLifespan = TimeSpan.FromMinutes(5));
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddFeatureManagement();
         builder.Services.AddDataProtection();
         builder.Services.AddControllers();
         builder.Services.AddMetrics();
+        builder.Services.AddResponseCaching();
+        builder.Services.AddResponseCompression(opt => opt.EnableForHttps = true);
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
         builder.Services.AddVersioning(2, 0);
-        builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddDistributedCache(builder.Configuration);
+        builder.Services.AddInMemoryCache();
         builder.Services.AddSwaggerGen($"{ServiceNameDefaults.ServiceName}.xml");
         builder.Services.AddPersistence();
         builder.Services.AddPasskeys(builder.Configuration);
-        builder.Services.AddScoped<IPasskeyTokenProvider<User>, PasskeyTokenProvider<User>>();
+        builder.Services.TryAddScoped<IPasskeyTokenProvider<User>, PasskeyTokenProvider<User>>();
         builder.Services.TryAddScoped<ISecretHasher, Argon2SecretHasher>();
         builder.Services.TryAddScoped<IPasswordHasher<User>, Argon2PasswordHasher<User>>();
         builder.Services.TryAddScoped<IRandomStringProvider, RandomStringProvider>();
@@ -58,9 +62,7 @@ public sealed class Program
         builder.Services.TryAddScoped<JwtSecurityTokenHandler>();
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
         builder.Services.TryAddScoped<IMultiFactorTotpProvider, MultiFactorTotpProvider>();
-        builder.Services.AddFeatureManagement();
         builder.Services.AddBearerAuthentication(builder.Configuration);
-        builder.Services.AddSessionCache(builder.Configuration);
         builder.Services.AddAzureAppInsights();
         builder.Services.AddCrossOrigin();
         builder.Services.AddCustomSession();
@@ -68,7 +70,7 @@ public sealed class Program
         builder.Services.AddPublisherMessaging(builder.Configuration);
         builder.Services.AddHostedService<AccountPurge>();
         builder.Services.AddHostedService<ApplicationPurge>();
-        builder.Services.AddSqlDatabaseHealthChecks(builder.Configuration.GetConnectionStringOrThrow("Default"));
+        builder.Services.AddSqlDatabaseHealthChecks(builder.Configuration["ConnectionStrings:DefaultConnection"]!);
         builder.Services.AddRedisHealthCheck(builder.Configuration);
 
 

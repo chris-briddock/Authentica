@@ -39,6 +39,12 @@ public sealed class PasskeyChallenge : IEntityCreationStatus<string>
     public EntityCreationStatus<string> EntityCreationStatus { get; set; } = default!;
 
     /// <summary>
+    /// A random value that should change whenever the entity is persisted.
+    /// </summary>
+    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+    
+
+    /// <summary>
     /// Represents that the many to one relationship between UserPasskeyChallenge and User.
     /// </summary>
     public ICollection<UserPasskeyChallenge> UserPasskeyChallenges { get; set; } = default!;

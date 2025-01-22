@@ -48,10 +48,10 @@ public sealed class Role :
     /// <summary>
     /// Gets or sets the collection of user roles associated with this role.
     /// </summary>
-    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public ICollection<UserRole> UserRoles { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the collection of claims associated with this role.
     /// </summary>
-    public ICollection<RoleClaim> RoleClaims { get; set; } = new List<RoleClaim>();
+    public ICollection<RoleClaim> RoleClaims { get; set; } = [];
 }

@@ -77,7 +77,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
     }
     /// <inheritdoc/>
     public async Task<UserMultiFactorStoreResult> SetPasskeysAsync(bool isEnabled,
-                                                              string userId)
+                                                                   string userId)
     {
         try
         {

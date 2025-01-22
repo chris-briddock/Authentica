@@ -53,5 +53,10 @@ public class PasskeyCredentialConfiguration : IEntityTypeConfiguration<PasskeyCr
                .HasColumnName("authenticator_id")
                .HasMaxLength(36)
                .IsRequired();
+       
+       builder.Property(e => e.ConcurrencyStamp)
+              .HasColumnName("concurrency_stamp")
+              .HasMaxLength(36)
+              .IsConcurrencyToken();
     }
 }

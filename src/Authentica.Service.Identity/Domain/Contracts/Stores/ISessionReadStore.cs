@@ -12,12 +12,14 @@ public interface ISessionReadStore
     /// Retrieves all sessions from the store asynchronously based on the user id.
     /// </summary>
     /// <param name="userId">The user's unique identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the retrieved session, or null if not found.</returns>
-    Task<List<SessionDto>> GetAsync(string userId);
+    Task<List<SessionDto>> GetAsync(string userId, CancellationToken cancellationToken = default);
     /// <summary>
     /// Retrieves a session from the store based on the session id.
     /// </summary>
     /// <param name="sessionId">The session unique identifier.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>A task that represents the asynchronous operation. </returns>
-    Task<Session> GetByIdAsync(string sessionId);
+    Task<Session> GetByIdAsync(string sessionId, CancellationToken cancellationToken = default);
 }

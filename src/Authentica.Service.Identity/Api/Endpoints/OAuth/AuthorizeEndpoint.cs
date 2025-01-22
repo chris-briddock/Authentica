@@ -50,7 +50,7 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        var client = await readStore.GetClientApplicationByClientIdAndCallbackUri(request.ClientId, request.CallbackUri, cancellationToken);
+        var client = await readStore.GetClientAppByClientIdAndCallbackUriAsync(request.ClientId, request.CallbackUri, cancellationToken);
 
         if (client is null)
             return Unauthorized();

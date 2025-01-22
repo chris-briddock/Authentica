@@ -1,6 +1,11 @@
+using Authentica.Common;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using Microsoft.FeatureManagement;
 using Persistence.Contexts;
 
 namespace Application.Stores;
@@ -43,6 +48,23 @@ public abstract class StoreBase
     /// This store provides read operations for user-related data.
     /// </summary>
     public IUserReadStore UserReadStore => Services.GetRequiredService<IUserReadStore>();
+
+    /// <summary>
+    /// Gets the emory cache.
+    /// </summary>
+    public IMemoryCache MemoryCache => Services.GetRequiredService<IMemoryCache>();
+    /// <summary>
+    /// Gets the distributed cache.
+    /// </summary>
+    public IDistributedCache DistributedCache => Services.GetRequiredService<IDistributedCache>();
+    /// <summary>
+    /// Gets the feature manager.
+    /// </summary>
+    public IFeatureManager FeatureManager => Services.GetRequiredService<IFeatureManager>();
+    /// <summary>
+    /// Gets a value indicating whether Redis is enabled in the feature flags.
+    /// </summary>
+    public bool IsRedisEnabled => FeatureManager.IsEnabledAsync(FeatureFlagConstants.Cache).Result;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StoreBase"/> class.

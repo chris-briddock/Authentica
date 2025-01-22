@@ -22,6 +22,10 @@ public sealed class UserClaim :
     /// </summary>
     public override string UserId { get; set; } = default!;
     /// <summary>
+    /// A random value that should change whenever the entity is persisted.
+    /// </summary>
+    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+    /// <summary>
     /// Gets or sets the creation status of the entity.
     /// </summary>
     /// <remarks>
@@ -49,8 +53,4 @@ public sealed class UserClaim :
     /// Gets or sets the user navigation property.
     /// </summary>
     public User User { get; set; } = default!;
-    /// <summary>
-    /// A random value that should change whenever a application is persisted.
-    /// </summary>
-    public string? ConcurrencyStamp { get; set; }
 }

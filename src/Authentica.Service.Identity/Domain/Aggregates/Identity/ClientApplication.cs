@@ -86,7 +86,7 @@ public abstract class ClientApplication<TKey> where TKey : IEquatable<TKey>
     public virtual string CallbackUri { get; set; } = default!;
 
     /// <summary>
-    /// A random value that should change whenever an application is persisted.
+    /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public virtual string? ConcurrencyStamp { get; set; } = default!;
+    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 }

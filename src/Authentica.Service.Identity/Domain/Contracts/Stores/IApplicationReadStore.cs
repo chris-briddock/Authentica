@@ -43,7 +43,7 @@ public interface IApplicationReadStore
     /// A task that represents the asynchronous operation, containing the client application if found;
     /// otherwise, null.
     /// </returns>
-    Task<ApplicationReadDto?> GetClientApplicationByClientIdAndCallbackUri(string clientId,
+    Task<ApplicationReadDto?> GetClientAppByClientIdAndCallbackUriAsync(string clientId,
                                                                           string callbackUri,
                                                                           CancellationToken cancellationToken);
     /// <summary>
@@ -59,13 +59,13 @@ public interface IApplicationReadStore
     /// <param name="clientId">The client id for the application</param>
     /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
     /// <returns>A client application with the specified client id, which is associated to a user.</returns>
-    Task<ApplicationReadDto> GetClientApplicationByClientId(string clientId, CancellationToken cancellationToken = default);
+    Task<ApplicationReadDto> GetClientApplicationByClientIdAsync(string clientId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets all applications.
     /// </summary>
     /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
     /// <returns>A list of client applications.</returns>
-    Task<List<ApplicationReadDto>> GetAllApplications(CancellationToken cancellationToken = default);
+    Task<List<ApplicationReadDto>> GetAllApplicationsAsync(CancellationToken cancellationToken = default);
 }
 

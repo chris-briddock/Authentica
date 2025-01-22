@@ -121,7 +121,7 @@ public class SendTokenEndpoint : EndpointBaseAsync
 
         await activityWriteStore.SaveActivityAsync(activity);
 
-        await emailPublisher.Publish(message, cancellationToken);
+        await emailPublisher.PublishAsync(message, cancellationToken);
         return Ok($"If a user exists in the database, an email will be sent to that email address.");
     }
 }
