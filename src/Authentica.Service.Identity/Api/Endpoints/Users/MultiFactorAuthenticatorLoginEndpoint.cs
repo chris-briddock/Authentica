@@ -40,6 +40,7 @@ public sealed class MultiFactorAuthenticatorLoginEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var mfaReadStore = Services.GetRequiredService<IUserMultiFactorReadStore>();
         SignInResult result;
 
         var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -51,6 +52,11 @@ public sealed class MultiFactorAuthenticatorLoginEndpoint : EndpointBaseAsync
 
         if (!isMfaEnabled)
             return Unauthorized("User does not have mfa enabled.");
+
+        var isAuthenticatorEnabled = await mfaReadStore.IsAuthenticatorEnabledAsync(user.Id, cancellationToken);
+
+        if (!isAuthenticatorEnabled.MultiFactorPasskeysEnabled)
+            return Unauthorized("User does not have authenticator enabled.");
 
         result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultAuthenticatorProvider, request.Token, true, true);
 

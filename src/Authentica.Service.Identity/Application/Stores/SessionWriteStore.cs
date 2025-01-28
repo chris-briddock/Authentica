@@ -1,3 +1,4 @@
+using Application.Constants;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
 using Domain.Contracts.Stores;
@@ -17,6 +18,7 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     /// <param name="services">The service provider used to resolve dependencies.</param>
     public SessionWriteStore(IServiceProvider services) : base(services)
     {
+        FusionCache.RemoveByTag(CacheTagConstants.Sessions);
     }
 
     /// <inheritdoc />

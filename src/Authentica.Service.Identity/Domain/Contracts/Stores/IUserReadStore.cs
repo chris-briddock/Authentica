@@ -22,35 +22,38 @@ public interface IUserReadStore
     /// Asynchronously retrieves a user by their email address.
     /// </summary>
     /// <param name="email">The email address of the user to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation token to observe.</param>
     /// <returns>
     /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
     /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
     /// </returns>
     /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
-    Task<UserStoreResult> GetUserByEmailAsync(string email);
+    Task<UserStoreResult> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
     /// <summary>
     /// Asynchronously retrieves a user by their id.
     /// </summary>
     /// <param name="Id">The unique identifier of the user.</param>
+    /// <param name="cancellationToken">The cancellation token to observe.</param>
     /// <returns>
     /// A <see cref="Task{UserStoreResult}"/> representing the asynchronous operation.
     /// The task result contains a <see cref="UserStoreResult"/> indicating the outcome of the operation.
     /// </returns>
     /// <exception cref="Exception">Thrown if an unexpected error occurs during the operation.</exception>
-    Task<UserStoreResult> GetUserByIdAsync(string Id);
+    Task<UserStoreResult> GetUserByIdAsync(string Id, CancellationToken cancellationToken = default);
     /// <summary>
     /// Asynchronously retrieves the list of roles associated with a specified user.
     /// </summary>
     /// <param name="email">The email of the user for whom to retrieve roles.</param>
+    /// <param name="cancellationToken">The cancellation token to observe.</param>
     /// <returns>
     /// A task that represents the asynchronous operation. The task result contains a list of role names associated with the user.
     /// </returns>
-    Task<List<string>> GetUserRolesAsync(string email);
+    Task<List<string>> GetUserRolesAsync(string email, CancellationToken cancellationToken = default);
     /// <summary>
     /// Asynchronously retrieves the list of users in the database
     /// </summary>
     /// <returns>
     /// A task that represents the asynchronous operation. The task result contains a list of all users.
     /// </returns>
-    Task<List<User>> GetAllUsersAsync();
+    Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken);
 }

@@ -1,4 +1,5 @@
-﻿using Application.Factories;
+﻿using Application.Constants;
+using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
@@ -18,6 +19,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
     /// <param name="services">The service provider used to resolve dependencies.</param>
     public UserMultiFactorWriteStore(IServiceProvider services) : base(services)
     {
+        FusionCache.RemoveByTag(CacheTagConstants.MultiFactorSettings);
     }
     /// <inheritdoc/>
     public async Task<UserMultiFactorStoreResult> CreateAsync(string userId)

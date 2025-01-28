@@ -192,28 +192,17 @@ public sealed class PasskeyTokenProvider<TUser> : IPasskeyTokenProvider<TUser>
 
         PasskeyCredentialReadDto credential = new();
 
-        List<PasskeyCredentialReadDto> result = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
+        List<PasskeyCredentialReadDto> credentials = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
 
-        for (int i = 0; i < result.Count; i++)
-        {  
-            credential = result[i];
-            if (credential.PasskeyCredentialId.SequenceEqual(response.Id))
-            {
-                signatureCount = credential.SignatureCounter;
-                break;
-            }
-        }
+        credential = credentials.FirstOrDefault(c => c.PasskeyCredentialId.SequenceEqual(response.Id))!;
 
         IsUserHandleOwnerOfCredentialIdAsync callback = async (args, cancellationToken) =>
         {
-            var storedCreds = result;
-            return await Task.FromResult(storedCreds.Exists(c => c.PasskeyCredentialId.SequenceEqual(args.CredentialId)));
+            return await Task.FromResult(credentials.Exists(c => c.PasskeyCredentialId.SequenceEqual(args.CredentialId)));
         };
-        var res = await Fido2Lib.MakeAssertionAsync(response, options, credential.PublicKey, signatureCount, callback);
+        var res = await Fido2Lib.MakeAssertionAsync(response, options, credential.PublicKey, signatureCount, callback, cancellationToken: token);
 
         res.Counter++;
-
-        // return the result
 
         return res;
     }

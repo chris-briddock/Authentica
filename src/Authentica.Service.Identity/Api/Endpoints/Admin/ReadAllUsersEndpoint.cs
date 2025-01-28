@@ -8,6 +8,7 @@ using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Api.Endpoints.Admin;
 
@@ -15,6 +16,7 @@ namespace Api.Endpoints.Admin;
 /// Endpoint for reading all users.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
+[OutputCache]
 public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
                                            .WithoutRequest
                                            .WithActionResult<IList<GetUserResponse>>
@@ -45,7 +47,7 @@ public sealed class ReadAllUsersEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IUserReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
-        List<User> users = await readStore.GetAllUsersAsync();
+        List<User> users = await readStore.GetAllUsersAsync(cancellationToken);
 
         // Preallocate the response list with the known capacity.
         var response = new List<GetUserResponse>(users.Count);

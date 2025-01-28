@@ -1,3 +1,4 @@
+using Application.Constants;
 using Application.Factories;
 using Application.Redactors;
 using Application.Results;
@@ -25,13 +26,17 @@ public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
     /// <remarks>
     /// This constructor initializes the <see cref="ActivityReadStore"/> instance by calling the base constructor with the provided service provider.
     /// </remarks>
-    public ActivityWriteStore(IServiceProvider services) : base(services) { }
+    public ActivityWriteStore(IServiceProvider services) : base(services)
+    {
+        FusionCache.RemoveByTag(CacheTagConstants.Activities);
+    }
 
     /// <inheritdoc/>
     public async Task<ActivityStoreResult> SaveActivityAsync<T>(T activity) where T : class
     {
         try
         {
+            
             var redactedEvent = ActivityDataRedactor.RedactSensitiveData(activity);
             var eventData = JsonSerializer.Serialize(redactedEvent);
 

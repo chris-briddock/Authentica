@@ -38,7 +38,8 @@ public class MultiFactorPasskeyAssertionEndpoint : EndpointBaseAsync
     [AllowAnonymous]
     [HttpPost($"{Routes.Users.Passkeys.PasskeyAssertion}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public override async Task<ActionResult> HandleAsync(MultiFactorPasskeyAssertionRequest request, CancellationToken cancellationToken = default)
+    public override async Task<ActionResult> HandleAsync(MultiFactorPasskeyAssertionRequest request,
+                                                         CancellationToken cancellationToken = default)
     {
         IUserReadStore userReadStore = Services.GetRequiredService<IUserReadStore>();
         IPasskeyTokenProvider<User> tokenProvider = Services.GetRequiredService<IPasskeyTokenProvider<User>>();

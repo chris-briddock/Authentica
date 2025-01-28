@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates.Identity;
+﻿using Application.Constants;
+using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Fido2NetLib;
 
@@ -15,6 +16,7 @@ public sealed class PasskeyCredentialWriteStore : StoreBase, IPasskeyCredentialW
     /// <param name="services">The service provider used to resolve dependencies.</param>
     public PasskeyCredentialWriteStore(IServiceProvider services) : base(services)
     {
+        FusionCache.RemoveByTag(CacheTagConstants.PasskeyCredentials);
     }
 
     /// <summary>

@@ -1,10 +1,12 @@
 using System.Text.Json;
+using Application.Constants;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Application.Stores;
 
@@ -25,134 +27,109 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     /// <inheritdoc/>
     public async Task<UserMultiFactorReadDto> GetAsync(string userId, CancellationToken token = default)
     {
-            // Check in memory cache
-            if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
-                return settings!;
+        // Use FusionCache to manage caching
+        var cacheKey = userId;  // Cache key based on the userId
 
-            settings = await DbSet
-                .Where(x => x.UserId == userId)
-                .Select(x => new UserMultiFactorReadDto
-                {
-                    MultiFactorEmailEnabled = x.MultiFactorEmailEnabled,
-                    MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled,
-                    MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
-                })
-                .FirstOrDefaultAsync(token);
-            // Store the result in memory cache
-            MemoryCache.Set(userId, settings);
-            // Store the result in redis cache
-            if (IsRedisEnabled)
-                await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
+        var result = await FusionCache.GetOrSetAsync<UserMultiFactorReadDto>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.MultiFactorSettings];
+                // Query the database if the value is not found in the cache
+                return await DbSet
+                    .Where(x => x.UserId == userId)
+                    .Select(x => new UserMultiFactorReadDto
+                    {
+                        MultiFactorEmailEnabled = x.MultiFactorEmailEnabled,
+                        MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled,
+                        MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
+                    })
+                    .SingleAsync(ct);
+            },
+            token: token
+        );
 
-        return settings!;
+        return result!;
     }
 
     /// <inheritdoc/>
     public async Task<UserMultiFactorReadDto> IsEmailEnabledAsync(string userId, CancellationToken token = default)
     {
-        // check in memory cache
-        if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
-            return settings!;
+        // Use FusionCache to manage caching
+        var cacheKey = userId;  // Cache key based on the userId
 
-        // check in redis cache
-        if (IsRedisEnabled)
-        {
-            var cacheValue = await DistributedCache.GetStringAsync(userId, token);
-            if (cacheValue is not null)
+        var result = await FusionCache.GetOrSetAsync<UserMultiFactorReadDto>(
+            cacheKey,
+            async (ctx, ct) =>
             {
-                settings = JsonSerializer.Deserialize<UserMultiFactorReadDto>(cacheValue);
-                return settings!;
-            }
-        }
-        
-        settings = await DbSet
-                .Where(x => x.UserId == userId)
-                .Select(x => new UserMultiFactorReadDto
-                {
-                    MultiFactorEmailEnabled = x.MultiFactorEmailEnabled
-                }).FirstOrDefaultAsync(token);
-        // Store the result in memory cache
-        MemoryCache.Set(userId, settings);
-        // Store the result in redis cache
-        if (IsRedisEnabled)
-        {
-            await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
-        }
+                // Query the database if the value is not found in the cache
+                return await DbSet
+                    .Where(x => x.UserId == userId)
+                    .Select(x => new UserMultiFactorReadDto
+                    {
+                        MultiFactorEmailEnabled = x.MultiFactorEmailEnabled
+                    })
+                    .SingleAsync(ct);
+            },
+            options: new FusionCacheEntryOptions
+            {
+                Duration = TimeSpan.FromMinutes(10), // Cache duration
+                IsFailSafeEnabled = true,            // Enable fail-safe mode
+                FailSafeThrottleDuration = TimeSpan.FromSeconds(30), // Retry interval
+            },
+            token: token
+        );
 
-        return settings!;
+        return result;
     }
 
     /// <inheritdoc/>
     public async Task<UserMultiFactorReadDto> IsAuthenticatorEnabledAsync(string userId, CancellationToken token)
     {
-        // check in memory cache
-        if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
-            return settings!;
+        // Use FusionCache to manage caching
+        var cacheKey = userId;  // Cache key based on the userId
 
-        // check in redis cache
-        if (IsRedisEnabled)
-        {
-            var cacheValue = await DistributedCache.GetStringAsync(userId, token);
-            if (cacheValue != null)
+        var result = await FusionCache.GetOrSetAsync<UserMultiFactorReadDto>(
+            cacheKey,
+            async (ctx, ct) =>
             {
-                settings = JsonSerializer.Deserialize<UserMultiFactorReadDto>(cacheValue);
-                return settings!;
-            }
-        }
+                // Query the database if the value is not found in the cache
+                return await DbSet
+                    .Where(x => x.UserId == userId)
+                    .Select(x => new UserMultiFactorReadDto
+                    {
+                        MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled
+                    })
+                    .SingleAsync(ct);
+            },
+            token: token
+        );
 
-        settings =  await DbSet
-                .Where(x => x.UserId == userId)
-                .Select(x => new UserMultiFactorReadDto()
-                {
-                    MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled
-                }).FirstOrDefaultAsync(token);
-
-        // Store the result in memory cache
-        MemoryCache.Set(userId, settings);
-        
-        // store the result in redis cache
-        if (IsRedisEnabled)
-            await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
-
-        return settings!;
+        return result;
     }
 
     /// <inheritdoc/>
     public async Task<UserMultiFactorReadDto> IsPasskeysEnabledAsync(string userId, CancellationToken token)
     {
-        // check in memory cache
-        if (MemoryCache.TryGetValue(userId, out UserMultiFactorReadDto? settings))
-        {
-            return settings!;
-        }
+        // Use FusionCache to manage caching
+        var cacheKey = userId;  // Cache key based on the userId
 
-        // check in redis cache
-        if (IsRedisEnabled)
-        {
-            var cacheValue = await DistributedCache.GetStringAsync(userId, token);
-            if (cacheValue != null)
+        var result = await FusionCache.GetOrSetAsync<UserMultiFactorReadDto>(
+            cacheKey,
+            async (ctx, ct) =>
             {
-                settings = JsonSerializer.Deserialize<UserMultiFactorReadDto>(cacheValue);
-                return settings!;
-            }
-        }
-        
-        settings = await DbSet
-                .Where(x => x.UserId == userId)
-                .Select(x => new UserMultiFactorReadDto()
-                {
-                    MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
-                }).FirstOrDefaultAsync(token);
+                // Query the database if the value is not found in the cache
+                return await DbSet
+                    .Where(x => x.UserId == userId)
+                    .Select(x => new UserMultiFactorReadDto
+                    {
+                        MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
+                    })
+                    .SingleAsync(ct);
+            },
+            token: token
+        );
 
-        // Store the result in memory cache
-        MemoryCache.Set(userId, settings);
-
-        // Store the result in redis cache
-        if (IsRedisEnabled)
-        {
-            await DistributedCache.SetStringAsync(userId, JsonSerializer.Serialize(settings), token);
-        }
-        return settings!;
-
+        return result!;
     }
 }

@@ -1,3 +1,4 @@
+using Application.Constants;
 using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
@@ -28,6 +29,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     /// <param name="services">The service provider to retrieve required services for the write store operations.</param>
     public ApplicationWriteStore(IServiceProvider services) : base(services)
     {
+        FusionCache.RemoveByTagAsync(CacheTagConstants.Applications);
     }
     /// <inheritdoc/>
     public async Task<ApplicationStoreResult> CreateClientApplicationAsync(ClaimsPrincipal claimsPrincipal,

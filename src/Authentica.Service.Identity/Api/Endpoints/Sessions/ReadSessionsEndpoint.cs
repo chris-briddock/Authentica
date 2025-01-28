@@ -4,6 +4,7 @@ using Domain.Contracts.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Api.Endpoints.Sessions;
 
@@ -11,6 +12,7 @@ namespace Api.Endpoints.Sessions;
 /// Endpoint for reading all sessions associated to a user.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
+[OutputCache]
 public sealed class ReadSessionsEndpoint : EndpointBaseAsync
                                            .WithoutRequest
                                            .WithActionResult

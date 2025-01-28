@@ -1,10 +1,8 @@
+using Application.Constants;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
-using System.Text.Json;
 
 namespace Application.Stores;
 
@@ -28,83 +26,57 @@ public sealed class ActivityReadStore : StoreBase, IActivityReadStore
     public ActivityReadStore(IServiceProvider services) : base(services) {}
     /// <inheritdoc/>
     public async Task<List<ActivityDto>> GetActivitiesAsync(CancellationToken token = default)
-    { 
+    {
         const string cacheKey = "activities";
 
-        // Check in-memory cache
-        if (MemoryCache.TryGetValue(cacheKey, out List<ActivityDto>? activities))
-            return activities!;
-
-        // Check Redis cache
-        if (IsRedisEnabled)
-        {
-            var redisData = DistributedCache.GetString(cacheKey);
-
-            if (redisData is not null)
+        var activities = await FusionCache.GetOrSetAsync<List<ActivityDto>>(
+            cacheKey,
+            async (ctx, ct) =>
             {
-                activities = JsonSerializer.Deserialize<List<ActivityDto>>(redisData);
-                // Store in-memory cache for future requests
-                MemoryCache.Set(cacheKey, activities);
-                return activities!;
-            }
-        }
+                ctx.Tags = [CacheTagConstants.Activities];
+                // Fetch data from DbSet and project to ActivityDto
+                return await DbSet.Select(x => new ActivityDto
+                {
+                    SequenceId = x.SequenceId,
+                    ActivityType = x.ActivityType,
+                    CreatedOn = x.CreatedOn,
+                    Data = x.Data
+                }).ToListAsync(ct);
+                
+            },
+            token: token
+        );
 
-        var result = await DbSet.Select(x => new ActivityDto
-        {
-            SequenceId = x.SequenceId,
-            ActivityType = x.ActivityType,
-            CreatedOn = x.CreatedOn,
-            Data = x.Data
-        }).ToListAsync(token);
-
-        MemoryCache.Set(cacheKey, activities);
-        
-        if (IsRedisEnabled)
-            await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(activities), token);
-
-        return result;
+        return activities;
     }
 
+
     /// <inheritdoc/>
-    public async Task<List<ActivityDto>> GetActivitiesByDateTimeStampAsync(DateTime timeStamp,
-                                                                           CancellationToken token = default)
+    public async Task<List<ActivityDto>> GetActivitiesByDateTimeStampAsync(DateTime timeStamp, CancellationToken token = default)
     {
         string cacheKey = $"activities_{timeStamp:yyyyMMddHHmmss}";
 
-        // Check in-memory cache.
-        if (MemoryCache.TryGetValue(cacheKey, out List<ActivityDto>? events))
-            return await Task.FromResult(events!);
-
-        // Check redis cache if enabled.
-        if (IsRedisEnabled)
-        {
-            var redisData = DistributedCache.GetString(cacheKey);
-
-            if (redisData is not null)
+        // Use FusionCache to manage caching logic
+        var activities = await FusionCache.GetOrSetAsync<List<ActivityDto>>(
+            cacheKey,
+            async (ctx, ct) =>
             {
-                events = JsonSerializer.Deserialize<List<ActivityDto>>(redisData);
-                MemoryCache.Set(cacheKey, events);
-                return await Task.FromResult(events!);
-            }
-        }
+                ctx.Tags = [CacheTagConstants.Activities];
+                // Query the database if the value is not found in the cache
+                return await DbSet.Where(x => x.CreatedOn == timeStamp)
+                                  .Select(x => new ActivityDto
+                                  {
+                                      SequenceId = x.SequenceId,
+                                      ActivityType = x.ActivityType,
+                                      CreatedOn = x.CreatedOn,
+                                      Data = x.Data
+                                  })
+                                  .OrderBy(x => x.CreatedOn)
+                                  .ToListAsync(ct);
+            },
+            token: token
+        );
 
-        // Query the database.
-        var result = await DbSet.Where(x => x.CreatedOn == timeStamp)
-                                         .Select(x => new ActivityDto
-                                         {
-                                             SequenceId = x.SequenceId,
-                                             ActivityType = x.ActivityType,
-                                             CreatedOn = x.CreatedOn,
-                                             Data = x.Data
-                                         })
-                                         .OrderBy(x => x.CreatedOn)
-                                         .ToListAsync(token);
-        
-        MemoryCache.Set(cacheKey, events);
-        
-        if (IsRedisEnabled)
-            await DistributedCache.SetStringAsync(cacheKey, JsonSerializer.Serialize(events), token);
-
-        return result;
+        return activities;
     }
 }

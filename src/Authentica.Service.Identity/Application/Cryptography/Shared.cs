@@ -30,7 +30,7 @@ public static class Shared
     /// <returns>A byte array containing the hashed password.</returns>
     private static byte[] HashPasswordWithArgon2(string password, byte[] salt)
     {
-        var argon2 = new Argon2d(Encoding.UTF8.GetBytes(password))
+        Argon2id argon2 = new(Encoding.UTF8.GetBytes(password))
         {
             Salt = salt,
             DegreeOfParallelism = HasherDefaults.DegreeOfParallelism,
@@ -47,8 +47,8 @@ public static class Shared
     /// <returns>The hashed string</returns>
     public static string Hash(string input)
     {
-        var salt = GenerateSalt();
-        var hashedPassword = HashPasswordWithArgon2(input, salt);
+        byte[] salt = GenerateSalt();
+        byte[] hashedPassword = HashPasswordWithArgon2(input, salt);
 
         // Combine salt and hashed password
         byte[] saltAndHash = new byte[salt.Length + hashedPassword.Length];
@@ -62,7 +62,7 @@ public static class Shared
     /// </summary>
     /// <param name="input">The input string.</param>
     /// <param name="storedHash">The stored password hash.</param>
-    /// <returns></returns>
+    /// <returns>True or False</returns>
     public static bool Verify(string input, string storedHash)
     {
         byte[] saltAndHash = Convert.FromBase64String(storedHash);
@@ -77,6 +77,6 @@ public static class Shared
 
         byte[] providedHash = HashPasswordWithArgon2(input, salt);
 
-        return providedHash.SequenceEqual(storedHashBytes);
+        return CryptographicOperations.FixedTimeEquals(providedHash, storedHashBytes);
     }
 }

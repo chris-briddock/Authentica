@@ -53,6 +53,7 @@ public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var mfaWriteStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
 
         var user = (await userReadStore.GetUserByEmailAsync(request.Email)).User;
 
@@ -61,7 +62,12 @@ public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
         if (!result.Succeeded)
             return BadRequest();
 
+        // Once recovery code is redeemed all multi factor options are reset.
         await userManager.SetTwoFactorEnabledAsync(user, false);
+
+        await mfaWriteStore.SetEmailAsync(false, user.Id);
+        await mfaWriteStore.SetPasskeysAsync(false, user.Id);
+        await mfaWriteStore.SetAutheticatorAsync(false, user.Id);
 
         MultiFactorRecoveryCodesRedeemActivity activity = new()
         {

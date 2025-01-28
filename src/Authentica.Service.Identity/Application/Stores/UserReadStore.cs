@@ -1,9 +1,11 @@
 using Api.Constants;
+using Application.Constants;
 using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using System.Security.Claims;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Application.Stores;
 
@@ -24,23 +26,53 @@ public class UserReadStore : StoreBase, IUserReadStore
     public async Task<UserStoreResult> GetUserByEmailAsync(ClaimsPrincipal claimsPrincipal,
                                                            CancellationToken cancellationToken = default)
     {
-        Claim? userClaimsPrincipal = claimsPrincipal.FindFirst(ClaimTypes.Email)!;
+        var emailClaim = claimsPrincipal.FindFirst(ClaimTypes.Email);
 
-        User? user = await UserManager.FindByEmailAsync(userClaimsPrincipal.Value);
+        if (emailClaim is null)
+            return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+
+        var email = emailClaim.Value;
+
+        // Use FusionCache to manage caching
+        var cacheKey = $"user_email_{email}";  // Cache key based on the email
+
+        var user = await FusionCache.GetOrSetAsync<User>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.Users];
+                User? user = await UserManager.FindByEmailAsync(email);
+                // Query the database if the value is not found in the cache
+                return user!;
+            },
+            token: cancellationToken
+        );
 
         if (user is null)
             return UserStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
         return UserStoreResult.Success(user);
-
     }
 
     /// <inheritdoc/>
-    public async Task<UserStoreResult> GetUserByEmailAsync(string email)
+    public async Task<UserStoreResult> GetUserByEmailAsync(string email,
+                                                           CancellationToken cancellationToken = default)
     {
         try
         {
-            User? user = await UserManager.FindByEmailAsync(email);
+            var cacheKey = $"user_email_{email}"; // Cache key based on the email
+
+            // Use FusionCache to manage caching
+            var user = await FusionCache.GetOrSetAsync<User>(
+                cacheKey,
+                async (ctx, ct) =>
+                {
+                    // Query the UserManager if not found in cache
+                    var user = await UserManager.FindByEmailAsync(email);
+                    return user!;
+                },
+                token: cancellationToken
+            );
 
             if (user is null)
                 return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
@@ -53,26 +85,72 @@ public class UserReadStore : StoreBase, IUserReadStore
         }
     }
     /// <inheritdoc/>
-    public async Task<UserStoreResult> GetUserByIdAsync(string Id)
+    public async Task<UserStoreResult> GetUserByIdAsync(string id,
+                                                        CancellationToken cancellationToken = default)
     {
-        User? user = await UserManager.FindByIdAsync(Id);
+        try
+        {
+            var cacheKey = $"user_id_{id}"; // Unique cache key based on user ID
 
-        if (user is null)
-            return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+            // Use FusionCache to handle caching
+            var user = await FusionCache.GetOrSetAsync<User>(cacheKey, async (ctx, token) =>
+                {
+                    // Query UserManager if user is not found in cache
+                    var user = await UserManager.FindByIdAsync(id);
+                    return user!;
+                }
+,               token: cancellationToken);
 
-        return UserStoreResult.Success(user);
+            if (user is null)
+                return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+
+            return UserStoreResult.Success(user);
+        }
+        catch (Exception ex)
+        {
+            return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
     }
     /// <inheritdoc />
-    public async Task<List<string>> GetUserRolesAsync(string email)
+    public async Task<List<string>> GetUserRolesAsync(string email, CancellationToken cancellationToken = default)
     {
-        User? user = await UserManager.FindByEmailAsync(email) ?? null!;
-        return [.. await UserManager.GetRolesAsync(user)];
+            var cacheKey = $"user_roles_{email}"; // Unique cache key for the user's roles
+
+            // Use FusionCache to handle caching
+            var roles = await FusionCache.GetOrSetAsync<List<string>>(
+                cacheKey,
+                async (ctx, token) =>
+                {
+                    User? user = await UserManager.FindByEmailAsync(email) ?? null!;
+                    return [.. await UserManager.GetRolesAsync(user)];
+                },
+                options: new FusionCacheEntryOptions
+                {
+                    Duration = TimeSpan.FromMinutes(30), // Cache duration
+                    IsFailSafeEnabled = true,            // Enable fail-safe mode
+                    FailSafeThrottleDuration = TimeSpan.FromSeconds(30), // Retry interval
+                },
+                token: cancellationToken
+            );
+
+            return roles;
     }
 
     /// <inheritdoc />
-    public async Task<List<User>> GetAllUsersAsync()
+    public async Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken)
     {
-        List<User> users = [.. await UserManager.GetUsersInRoleAsync(RoleDefaults.User)];
+        var cacheKey = "all_users"; // Unique cache key for all users
+
+        // Use FusionCache to handle caching
+        var users = await FusionCache.GetOrSetAsync<List<User>>(
+            cacheKey,
+            async (ctx, token) =>
+            {
+                List<User> usersInRole = [.. await UserManager.GetUsersInRoleAsync(RoleDefaults.User)];
+                return usersInRole;
+            },
+            token: cancellationToken
+        );
 
         return users;
     }

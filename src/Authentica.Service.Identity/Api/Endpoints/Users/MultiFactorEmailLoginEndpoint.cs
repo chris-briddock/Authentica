@@ -48,6 +48,7 @@ public sealed class MultiFactorEmailLoginEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var mfaReadStore = Services.GetRequiredService<IUserMultiFactorReadStore>();
         SignInResult result;
 
         var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -60,7 +61,12 @@ public sealed class MultiFactorEmailLoginEndpoint : EndpointBaseAsync
         if (!isMfaEnabled)
             return Unauthorized("User does not have mfa enabled.");
 
-            result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
+        var isEmailEnabled = await mfaReadStore.IsEmailEnabledAsync(user.Id, cancellationToken);
+
+        if (!isEmailEnabled.MultiFactorEmailEnabled)
+            return Unauthorized("User does not have email enabled.");
+
+        result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
 
         MultiFactorEmailLoginActivity activity = new()
         {

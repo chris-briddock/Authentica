@@ -13,10 +13,12 @@ using Domain.Contracts.Providers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
 using Persistence.Contexts;
 using System.IdentityModel.Tokens.Jwt;
+using HostApplicationBuilderExtensions = Application.Extensions.HostApplicationBuilderExtensions;
 
 
 namespace Authentica.Service.Identity;
@@ -29,10 +31,11 @@ public sealed class Program
     /// <summary>
     /// The entry method for the web application.
     /// </summary>
-    public static async Task Main(string[] args)
+    public static async Task Main()
     {
-        WebApplicationBuilder builder = WebApplication.CreateSlimBuilder();
-        builder.ConfigureOpenTelemetry(ServiceNameDefaults.ServiceName);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        HostApplicationBuilderExtensions.ConfigureOpenTelemetry(builder, ServiceNameDefaults.ServiceName);
+        builder.WebHost.AddKestrelConfiguration(7171);
         builder.Services.Configure<HostOptions>(x =>
         {
             x.ServicesStartConcurrently = true;
@@ -46,11 +49,13 @@ public sealed class Program
         builder.Services.AddMetrics();
         builder.Services.AddResponseCaching();
         builder.Services.AddResponseCompression(opt => opt.EnableForHttps = true);
+        builder.Services.AddOutputCache(opt => opt.DefaultExpirationTimeSpan = TimeSpan.FromMinutes(5));
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
         builder.Services.AddVersioning(2, 0);
         builder.Services.AddDistributedCache(builder.Configuration);
         builder.Services.AddInMemoryCache();
+        builder.Services.AddHybridCache(builder.Configuration);
         builder.Services.AddSwaggerGen($"{ServiceNameDefaults.ServiceName}.xml");
         builder.Services.AddPersistence();
         builder.Services.AddPasskeys(builder.Configuration);
@@ -83,7 +88,6 @@ public sealed class Program
         app.UseMiddleware<SessionMiddleware>();
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseHsts();
-        app.UseResponseCaching();
         app.UseHttpsRedirection();
         app.MapControllers();
         app.UseCustomHealthCheckMapping();
@@ -99,6 +103,8 @@ public sealed class Program
             app.UseSwaggerUI();
             await app.UseSeedTestDataAsync();
         }
-        await app.RunAsync(); 
+        app.UseResponseCaching();
+        app.UseOutputCache();
+        await app.RunAsync();
     }
 }

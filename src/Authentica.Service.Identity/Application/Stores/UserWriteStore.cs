@@ -1,3 +1,4 @@
+using Application.Constants;
 using Application.Factories;
 using Application.Results;
 using Authentica.Common;
@@ -20,6 +21,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     /// <param name="services">The service provider to be used by the store.</param>
     public UserWriteStore(IServiceProvider services) : base(services)
     {
+        FusionCache.RemoveByTag(CacheTagConstants.Users);
     }
 
     /// <inheritdoc/>

@@ -7,6 +7,7 @@ using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using System.Runtime.InteropServices;
 
 namespace Api.Endpoints.Admin;
@@ -15,6 +16,7 @@ namespace Api.Endpoints.Admin;
 /// Endpoint for reading all applications and returning their responses.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
+[OutputCache]
 public sealed class ReadAllActivitiesEndpoint : EndpointBaseAsync
                                                 .WithoutRequest
                                                 .WithActionResult<IList<ActivityResponse>>

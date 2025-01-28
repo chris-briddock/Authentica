@@ -32,7 +32,7 @@ public static partial class Seed
                 AccessFailedCount = 0,
                 EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
                 EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
-                EntityDeletionStatus = new(false, DateTime.UtcNow, CreatedBy),
+                EntityDeletionStatus = new(false, null, null),
                 Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
             };
 

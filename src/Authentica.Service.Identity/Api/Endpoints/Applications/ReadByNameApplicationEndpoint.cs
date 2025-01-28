@@ -8,6 +8,7 @@ using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Api.Endpoints.Applications;
 
@@ -15,6 +16,7 @@ namespace Api.Endpoints.Applications;
 /// Exposes an endpoint where users can read their application by name.
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
+[OutputCache]
 public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
                                                     .WithRequest<ReadApplicationByNameRequest>
                                                     .WithActionResult
