@@ -67,7 +67,7 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
                 // Query the database if the value is not found in the cache
                 return await DbSet
                     .Where(x => x.SessionId == sessionId)
-                    .SingleAsync(ct);
+                    .FirstAsync(ct);
             },
             options: new FusionCacheEntryOptions
             {

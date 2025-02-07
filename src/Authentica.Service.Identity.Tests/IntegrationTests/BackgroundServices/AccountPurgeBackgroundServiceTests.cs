@@ -52,7 +52,7 @@ public class AccountPurgeBackgroundServiceTests
         {
             builder.ConfigureServices(services =>
             {
-                services.Replace(ServiceDescriptor.Singleton(mockTimer.Object));
+                services.Replace(new ServiceDescriptor(typeof(ITimerProvider), mockTimer.Object));
             });
         });
 

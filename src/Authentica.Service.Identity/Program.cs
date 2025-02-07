@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
 using Persistence.Contexts;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using HostApplicationBuilderExtensions = Application.Extensions.HostApplicationBuilderExtensions;
 
 
@@ -33,6 +34,7 @@ public sealed class Program
     /// </summary>
     public static async Task Main()
     {
+        AppDomain.CurrentDomain.SetData("LOADER_OPTIMIZATION", "SingleDomain");
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
         HostApplicationBuilderExtensions.ConfigureOpenTelemetry(builder, ServiceNameDefaults.ServiceName);
         builder.WebHost.AddKestrelConfiguration(7171);
@@ -91,14 +93,11 @@ public sealed class Program
         app.UseHttpsRedirection();
         app.MapControllers();
         app.UseCustomHealthCheckMapping();
-        if (!app.Environment.IsProduction())
-        {
-            await app.UseDatabaseMigrationsAsync<AppDbContext>();
-            app.UseCors(CorsDefaults.PolicyName);
-        }
+        await app.UseDatabaseMigrationsAsync<AppDbContext>();
         await app.UseSeedDataAsync();
         if (app.Environment.IsDevelopment())
         {
+            app.UseCors(CorsDefaults.PolicyName);
             app.UseSwagger();
             app.UseSwaggerUI();
             await app.UseSeedTestDataAsync();

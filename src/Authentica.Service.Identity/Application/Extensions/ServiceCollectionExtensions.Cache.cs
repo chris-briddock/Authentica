@@ -66,7 +66,7 @@ public static partial class ServiceCollectionExtensions
     /// <returns>The modified <see cref="IServiceCollection"/> instance.</returns>
     public static IServiceCollection AddHybridCache(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Reids");
+        var connectionString = configuration.GetConnectionString("Redis");
         services.AddFusionCacheStackExchangeRedisBackplane();
         services.AddFusionCache()
                 .WithDefaultEntryOptions(opt =>

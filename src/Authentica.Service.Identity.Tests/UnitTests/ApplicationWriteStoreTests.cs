@@ -1,22 +1,26 @@
+using ZiggyCreatures.Caching.Fusion;
+
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class ApplicationWriteStoreTests
 {
     private UserReadStoreMock _userReadStoreMock;
     private DbContextMock _dbContextMock;
+    private FusionCacheMock _cacheMock;
     private ApplicationReadStoreMock _applicationReadStoreMock;
     private ApplicationWriteStore _sut;
 
     [SetUp]
     public void SetUp()
     {
+        _cacheMock = new FusionCacheMock();
         _userReadStoreMock = new UserReadStoreMock();
         _dbContextMock = new DbContextMock();
         _applicationReadStoreMock = new ApplicationReadStoreMock();
         var services = new ServiceProviderMock();
         services.Setup(x => x.GetService(typeof(IUserReadStore))).Returns(_userReadStoreMock.Object);
         services.Setup(x => x.GetService(typeof(AppDbContext))).Returns(_dbContextMock.Object);
-
+        services.Setup(x => x.GetService(typeof(IFusionCache))).Returns(_cacheMock.Object);
         services.Setup(x => x.GetService(typeof(IUserReadStore))).Returns(_userReadStoreMock.Object);
         services.Setup(x => x.GetService(typeof(IApplicationReadStore))).Returns(_applicationReadStoreMock.Object);
         services.Setup(x => x.GetService(typeof(AppDbContext))).Returns(_dbContextMock.Object);

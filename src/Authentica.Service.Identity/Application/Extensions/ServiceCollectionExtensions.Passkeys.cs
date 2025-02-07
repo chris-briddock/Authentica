@@ -21,7 +21,6 @@ public static partial class ServiceCollectionExtensions
         services.AddFido2(x =>
         {
             x.ServerName = ServiceNameDefaults.ServiceName;
-            x.Origins = [origin];
             x.ServerDomain = configuration["Passkeys:Domain"];
             x.TimestampDriftTolerance = 100000;
         });

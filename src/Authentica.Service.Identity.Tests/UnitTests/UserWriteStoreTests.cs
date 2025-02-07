@@ -1,3 +1,5 @@
+using ZiggyCreatures.Caching.Fusion;
+
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class UserWriteStoreTests
@@ -11,6 +13,7 @@ public class UserWriteStoreTests
     private UserReadStoreMock _userReadStoreMock;
     private IHttpContextAccessorMock _httpContextAccessorMock;
     private ApplicationReadStoreMock _applicationReadStoreMock;
+    private FusionCacheMock _cacheMock;
 
     // Test Data
     private ClaimsPrincipal _testUser;
@@ -33,10 +36,13 @@ public class UserWriteStoreTests
         _userReadStoreMock = new();
         _httpContextAccessorMock = new();
         _applicationReadStoreMock = new();
+        _cacheMock = new();
 
         // Setup the HttpContext within the accessor mock
         var httpContextMock = new HttpContextMock();
         _httpContextAccessorMock.Mock().Setup(a => a.HttpContext).Returns(httpContextMock.Mock().Object);
+
+        
 
         _serviceProviderMock.Mock()
             .Setup(x => x.GetService(typeof(IUserReadStore)))
@@ -49,6 +55,10 @@ public class UserWriteStoreTests
         _serviceProviderMock.Mock()
             .Setup(x => x.GetService(typeof(IApplicationReadStore)))
             .Returns(_applicationReadStoreMock.Mock().Object);
+
+        _serviceProviderMock.Mock()
+            .Setup(x => x.GetService(typeof(IFusionCache)))
+            .Returns(_cacheMock.Object);
 
     }
 

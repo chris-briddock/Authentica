@@ -27,7 +27,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         {
             config.AddInMemoryCollection(
             [
-                new KeyValuePair<string, string?>("ConnectionStrings:Default", _msSqlContainer.GetConnectionString())
+                new KeyValuePair<string, string?>("ConnectionStrings:DefaultConnection", connectionString)
             ]).Build();
         });
     }

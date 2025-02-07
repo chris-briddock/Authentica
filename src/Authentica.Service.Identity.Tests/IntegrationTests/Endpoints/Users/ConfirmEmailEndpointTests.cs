@@ -24,7 +24,7 @@ public class ConfirmEmailEndpointTests
         var userWriteStoreMock = new UserWriteStoreMock();
         var email = "test@test.com";
 
-        userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
+        userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(UserStoreResult.Success(new User() { Email = email }));
 
         userWriteStoreMock.Setup(x => x.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
@@ -61,7 +61,7 @@ public class ConfirmEmailEndpointTests
         var userWriteStoreMock = new UserWriteStoreMock();
         var email = "test@test.com";
 
-        userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
+        userReadStoreMock.Setup(x => x.GetUserByEmailAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(UserStoreResult.Success(new User() { Email = "test@test.com" }));
 
         userWriteStoreMock.Setup(x => x.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));

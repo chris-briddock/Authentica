@@ -1,3 +1,5 @@
+using ZiggyCreatures.Caching.Fusion;
+
 namespace Authentica.Service.Identity.Tests.UnitTests;
 
 public class SessionWriteStoreTests
@@ -5,6 +7,7 @@ public class SessionWriteStoreTests
     private ServiceProviderMock _serviceProviderMock;
     private DbContextMock _dbContextMock;
     private DbSetMock<Session> _dbSetMock;
+    private FusionCacheMock _cacheMock;
     private SessionWriteStore _sut;
 
     [SetUp]
@@ -13,6 +16,7 @@ public class SessionWriteStoreTests
         // Initialize the mocks using the mock class templates
         _dbContextMock = new DbContextMock();
         _dbSetMock = new DbSetMock<Session>();
+        _cacheMock = new FusionCacheMock();
         _serviceProviderMock = new ServiceProviderMock();
 
         // Set up the DbContext to return the mocked DbSet
@@ -20,6 +24,7 @@ public class SessionWriteStoreTests
 
         // Set up the IServiceProvider to return the mocked DbContext
         _serviceProviderMock.Setup(x => x.GetService(typeof(AppDbContext))).Returns(_dbContextMock.Object);
+        _serviceProviderMock.Setup(x => x.GetService(typeof(IFusionCache))).Returns(_cacheMock.Object);
 
         // Initialize the SessionWriteStore with the mocked IServiceProvider
         _sut = new SessionWriteStore(_serviceProviderMock.Object);

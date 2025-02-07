@@ -137,7 +137,7 @@ public class UserReadStore : StoreBase, IUserReadStore
     }
 
     /// <inheritdoc />
-    public async Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken)
+    public async Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken = default)
     {
         var cacheKey = "all_users"; // Unique cache key for all users
 

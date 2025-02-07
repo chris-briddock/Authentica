@@ -50,8 +50,7 @@ public sealed class SessionMiddleware
             {
                 var storedSession = await sessionReadStore.GetByIdAsync(currentSessionId);
 
-                if (storedSession is not null &&
-                    storedSession.UserId == "Unknown")
+                if (storedSession is null)
                     shouldCreate = true;
 
             }

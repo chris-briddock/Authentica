@@ -1,4 +1,3 @@
-using ChristopherBriddock.AspNetCore.Extensions;
 using Domain.Aggregates.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +35,7 @@ public class AppDbContext : DbContext
     /// <param name="optionsBuilder">The options builder used to configure DbContext options.</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"], opt =>
+        optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), opt =>
         {
             opt.EnableRetryOnFailure();
         });
