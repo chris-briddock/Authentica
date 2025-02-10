@@ -6,6 +6,11 @@ namespace Persistence.Seed;
 
 public static partial class Seed
 {
-    public static async Task SeedProductionRoles(WebApplication app) => 
+    /// <summary>
+    /// Seeds the production roles.
+    /// </summary>
+    /// <param name="app">The web application instance used to seed roles.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public static async Task SeedProdRoles(WebApplication app) => 
         await SeedRolesAsync(app, [RoleDefaults.Admin, RoleDefaults.User]);
 }

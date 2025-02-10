@@ -14,8 +14,8 @@ public static partial class WebApplicationExtensions
     /// <returns>A Task representing the asynchronous operation.</returns>
     public static async Task UseSeedDataAsync(this WebApplication app)
     {
-        await Seed.SeedRolesAsync(app);
-        await Seed.SeedAdminUserAsync(app);
-        await Seed.SeedClientApplicationAsync(app);
+        await Seed.SeedProdRoles(app);
+        await Seed.SeedProdAdminUserAsync(app);
+        await Seed.SeedProdApplicationAsync(app);
     }
 }

@@ -10,7 +10,7 @@ public static partial class Seed
     /// </summary>
     /// <param name="app">The web application instance.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public static async Task SeedAdminUserAsync(WebApplication app)
+    public static async Task SeedProdAdminUserAsync(WebApplication app)
     {
         var configuration = app.Services.GetRequiredService<IConfiguration>();
         var email = configuration.GetRequiredValueOrThrow("Defaults:AdminEmail");
