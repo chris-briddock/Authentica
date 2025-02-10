@@ -26,7 +26,7 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
         // Use FusionCache to manage caching
         var cacheKey = userId;  // Cache key based on the UserId
 
-        var result = await FusionCache.GetOrSetAsync<List<SessionDto>>(
+        var result = await FusionCache.GetOrSetAsync<IList<SessionDto>>(
             cacheKey,
             async (ctx, ct) =>
             {
@@ -48,7 +48,7 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
             token: cancellation
         );
 
-        return result;
+        return (List<SessionDto>)result;
     }
     /// <inheritdoc/>
     public async Task<Session?> GetByIdAsync(string sessionId, CancellationToken cancellation = default)

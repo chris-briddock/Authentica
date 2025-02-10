@@ -33,7 +33,7 @@ public class DeleteApplicationEndpointTests
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri($"http://localhost/api/v1/{Routes.Applications.DeleteByName}"),
+            RequestUri = new Uri($"http://localhost/api/v2/{Routes.Applications.DeleteByName}"),
             Content = jsonContent
         };
 
@@ -60,7 +60,7 @@ public class DeleteApplicationEndpointTests
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri($"http://localhost/api/v1/{Routes.Applications.DeleteByName}"),
+            RequestUri = new Uri($"http://localhost/api/v2/{Routes.Applications.DeleteByName}"),
             Content = jsonContent
         };
 
@@ -87,7 +87,7 @@ public class DeleteApplicationEndpointTests
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri($"http://localhost/api/v1/{Routes.Applications.DeleteByName}"),
+            RequestUri = new Uri($"http://localhost/api/v2/{Routes.Applications.DeleteByName}"),
             Content = jsonContent
         };
 

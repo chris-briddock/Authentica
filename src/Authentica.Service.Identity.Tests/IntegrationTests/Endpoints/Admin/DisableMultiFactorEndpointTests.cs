@@ -29,7 +29,7 @@ public class DisableMultiFactorEndpointTests
 
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.DisableMultiFactor}", request);
+        var sut = await client.PostAsJsonAsync($"api/v2/{Routes.Admin.DisableMultiFactor}", request);
 
         sut.EnsureSuccessStatusCode();
 
@@ -46,7 +46,7 @@ public class DisableMultiFactorEndpointTests
 
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.PostAsJsonAsync($"api/v1/{Routes.Admin.DisableMultiFactor}", request);
+        var sut = await client.PostAsJsonAsync($"api/v2/{Routes.Admin.DisableMultiFactor}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

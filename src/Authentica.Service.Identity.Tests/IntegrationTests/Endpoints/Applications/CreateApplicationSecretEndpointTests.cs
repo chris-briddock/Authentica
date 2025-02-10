@@ -31,7 +31,7 @@ public class CreateApplicationSecretEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await sutClient.PutAsync($"api/v1/{Routes.Applications.ApplicationSecrets}", jsonContent);
+        using var sut = await sutClient.PutAsync($"api/v2/{Routes.Applications.ApplicationSecrets}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }

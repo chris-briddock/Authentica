@@ -41,7 +41,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public override async Task<ActionResult> HandleAsync(CreateApplicationSecretRequest request, CancellationToken cancellationToken = default)
+    public override async Task<ActionResult> HandleAsync([FromBody] CreateApplicationSecretRequest request, CancellationToken cancellationToken = default)
     {
         var appReadStore = Services.GetRequiredService<IApplicationReadStore>();
         var appWriteStore = Services.GetRequiredService<IApplicationWriteStore>();

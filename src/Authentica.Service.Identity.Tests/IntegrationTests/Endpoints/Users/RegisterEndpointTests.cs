@@ -35,7 +35,7 @@ public class RegisterEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"/api/v1/{Routes.Users.Create}", jsonContent);
+        var sut = await client.PostAsync($"/api/v2/{Routes.Users.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Created));
     }
@@ -46,14 +46,14 @@ public class RegisterEndpointTests
 
         var request = new RegisterRequest()
         {
-            Email = Seed.Test.AdminEmail,
+            Email = Seed.AdminEmail,
             Password = "7XAl@Dg()[=8rV;[wD[:GY$yw:$ltHAuaf!UQ`",
             PhoneNumber = "+447760162366",
             Address = new Address("DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT")
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        var sut = await client.PostAsync($"/api/v1/{Routes.Users.Create}", jsonContent);
+        var sut = await client.PostAsync($"/api/v2/{Routes.Users.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
@@ -84,7 +84,7 @@ public class RegisterEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"/api/v1/{Routes.Users.Create}", jsonContent);
+        var sut = await client.PostAsync($"/api/v2/{Routes.Users.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

@@ -36,13 +36,13 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
     /// </summary>
     /// <param name="request">The object which encapsulates the request body.</param>
     /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-    /// <returns></returns> 
+    /// <returns>An asyncronous <see cref="Task"/></returns> 
     [HttpPut($"{Routes.Applications.UpdateByName}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public override async Task<ActionResult> HandleAsync(UpdateApplicationByNameRequest request, CancellationToken cancellationToken = default)
+    public override async Task<ActionResult> HandleAsync([FromBody] UpdateApplicationByNameRequest request, CancellationToken cancellationToken = default)
     {
         var userWriteStore = Services.GetRequiredService<IUserReadStore>();
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
@@ -61,7 +61,7 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         if (app is null)
             return BadRequest();
 
-        var result = await writeStore.UpdateApplicationAsync(User, request.NewName, request.NewCallbackUri, cancellationToken);
+        var result = await writeStore.UpdateApplicationAsync(User, request.CurrentName, request.NewName, request.NewCallbackUri, cancellationToken);
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);

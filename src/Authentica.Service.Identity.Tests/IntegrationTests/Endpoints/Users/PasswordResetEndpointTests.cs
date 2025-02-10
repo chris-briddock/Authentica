@@ -34,14 +34,14 @@ public class ResetPasswordEndpointTests
 
         var request = new PasswordResetRequest()
         {
-            Email = Seed.Test.AdminEmail,
+            Email = Seed.AdminEmail,
             Token = "ajdndjnksdn",
             Password = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent);
+        var sut = await client.PostAsync($"api/v2/{Routes.Users.ResetPassword}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
@@ -60,14 +60,14 @@ public class ResetPasswordEndpointTests
 
         var request = new PasswordResetRequest()
         {
-            Email = Seed.Test.AdminEmail,
+            Email = Seed.AdminEmail,
             Token = "ajdndjnksdn",
             Password = "dsknsdkfnkEewFDfsdFKe8fe'']']]'"
         };
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v1/{Routes.Users.ResetPassword}", jsonContent); ;
+        var sut = await client.PostAsync($"api/v2/{Routes.Users.ResetPassword}", jsonContent); ;
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

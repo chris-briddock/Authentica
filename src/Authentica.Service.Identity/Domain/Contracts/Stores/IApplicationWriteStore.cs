@@ -29,7 +29,8 @@ public interface IApplicationWriteStore
     /// Asynchronously updates an existing client application in the system based on the provided details.
     /// </summary>
     /// <param name="claimsPrincipal">The claims principal of the user initiating the operation.</param>
-    /// <param name="name">The new name of the client application, or <c>null</c> to retain the current name.</param>
+    /// <param name="oldName">The old name of the application or null if just updating the callback uri.</param>
+    /// <param name="newName">The new name of the client application, or <c>null</c> to retain the current name.</param>
     /// <param name="callbackUri">The new callback URI for the client application, or <c>null</c> to retain the current URI.</param>
     /// <param name="cancellationToken">A token that can be used to cancel the asynchronous operation. Defaults to <see cref="CancellationToken.None"/>.</param>
     /// <returns>
@@ -37,7 +38,8 @@ public interface IApplicationWriteStore
     /// indicating the success or failure of the operation.
     /// </returns>
     Task<ApplicationStoreResult> UpdateApplicationAsync(ClaimsPrincipal claimsPrincipal,
-                                                        string? name,
+                                                        string? oldName,
+                                                        string? newName,
                                                         string? callbackUri,
                                                         CancellationToken cancellationToken = default);
 

@@ -33,7 +33,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -59,7 +59,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -87,7 +87,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -97,7 +97,7 @@ public class UpdateApplicationByNameEndpointTests
     {
         var userWriteStoreMock = new ApplicationWriteStoreMock();
 
-        userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+        userWriteStoreMock.Setup(x => x.UpdateApplicationAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
 
         using var sutClient = _fixture.CreateAuthenticatedClient(s =>
@@ -114,7 +114,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v1/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

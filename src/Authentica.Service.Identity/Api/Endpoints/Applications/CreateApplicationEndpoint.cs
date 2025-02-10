@@ -41,7 +41,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public override async Task<ActionResult> HandleAsync(CreateApplicationRequest request,
+    public override async Task<ActionResult> HandleAsync([FromBody] CreateApplicationRequest request,
                                                          CancellationToken cancellationToken = default)
     {
         var readStore = Services.GetRequiredService<IApplicationReadStore>();

@@ -45,7 +45,7 @@ public class ConfirmEmailEndpointTests
             Token = "dklcmsdklmdsmk"
         };
 
-        using var sut = await client.PostAsync($"api/v1/{Routes.Users.ConfirmEmail}?email={request.Email}&token={request.Token}", null!);
+        using var sut = await client.PostAsync($"api/v2/{Routes.Users.ConfirmEmail}?email={request.Email}&token={request.Token}", null!);
 
         var errorContent = await sut.Content.ReadAsStringAsync();
 
@@ -81,7 +81,7 @@ public class ConfirmEmailEndpointTests
             Token = "dklcmsdklmdsmk"
         };
 
-        using var sut = await client.PostAsync($"api/v1/{Routes.Users.ConfirmEmail}?email={request.Email}&token={request.Token}", null!);
+        using var sut = await client.PostAsync($"api/v2/{Routes.Users.ConfirmEmail}?email={request.Email}&token={request.Token}", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

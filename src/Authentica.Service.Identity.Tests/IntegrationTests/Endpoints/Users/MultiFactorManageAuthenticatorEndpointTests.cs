@@ -22,7 +22,7 @@ public class MultiFactorManageAuthenticatorEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        using var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorAuthentication.ManageAuthenticator}?is_enabled=true", null!);
+        using var sut = await client.PostAsync($"api/v2/{Routes.Users.MultiFactorAuthentication.ManageAuthenticator}?is_enabled=true", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -32,9 +32,9 @@ public class MultiFactorManageAuthenticatorEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        using var enableTwoFactor = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorAuthentication.Manage}?is_enabled=true", null!);
+        using var enableTwoFactor = await client.PostAsync($"api/v2/{Routes.Users.MultiFactorAuthentication.Manage}?is_enabled=true", null!);
 
-        using var sut = await client.PostAsync($"api/v1/{Routes.Users.MultiFactorAuthentication.ManageAuthenticator}?is_enabled=true", null!);
+        using var sut = await client.PostAsync($"api/v2/{Routes.Users.MultiFactorAuthentication.ManageAuthenticator}?is_enabled=true", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }

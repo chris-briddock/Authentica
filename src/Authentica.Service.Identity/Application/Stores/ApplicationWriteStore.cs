@@ -75,14 +75,11 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
     /// <inheritdoc/>
     public async Task<ApplicationStoreResult> UpdateApplicationAsync(ClaimsPrincipal claimsPrincipal,
-                                                                     string? name,
+                                                                     string? oldName,
+                                                                     string? newName,
                                                                      string? callbackUri,
                                                                      CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(claimsPrincipal);
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(callbackUri);
-
         try
         {
             var userReadResult = await UserReadStore.GetUserByEmailAsync(claimsPrincipal, cancellationToken);
@@ -90,14 +87,14 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             if (userReadResult.User is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
-            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(name,
+            var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(oldName!,
                                                                                                   userReadResult.User.Id,
                                                                                                   cancellationToken);
 
             if (application is null)
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
 
-            application.Name = name ?? application.Name;
+            application.Name = newName ?? application.Name;
             application.CallbackUri = callbackUri ?? application.CallbackUri;
             application.EntityModificationStatus.ModifiedBy = userReadResult.User.Email ?? application.EntityModificationStatus.ModifiedBy;
             application.EntityModificationStatus.ModifiedOnUtc = DateTime.UtcNow;

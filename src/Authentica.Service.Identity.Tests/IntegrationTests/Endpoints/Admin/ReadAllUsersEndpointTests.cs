@@ -22,7 +22,7 @@ public class ReadAllUsersEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.GetAsync($"api/v1/{Routes.Admin.ReadAllUsers}");
+        var sut = await client.GetAsync($"api/v2/{Routes.Admin.ReadAllUsers}");
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }

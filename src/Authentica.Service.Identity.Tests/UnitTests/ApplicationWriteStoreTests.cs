@@ -70,7 +70,7 @@ public class ApplicationWriteStoreTests
                           .ReturnsAsync(UserStoreResult.Failed());
 
         // Act
-        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, request.CurrentName, "callback.com");
+        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, request.CurrentName, null, "callback.com");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -97,7 +97,7 @@ public class ApplicationWriteStoreTests
             .ReturnsAsync((ClientApplication)null!);
 
         // Act
-        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, request.CurrentName, "callback-test");
+        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, request.CurrentName, null, "callback-test");
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -119,7 +119,7 @@ public class ApplicationWriteStoreTests
             .ThrowsAsync(new Exception("Test exception"));
 
         // Act
-        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, "appName", "callback.com");
+        var result = await _sut.UpdateApplicationAsync(claimsPrincipal, "appName", null, "callback.com");
 
         // Assert
         Assert.That(result, Is.Not.Null);

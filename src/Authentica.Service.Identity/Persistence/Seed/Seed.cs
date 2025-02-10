@@ -14,6 +14,10 @@ namespace Persistence.Seed;
 public static partial class Seed
 {
     /// <summary>
+    /// Pre defined secret for the test client application.
+    /// </summary>
+    public const string Secret = "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==";
+    /// <summary>
     /// Default value for created by.
     /// </summary>
     public const string CreatedBy = "SYSTEM";
@@ -32,10 +36,17 @@ public static partial class Seed
     /// </summary>
     /// <param name="app">The web application instance.</param>
     /// <param name="appName">The name of the client application to seed.</param>
+    /// <param name="secret">The application secret</param>
+    /// <param name="clientId">The unique identifier for the client application.</param>
     /// <param name="isDeleted">Indicates whether the client application is marked as deleted.</param>
     /// <param name="deletedAt">The date and time when the client application was deleted, if applicable.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    private static async Task SeedClientApplicationAsync(WebApplication app, string appName, bool isDeleted, DateTime? deletedAt = null)
+    private static async Task SeedClientApplicationAsync(WebApplication app,
+                                                         string appName,
+                                                         bool isDeleted,
+                                                         string secret,
+                                                         string clientId,
+                                                         DateTime? deletedAt = null)
     {
         using var scope = app.Services.CreateAsyncScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -47,7 +58,6 @@ public static partial class Seed
         var user = await userManager.FindByEmailAsync(adminEmail);
         if (user is null) return;
 
-        var secret = stringProvider?.GenerateAlphanumeric() ?? "eCp79BsVS5uPb7J6MDStjfuw8h1Jv5dSKA89epAtsLy4pyGgJ6IjIfDeibTtXz7uGEMQixQl/XFjfwCUj7esNn0xUkwobzqHVJN43YLZcIZzyV5yLqKKE/Ku/YsVkZqg5/9eMi4jOKsuxGBRbMA9KeNeFk9TYybwXYbpoQTeHg8dvilNy0NsLzcZ9leD9IVmo5hhMmB9n9ghl1U/R6gCjwMaQY8alFntWSnu7SFJkNAv2o6pmaQTFwGQ7b+wl0lTKdASMQZoj/IVlEXwNNz2OOUCUnBTj5rza9ovs5KgyuwsURIBMe6w9DoEBsjtdoqco/o6nNABrmuB66yg==";
         var hashedSecret = hasher.Hash(secret);
 
         if (!context.ClientApplications.Any(a => a.Name == appName))
@@ -55,7 +65,7 @@ public static partial class Seed
             var application = new ClientApplication
             {
                 Id = Guid.NewGuid().ToString(),
-                ClientId = Guid.NewGuid().ToString(),
+                ClientId = clientId,
                 Name = appName,
                 CallbackUri = "https://localhost:7256/callback",
                 ClientSecret = hashedSecret,
@@ -90,14 +100,13 @@ public static partial class Seed
     /// <param name="deletionDate">The date of deletion, if applicable.</param>
     /// <param name="roles">Roles assigned to the user.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    private static async Task SeedUserAsync(
-        WebApplication app,
-        string email,
-        string password,
-        bool twoFactorEnabled,
-        bool isDeleted,
-        DateTime? deletionDate = null,
-        params string[] roles)
+    private static async Task SeedUserAsync(WebApplication app,
+                                            string email,
+                                            string password,
+                                            bool twoFactorEnabled,
+                                            bool isDeleted,
+                                            DateTime? deletionDate = null,
+                                            params string[] roles)
     {
         using var scope = app.Services.CreateAsyncScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
@@ -144,7 +153,8 @@ public static partial class Seed
     /// <param name="app">The web application instance.</param>
     /// <param name="roles">The roles to seed.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    private static async Task SeedRolesAsync(WebApplication app, params string[] roles)
+    private static async Task SeedRolesAsync(WebApplication app,
+                                             params string[] roles)
     {
         using var scope = app.Services.CreateAsyncScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();

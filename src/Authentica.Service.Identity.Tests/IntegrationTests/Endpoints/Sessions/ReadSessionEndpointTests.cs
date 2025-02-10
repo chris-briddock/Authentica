@@ -24,7 +24,7 @@ public class ReadSessionsEndpointTests
         var client = _fixture.CreateAuthenticatedClient();
 
         // Act
-        using var response = await client.GetAsync($"api/v1/{Routes.Sessions.Name}");
+        using var response = await client.GetAsync($"api/v2/{Routes.Sessions.Name}");
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -37,7 +37,7 @@ public class ReadSessionsEndpointTests
         var client = _fixture.WebApplicationFactory.CreateClient();
 
         // Act
-        using var response = await client.GetAsync($"api/v1/{Routes.Sessions.Name}");
+        using var response = await client.GetAsync($"api/v2/{Routes.Sessions.Name}");
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));

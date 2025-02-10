@@ -42,7 +42,7 @@ public class MultiFactorLoginEmailEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
+        using var sut = await client.PostAsync($"/api/v2/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
@@ -70,7 +70,7 @@ public class MultiFactorLoginEmailEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
+        using var sut = await client.PostAsync($"/api/v2/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -98,7 +98,7 @@ public class MultiFactorLoginEmailEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
+        using var sut = await client.PostAsync($"/api/v2/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
 
         var errorResponse = await sut.Content.ReadAsStringAsync();
 
@@ -128,7 +128,7 @@ public class MultiFactorLoginEmailEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
+        using var sut = await client.PostAsync($"/api/v2/{Routes.Users.MultiFactorAuthentication.LoginEmail}", jsonContent);
 
         var errorResponse = await sut.Content.ReadAsStringAsync();
 

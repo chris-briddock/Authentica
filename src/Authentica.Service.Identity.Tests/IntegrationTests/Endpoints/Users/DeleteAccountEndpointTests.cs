@@ -22,7 +22,7 @@ public class DeleteAccountEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        var result = await client.DeleteAsync($"api/v1/{Routes.Users.DeleteByEmail}");
+        var result = await client.DeleteAsync($"api/v2/{Routes.Users.DeleteByEmail}");
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
@@ -37,7 +37,7 @@ public class DeleteAccountEndpointTests
 
         var client = _fixture.CreateAuthenticatedClient(x => x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), mockWriteStore.Object)));
 
-        var result = await client.DeleteAsync($"api/v1/{Routes.Users.DeleteByEmail}");
+        var result = await client.DeleteAsync($"api/v2/{Routes.Users.DeleteByEmail}");
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

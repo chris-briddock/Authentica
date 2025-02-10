@@ -32,7 +32,7 @@ public class TokenEndpointTests
 
         var content = new FormUrlEncodedContent(values);
 
-        var result = await _fixture.Client.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
+        var result = await _fixture.Client.PostAsync($"api/v2/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
         var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
@@ -95,7 +95,7 @@ public class TokenEndpointTests
             });
         }).CreateClient();
 
-        var result = await sutClient.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
+        var result = await sutClient.PostAsync($"api/v2/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
         var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
@@ -167,7 +167,7 @@ public class TokenEndpointTests
             });
         }).CreateClient();
 
-        var result = await sutClient.PostAsync($"api/v1/{Routes.OAuth.Token}", content);
+        var result = await sutClient.PostAsync($"api/v2/{Routes.OAuth.Token}", content);
         result.EnsureSuccessStatusCode();
 
         var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));

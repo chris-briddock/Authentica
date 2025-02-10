@@ -31,12 +31,12 @@ public class SendTokenEndpointTests
 
         var request = new SendTokenRequest()
         {
-            Email = Seed.Test.AdminEmail,
+            Email = Seed.AdminEmail,
             TokenType = tokenType
         };
 
         // Act
-        using var sut = await client.PostAsync($"/api/v1/{Routes.Users.Tokens}?email_address={request.Email}&token_type={request.TokenType}", null!);
+        using var sut = await client.PostAsync($"/api/v2/{Routes.Users.Tokens}?email_address={request.Email}&token_type={request.TokenType}", null!);
         var errorResponse = await sut.Content.ReadAsStringAsync();
 
         // Assert
