@@ -21,5 +21,5 @@ public interface ISessionReadStore
     /// <param name="sessionId">The session unique identifier.</param>
     /// <param name="cancellationToken"></param>
     /// <returns>A task that represents the asynchronous operation. </returns>
-    Task<Session> GetByIdAsync(string sessionId, CancellationToken cancellationToken = default);
+    Task<Session?> GetByIdAsync(string sessionId, CancellationToken cancellationToken = default);
 }

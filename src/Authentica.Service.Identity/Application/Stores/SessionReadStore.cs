@@ -1,11 +1,8 @@
-using System.Text.Json;
 using Application.Constants;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace Application.Stores;
@@ -54,7 +51,7 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
         return result;
     }
     /// <inheritdoc/>
-    public async Task<Session> GetByIdAsync(string sessionId, CancellationToken cancellation = default)
+    public async Task<Session?> GetByIdAsync(string sessionId, CancellationToken cancellation = default)
     {
         // Use FusionCache to manage caching
         var cacheKey = sessionId;  // Cache key based on the sessionId
@@ -64,10 +61,11 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
             async (ctx, ct) =>
             {
                 ctx.Tags = [CacheTagConstants.Sessions];
-                // Query the database if the value is not found in the cache
-                return await DbSet
+                var query = await DbSet
                     .Where(x => x.SessionId == sessionId)
-                    .FirstAsync(ct);
+                    .FirstOrDefaultAsync(ct);
+                // Query the database if the value is not found in the cache
+                return query!;
             },
             options: new FusionCacheEntryOptions
             {

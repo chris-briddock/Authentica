@@ -1,9 +1,5 @@
 using Api.Constants;
 using ChristopherBriddock.AspNetCore.Extensions;
-using Domain.Aggregates.Identity;
-using Domain.Contracts.Stores;
-using Domain.ValueObjects;
-using Microsoft.AspNetCore.Identity;
 
 namespace Persistence.Seed;
 
@@ -16,41 +12,10 @@ public static partial class Seed
     /// <returns>A task representing the asynchronous operation.</returns>
     public static async Task SeedAdminUserAsync(WebApplication app)
     {
-        using var scope = app.Services.CreateAsyncScope();
-        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        var userMultiFactorStore = scope.ServiceProvider.GetRequiredService<IUserMultiFactorWriteStore>();
+        var configuration = app.Services.GetRequiredService<IConfiguration>();
+        var email = configuration.GetRequiredValueOrThrow("Defaults:AdminEmail");
+        var password = configuration.GetRequiredValueOrThrow("Defaults:AdminPassword");
 
-        var adminEmail = configuration.GetRequiredValueOrThrow("Defaults:AdminEmail");
-        var adminPassword = configuration.GetRequiredValueOrThrow("Defaults:AdminPassword");
-
-        User adminUser = new()
-        {
-            UserName = adminEmail,
-            Email = adminEmail,
-            PhoneNumberConfirmed = true,
-            TwoFactorEnabled = false,
-            EmailConfirmed = true,
-            LockoutEnabled = false,
-            AccessFailedCount = 0,
-            EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
-            EntityDeletionStatus = new(false, null, null),
-            EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
-            Address = new Address(AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue, AddressValue)
-        };
-
-        // Hash the password for security.
-        adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, adminPassword);
-
-        var existingUser = await userManager.FindByEmailAsync(adminUser.Email);
-
-        if (existingUser is null)
-        {
-            await userManager.CreateAsync(adminUser);
-            await userMultiFactorStore.CreateAsync(adminUser.Id);
-            // Add roles to the admin user.
-            await userManager.AddToRoleAsync(adminUser, RoleDefaults.Admin);
-            await userManager.AddToRoleAsync(adminUser, RoleDefaults.User);
-        }
+         await SeedUserAsync(app, email, password, false, false, null, [RoleDefaults.Admin, RoleDefaults.User]);
     }
 }
