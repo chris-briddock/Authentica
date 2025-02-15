@@ -36,7 +36,6 @@ public sealed class SessionMiddleware
         string? emailAddress = context.User.FindFirst(ClaimTypes.Email)?.Value;
         bool shouldCreate = false;
         using AsyncServiceScope scope = context.RequestServices.CreateAsyncScope();
-
         try
         {
             await _semaphore.WaitAsync();

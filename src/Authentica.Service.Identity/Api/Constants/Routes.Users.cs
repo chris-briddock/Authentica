@@ -1,6 +1,5 @@
 namespace Api.Constants;
 
-/// <inheritdoc/>
 public static partial class Routes
 {
     /// <summary>

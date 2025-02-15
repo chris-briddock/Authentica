@@ -29,7 +29,7 @@ public class ApplicationPurge : BackgroundService
     /// </summary>
     /// <param name="serviceScopeFactory">A factory for creating instances of <see cref="IServiceScope"/></param>
     /// <param name="logger">The application logger.</param>
-    /// <param name="timer"></param>
+    /// <param name="timer">A Periodic Timer</param>
     public ApplicationPurge(IServiceScopeFactory serviceScopeFactory,
                             ILogger<ApplicationPurge> logger,
                             ITimerProvider timer)

@@ -22,7 +22,7 @@ public sealed class ExceptionMiddleware
     /// Initializes a new instance of the <see cref="ExceptionMiddleware"/> class.
     /// </summary>
     /// <param name="logger">The logger for logging exception details.</param>
-    /// <param name="next"></param>
+    /// <param name="next">Invokes the next middleware in the pipeline.</param>
     /// <exception cref="ArgumentNullException">Thrown when next or logger is null.</exception>
     public ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, RequestDelegate next)
     {

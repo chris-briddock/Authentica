@@ -27,7 +27,7 @@ public class TestFixture<TProgram> where TProgram : class
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-        Client?.Dispose();
+        Client.Dispose();
         WebApplicationFactory.StopTestContainer();
         WebApplicationFactory.Dispose();
     }
@@ -36,20 +36,23 @@ public class TestFixture<TProgram> where TProgram : class
     {
         var values = new Dictionary<string, string>
         {
-            { "client_id", Seed.Test.TestClientId },
+            { "grant_type", "client_credentials" },
+            { "client_id", "2e5cf15b-bf5b-4d80-aa01-2a596403530d" },
             { "client_secret", Seed.Secret },
-            { "grant_type", "client_credentials" }
+            { "scopes", "read write"}
         };
 
         var content = new FormUrlEncodedContent(values);
 
-        var result = await Client.PostAsync($"api/v2/{Routes.OAuth.Token}", content);
+        HttpResponseMessage? result = await Client.PostAsync($"api/v2/{Routes.OAuth.Token}", content);
+
+        string? errorContent = await result.Content.ReadAsStringAsync();
 
         result.EnsureSuccessStatusCode();
 
-        var jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
+        object? jsonResponse = await result.Content.ReadFromJsonAsync(typeof(TokenResponse));
 
-        var response = (TokenResponse)jsonResponse!;
+        TokenResponse response = (TokenResponse)jsonResponse!;
 
         AccessToken = response.AccessToken;
     }

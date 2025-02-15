@@ -124,12 +124,6 @@ public class UserReadStore : StoreBase, IUserReadStore
                     User? user = await UserManager.FindByEmailAsync(email) ?? null!;
                     return [.. await UserManager.GetRolesAsync(user)];
                 },
-                options: new FusionCacheEntryOptions
-                {
-                    Duration = TimeSpan.FromMinutes(30), // Cache duration
-                    IsFailSafeEnabled = true,            // Enable fail-safe mode
-                    FailSafeThrottleDuration = TimeSpan.FromSeconds(30), // Retry interval
-                },
                 token: cancellationToken
             );
 

@@ -24,15 +24,29 @@ public sealed class SessionWriteStore : StoreBase, ISessionWriteStore
     /// <inheritdoc />
     public async Task<Session> CreateAsync(Session session)
     {
-        try
+        var strategy = DbContext.Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
         {
-            await DbSet.AddAsync(session);
-            await DbContext.SaveChangesAsync();
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+            try
+            {
+                await DbContext.Sessions.AddAsync(session);
+                await DbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                // Re-fetch to confirm if the session already exists
+                var existingSession = await DbContext.Sessions
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(s => s.SessionId == session.SessionId);
+
+                if (existingSession is not null)
+                    return;
+
+                // Retry only if session truly doesn't exist
+                await DbContext.Sessions.AddAsync(session);
+                await DbContext.SaveChangesAsync();
+            }
+        });
 
         return session;
     }

@@ -77,7 +77,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
 
         var application = await applicationReadStore.GetClientApplicationByClientIdAsync(request.ClientId, cancellationToken);
 
-        var userReadResult = await userReadStore.GetUserByIdAsync(application.UserId!);
+        var userReadResult = await userReadStore.GetUserByIdAsync(application.UserId!, cancellationToken);
 
         var hashResult = hasher.Verify(request.ClientSecret, application.ClientSecret!);
 
@@ -87,14 +87,14 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         if (!User.Identity!.IsAuthenticated)
         {
             var userEmail = userReadResult.User.Email!;
-            roles = await userReadStore.GetUserRolesAsync(userEmail);
+            roles = await userReadStore.GetUserRolesAsync(userEmail, cancellationToken);
             subject = userEmail;
             email = userEmail;
         }
         else
         {
             var userEmail = User.Identity.Name!;
-            roles = await userReadStore.GetUserRolesAsync(userEmail);
+            roles = await userReadStore.GetUserRolesAsync(userEmail, cancellationToken);
             subject = userEmail;
             email = userEmail;
         }

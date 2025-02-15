@@ -14,11 +14,9 @@ public class AddressValidator : AbstractValidator<Address>
     public AddressValidator()
     {
         RuleFor(address => address.Name)
-            .NotEmpty().WithMessage("Address name is required.")
             .MaximumLength(64).WithMessage("Address name must be at most 64 characters long.");
 
         RuleFor(address => address.Number)
-            .NotEmpty().WithMessage("Address number is required.")
             .MaximumLength(10).WithMessage("Address number must be at most 10 characters long.");
 
         RuleFor(address => address.Street)

@@ -39,7 +39,6 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
     /// <returns>The result of the authorization process.</returns>
     [HttpGet($"{Routes.OAuth.Authorize}")]
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status301MovedPermanently)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public override async Task<ActionResult> HandleAsync(AuthorizeRequest request,

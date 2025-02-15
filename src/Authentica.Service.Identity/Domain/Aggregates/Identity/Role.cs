@@ -45,6 +45,9 @@ public sealed class Role :
     /// </remarks>
     public EntityModificationStatus<string> EntityModificationStatus { get; set; } = default!;
 
+    /// <inheritdoc/>
+    public override string? ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+
     /// <summary>
     /// Gets or sets the collection of user roles associated with this role.
     /// </summary>

@@ -13,12 +13,10 @@ using Domain.Contracts.Providers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
 using Persistence.Contexts;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.InteropServices;
 using HostApplicationBuilderExtensions = Application.Extensions.HostApplicationBuilderExtensions;
 
 
