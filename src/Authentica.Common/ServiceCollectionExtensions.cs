@@ -5,6 +5,9 @@ using Microsoft.FeatureManagement;
 
 namespace Authentica.Common;
 
+/// <summary>
+/// Extension methods for adding to the <see cref="IServiceCollection"/>
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>

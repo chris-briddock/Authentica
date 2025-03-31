@@ -53,7 +53,7 @@ public class AuthorizeEndpointTests
             }
         }
 
-        using var response = await client.GetAsync($"api/v2/{Routes.OAuth.Authorize}?{queryString}");
+        using var response = await client.GetAsync($"{Routes.OAuth.Authorize}?{queryString}");
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Found));
 

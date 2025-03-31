@@ -22,7 +22,7 @@ public class CreateDeviceCodeEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.GetAsync($"api/v2/{Routes.OAuth.Device}");
+        var sut = await client.GetAsync($"{Routes.OAuth.Device}");
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }

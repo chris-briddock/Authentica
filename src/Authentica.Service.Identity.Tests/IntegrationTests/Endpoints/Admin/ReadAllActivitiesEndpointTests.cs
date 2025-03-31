@@ -22,7 +22,7 @@ public class ReadAllActivitiesEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.GetAsync($"api/v2/{Routes.Admin.ReadAllActivities}");
+        var sut = await client.GetAsync($"{Routes.Admin.ReadAllActivities}");
 
         sut.EnsureSuccessStatusCode();
 

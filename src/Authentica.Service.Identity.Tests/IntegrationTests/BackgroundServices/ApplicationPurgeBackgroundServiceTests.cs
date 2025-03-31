@@ -1,6 +1,3 @@
-using Application.BackgroundServices;
-using Application.Exceptions;
-
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
 
 public class ApplicationPurgeExposeProtected : ApplicationPurge

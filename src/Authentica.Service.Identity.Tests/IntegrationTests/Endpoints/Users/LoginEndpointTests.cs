@@ -34,7 +34,7 @@ public class LoginEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var result = await client.PostAsync($"/api/v2/{Routes.Users.Login}", jsonContent);
+        var result = await client.PostAsync($"{Routes.Users.Login}", jsonContent);
 
         var cookies = result.Headers.GetValues("Set-Cookie");
 
@@ -59,7 +59,7 @@ public class LoginEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var result = await client.PostAsync($"/api/v2/{Routes.Users.Login}", jsonContent);
+        var result = await client.PostAsync($"{Routes.Users.Login}", jsonContent);
 
         var cookies = result.Headers.GetValues("Set-Cookie");
 
@@ -84,7 +84,7 @@ public class LoginEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var result = await client.PostAsync($"/api/v2/{Routes.Users.Login}", jsonContent);
+        var result = await client.PostAsync($"{Routes.Users.Login}", jsonContent);
 
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -105,7 +105,7 @@ public class LoginEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var result = await client.PostAsync($"/api/v2/{Routes.Users.Login}", jsonContent);
+        var result = await client.PostAsync($"{Routes.Users.Login}", jsonContent);
 
         Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 

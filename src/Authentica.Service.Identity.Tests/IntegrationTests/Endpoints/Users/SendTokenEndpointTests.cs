@@ -36,7 +36,7 @@ public class SendTokenEndpointTests
         };
 
         // Act
-        using var sut = await client.PostAsync($"/api/v2/{Routes.Users.Tokens}?email_address={request.Email}&token_type={request.TokenType}", null!);
+        using var sut = await client.PostAsync($"{Routes.Users.Tokens}?email_address={request.Email}&token_type={request.TokenType}", null!);
         var errorResponse = await sut.Content.ReadAsStringAsync();
 
         // Assert

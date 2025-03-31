@@ -134,13 +134,14 @@ public static partial class Seed
         user.PasswordHash = userManager.PasswordHasher.HashPassword(user, password);
 
         await userManager.CreateAsync(user);
-        await userMultiFactorStore.CreateAsync(user.Id);
 
         foreach (var role in roles)
         {
             await userManager.AddToRoleAsync(user, role);
         }
 
+        await userMultiFactorStore.CreateAsync(user.Id);
+        
         if (twoFactorEnabled)
         {
             await userMultiFactorStore.SetEmailAsync(true, user.Id);

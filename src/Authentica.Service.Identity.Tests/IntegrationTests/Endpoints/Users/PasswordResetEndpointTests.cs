@@ -41,7 +41,7 @@ public class ResetPasswordEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v2/{Routes.Users.ResetPassword}", jsonContent);
+        var sut = await client.PostAsync($"{Routes.Users.ResetPassword}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
@@ -67,7 +67,7 @@ public class ResetPasswordEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v2/{Routes.Users.ResetPassword}", jsonContent); ;
+        var sut = await client.PostAsync($"{Routes.Users.ResetPassword}", jsonContent); ;
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

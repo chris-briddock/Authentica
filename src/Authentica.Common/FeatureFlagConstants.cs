@@ -32,4 +32,9 @@ public static class FeatureFlagConstants
     /// the appsetings.json when this method is called <see cref="FeatureManager.IsEnabledAsync"/>
     /// </remarks>
     public const string RabbitMq = "RabbitMq";
+
+    /// <summary>
+    /// Constant representing the feature flag for enabling passkeys.
+    /// </summary>
+    public const string Passkeys = "Passkeys";
 }

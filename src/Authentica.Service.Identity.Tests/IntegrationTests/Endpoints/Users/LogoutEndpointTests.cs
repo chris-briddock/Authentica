@@ -22,7 +22,7 @@ public class LogoutEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        var sut = await client.PostAsync($"api/v2/users/logout", null!);
+        var sut = await client.PostAsync($"users/logout", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }

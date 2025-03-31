@@ -22,7 +22,7 @@ public class ReadApplicationsEndpointTests
     {
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
-        using var response = await sutClient.GetAsync($"api/v2/{Routes.Applications.ReadAll}");
+        using var response = await sutClient.GetAsync($"{Routes.Applications.ReadAll}");
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -38,7 +38,7 @@ public class ReadApplicationsEndpointTests
             x.Replace(new ServiceDescriptor(typeof(IUserReadStore), userReadStoreMock.Object));
         });
 
-        using var response = await sutClient.GetAsync($"api/v2/{Routes.Applications.ReadAll}");
+        using var response = await sutClient.GetAsync($"{Routes.Applications.ReadAll}");
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

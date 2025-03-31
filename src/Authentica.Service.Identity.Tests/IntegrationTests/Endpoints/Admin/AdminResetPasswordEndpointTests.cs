@@ -29,7 +29,7 @@ public class AdminResetPasswordEndpointTests
             Email = Seed.AdminEmail,
             Password = "69{}'#ddksdjcdscdDs"
         };
-        var sut = await client.PostAsJsonAsync($"api/v2/{Routes.Admin.ResetPassword}", request);
+        var sut = await client.PostAsJsonAsync($"{Routes.Admin.ResetPassword}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
@@ -43,7 +43,7 @@ public class AdminResetPasswordEndpointTests
             Email = "test@test.com",
             Password = "69{}'#ddksdjcdscdDs"
         };
-        var sut = await client.PostAsJsonAsync($"api/v2/{Routes.Admin.ResetPassword}", request);
+        var sut = await client.PostAsJsonAsync($"{Routes.Admin.ResetPassword}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

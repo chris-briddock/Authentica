@@ -3,7 +3,7 @@ using Domain.Responses;
 namespace Authentica.Service.Identity.Tests.IntegrationTests;
 
 [TestFixture]
-public class TestFixture<TProgram> where TProgram : class
+public sealed class TestFixture<TProgram> where TProgram : class
 {
     public CustomWebApplicationFactory<TProgram> WebApplicationFactory { get; private set; }
 
@@ -21,7 +21,8 @@ public class TestFixture<TProgram> where TProgram : class
             AllowAutoRedirect = true,
             HandleCookies = true
         });
-        await GenerateTokenAsync(); 
+        Client.BaseAddress = new Uri($"http://localhost:8000/api/v2");
+        await GenerateTokenAsync();
     }
 
     [OneTimeTearDown]
@@ -43,9 +44,7 @@ public class TestFixture<TProgram> where TProgram : class
         };
 
         var content = new FormUrlEncodedContent(values);
-
-        HttpResponseMessage? result = await Client.PostAsync($"api/v2/{Routes.OAuth.Token}", content);
-
+        HttpResponseMessage? result = await Client.PostAsync($"{Routes.OAuth.Token}", content);
         string? errorContent = await result.Content.ReadAsStringAsync();
 
         result.EnsureSuccessStatusCode();
@@ -61,13 +60,19 @@ public class TestFixture<TProgram> where TProgram : class
     {
         var client = WebApplicationFactory.WithWebHostBuilder(builder =>
         {
+            builder.ConfigureLogging(logging =>
+            {
+                logging.SetMinimumLevel(LogLevel.Debug);
+                logging.AddConsole();
+            });
             builder.ConfigureTestServices(services =>
             {
                 configureServices?.Invoke(services);
             });
         }).CreateClient(new WebApplicationFactoryClientOptions()
         {
-            AllowAutoRedirect = true
+            AllowAutoRedirect = true,
+            BaseAddress = new Uri("http://localhost/api/v2")
         });
 
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);

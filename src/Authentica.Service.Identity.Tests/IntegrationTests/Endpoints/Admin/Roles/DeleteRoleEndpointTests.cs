@@ -29,7 +29,7 @@ public class DeleteRoleEndpointTests
         };
 
         // Act
-        var sut = await client.DeleteAsync($"api/v2/{Routes.Admin.Roles.Delete}?name={request.Name}");
+        var sut = await client.DeleteAsync($"{Routes.Admin.Roles.Delete}?name={request.Name}");
 
         // Assert
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
@@ -47,7 +47,7 @@ public class DeleteRoleEndpointTests
         };
 
         // Act
-        var sut = await client.DeleteAsync($"api/v2/{Routes.Admin.Roles.Delete}?name={request.Name}");
+        var sut = await client.DeleteAsync($"{Routes.Admin.Roles.Delete}?name={request.Name}");
 
         // Assert
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));

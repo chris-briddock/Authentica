@@ -1,4 +1,3 @@
-using Authentica.Common;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.AspNetCore.Identity;

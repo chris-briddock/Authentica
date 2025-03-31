@@ -33,7 +33,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -59,7 +59,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -87,7 +87,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
@@ -114,7 +114,7 @@ public class UpdateApplicationByNameEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        using var response = await sutClient.PutAsync($"api/v2/{Routes.Applications.UpdateByName}", jsonContent);
+        using var response = await sutClient.PutAsync($"{Routes.Applications.UpdateByName}", jsonContent);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

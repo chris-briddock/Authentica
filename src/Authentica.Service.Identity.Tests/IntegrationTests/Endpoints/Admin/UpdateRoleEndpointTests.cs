@@ -30,7 +30,7 @@ public class UpdateRoleEndpointTests
         };
 
         // Act
-        var response = await client.PutAsJsonAsync($"api/v2/{Routes.Admin.Roles.Update}", request);
+        var response = await client.PutAsJsonAsync($"{Routes.Admin.Roles.Update}", request);
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));

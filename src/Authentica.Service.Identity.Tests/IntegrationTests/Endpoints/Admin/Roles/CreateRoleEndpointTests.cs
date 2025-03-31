@@ -27,7 +27,7 @@ public class CreateRoleEndpointTests
             Name = "Integration"
         };
 
-        var sut = await client.PostAsJsonAsync($"api/v2/{Routes.Admin.Roles.Create}", request);
+        var sut = await client.PostAsJsonAsync($"{Routes.Admin.Roles.Create}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Created));
     }

@@ -32,7 +32,7 @@ public class CreateApplicationEndpointTests
 
         using var sutClient = _fixture.CreateAuthenticatedClient();
 
-        using var sut = await sutClient.PostAsync($"api/v2/{Routes.Applications.Create}", jsonContent);
+        using var sut = await sutClient.PostAsync($"{Routes.Applications.Create}", jsonContent);
 
         var errorContent = await sut.Content.ReadAsStringAsync();
 
@@ -51,7 +51,7 @@ public class CreateApplicationEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
 
-        using var sut = await sutClient.PostAsync($"api/v2/{Routes.Applications.Create}", jsonContent);
+        using var sut = await sutClient.PostAsync($"{Routes.Applications.Create}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

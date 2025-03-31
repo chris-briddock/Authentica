@@ -1,12 +1,14 @@
 using Api.Constants;
 using Application.Constants;
 using Ardalis.ApiEndpoints;
+using Authentica.Common;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement;
 
 namespace Api.Endpoints.Users;
 
@@ -43,6 +45,11 @@ public class MultiFactorPasskeysAttestationOptionsEndpoint : EndpointBaseAsync
     {
         IUserReadStore userReadStore = Services.GetRequiredService<IUserReadStore>();
         IPasskeyTokenProvider<User> tokenProvider = Services.GetRequiredService<IPasskeyTokenProvider<User>>();
+
+        IFeatureManager featureManager = Services.GetRequiredService<IFeatureManager>();
+
+        if (!await featureManager.IsEnabledAsync(FeatureFlagConstants.Passkeys, cancellationToken))
+            return NotFound();
 
         var user =  (await userReadStore.GetUserByEmailAsync(request.Email)).User;
 

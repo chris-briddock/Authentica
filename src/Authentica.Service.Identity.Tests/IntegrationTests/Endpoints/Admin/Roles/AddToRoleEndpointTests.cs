@@ -29,8 +29,8 @@ public class AddToRoleEndpointTests
             Email = Seed.AdminEmail,
             Role = "Test"
         };
-
-        var sut = await client.PutAsJsonAsync($"api/v2/{Routes.Admin.Roles.Add}", request);
+        Console.WriteLine($"{client.BaseAddress}{Routes.Admin.Roles.Add}");
+        var sut = await client.PutAsJsonAsync($"{Routes.Admin.Roles.Add}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -51,7 +51,7 @@ public class AddToRoleEndpointTests
             Role = "Test"
         };
 
-        var sut = await client.PutAsJsonAsync($"api/v2/{Routes.Admin.Roles.Add}", request);
+        var sut = await client.PutAsJsonAsync($"{Routes.Admin.Roles.Add}", request);
 
         var errorContent = await sut.Content.ReadAsStringAsync();
 

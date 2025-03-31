@@ -31,7 +31,7 @@ public class UpdateAddressEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PutAsync($"api/v2/{Routes.Users.Details.UpdateAddress}", jsonContent);
+        var sut = await client.PutAsync($"{Routes.Users.Details.UpdateAddress}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 

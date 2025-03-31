@@ -23,7 +23,7 @@ public class MultiFactorManageEndpointTests
     {
         var client = _fixture.CreateAuthenticatedClient();
 
-        using var sut = await client.PostAsync($"api/v2/{Routes.Users.MultiFactorAuthentication.Manage}?is_enabled=true", null!);
+        using var sut = await client.PostAsync($"{Routes.Users.MultiFactorAuthentication.Manage}?is_enabled=true", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
@@ -39,7 +39,7 @@ public class MultiFactorManageEndpointTests
 
         var client = _fixture.CreateAuthenticatedClient(x => x.Replace(new ServiceDescriptor(typeof(IUserReadStore), readStoreMock.Object)));
 
-        using var sut = await client.PostAsync($"api/v2/{Routes.Users.MultiFactorAuthentication.Manage}?is_enabled=true", null!);
+        using var sut = await client.PostAsync($"{Routes.Users.MultiFactorAuthentication.Manage}?is_enabled=true", null!);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

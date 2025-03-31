@@ -23,7 +23,7 @@ public class ReadRolesEndpointTests
         var client = _fixture.CreateAuthenticatedClient();
 
         // Act
-        var response = await client.GetAsync($"api/v2/{Routes.Admin.Roles.Read}");
+        var response = await client.GetAsync($"{Routes.Admin.Roles.Read}");
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

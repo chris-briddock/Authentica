@@ -32,7 +32,7 @@ public class RegisterAdminEndpointTests
 
         using var client = _fixture.CreateAuthenticatedClient();
 
-        using var sut = await client.PostAsJsonAsync($"api/v2/{Routes.Admin.Create}", request);
+        using var sut = await client.PostAsJsonAsync($"{Routes.Admin.Create}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Created));
     }
@@ -55,7 +55,7 @@ public class RegisterAdminEndpointTests
 
         using var client = _fixture.CreateAuthenticatedClient(x => x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStoreMock.Object)));
 
-        using var sut = await client.PostAsJsonAsync($"api/v2/{Routes.Admin.Create}", request);
+        using var sut = await client.PostAsJsonAsync($"{Routes.Admin.Create}", request);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }

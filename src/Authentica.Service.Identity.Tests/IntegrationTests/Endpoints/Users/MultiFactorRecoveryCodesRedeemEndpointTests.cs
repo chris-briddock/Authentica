@@ -39,7 +39,7 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v2/{Routes.Users.MultiFactorAuthentication.RecoveryCodes}", jsonContent);
+        var sut = await client.PostAsync($"{Routes.Users.MultiFactorAuthentication.RecoveryCodes}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
@@ -63,7 +63,7 @@ public class MultiFactorRecoveryCodesRedeemEndpointTests
 
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        var sut = await client.PostAsync($"api/v2/{Routes.Users.MultiFactorAuthentication.RecoveryCodes}", jsonContent);
+        var sut = await client.PostAsync($"{Routes.Users.MultiFactorAuthentication.RecoveryCodes}", jsonContent);
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }

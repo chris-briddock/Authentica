@@ -39,6 +39,8 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
             
             await DbSet.AddAsync(settings);
 
+            await DbContext.SaveChangesAsync();
+
             return UserMultiFactorStoreResult.Success();
         }
         catch (Exception ex)
