@@ -1,7 +1,7 @@
 using Api.Constants;
 using Application.Constants;
 using Ardalis.ApiEndpoints;
-using Authentica.Common;
+using Common.Constants;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;

@@ -1,10 +1,10 @@
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Common.Events;
 using Domain.Aggregates.Identity;
 using Domain.Contracts;
 using Domain.Contracts.Stores;
-using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

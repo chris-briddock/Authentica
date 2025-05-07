@@ -1,6 +1,8 @@
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Common.Events;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -49,6 +51,7 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
@@ -66,6 +69,10 @@ public sealed class UpdateAddressEndpoint : EndpointBaseAsync
         await activityWriteStore.SaveActivityAsync(activity);
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        UserAddressUpdated @event = new(user.Email!, DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

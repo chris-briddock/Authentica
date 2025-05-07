@@ -3,7 +3,7 @@ using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Contracts;
 using Domain.Contracts.Stores;
-using Domain.Events;
+using Common.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

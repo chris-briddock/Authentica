@@ -1,6 +1,8 @@
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Common.Events;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,6 +50,7 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
@@ -62,6 +65,10 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
         };
 
         await activityWriteStore.SaveActivityAsync(activity);
+
+        UserPhoneNumberUpdated @event = new(user.Email!, DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

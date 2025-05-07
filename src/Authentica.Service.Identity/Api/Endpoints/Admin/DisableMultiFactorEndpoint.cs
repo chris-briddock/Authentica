@@ -4,7 +4,7 @@ using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
 using Domain.Contracts;
 using Domain.Contracts.Stores;
-using Domain.Events;
+using Common.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

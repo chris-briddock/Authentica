@@ -1,12 +1,12 @@
 using Api.Constants;
 using Ardalis.ApiEndpoints;
-using Authentica.Common;
 using Domain.Aggregates.Identity;
 using Domain.Contracts;
-using Domain.Events;
+using Common.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Common.Constants;
 
 namespace Api.Endpoints;
 

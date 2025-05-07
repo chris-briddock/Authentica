@@ -1,16 +1,16 @@
 using Api.Constants;
 using Application.Constants;
 using Ardalis.ApiEndpoints;
-using Authentica.Common;
 using Domain.Aggregates.Identity;
 using Domain.Contracts;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;
-using Domain.Events;
+using Common.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
+using Common.Constants;
 
 namespace Api.Endpoints.Users;
 

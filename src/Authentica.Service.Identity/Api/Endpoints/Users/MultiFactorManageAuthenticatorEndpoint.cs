@@ -5,7 +5,7 @@ using Domain.Aggregates.Identity;
 using Domain.Contracts;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;
-using Domain.Events;
+using Common.Events;
 using Domain.Requests;
 using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
