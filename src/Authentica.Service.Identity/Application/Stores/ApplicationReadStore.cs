@@ -3,6 +3,7 @@ using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Contexts;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace Application.Stores;
@@ -20,20 +21,16 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     {
     }
 
-    /// <summary>
-    /// Gets the ClientApplication DbSet.
-    /// </summary>
-    public DbSet<ClientApplication> MainDbSet => DbContext.Set<ClientApplication>();
-
-    /// <summary>
-    /// Gets the UserClientApplication DbSet.
-    /// </summary>
-    public DbSet<UserClientApplication> LinkDbSet => DbContext.Set<UserClientApplication>();
-
     /// <inheritdoc/>
     public async Task<bool> CheckApplicationExistsByNameAsync(string applicationName, CancellationToken cancellationToken = default)
     {
-        return await MainDbSet.AnyAsync(a => a.Name == applicationName, cancellationToken);
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string name) =>
+                context.Set<ClientApplication>().Any(a => a.Name == name)
+        );
+
+        return await compiledQuery(DbContext, applicationName);
     }
 
     /// <inheritdoc/>
@@ -47,6 +44,21 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
 
         string cacheKey = $"clientApp_{name}_{userId}";
 
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string appName, string uId) =>
+                context.Set<ClientApplication>()
+                    .Join(
+                        context.Set<UserClientApplication>(),
+                        app => app.Id,
+                        userApp => userApp.ApplicationId,
+                        (app, userApp) => new { app, userApp.UserId }
+                    )
+                    .Where(joined => joined.app.Name == appName && joined.UserId == uId)
+                    .Select(joined => joined.app)
+                    .FirstOrDefault()
+        );
+
         // Use FusionCache for caching
         var clientApplication = await FusionCache.GetOrSetAsync<ClientApplication?>(
             cacheKey,
@@ -54,16 +66,7 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
             {
                 ctx.Tags = [CacheTagConstants.Applications];
                 // Query the database if the value is not found in the cache
-                return await MainDbSet
-                    .Join(
-                        LinkDbSet,
-                        app => app.Id,
-                        userApp => userApp.ApplicationId,
-                        (app, userApp) => new { app, userApp.UserId }
-                    )
-                    .Where(joined => joined.app.Name == name && joined.UserId == userId)
-                    .Select(joined => joined.app)
-                    .FirstOrDefaultAsync(ct);
+                return await compiledQuery(DbContext, name, userId);
             },
             token: cancellationToken
         );
@@ -82,15 +85,11 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
 
         var cacheKey = $"clientApp_{clientId}_{callbackUri}";
 
-        // Use FusionCache for caching
-        var application = await FusionCache.GetOrSetAsync<ApplicationReadDto?>(
-            cacheKey,
-            async (ctx, ct) =>
-            {
-                ctx.Tags = [CacheTagConstants.Applications];
-                // Query the database if the value is not found in the cache
-                return await MainDbSet
-                    .Where(x => x.ClientId == clientId && x.CallbackUri == callbackUri)
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string cId, string cbUri) =>
+                context.Set<ClientApplication>()
+                    .Where(x => x.ClientId == cId && x.CallbackUri == cbUri)
                     .Select(x => new ApplicationReadDto
                     {
                         ClientId = x.ClientId,
@@ -100,7 +99,17 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                         CallbackUri = x.CallbackUri,
                         Name = x.Name
                     })
-                    .FirstOrDefaultAsync(ct);
+                    .FirstOrDefault()
+        );
+
+        // Use FusionCache for caching
+        var application = await FusionCache.GetOrSetAsync<ApplicationReadDto?>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.Applications];
+                // Query the database if the value is not found in the cache
+                return await compiledQuery(DbContext, clientId, callbackUri);
             },
             options: new FusionCacheEntryOptions
             {
@@ -123,21 +132,17 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
 
         var cacheKey = $"clientApps_{userId}";
 
-        // Use FusionCache for caching
-        var clientApplications = await FusionCache.GetOrSetAsync<List<ApplicationReadDto>>(
-            cacheKey,
-            async (ctx, ct) =>
-            {
-                ctx.Tags = [CacheTagConstants.Applications];
-                // Query the database if the value is not found in the cache
-                return await MainDbSet
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string uId) =>
+                context.Set<ClientApplication>()
                     .Join(
-                        LinkDbSet,
+                        context.Set<UserClientApplication>(),
                         app => app.Id,
                         userApp => userApp.ApplicationId,
                         (app, userApp) => new { app, userApp.UserId }
                     )
-                    .Where(joined => joined.UserId == userId)
+                    .Where(joined => joined.UserId == uId)
                     .Select(joined => new ApplicationReadDto
                     {
                         ClientId = joined.app.ClientId,
@@ -147,7 +152,17 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                         CallbackUri = joined.app.CallbackUri,
                         Name = joined.app.Name
                     })
-                    .ToListAsync(ct);
+                    .ToList()
+        );
+
+        // Use FusionCache for caching
+        var clientApplications = await FusionCache.GetOrSetAsync<List<ApplicationReadDto>>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.Applications];
+                // Query the database if the value is not found in the cache
+                return await compiledQuery(DbContext, userId);
             },
             token: cancellationToken
         );
@@ -163,21 +178,17 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
 
         var cacheKey = $"clientApp_{clientId}";
 
-        // Use FusionCache to manage caching
-        var result = await FusionCache.GetOrSetAsync<ApplicationReadDto>(
-            cacheKey,
-            async (ctx, ct) =>
-            {
-                ctx.Tags = [CacheTagConstants.Applications];
-                // Query the database if the value is not found in the cache
-                return await MainDbSet
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string cId) =>
+                context.Set<ClientApplication>()
                     .Join(
-                        LinkDbSet,
+                        context.Set<UserClientApplication>(),
                         client => client.Id,
                         userClient => userClient.ApplicationId,
                         (client, userClient) => new { client, userClient }
                     )
-                    .Where(x => x.client.ClientId == clientId)
+                    .Where(x => x.client.ClientId == cId)
                     .Select(x => new ApplicationReadDto
                     {
                         CallbackUri = x.client.CallbackUri,
@@ -189,7 +200,17 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                         ClientSecret = x.client.ClientSecret,
                         UserId = x.userClient.UserId
                     })
-                    .FirstAsync(ct);
+                    .First()
+        );
+
+        // Use FusionCache to manage caching
+        var result = await FusionCache.GetOrSetAsync<ApplicationReadDto>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.Applications];
+                // Query the database if the value is not found in the cache
+                return await compiledQuery(DbContext, clientId);
             },
             options: new FusionCacheEntryOptions
             {
@@ -206,7 +227,13 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     /// <inheritdoc/>
     public async Task<bool> CheckApplicationExistsByClientIdAsync(string clientId, CancellationToken cancellationToken = default)
     {
-        return await MainDbSet.AnyAsync(x => x.ClientId == clientId, cancellationToken);
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string cId) =>
+                context.Set<ClientApplication>().Any(x => x.ClientId == cId)
+        );
+
+        return await compiledQuery(DbContext, clientId);
     }
 
     /// <inheritdoc/>
@@ -214,14 +241,10 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
     {
         var cacheKey = "allApplications";
 
-        // Use FusionCache to manage caching
-        var result = await FusionCache.GetOrSetAsync<List<ApplicationReadDto>>(
-            cacheKey,
-            async (ctx, ct) =>
-            {
-                ctx.Tags = [CacheTagConstants.Applications];
-                // Query the database if the value is not found in the cache
-                return await DbContext.ClientApplications
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context) =>
+                context.ClientApplications
                     .Select(x => new ApplicationReadDto
                     {
                         ClientId = x.ClientId,
@@ -231,7 +254,16 @@ public sealed class ApplicationReadStore : StoreBase, IApplicationReadStore
                         CallbackUri = x.CallbackUri,
                         Name = x.Name
                     })
-                    .ToListAsync(ct);
+                    .ToList()
+        );
+
+        var result = await FusionCache.GetOrSetAsync<List<ApplicationReadDto>>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.Applications];
+                // Query the database if the value is not found in the cache
+                return await compiledQuery(DbContext);
             },
             token: cancellationToken
         );

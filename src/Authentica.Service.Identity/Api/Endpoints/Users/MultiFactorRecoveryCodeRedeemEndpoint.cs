@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -47,15 +49,17 @@ public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public override async Task<ActionResult> HandleAsync(MultiFactorRecoveryCodeRedeemRequest request,
-                                                   CancellationToken cancellationToken = default)
+                                                         CancellationToken cancellationToken = default)
     {
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         var mfaWriteStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
+        var passkeysStore = Services.GetRequiredService<IPasskeyCredentialWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
-        var user = (await userReadStore.GetUserByEmailAsync(request.Email)).User;
+        var user = (await userReadStore.GetUserByEmailAsync(request.Email, cancellationToken)).User;
 
         var result = await userWriteStore.RedeemMultiFactorRecoveryCodeAsync(user, request.Code);
 
@@ -69,12 +73,18 @@ public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
         await mfaWriteStore.SetPasskeysAsync(false, user.Id);
         await mfaWriteStore.SetAutheticatorAsync(false, user.Id);
 
+        // TODO: DELETE ALL PASSKEYS 
+
         MultiFactorRecoveryCodesRedeemActivity activity = new()
         {
             Payload = request
         };
 
         await activityWriteStore.SaveActivityAsync(activity);
+
+        MfaRecoveryCodeRedeemed @event = new(user.Email!, DateTime.UtcNow);
+
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

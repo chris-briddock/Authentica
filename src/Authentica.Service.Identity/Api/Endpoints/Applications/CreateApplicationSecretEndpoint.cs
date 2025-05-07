@@ -1,7 +1,9 @@
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -47,6 +49,7 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
         var appWriteStore = Services.GetRequiredService<IApplicationWriteStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
@@ -68,6 +71,12 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        ApplicationSecretChanged @event = new(request.Name,
+                                              DateTime.UtcNow,
+                                              User.Identity?.Name ?? "Unknown");
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok(new { result.Secret });
 

@@ -1,19 +1,16 @@
-﻿using System.Text.Json;
-using Application.Constants;
+﻿using Application.Constants;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
-using ZiggyCreatures.Caching.Fusion;
+using Persistence.Contexts;
 
 namespace Application.Stores;
 
 /// <summary>
 /// Handles read operations related to passkey credentials.
 /// </summary>
-public class PasskeyCredentialReadStore : StoreBase, IPasskeyCredentialReadStore
+public sealed class PasskeyCredentialReadStore : StoreBase, IPasskeyCredentialReadStore
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PasskeyCredentialReadStore"/>
@@ -26,21 +23,17 @@ public class PasskeyCredentialReadStore : StoreBase, IPasskeyCredentialReadStore
     /// <inheritdoc/>
     public async Task<List<PasskeyCredentialReadDto>> GetPasskeyCredentialsAsync(string userId, CancellationToken token = default)
     {
-        // Use FusionCache to manage caching
-        var cacheKey = userId;  // Cache key based on the UserId
+        var cacheKey = userId;
 
-        var result = await FusionCache.GetOrSetAsync<List<PasskeyCredentialReadDto>>(
-            cacheKey,
-            async (ctx, ct) =>
-            {
-                ctx.Tags = [CacheTagConstants.PasskeyCredentials];
-                // Query the database if the value is not found in the cache
-                return await DbContext.Set<PasskeyCredential>()
-                    .Join(DbContext.Set<UserPasskeyCredential>(),
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string uId) =>
+                context.Set<PasskeyCredential>()
+                    .Join(context.Set<UserPasskeyCredential>(),
                         pc => pc.Id,
                         upc => upc.PasskeyCredentialId,
                         (pc, upc) => new { pc, upc })
-                    .Where(x => x.upc.UserId == userId)
+                    .Where(x => x.upc.UserId == uId)
                     .Select(x => new PasskeyCredentialReadDto
                     {
                         PasskeyCredentialId = x.pc.CredentialId,
@@ -48,7 +41,16 @@ public class PasskeyCredentialReadStore : StoreBase, IPasskeyCredentialReadStore
                         UserHandle = x.pc.UserHandle,
                         PublicKey = x.pc.PublicKey
                     })
-                    .ToListAsync(ct);
+                    .ToList()
+        );
+
+        var result = await FusionCache.GetOrSetAsync<List<PasskeyCredentialReadDto>>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.PasskeyCredentials];
+                // Execute the compiled query
+                return await compiledQuery(DbContext, userId);
             },
             token: token
         );

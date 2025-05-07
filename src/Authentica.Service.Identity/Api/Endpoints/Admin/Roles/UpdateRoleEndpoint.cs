@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +57,7 @@ public sealed class UpdateRoleEndpoint : EndpointBaseAsync
         var roleManager = Services.GetRequiredService<RoleManager<Role>>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var currentRole = await roleManager.Roles
                                 .Where(x => x.Name == request.CurrentName)
@@ -74,6 +77,13 @@ public sealed class UpdateRoleEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        AdminUpdatedRole @event = new(request.CurrentName,
+                                      request.NewName,
+                                      DateTime.UtcNow,
+                                      User.Identity?.Name ?? "Unknown");
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return NoContent();
     }

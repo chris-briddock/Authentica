@@ -1,4 +1,5 @@
-﻿using Fido2NetLib;
+﻿using Application.Results;
+using Fido2NetLib;
 
 namespace Domain.Contracts.Stores;
 
@@ -12,5 +13,7 @@ public interface IPasskeyCredentialWriteStore
     /// </summary>
     /// <param name="credential">The credential to be created.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    Task CreateAsync(Fido2.CredentialMakeResult credential);
+    Task<PasskeyCredentialResult> CreateAsync(Fido2.CredentialMakeResult credential);
+
+
 }

@@ -34,23 +34,22 @@ internal static class ServiceCollectionExtensions
         }
         if (featureManager.IsEnabledAsync(FeatureFlagConstants.RabbitMq).Result)
         {
-
             services.AddMassTransit(x =>
-        {
-            x.SetKebabCaseEndpointNameFormatter();
-
-            x.AddConsumer<Worker>();
-
-            x.UsingRabbitMq((context, config) =>
             {
+                x.SetKebabCaseEndpointNameFormatter();
 
-                config.Host(configuration["RabbitMQ:Hostname"], "/", r =>
+                x.AddConsumer<Worker>();
+
+                x.UsingRabbitMq((context, config) =>
                 {
-                    r.Username(configuration["RabbitMQ:Username"]!);
-                    r.Password(configuration["RabbitMQ:Password"]!);
+
+                    config.Host(configuration["RabbitMQ:Hostname"], "/", r =>
+                    {
+                        r.Username(configuration["RabbitMQ:Username"]!);
+                        r.Password(configuration["RabbitMQ:Password"]!);
+                    });
+                    config.ConfigureEndpoints(context);
                 });
-                config.ConfigureEndpoints(context);
-            });
         });
 
         }

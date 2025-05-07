@@ -4,8 +4,9 @@ using Application.Factories;
 using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Contexts;
 using System.Security.Claims;
-using ZiggyCreatures.Caching.Fusion;
 
 namespace Application.Stores;
 
@@ -33,17 +34,24 @@ public class UserReadStore : StoreBase, IUserReadStore
 
         var email = emailClaim.Value;
 
-        // Use FusionCache to manage caching
-        var cacheKey = $"user_email_{email}";  // Cache key based on the email
+        var cacheKey = $"user_email_{email}";
+
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string emailAddress) =>
+                context.Users
+                    .AsNoTracking()
+                    .FirstOrDefault(u => u.Email == emailAddress)
+        );
 
         var user = await FusionCache.GetOrSetAsync<User>(
             cacheKey,
             async (ctx, ct) =>
             {
                 ctx.Tags = [CacheTagConstants.Users];
-                User? user = await UserManager.FindByEmailAsync(email);
-                // Query the database if the value is not found in the cache
-                return user!;
+                // Execute the compiled query
+                var result = await compiledQuery(DbContext, email);
+                return result!;
             },
             token: cancellationToken
         );
@@ -60,16 +68,24 @@ public class UserReadStore : StoreBase, IUserReadStore
     {
         try
         {
-            var cacheKey = $"user_email_{email}"; // Cache key based on the email
+            var cacheKey = $"user_email_{email}";
 
-            // Use FusionCache to manage caching
+            // Define the compiled query
+            var compiledQuery = EF.CompileAsyncQuery(
+                (AppDbContext context, string emailAddress) =>
+                    context.Users
+                        .AsNoTracking()
+                        .FirstOrDefault(u => u.Email == emailAddress)
+            );
+
             var user = await FusionCache.GetOrSetAsync<User>(
                 cacheKey,
                 async (ctx, ct) =>
                 {
-                    // Query the UserManager if not found in cache
-                    var user = await UserManager.FindByEmailAsync(email);
-                    return user!;
+                    ctx.Tags = [CacheTagConstants.Users];
+                    // Execute the compiled query
+                    var result = await compiledQuery(DbContext, email);
+                    return result!;
                 },
                 token: cancellationToken
             );
@@ -90,19 +106,30 @@ public class UserReadStore : StoreBase, IUserReadStore
     {
         try
         {
-            var cacheKey = $"user_id_{id}"; // Unique cache key based on user ID
+            var cacheKey = $"user_id_{id}";
 
-            // Use FusionCache to handle caching
-            var user = await FusionCache.GetOrSetAsync<User>(cacheKey, async (ctx, token) =>
+            // Define the compiled query
+            var compiledQuery = EF.CompileAsyncQuery(
+                (AppDbContext context, string userId) =>
+                    context.Users
+                        .AsNoTracking()
+                        .FirstOrDefault(u => u.Id == userId)
+            );
+
+            var user = await FusionCache.GetOrSetAsync<User>(
+                cacheKey,
+                async (ctx, ct) =>
                 {
-                    // Query UserManager if user is not found in cache
-                    var user = await UserManager.FindByIdAsync(id);
-                    return user!;
-                }
-,               token: cancellationToken);
+                    ctx.Tags = [CacheTagConstants.Users];
+                    // Execute the compiled query
+                    var result = await compiledQuery(DbContext, id);
+                    return result!;
+                },
+                token: cancellationToken
+            );
 
             if (user is null)
-                return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+                return UserStoreResult.Failed(IdentityErrorFactory.UserNotFound());
 
             return UserStoreResult.Success(user);
         }
@@ -114,32 +141,44 @@ public class UserReadStore : StoreBase, IUserReadStore
     /// <inheritdoc />
     public async Task<List<string>> GetUserRolesAsync(string email, CancellationToken cancellationToken = default)
     {
-            var cacheKey = $"user_roles_{email}"; // Unique cache key for the user's roles
+        var cacheKey = $"user_roles_{email}";
 
-            // Use FusionCache to handle caching
-            var roles = await FusionCache.GetOrSetAsync<List<string>>(
-                cacheKey,
-                async (ctx, token) =>
-                {
-                    User? user = await UserManager.FindByEmailAsync(email) ?? null!;
-                    return [.. await UserManager.GetRolesAsync(user)];
-                },
-                token: cancellationToken
-            );
+        var roles = await FusionCache.GetOrSetAsync<List<string>>(
+            cacheKey,
+            async (ctx, token) =>
+            {
+                ctx.Tags = [CacheTagConstants.Users];
+                // First find the user by email
+                User? user = await UserManager.FindByEmailAsync(email) ?? null!;
+                // Then get the roles for that user
+                return [.. await UserManager.GetRolesAsync(user)];
+            },
+            token: cancellationToken
+        );
 
-            return roles;
+        return roles;
     }
 
     /// <inheritdoc />
     public async Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken = default)
     {
-        var cacheKey = "all_users"; // Unique cache key for all users
+        var cacheKey = "all_users";
 
-        // Use FusionCache to handle caching
+        // Define the compiled query for getting all users
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context) =>
+                context.Users
+                    .AsNoTracking()
+                    .ToList()
+        );
+
         var users = await FusionCache.GetOrSetAsync<List<User>>(
             cacheKey,
             async (ctx, token) =>
             {
+                ctx.Tags = [CacheTagConstants.Users];
+                // For getting users in a specific role, we still need to use UserManager
+                // as this is specialized functionality provided by Identity
                 List<User> usersInRole = [.. await UserManager.GetUsersInRoleAsync(RoleDefaults.User)];
                 return usersInRole;
             },

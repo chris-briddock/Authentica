@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +47,7 @@ public class MultiFactorRecoveryCodesEndpoint : EndpointBaseAsync
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
 
@@ -56,6 +59,10 @@ public class MultiFactorRecoveryCodesEndpoint : EndpointBaseAsync
         };
 
         await activityWriteStore.SaveActivityAsync(activity);
+
+        MfaRecoveryCodesGenerated @event = new(userReadResult.User.Email!, DateTime.UtcNow);
+
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok(codes);
     }

@@ -1,7 +1,9 @@
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +41,7 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
     {
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var result = await userWriteStore.SoftDeleteUserAsync(User, cancellationToken);
 
@@ -51,6 +54,11 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
 
         if (result.Errors.Any())
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+
+        UserDeleted @event = new(User.Identity?.Name ?? "Unknown",
+                                 DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return NoContent();
     }

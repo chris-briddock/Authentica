@@ -12,7 +12,7 @@ public sealed class UserMultiFactorSettings : UserMultiFactorSettings<string>
     /// Gets or sets the unique identifier for the MFA settings.
     /// </summary>
     /// <remarks>This identifier is used to uniquely identify the MFA settings for a user.</remarks>
-    public override string Id { get; set; } = Guid.NewGuid().ToString();
+    public override string Id { get; set; } = Gusid.New().ToString();
 
     /// <summary>
     /// Gets or sets the foreign key for the user.
@@ -61,7 +61,7 @@ where TKey : IEquatable<TKey>
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public virtual string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+    public virtual string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
     /// <summary>
     /// Gets or sets the creation status of the entity.
     /// </summary>

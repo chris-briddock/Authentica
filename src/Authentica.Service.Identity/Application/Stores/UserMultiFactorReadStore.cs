@@ -1,11 +1,9 @@
-using System.Text.Json;
 using Application.Constants;
 using Application.DTOs;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
+using Persistence.Contexts;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace Application.Stores;
@@ -25,26 +23,34 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     }
 
     /// <inheritdoc/>
-    public async Task<UserMultiFactorReadDto> GetAsync(string userId, CancellationToken token = default)
+    public async Task<UserMultiFactorReadDto> GetAsync(string userId,
+                                                       CancellationToken token = default)
     {
-        // Use FusionCache to manage caching
-        var cacheKey = userId;  // Cache key based on the userId
+        ArgumentNullException.ThrowIfNull(userId);
+        
+        var cacheKey = userId;
 
-        var result = await FusionCache.GetOrSetAsync<UserMultiFactorReadDto>(
-            cacheKey,
-            async (ctx, ct) =>
-            {
-                ctx.Tags = [CacheTagConstants.MultiFactorSettings];
-                // Query the database if the value is not found in the cache
-                return await DbSet
-                    .Where(x => x.UserId == userId)
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string uId) =>
+                context.Set<UserMultiFactorSettings>()
+                    .Where(x => x.UserId == uId)
                     .Select(x => new UserMultiFactorReadDto
                     {
                         MultiFactorEmailEnabled = x.MultiFactorEmailEnabled,
                         MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled,
                         MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
                     })
-                    .SingleAsync(ct);
+                    .Single()
+        );
+
+        var result = await FusionCache.GetOrSetAsync<UserMultiFactorReadDto>(
+            cacheKey,
+            async (ctx, ct) =>
+            {
+                ctx.Tags = [CacheTagConstants.MultiFactorSettings];
+                // Execute the compiled query
+                return await compiledQuery(DbContext, userId);
             },
             token: token
         );
@@ -55,6 +61,18 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     /// <inheritdoc/>
     public async Task<UserMultiFactorReadDto> IsEmailEnabledAsync(string userId, CancellationToken token = default)
     {
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string uId) =>
+                context.Set<UserMultiFactorSettings>()
+                    .Where(x => x.UserId == uId)
+                    .Select(x => new UserMultiFactorReadDto
+                    {
+                        MultiFactorEmailEnabled = x.MultiFactorEmailEnabled
+                    })
+                    .Single()
+        );
+
         // Use FusionCache to manage caching
         var cacheKey = userId;  // Cache key based on the userId
 
@@ -62,14 +80,8 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
             cacheKey,
             async (ctx, ct) =>
             {
-                // Query the database if the value is not found in the cache
-                return await DbSet
-                    .Where(x => x.UserId == userId)
-                    .Select(x => new UserMultiFactorReadDto
-                    {
-                        MultiFactorEmailEnabled = x.MultiFactorEmailEnabled
-                    })
-                    .SingleAsync(ct);
+                // Execute the compiled query
+                return await compiledQuery(DbContext, userId);
             },
             options: new FusionCacheEntryOptions
             {
@@ -86,6 +98,18 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     /// <inheritdoc/>
     public async Task<UserMultiFactorReadDto> IsAuthenticatorEnabledAsync(string userId, CancellationToken token)
     {
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string uId) =>
+                context.Set<UserMultiFactorSettings>()
+                    .Where(x => x.UserId == uId)
+                    .Select(x => new UserMultiFactorReadDto
+                    {
+                        MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled
+                    })
+                    .Single()
+        );
+
         // Use FusionCache to manage caching
         var cacheKey = userId;  // Cache key based on the userId
 
@@ -93,14 +117,8 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
             cacheKey,
             async (ctx, ct) =>
             {
-                // Query the database if the value is not found in the cache
-                return await DbSet
-                    .Where(x => x.UserId == userId)
-                    .Select(x => new UserMultiFactorReadDto
-                    {
-                        MultiFactorAuthenticatorEnabled = x.MultiFactorAuthenticatorEnabled
-                    })
-                    .SingleAsync(ct);
+                // Execute the compiled query
+                return await compiledQuery(DbContext, userId);
             },
             token: token
         );
@@ -111,6 +129,18 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     /// <inheritdoc/>
     public async Task<UserMultiFactorReadDto> IsPasskeysEnabledAsync(string userId, CancellationToken token)
     {
+        // Define the compiled query
+        var compiledQuery = EF.CompileAsyncQuery(
+            (AppDbContext context, string uId) =>
+                context.Set<UserMultiFactorSettings>()
+                    .Where(x => x.UserId == uId)
+                    .Select(x => new UserMultiFactorReadDto
+                    {
+                        MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
+                    })
+                    .Single()
+        );
+
         // Use FusionCache to manage caching
         var cacheKey = userId;  // Cache key based on the userId
 
@@ -118,14 +148,8 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
             cacheKey,
             async (ctx, ct) =>
             {
-                // Query the database if the value is not found in the cache
-                return await DbSet
-                    .Where(x => x.UserId == userId)
-                    .Select(x => new UserMultiFactorReadDto
-                    {
-                        MultiFactorPasskeysEnabled = x.MultiFactorPasskeysEnabled
-                    })
-                    .SingleAsync(ct);
+                // Execute the compiled query
+                return await compiledQuery(DbContext, userId);
             },
             token: token
         );

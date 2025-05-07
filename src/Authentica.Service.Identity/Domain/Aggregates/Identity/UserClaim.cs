@@ -16,7 +16,7 @@ public sealed class UserClaim :
     /// <summary>
     /// Gets or sets the unique identifier for the user claim.
     /// </summary>
-    public new string Id { get; set; } = Guid.NewGuid().ToString();
+    public new string Id { get; set; } = Gusid.New().ToString();
     /// <summary>
     /// Gets or sets the foreign key for a user.
     /// </summary>
@@ -24,7 +24,7 @@ public sealed class UserClaim :
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+    public string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
     /// <summary>
     /// Gets or sets the creation status of the entity.
     /// </summary>

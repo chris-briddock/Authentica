@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -52,6 +54,7 @@ public class CreateRoleEndpoint : EndpointBaseAsync
         var roleManager = Services.GetRequiredService<RoleManager<Role>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
         var userReadStore = Services.GetRequiredService<IUserReadStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
@@ -71,6 +74,12 @@ public class CreateRoleEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        AdminCreatedRole @event = new(request.Name,
+                                      DateTime.UtcNow,
+                                      User.Identity?.Name ?? "Unknown");
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return StatusCode(StatusCodes.Status201Created);
     }

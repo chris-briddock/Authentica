@@ -1,5 +1,3 @@
-using Authentica.Common;
-
 namespace Domain.Contracts;
 
 /// <summary>
@@ -7,13 +5,13 @@ namespace Domain.Contracts;
 /// password reset codes, and mfa codes, update email codes, 
 /// and update phone number codes
 /// </summary>
-public interface IEmailPublisher
+public interface IPublisher
 {
     /// <summary>
     /// Publishes a message to the message queue.
     /// </summary>
-    /// <param name="emailMessage">The object which encapsulates the email message.</param>
+    /// <param name="event">The object which encapsulates the email message.</param>
     /// <param name="cancellationToken">The cancellation token which propigates notification that the operation will be cancelled.</param>
     /// <returns>An asyncronous operation of type <see cref="Task"/></returns>
-    Task PublishAsync(EmailMessage emailMessage, CancellationToken cancellationToken);
+    Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken);
 }

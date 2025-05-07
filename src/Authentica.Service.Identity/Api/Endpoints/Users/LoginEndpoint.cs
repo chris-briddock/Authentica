@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -52,6 +54,7 @@ public sealed class LoginEndpoint : EndpointBaseAsync
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         // Set the authentication scheme
         signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
@@ -74,10 +77,18 @@ public sealed class LoginEndpoint : EndpointBaseAsync
         // Check if the user requires mfa authentication
         if (signInResult.RequiresTwoFactor)
             return Ok("User requires mfa authentication.");
+        
+        if (signInResult.IsLockedOut)
+            return Unauthorized("User is locked out.");
 
         // Check if the sign-in attempt was successful
         if (!signInResult.Succeeded)
-            return Unauthorized();
+            return Unauthorized("User login failed.");
+
+        UserLoggedIn @event = new(request.Email,
+                                  DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

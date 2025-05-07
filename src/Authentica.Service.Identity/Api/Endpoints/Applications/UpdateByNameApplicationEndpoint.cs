@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -48,6 +50,7 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var user = (await userWriteStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
@@ -72,6 +75,14 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        ApplicationUpdated @event = new(request.CurrentName,
+                                        request.NewName,
+                                        request.NewCallbackUri,
+                                        DateTime.UtcNow,
+                                        User.Identity?.Name ?? "Unknown");
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

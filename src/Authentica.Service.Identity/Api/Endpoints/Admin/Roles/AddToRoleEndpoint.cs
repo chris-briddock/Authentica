@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -52,6 +54,7 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
     {
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var user = await userManager.FindByEmailAsync(request.Email);
 
@@ -66,6 +69,12 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
 
         if (result.Succeeded)
             return Ok();
+        
+        AdminAddedUserToRole @event = new(request.Role,
+                                      DateTime.UtcNow,
+                                      User.Identity?.Name ?? "Unknown");
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return BadRequest();
     }

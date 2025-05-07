@@ -2,8 +2,10 @@ using Api.Constants;
 using Application.Activities.Users;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,6 +58,8 @@ public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
         var totpProvider = Services.GetRequiredService<IMultiFactorTotpProvider>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         var userMultiFactorStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
+
         string formattedKey = string.Empty;
         string uri = string.Empty;
 
@@ -95,6 +99,17 @@ public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
         };
 
         await activityWriteStore.SaveActivityAsync(activity);
+
+        if (request.IsEnabled)
+        {
+            MfaAuthenticatorRegistered @event = new(user.Email!, DateTime.UtcNow);
+            await publisher.PublishAsync(@event, cancellationToken);
+        }
+        if (!request.IsEnabled)
+        {
+            MfaAuthenticatorRemoved @event = new(user.Email!, DateTime.UtcNow);
+            await publisher.PublishAsync(@event, cancellationToken);
+        }
 
         return Ok(response);
     }

@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -50,6 +52,7 @@ public sealed class MultiFactorManageEndpoint : EndpointBaseAsync
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
         var userMultiFactorWriteStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         if (!userReadResult.Succeeded)
             return BadRequest();
@@ -67,6 +70,17 @@ public sealed class MultiFactorManageEndpoint : EndpointBaseAsync
         };
 
         await activityWriteStore.SaveActivityAsync(activity);
+
+        if (request.IsEnabled)
+        {
+            MfaEnabled @event = new(userReadResult.User.Email!, DateTime.UtcNow);
+            await publisher.PublishAsync(@event, cancellationToken);
+        }
+        if (!request.IsEnabled)
+        {
+            MfaDisabled @event = new(userReadResult.User.Email!, DateTime.UtcNow);
+            await publisher.PublishAsync(@event, cancellationToken);
+        }
 
         return NoContent();
     }

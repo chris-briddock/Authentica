@@ -4,6 +4,7 @@ using Domain.Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
+using Persistence.Contexts;
 
 namespace Application.Extensions;
 
@@ -33,6 +34,13 @@ public static partial class ServiceCollectionExtensions
                     config.Host(configuration["ConnectionStrings:AzureServiceBus"]);
                     config.ConfigureEndpoints(context);
                 });
+
+                mt.AddEntityFrameworkOutbox<AppDbContext>(o =>
+                {
+                    o.QueryDelay = TimeSpan.FromSeconds(1);
+                    o.UseSqlServer();
+                    o.UseBusOutbox();
+                });
             });
         }
         if (rabbitMqEnabled)
@@ -51,16 +59,25 @@ public static partial class ServiceCollectionExtensions
                     });
                     config.ConfigureEndpoints(context);
                 });
+
+                mt.AddEntityFrameworkOutbox<AppDbContext>(o =>
+                {
+                    o.QueryDelay = TimeSpan.FromSeconds(1);
+                    o.UseSqlServer();
+                    o.UseBusOutbox();
+                });
+
+                
             });
         }
 
         if (rabbitMqEnabled || azServiceBusEnabled)
         {
-            services.TryAddTransient<IEmailPublisher, EmailPublisher>();
+            services.TryAddTransient<IPublisher, EmailPublisher>();
         }
         else
         {
-            services.TryAddTransient<IEmailPublisher, NullEmailPublisher>();
+            services.TryAddTransient<IPublisher, NullEmailPublisher>();
         }
 
         return services;

@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +51,7 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
 
@@ -67,6 +70,12 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        AdminUserRegistered @event = new(request.Email,
+                                      DateTime.UtcNow,
+                                      User.Identity?.Name ?? "Unknown");
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         // call token endpoint for a email confirmation token.
         return StatusCode(StatusCodes.Status201Created);

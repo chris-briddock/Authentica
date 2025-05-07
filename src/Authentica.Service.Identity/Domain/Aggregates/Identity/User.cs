@@ -16,7 +16,7 @@ public sealed class User :
     /// <summary>
     /// Gets or sets the unique identifier for the user.
     /// </summary>
-    public override string Id { get; set; } = Guid.NewGuid().ToString();
+    public override string Id { get; set; } = Gusid.New().ToString();
 
     /// <summary>
     /// Gets or sets the creation status of the entity.

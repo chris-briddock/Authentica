@@ -58,6 +58,8 @@ public sealed class ReadRolesEndpoint : EndpointBaseAsync
 
         await activityStore.SaveActivityAsync(activity);
 
+        
+
         return Ok(roles);
     }
 }

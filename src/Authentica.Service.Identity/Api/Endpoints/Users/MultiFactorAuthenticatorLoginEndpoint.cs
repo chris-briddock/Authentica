@@ -2,7 +2,9 @@
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -41,6 +43,8 @@ public sealed class MultiFactorAuthenticatorLoginEndpoint : EndpointBaseAsync
         var signInManager = Services.GetRequiredService<SignInManager<User>>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         var mfaReadStore = Services.GetRequiredService<IUserMultiFactorReadStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
+
         SignInResult result;
 
         var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -69,6 +73,10 @@ public sealed class MultiFactorAuthenticatorLoginEndpoint : EndpointBaseAsync
 
         if (!result.Succeeded)
             return Unauthorized();
+        
+        MfaAuthenticatorCodeVerified @event = new(user.Email!, DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

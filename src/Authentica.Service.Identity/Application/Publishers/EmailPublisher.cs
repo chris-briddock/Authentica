@@ -9,7 +9,7 @@ namespace Application.Publishers;
 /// Publishes a message to the message queue, for confirmation emails, 
 /// password reset codes, password reset links and mfa codes.
 /// </summary>
-public sealed class EmailPublisher : IEmailPublisher
+public sealed class EmailPublisher  : IPublisher
 {
     /// <summary>
     /// The application's service provider
@@ -25,9 +25,10 @@ public sealed class EmailPublisher : IEmailPublisher
     }
 
     /// <inheritdoc/>
-    public async Task PublishAsync(EmailMessage emailMessage,
-                              CancellationToken cancellationToken)
+    public async Task PublishAsync<TEvent>(TEvent @event,
+                                           CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(@event);
 
         var bus = ServiceProvider.GetService<IPublishEndpoint>()!;
         var featureManager = ServiceProvider.GetService<IFeatureManager>()!;
@@ -35,7 +36,7 @@ public sealed class EmailPublisher : IEmailPublisher
         if (await featureManager!.IsEnabledAsync(FeatureFlagConstants.RabbitMq) ||
             await featureManager!.IsEnabledAsync(FeatureFlagConstants.AzServiceBus))
         {
-            await bus.Publish(emailMessage, cancellationToken);
+            await bus.Publish(@event, cancellationToken);
         }
     }
 }

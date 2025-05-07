@@ -1,7 +1,0 @@
-### Disable MFA for Admin
-POST https://localhost:7171/api/v2/admin/mfa/disable HTTP/3
-Content-Type: application/json
-
-{
-    "email": "admin@example.com"
-}

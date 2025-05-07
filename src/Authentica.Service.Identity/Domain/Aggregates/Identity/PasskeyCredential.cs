@@ -7,7 +7,7 @@
 public sealed class PasskeyCredential : PasskeyCredential<string>
 {
     /// <inheritdoc/>
-    public override string Id { get; set; } = Guid.NewGuid().ToString();
+    public override string Id { get; set; } = Gusid.New().ToString();
 }
 
 /// <summary>
@@ -60,7 +60,7 @@ public abstract class PasskeyCredential<TKey> where TKey : class
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+    public string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
 
     /// <summary>
     /// The user associated with this credential.

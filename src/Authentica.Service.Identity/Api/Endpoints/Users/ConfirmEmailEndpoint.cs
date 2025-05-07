@@ -1,7 +1,9 @@
 ﻿using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +47,7 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
         var writeStore = Services.GetRequiredService<IUserWriteStore>();
         var readStore = Services.GetRequiredService<IUserReadStore>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var userResult = await readStore.GetUserByEmailAsync(request.Email);
 
@@ -61,6 +64,11 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
 
         if (result.Errors.Any() || !result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+
+        UserEmailConfirmed @event = new(request.Email,
+                                        DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

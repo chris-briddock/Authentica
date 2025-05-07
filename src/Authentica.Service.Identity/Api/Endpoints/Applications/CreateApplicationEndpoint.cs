@@ -1,7 +1,9 @@
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -47,6 +49,7 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         var readStore = Services.GetRequiredService<IApplicationReadStore>();
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var applicationExists = await readStore.CheckApplicationExistsByNameAsync(request.Name, cancellationToken);
 
@@ -64,6 +67,12 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        ApplicationCreated @event = new(request.Name,
+                                        DateTime.UtcNow,
+                                        User.Identity?.Name ?? "Unknown");
+
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return StatusCode(StatusCodes.Status201Created);
     }

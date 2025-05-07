@@ -1,4 +1,6 @@
 ﻿using Application.Constants;
+using Application.Factories;
+using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Fido2NetLib;
@@ -24,23 +26,32 @@ public sealed class PasskeyCredentialWriteStore : StoreBase, IPasskeyCredentialW
     /// </summary>
     /// <param name="credential">The credential result containing details about the FIDO2 credential to store.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    public async Task CreateAsync(Fido2.CredentialMakeResult credential)
+    public async Task<PasskeyCredentialResult> CreateAsync(Fido2.CredentialMakeResult credential)
     {
-        // Add the new credential to the database.
-        await DbContext.Set<PasskeyCredential>()
-                       .AddAsync(new PasskeyCredential()
-                       {
-                           CredentialId = credential.Result!.CredentialId, 
-                           UserHandle = credential.Result.User.Id,         
-                           PublicKey = credential.Result.PublicKey,        
-                           SignatureCounter = credential.Result.Counter,   
-                           CredType = credential.Result.CredType,          
-                           CreatedDate = DateTime.UtcNow,                  
-                           AaGuid = credential.Result.Aaguid.ToString()    
-                       });
+        try
+        {
+            // Add the new credential to the database.
+            await DbContext.Set<PasskeyCredential>()
+                        .AddAsync(new PasskeyCredential()
+                        {
+                            CredentialId = credential.Result!.CredentialId, 
+                            UserHandle = credential.Result.User.Id,         
+                            PublicKey = credential.Result.PublicKey,        
+                            SignatureCounter = credential.Result.Counter,   
+                            CredType = credential.Result.CredType,          
+                            CreatedDate = DateTime.UtcNow,                  
+                            AaGuid = credential.Result.Aaguid.ToString()    
+                        });
 
-        // Save the changes to the database.
-        await DbContext.SaveChangesAsync();
+            // Save the changes to the database.
+            await DbContext.SaveChangesAsync();
+            return PasskeyCredentialResult.Success();
+        } 
+        catch(Exception ex)
+        {
+            return PasskeyCredentialResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
+        }
+        
     }
 }
 

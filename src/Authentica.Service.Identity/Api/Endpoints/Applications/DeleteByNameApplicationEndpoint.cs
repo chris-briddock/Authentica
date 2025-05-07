@@ -1,7 +1,9 @@
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -48,6 +50,7 @@ public class DeleteByNameApplicationEndpoint : EndpointBaseAsync
         var userReadResult = await userReadStore.GetUserByEmailAsync(User, cancellationToken);
         var writeStore = Services.GetRequiredService<IApplicationWriteStore>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var app = await readStore.GetClientApplicationByNameAndUserIdAsync(request.Name,
                                                                            userReadResult.User!.Id,
@@ -67,6 +70,12 @@ public class DeleteByNameApplicationEndpoint : EndpointBaseAsync
         };
 
         await activityStore.SaveActivityAsync(activity);
+
+        ApplicationDeleted @event = new(request.Name,
+                                        DateTime.UtcNow,
+                                        User.Identity?.Name ?? "Unknown");
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return NoContent();
     }

@@ -11,7 +11,7 @@ public sealed class PasskeyChallenge : IEntityCreationStatus<string>
     /// <summary>
     /// A unique identifier for the passkey challenge.
     /// </summary>
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public string Id { get; set; } = Gusid.New().ToString();
 
     /// <summary>
     /// A unique identifier for the challenge, associated with a specific authentication or registration request.
@@ -41,7 +41,7 @@ public sealed class PasskeyChallenge : IEntityCreationStatus<string>
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+    public string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
     
 
     /// <summary>

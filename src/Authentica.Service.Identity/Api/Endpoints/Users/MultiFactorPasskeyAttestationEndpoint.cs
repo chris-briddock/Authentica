@@ -3,8 +3,10 @@ using Application.Constants;
 using Ardalis.ApiEndpoints;
 using Authentica.Common;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +48,7 @@ public class MultiFactorPasskeyAttestationEndpoint : EndpointBaseAsync
         IUserReadStore userReadStore = Services.GetRequiredService<IUserReadStore>();
         IPasskeyTokenProvider<User> tokenProvider = Services.GetRequiredService<IPasskeyTokenProvider<User>>();
         IFeatureManager featureManager = Services.GetRequiredService<IFeatureManager>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         if (!await featureManager.IsEnabledAsync(FeatureFlagConstants.Passkeys, cancellationToken))
             return NotFound();
@@ -56,6 +59,10 @@ public class MultiFactorPasskeyAttestationEndpoint : EndpointBaseAsync
         var options = HttpContext.Session.GetString(Fido2Constants.AttestationOptions)!;
         
         await tokenProvider.CreateCredentialAsync(user, options, request.Response, cancellationToken);
+
+        PasskeyRegistered @event = new(user.Email!, DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
         return Ok();
     }

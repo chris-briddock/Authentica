@@ -1,4 +1,5 @@
 using Domain.Aggregates.Identity;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -50,6 +51,9 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.AddInboxStateEntity(opt => opt.ToTable("SYSTEM_IDENTITY_INBOX_STATE"));
+        modelBuilder.AddOutboxStateEntity(opt => opt.ToTable("SYSTEM_IDENTITY_OUTBOX_STATE"));
+        modelBuilder.AddOutboxMessageEntity(opt => opt.ToTable("SYSTEM_IDENTITY_OUTBOX_MESSAGES"));
         base.OnModelCreating(modelBuilder);
     }
 

@@ -16,7 +16,7 @@ public sealed class Role :
     /// <summary>
     /// Gets or sets the unique identifier for the role.
     /// </summary>
-    public override string Id { get; set; } = Guid.NewGuid().ToString();
+    public override string Id { get; set; } = Gusid.New().ToString();
 
     /// <summary>
     /// Gets or sets the creation status of the entity.
@@ -46,7 +46,7 @@ public sealed class Role :
     public EntityModificationStatus<string> EntityModificationStatus { get; set; } = default!;
 
     /// <inheritdoc/>
-    public override string? ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+    public override string? ConcurrencyStamp { get; set; } = Gusid.New().ToString();
 
     /// <summary>
     /// Gets or sets the collection of user roles associated with this role.

@@ -38,5 +38,5 @@ public class UserPasskeyChallenge<TKey> where TKey : IEquatable<TKey>
 public sealed class UserPasskeyChallenge : UserPasskeyChallenge<string>
 {
     /// <inheritdoc />
-    public override string Id { get; set; } = Guid.NewGuid().ToString();
+    public override string Id { get; set; } = Gusid.New().ToString();
 }

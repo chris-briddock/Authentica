@@ -74,30 +74,53 @@ Authentica plays a crucial role in your application's security infrastructure, p
 
 ### Endpoints
 
+All endpoints are prefixed with `/api/v{version}/` where `{version}` is the API version.
+
 #### OAuth2 Endpoints
 
-* **GET /oauth2/authorize**: User authorization.
+* **GET /oauth2/authorize**: User authorization for OAuth 2.0 flows.
 * **POST /oauth2/token**: Obtain OAuth tokens.
-* **GET /oauth2/device**: Create tokens for devices.
+* **GET /oauth2/device**: Create tokens for device code flow.
 
 #### User Endpoints
 
-* **POST /users/logout**: Logout.
-* **POST /users/login**: Login.
-* **GET /users**: Retrieve user details by email.
+* **POST /users/logout**: Logout a user.
+* **POST /users/login**: Login a user.
+* **GET /users**: Retrieve user details by email (for the authenticated user).
 * **POST /users/register**: Register a new user.
-* **POST /users/delete**: Delete a user by email.
-* **POST /users/confirm-email**: Confirm email.
-* **POST /users/reset-password**: Reset password.
-* **POST /users/mfa/login**: Login with multi-factor authentication.
+* **DELETE /users/delete**: Delete a user by email.
+* **POST /users/confirm-email**: Confirm a user's email address.
+* **POST /users/reset-password**: Reset a user's password.
+
+#### Code Endpoints
+
+* **POST /users/codes/mfa**: Send a multi-factor authentication token via email.
+* **POST /users/codes/reset-password**: Send a password reset token via email.
+* **POST /users/codes/confirm-email**: Send a email confirmation token via email.
+* **POST /users/codes/update-email**: Send a email update token via email.
+* **POST /users/codes/update-phonenumber**: Send a phone number update token via email..
+
+#### Multi-Factor Authentication Endpoints
+
+* **POST /users/mfa/login/email**: Login with email-based MFA.
+* **POST /users/mfa/login/authenticator**: Login with authenticator app-based MFA.
 * **POST /users/mfa/manage**: Enable/disable multi-factor authentication settings.
 * **POST /users/mfa/manage/authenticator**: Manage authenticator-based MFA.
-* **GET /users/mfa/recovery/codes**: Generate recovery codes.
-* **POST /users/mfa/recovery**: Redeem recovery codes.
-* **PUT /users/details/email**: Update email.
-* **PUT /users/details/number**: Update phone number.
-* **PUT /users/details/address**: Update address.
-* **POST /users/tokens**: Manage user tokens.
+* **GET /users/mfa/recovery/codes**: Generate MFA recovery codes.
+* **POST /users/mfa/recovery**: Redeem MFA recovery codes.
+
+#### Passkey Authentication Endpoints
+
+* **POST /users/passkeys/attestation/options**: Get passkey attestation options.
+* **POST /users/passkeys/attestation**: Register a new passkey.
+* **POST /users/passkeys/assertion**: Authenticate with a passkey.
+* **POST /users/passkeys/assertion/options**: Get passkey assertion options.
+
+#### User Details Endpoints
+
+* **PUT /users/details/email**: Update a user's email address.
+* **PUT /users/details/number**: Update a user's phone number.
+* **PUT /users/details/address**: Update a user's address.
 
 #### Application Endpoints
 
@@ -112,6 +135,23 @@ Authentica plays a crucial role in your application's security infrastructure, p
 
 * **GET /sessions**: Get all sessions associated with a user.
 * **DELETE /sessions**: Delete a session by ID.
+
+#### Admin Endpoints
+
+* **POST /admin/reset-password**: Admin-only endpoint to reset any user's password.
+* **POST /admin/mfa/disable**: Admin-only endpoint to disable MFA for any user.
+* **POST /admin/register**: Create a new admin user.
+* **GET /admin/users**: Get all users in the system.
+* **GET /admin/activities**: Get all activity logs in the system.
+* **GET /admin/applications**: Get all applications in the system.
+
+#### Admin Role Management Endpoints
+
+* **POST /admin/roles/add**: Add a user to a role.
+* **POST /admin/roles/create**: Create a new role.
+* **DELETE /admin/roles/delete**: Delete a role.
+* **PUT /admin/roles/update**: Update a role.
+* **GET /admin/roles**: Get role information.
 
 ### Getting Started
 

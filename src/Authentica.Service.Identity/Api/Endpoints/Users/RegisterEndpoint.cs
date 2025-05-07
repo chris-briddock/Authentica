@@ -2,7 +2,9 @@ using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
+using Domain.Contracts;
 using Domain.Contracts.Stores;
+using Domain.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -53,6 +55,7 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
         var userWriteStore = Services.GetRequiredService<IUserWriteStore>();
         var activityWriteStore = Services.GetRequiredService<IActivityWriteStore>();
         var userMultiFactorStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
+        var publisher = Services.GetRequiredService<IPublisher>();
 
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 
@@ -79,6 +82,11 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
 
         if (!await userManager.IsInRoleAsync(result.User, RoleDefaults.User))
             await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
+
+        UserRegistered @event = new(request.Email,
+                                      DateTime.UtcNow);
+        
+        await publisher.PublishAsync(@event, cancellationToken);
 
 
         return StatusCode(StatusCodes.Status201Created);
