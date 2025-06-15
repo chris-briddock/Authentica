@@ -4,7 +4,7 @@ using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 
-namespace Authentica.Common.Extensions;
+namespace Common.Extensions;
 
 /// <summary>
 /// Extension methods for adding to the <see cref="IServiceCollection"/>

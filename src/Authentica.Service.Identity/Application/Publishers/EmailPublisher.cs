@@ -1,4 +1,4 @@
-using Authentica.Common;
+using Common.Constants;
 using Domain.Contracts;
 using MassTransit;
 using Microsoft.FeatureManagement;
@@ -9,7 +9,7 @@ namespace Application.Publishers;
 /// Publishes a message to the message queue, for confirmation emails, 
 /// password reset codes, password reset links and mfa codes.
 /// </summary>
-public sealed class EmailPublisher  : IPublisher
+public sealed class EmailPublisher : IPublisher
 {
     /// <summary>
     /// The application's service provider

@@ -1,6 +1,6 @@
-using Authentica.Common;
 using ChristopherBriddock.AspNetCore.Extensions;
 using ChristopherBriddock.AspNetCore.HealthChecks;
+using Common.Constants;
 using Microsoft.FeatureManagement;
 
 namespace Application.Extensions;
@@ -24,7 +24,7 @@ public static class HealthCheckExtensions
         if (!featureManager.IsEnabledAsync(FeatureFlagConstants.Cache).Result)
             return services;
 
-        services.AddRedisHealthChecks(configuration.GetRequiredValueOrThrow("ConnectionStrings:Redis"));
+        services.AddRedisHealthChecks(configuration.GetRequiredValueOrThrow("ConnectionStrings:Redis"), "Redis");
 
         return services;
     }

@@ -15,10 +15,12 @@ public class AppDbContext : DbContext
     /// Configuration instance for the DbContext.
     /// </summary>
     public IConfiguration Configuration { get; }
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="AppDbContext"/>
     /// </summary>
     public AppDbContext() { }
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="AppDbContext"/>
     /// </summary>
@@ -36,12 +38,15 @@ public class AppDbContext : DbContext
     /// <param name="optionsBuilder">The options builder used to configure DbContext options.</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), opt =>
+        if (!optionsBuilder.IsConfigured)
         {
-            opt.EnableRetryOnFailure();
-        });
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), opt =>
+            {
+                opt.EnableRetryOnFailure();
+            });
 
-        optionsBuilder.ConfigureWarnings(warnings => { warnings.Log(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning); });
+            optionsBuilder.ConfigureWarnings(warnings => { warnings.Log(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning); });
+        }
     }
 
     /// <summary>
@@ -51,9 +56,12 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        // Configure MassTransit outbox tables with explicit schema names
         modelBuilder.AddInboxStateEntity(opt => opt.ToTable("SYSTEM_IDENTITY_INBOX_STATE"));
         modelBuilder.AddOutboxStateEntity(opt => opt.ToTable("SYSTEM_IDENTITY_OUTBOX_STATE"));
         modelBuilder.AddOutboxMessageEntity(opt => opt.ToTable("SYSTEM_IDENTITY_OUTBOX_MESSAGES"));
+        
         base.OnModelCreating(modelBuilder);
     }
 

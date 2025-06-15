@@ -1,7 +1,3 @@
-namespace Api.Endpoints;
-
-using System.Threading;
-using System.Threading.Tasks;
 using Api.Constants;
 using Ardalis.ApiEndpoints;
 using Domain.Aggregates.Identity;
@@ -11,6 +7,8 @@ using Domain.Requests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Common.Constants;
+
+namespace Api.Endpoints.Users;
 
 /// <summary>
 /// Endpoint for sending a token for updating the email.

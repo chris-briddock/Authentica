@@ -1,5 +1,5 @@
 using Application.Publishers;
-using Authentica.Common;
+using Common.Constants;
 using Domain.Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -40,6 +40,7 @@ public static partial class ServiceCollectionExtensions
                     o.QueryDelay = TimeSpan.FromSeconds(1);
                     o.UseSqlServer();
                     o.UseBusOutbox();
+                    o.DuplicateDetectionWindow = TimeSpan.FromMinutes(5);
                 });
             });
         }
@@ -51,7 +52,6 @@ public static partial class ServiceCollectionExtensions
 
                 mt.UsingRabbitMq((context, config) =>
                 {
-
                     config.Host(configuration["RabbitMQ:Hostname"], "/", r =>
                     {
                         r.Username(configuration["RabbitMQ:Username"]!);
@@ -65,9 +65,8 @@ public static partial class ServiceCollectionExtensions
                     o.QueryDelay = TimeSpan.FromSeconds(1);
                     o.UseSqlServer();
                     o.UseBusOutbox();
+                    o.DuplicateDetectionWindow = TimeSpan.FromMinutes(5);
                 });
-
-                
             });
         }
 

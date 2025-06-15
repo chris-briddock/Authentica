@@ -18,8 +18,8 @@ namespace Api.Endpoints.Admin.Roles;
 /// </summary>
 [Route($"{Routes.BaseRoute.Name}")]
 public class CreateRoleEndpoint : EndpointBaseAsync
-                                   .WithRequest<CreateRoleRequest>
-                                   .WithActionResult
+                                  .WithRequest<CreateRoleRequest>
+                                  .WithActionResult
 {
     /// <summary>
     /// Gets or sets the service provider for dependency injection.

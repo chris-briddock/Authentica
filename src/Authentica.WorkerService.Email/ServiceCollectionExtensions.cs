@@ -1,4 +1,6 @@
-﻿using Authentica.Common;
+﻿using Authentica.WorkerService.Email.Consumers;
+using Authentica.WorkerService.Email.Services;
+using Common.Constants;
 using MassTransit;
 using Microsoft.FeatureManagement;
 
@@ -14,8 +16,10 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection AddConsumerMessaging(this IServiceCollection services)
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-
         var featureManager = services.BuildServiceProvider().GetRequiredService<IFeatureManager>();
+
+        // Register the EmailService
+        services.AddScoped<EmailService>();
 
         if (featureManager.IsEnabledAsync(FeatureFlagConstants.AzServiceBus).Result)
         {
@@ -23,7 +27,8 @@ internal static class ServiceCollectionExtensions
             {
                 mt.SetKebabCaseEndpointNameFormatter();
 
-                mt.AddConsumer<Worker>();
+                // Register all consumers
+                RegisterConsumers(mt);
 
                 mt.UsingAzureServiceBus((context, config) =>
                 {
@@ -38,11 +43,11 @@ internal static class ServiceCollectionExtensions
             {
                 x.SetKebabCaseEndpointNameFormatter();
 
-                x.AddConsumer<Worker>();
+                // Register all consumers
+                RegisterConsumers(x);
 
                 x.UsingRabbitMq((context, config) =>
                 {
-
                     config.Host(configuration["RabbitMQ:Hostname"], "/", r =>
                     {
                         r.Username(configuration["RabbitMQ:Username"]!);
@@ -50,9 +55,29 @@ internal static class ServiceCollectionExtensions
                     });
                     config.ConfigureEndpoints(context);
                 });
-        });
-
+            });
         }
         return services;
+    }
+
+    /// <summary>
+    /// Registers all the event consumers with MassTransit.
+    /// </summary>
+    /// <param name="configurator">The MassTransit registration configurator.</param>
+    private static void RegisterConsumers(IBusRegistrationConfigurator configurator)
+    {
+        // Email code consumers
+        configurator.AddConsumer<MfaEmailCodeSentConsumer>();
+        configurator.AddConsumer<UserEmailConfirmationCodeSentConsumer>();
+        configurator.AddConsumer<UserPasswordResetRequestedConsumer>();
+        configurator.AddConsumer<UserUpdateEmailCodeSentConsumer>();
+        configurator.AddConsumer<UpdatePhoneNumberCodeSentConsumer>();
+
+        // Notification consumers
+        configurator.AddConsumer<UserRegisteredConsumer>();
+        configurator.AddConsumer<UserEmailConfirmedConsumer>();
+        configurator.AddConsumer<UserPasswordResetConsumer>();
+        configurator.AddConsumer<MfaEnabledConsumer>();
+        configurator.AddConsumer<MfaDisabledConsumer>();
     }
 }

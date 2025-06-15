@@ -1,4 +1,4 @@
-using Authentica.Common;
+using Common.Constants;
 using Domain.Requests;
 using FluentValidation;
 

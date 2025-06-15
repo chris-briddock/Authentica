@@ -1,4 +1,4 @@
-using Persistence.Seed;
+using Common.Constants;
 
 namespace Authentica.Service.Identity.Tests.IntegrationTests.Endpoints;
 

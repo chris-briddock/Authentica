@@ -14,24 +14,24 @@ public static partial class ServiceCollectionExtensions
     /// <returns>The modified <see cref="IServiceCollection"/> </returns>
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
-        services.AddDbContext<AppDbContext>(ServiceLifetime.Singleton);
-
-        services.TryAddScoped<IApplicationReadStore, ApplicationReadStore>();
-        services.TryAddScoped<IApplicationWriteStore, ApplicationWriteStore>();
+        // Change from Singleton to Scoped lifetime
+        services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
+        
+        // Register stores
         services.TryAddScoped<IUserReadStore, UserReadStore>();
         services.TryAddScoped<IUserWriteStore, UserWriteStore>();
+        services.TryAddScoped<IUserMultiFactorReadStore, UserMultiFactorReadStore>();
+        services.TryAddScoped<IUserMultiFactorWriteStore, UserMultiFactorWriteStore>();
+        services.TryAddScoped<IApplicationReadStore, ApplicationReadStore>();
+        services.TryAddScoped<IApplicationWriteStore, ApplicationWriteStore>();
+        services.TryAddScoped<ISharedStore, SharedStore>();
         services.TryAddScoped<IActivityReadStore, ActivityReadStore>();
         services.TryAddScoped<IActivityWriteStore, ActivityWriteStore>();
-        services.TryAddScoped<ISharedStore, SharedStore>();
-        services.TryAddScoped<ISessionWriteStore, SessionWriteStore>();
         services.TryAddScoped<ISessionReadStore, SessionReadStore>();
+        services.TryAddScoped<ISessionWriteStore, SessionWriteStore>();
         services.TryAddScoped<IPasskeyCredentialReadStore, PasskeyCredentialReadStore>();
         services.TryAddScoped<IPasskeyCredentialWriteStore, PasskeyCredentialWriteStore>();
-        services.TryAddScoped<IUserMultiFactorWriteStore, UserMultiFactorWriteStore>();
-        services.TryAddScoped<IUserMultiFactorReadStore, UserMultiFactorReadStore>();
-
+        
         return services;
     }
-
-
 }

@@ -6,8 +6,9 @@ using Common.Events;
 using Domain.Requests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Common.Constants;
 
-namespace Api.Endpoints;
+namespace Api.Endpoints.Users;
 
 /// <summary>
 /// Endpoint for sending a confirmation email token.

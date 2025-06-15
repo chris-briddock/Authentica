@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Common.Constants;
 
-namespace Api.Endpoints;
+namespace Api.Endpoints.Users;
 
 /// <summary>
 /// Endpoint for sending a token for updating the phone number.

@@ -1,4 +1,4 @@
-using Authentica.Common;
+using Common.Extensions;
 using ChristopherBriddock.AspNetCore.Extensions;
 using Microsoft.FeatureManagement;
 using System.Net.Mail;
@@ -22,6 +22,5 @@ public sealed class Program
 
         var host = builder.Build();
         await host.RunAsync();
-
     }
 }

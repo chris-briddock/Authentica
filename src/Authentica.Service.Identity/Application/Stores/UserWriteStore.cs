@@ -1,7 +1,7 @@
 using Application.Constants;
 using Application.Factories;
 using Application.Results;
-using Authentica.Common;
+using Common.Constants;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Domain.Requests;

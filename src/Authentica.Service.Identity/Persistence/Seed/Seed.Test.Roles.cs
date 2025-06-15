@@ -1,6 +1,3 @@
-using Domain.Aggregates.Identity;
-using Microsoft.AspNetCore.Identity;
-
 namespace Persistence.Seed;
 
 public static partial class Seed

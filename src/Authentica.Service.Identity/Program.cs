@@ -3,9 +3,9 @@ using Application.BackgroundServices;
 using Application.Cryptography;
 using Application.Extensions;
 using Application.Providers;
-using Authentica.Common;
 using ChristopherBriddock.AspNetCore.Extensions;
 using ChristopherBriddock.AspNetCore.HealthChecks;
+using Common.Extensions;
 using Domain.Aggregates.Identity;
 using Domain.Constants;
 using Domain.Contracts.Cryptography;
@@ -33,6 +33,7 @@ public sealed class Program
     public static async Task Main()
     {
         AppDomain.CurrentDomain.SetData("LOADER_OPTIMIZATION", "SingleDomain");
+        DotNetEnv.Env.Load();
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
         HostApplicationBuilderExtensions.ConfigureOpenTelemetry(builder, ServiceNameDefaults.ServiceName);
         builder.WebHost.AddKestrelConfiguration(7171);
@@ -41,6 +42,7 @@ public sealed class Program
             x.ServicesStartConcurrently = true;
             x.ServicesStopConcurrently = true;
         });
+        builder.Configuration.AddEnvironmentVariables();
         builder.Services.Configure<DataProtectionTokenProviderOptions>(x => x.TokenLifespan = TimeSpan.FromMinutes(5));
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddFeatureManagement();
@@ -55,6 +57,7 @@ public sealed class Program
         builder.Services.AddVersioning(2, 0);
         builder.Services.AddDistributedCache(builder.Configuration);
         builder.Services.AddInMemoryCache();
+        builder.Services.AddAzureAppInsights();
         builder.Services.AddHybridCache(builder.Configuration);
         builder.Services.AddSwaggerGen($"{ServiceNameDefaults.ServiceName}.xml");
         builder.Services.AddPersistence();
@@ -68,7 +71,6 @@ public sealed class Program
         builder.Services.TryAddScoped<IScopeProvider, ScopeProvider>();
         builder.Services.TryAddScoped<IMultiFactorTotpProvider, MultiFactorTotpProvider>();
         builder.Services.AddBearerAuthentication(builder.Configuration);
-        builder.Services.AddAzureAppInsights();
         builder.Services.AddCrossOrigin();
         builder.Services.AddCustomSession();
         builder.Services.AddIdentity();
