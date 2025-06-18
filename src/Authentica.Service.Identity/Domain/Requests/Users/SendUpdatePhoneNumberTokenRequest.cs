@@ -3,7 +3,7 @@ namespace Domain.Requests;
 /// <summary>
 /// Represents a request to send a token for updating the phone number.
 /// </summary>
-public sealed class SendUpdatePhoneNumberTokenRequest
+public sealed record SendUpdatePhoneNumberTokenRequest
 {
     /// <summary>
     /// The user's email address.

@@ -43,15 +43,15 @@ public class PasskeyChallengeConfiguration : IEntityTypeConfiguration<PasskeyCha
                .HasDefaultValue(DateTime.UtcNow.AddMinutes(5))
                .IsRequired();
 
-        builder.ComplexProperty(u => u.EntityCreationStatus)
-               .Property(x => x.CreatedBy)
-               .HasColumnName("created_by")
-               .HasMaxLength(36);
-
          builder.Property(e => e.ConcurrencyStamp)
                 .HasColumnName("concurrency_stamp")
                 .HasMaxLength(36)
                 .IsConcurrencyToken();
+
+        builder.ComplexProperty(u => u.EntityCreationStatus)
+               .Property(x => x.CreatedBy)
+               .HasColumnName("created_by")
+               .HasMaxLength(36);
 
         builder.ComplexProperty(u => u.EntityCreationStatus)
                .Property(x => x.CreatedOnUtc)

@@ -5,7 +5,7 @@ namespace Domain.Responses;
 /// <summary>
 /// Represents the response for retrieving all users.
 /// </summary>
-public class GetUserResponse
+public sealed record GetUserResponse
 {
     /// <summary>
     /// Gets or sets the user identifier.

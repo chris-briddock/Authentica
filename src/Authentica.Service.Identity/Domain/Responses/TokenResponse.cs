@@ -5,7 +5,7 @@ namespace Domain.Responses;
 /// <summary>
 /// Represents the response when a user is authorized.
 /// </summary>
-public sealed class TokenResponse
+public sealed record TokenResponse
 {
     /// <summary>
     /// Gets or sets the access token.

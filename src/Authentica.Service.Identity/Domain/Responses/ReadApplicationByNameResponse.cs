@@ -3,7 +3,7 @@ namespace Domain.Responses;
 /// <summary>
 /// Represents the response for getting an application.
 /// </summary>
-public class ReadApplicationResponse
+public sealed record ReadApplicationResponse
 {
     /// <summary>
     /// Gets or sets the client ID.

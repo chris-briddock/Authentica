@@ -21,7 +21,7 @@ public sealed class TestFixture<TProgram> where TProgram : class
             AllowAutoRedirect = true,
             HandleCookies = true
         });
-        Client.BaseAddress = new Uri($"http://localhost:8000/api/v2");
+        
         await GenerateTokenAsync();
     }
 
@@ -58,7 +58,7 @@ public sealed class TestFixture<TProgram> where TProgram : class
 
     public HttpClient CreateAuthenticatedClient(Action<IServiceCollection> configureServices = null!)
     {
-        var client = WebApplicationFactory.WithWebHostBuilder(builder =>
+        HttpClient client = WebApplicationFactory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureLogging(logging =>
             {
@@ -71,8 +71,7 @@ public sealed class TestFixture<TProgram> where TProgram : class
             });
         }).CreateClient(new WebApplicationFactoryClientOptions()
         {
-            AllowAutoRedirect = true,
-            BaseAddress = new Uri("http://localhost/api/v2")
+            AllowAutoRedirect = true
         });
 
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);

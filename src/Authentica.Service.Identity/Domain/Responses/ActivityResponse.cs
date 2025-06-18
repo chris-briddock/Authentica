@@ -3,7 +3,7 @@ namespace Domain.Responses;
 /// <summary>
 /// Represents a response to an event with details about the event.
 /// </summary>
-public sealed class ActivityResponse
+public sealed record ActivityResponse
 {
     /// <summary>
     /// Gets or sets the unique identifier for the event sequence.
