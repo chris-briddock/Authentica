@@ -35,6 +35,7 @@ global using System.Security.Claims;
 global using System.Text.Encodings.Web;
 global using System.Text.Json;
 global using Testcontainers.MsSql;
+global using Testcontainers.Redis;
 global using Application.BackgroundServices;
 global using Application.Exceptions;
 global using Domain.Contracts.Providers;

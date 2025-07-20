@@ -36,14 +36,8 @@ public static partial class ServiceCollectionExtensions
     public static IServiceCollection AddDistributedCache(this IServiceCollection services,
                                                          IConfiguration configuration)
     {
-        IFeatureManager featureManager = services
-                                        .BuildServiceProvider()
-                                        .GetRequiredService<IFeatureManager>();
 
         services.AddDistributedMemoryCache();
-
-        if (!featureManager.IsEnabledAsync(FeatureFlagConstants.Cache).Result)
-            return services;
 
         services.AddStackExchangeRedisCache(opt =>
         {

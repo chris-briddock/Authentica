@@ -19,11 +19,6 @@ public static class HealthCheckExtensions
     /// <exception cref="InvalidOperationException">Thrown if the required configuration value for Redis connection string is not found.</exception>
     public static IServiceCollection AddRedisHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
-        var featureManager = services.BuildServiceProvider().GetRequiredService<IFeatureManager>();
-
-        if (!featureManager.IsEnabledAsync(FeatureFlagConstants.Cache).Result)
-            return services;
-
         services.AddRedisHealthChecks(configuration.GetRequiredValueOrThrow("ConnectionStrings:Redis"), "Redis");
 
         return services;

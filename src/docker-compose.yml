@@ -52,7 +52,7 @@ services:
     image: redis:latest
     container_name: test-redis
     ports:
-      - "5002:6379"
+      - "6379:6379"
     restart: always
     
   aspire-dashboard:

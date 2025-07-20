@@ -30,6 +30,8 @@ public class ConfigurationTests
         // Act
         HttpResponseMessage response = await client.GetAsync("/health");
 
+        string? errorContent = await response.Content.ReadAsStringAsync();
+
         // Assert
         Assert.That(response.IsSuccessStatusCode, Is.True, $"Expected success status code but got {(int)response.StatusCode}");
     }

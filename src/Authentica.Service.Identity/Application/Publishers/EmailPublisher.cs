@@ -30,8 +30,8 @@ public sealed class EmailPublisher : IPublisher
     {
         ArgumentNullException.ThrowIfNull(@event);
 
-        var bus = ServiceProvider.GetService<IPublishEndpoint>()!;
-        var featureManager = ServiceProvider.GetService<IFeatureManager>()!;
+        IPublishEndpoint bus = ServiceProvider.GetService<IPublishEndpoint>()!;
+        IFeatureManager featureManager = ServiceProvider.GetService<IFeatureManager>()!;
 
         if (await featureManager!.IsEnabledAsync(FeatureFlagConstants.RabbitMq) ||
             await featureManager!.IsEnabledAsync(FeatureFlagConstants.AzServiceBus))

@@ -18,7 +18,7 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '8.0.x'
+        version: '9.0.x'
     - script: |
         dotnet build --configuration Release src/Authentica.Service.Identity/Authentica.Service.Identity.csproj
       displayName: 'Build & Restore'
@@ -42,7 +42,7 @@ stages:
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
         Contents: |
-          **/src/Authentica.Service.Identity/bin/Release/net8.0/publish/**
+          **/src/Authentica.Service.Identity/bin/Release/net9.0/publish/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         OverWrite: true
         flattenFolders: true     
@@ -51,49 +51,3 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-  # - job: Docker
-  #   displayName: 'Docker'
-  #   dependsOn: 'Build'
-  #   steps:
-  #   - checkout: self
-  #   - task: Bash@3
-  #     inputs:
-  #       filePath: '$(System.DefaultWorkingDirectory)/src/tokenizer.sh'
-  #       arguments: >-
-  #         --sql-hostname "$(SqlHostname)"
-  #         --sql-database "$(SqlDatabase)"
-  #         --sql-username "$(SqlUsername)"
-  #         --sql-password "$(SqlPassword)"
-  #         --redis-host "$(RedisHost)"
-  #         --jwt-audience "$(JwtAudience)"
-  #         --jwt-secret "$(JwtSecret)"
-  #         --jwt-expires "$(JwtExpires)"
-  #         --az-app-insights "$(AppInsightsConnectionString)"
-  #         --admin-email "$(AdminEmail)"
-  #         --admin-password "$(AdminPassword)"
-  #         --client-secret "$(ClientSecret)"
-  #         --client-callback-uri "$(ClientCallbackUri)"
-  #         --feature-cache "$(CacheEnabled)"
-  #         --feature-app-insights "$(ApplicationInsightsEnabled)"
-  #         --feature-service-bus "$(ServiceBusEnabled)"
-  #         --feature-rabbitmq "$(RabbitEnabled)"
-  #         --rabbit-host "$(RabbitHost)"
-  #         --rabbit-username "$(RabbitUsername)"
-  #         --rabbit-password "$(RabbitPassword)"
-  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
-  #   - task: Bash@3
-  #     inputs:
-  #       targetType: 'inline'
-  #       script: 'cat appsettings.json'
-  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src/Authentica.Service.Identity'
-  #   - task: Bash@3
-  #     inputs:
-  #       targetType: 'inline'
-  #       script: |
-  #         docker build -f $(System.DefaultWorkingDirectory)/src/Dockerfile.service.identity -t $(DockerRegistry)/authentica-service-identity:latest .
-  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src'
-  #   - task: Bash@3
-  #     inputs: 
-  #       targetType: 'inline'
-  #       script: docker push $(DockerRegistry)/authentica-service-identity:latest
-  #       workingDirectory: '$(System.DefaultWorkingDirectory)/src'

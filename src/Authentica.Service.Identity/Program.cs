@@ -77,7 +77,7 @@ public sealed class Program
         builder.Services.AddPublisherMessaging(builder.Configuration);
         builder.Services.AddHostedService<AccountPurge>();
         builder.Services.AddHostedService<ApplicationPurge>();
-        builder.Services.AddSqlDatabaseHealthChecks(builder.Configuration["ConnectionStrings:DefaultConnection"]!);
+        builder.Services.AddSqlDatabaseHealthChecks(builder.Configuration.GetConnectionString("DefaultConnection")!);
         builder.Services.AddRedisHealthCheck(builder.Configuration);
 
 
