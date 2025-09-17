@@ -52,7 +52,9 @@ public sealed class ReadApplicationsEndpoint : EndpointBaseAsync
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
 
         if (userResult?.User?.Id is null)
+        {
             return BadRequest();
+        }
 
         var apps = await readStoreResult.GetAllClientApplicationsByUserIdAsync(userResult.User.Id, cancellationToken);
 

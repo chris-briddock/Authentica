@@ -10,6 +10,6 @@ public static partial class Seed
         /// <param name="app">The web application instance.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         public static async Task SeedTestRolesAsync(WebApplication app) => 
-            await SeedRolesAsync(app, ["Test"]);
+            await SeedRolesAsync(app, "Test");
     }
 }

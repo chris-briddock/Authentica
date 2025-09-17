@@ -50,7 +50,9 @@ public sealed class SendUpdateEmailTokenEndpoint : EndpointBaseAsync
         User? user = await userManager.FindByEmailAsync(request.Email)!;
 
          if (user is null)
+         {
             return BadRequest();
+         }
 
          var token = await userManager.GenerateUserTokenAsync(user!, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdateEmail);
 

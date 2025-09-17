@@ -6,7 +6,7 @@ namespace Authentica.WorkerService.Email.Consumers;
 /// Interface for email consumers that handle specific events.
 /// </summary>
 /// <typeparam name="TEvent">The type of event to consume.</typeparam>
-public interface IEmailConsumer<TEvent> : IConsumer<TEvent>
+public interface IEmailConsumer<in TEvent> : IConsumer<TEvent>
     where TEvent : class
 {
 }

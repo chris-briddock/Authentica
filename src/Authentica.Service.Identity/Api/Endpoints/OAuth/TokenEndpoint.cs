@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Constants;
 using Application.Activities;
 using Ardalis.ApiEndpoints;
@@ -50,7 +51,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(TokenRequest request,
                                                          CancellationToken cancellationToken = default)
     {
-        List<string> roles = [];
+        List<string> roles;
         List<string> scopes = new(request.Scopes.Length);
         string subject;
         string email;
@@ -67,13 +68,14 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         string issuer = configuration.GetRequiredValueOrThrow("Jwt:Issuer");
         string secret = configuration.GetRequiredValueOrThrow("Jwt:Secret");
         string audience = configuration.GetRequiredValueOrThrow("Jwt:Audience");
-        int expires = Convert.ToInt16(configuration.GetRequiredValueOrThrow("Jwt:Expires"));
+        int expires = Convert.ToInt16(configuration.GetRequiredValueOrThrow("Jwt:Expires"), CultureInfo.InvariantCulture);
 
         var exists = await applicationReadStore.CheckApplicationExistsByClientIdAsync(request.ClientId,
                                                                                       cancellationToken);
         if (!exists)
+        {
             return Unauthorized();
-
+        }
 
         var application = await applicationReadStore.GetClientApplicationByClientIdAsync(request.ClientId, cancellationToken);
 
@@ -82,7 +84,9 @@ public sealed class TokenEndpoint : EndpointBaseAsync
         var hashResult = hasher.Verify(request.ClientSecret, application.ClientSecret!);
 
         if (!hashResult)
+        {
             return Unauthorized();
+        }
 
         if (!User.Identity!.IsAuthenticated)
         {
@@ -107,7 +111,9 @@ public sealed class TokenEndpoint : EndpointBaseAsync
                                                                 request.DeviceCode!);
 
             if (!result)
+            {
                 return Unauthorized();
+            }
         }
 
         if (request.GrantType == TokenConstants.Refresh
@@ -116,20 +122,28 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             var result = await jwtProvider.TryValidateTokenAsync(request.RefreshToken, secret, issuer, audience);
 
             if (!result.Success)
+            {
                 return Unauthorized();
+            }
         }
 
         if (request.GrantType == TokenConstants.AuthorizationCode)
         {
             var storedState = HttpContext.Session.GetString($"{application.ClientId}_state");
             if (storedState != request.State)
+            {
                 return Unauthorized();
+            }
             var storedCode = HttpContext.Session.GetString($"{application.ClientId!}_code");
             if (storedCode != request.Code)
+            {
                 return Unauthorized();
+            }
         }
         if (request.Scopes is not null)
+        {
             scopes = scopeProvider.ParseScopes(request.Scopes);
+        }
 
         var tokenResult = await jwtProvider.TryCreateTokenAsync(
             email!, secret, issuer, audience, expires, subject, roles, scopes);
@@ -141,9 +155,11 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             bool isAccessTokenValid = (await jwtProvider.TryValidateTokenAsync(tokenResult.Token, secret, issuer,
                                                                                audience)).Success;
             bool isRefreshTokenValid = (await jwtProvider.TryValidateTokenAsync(refreshTokenResult.Token, secret,
-                                                                                issuer, audience)).Success;
+                                                                                 issuer, audience)).Success;
             if (!isAccessTokenValid && !isRefreshTokenValid)
+            {
                 return Unauthorized();
+            }
         }
 
         TokenResponse response = new()
@@ -151,7 +167,7 @@ public sealed class TokenEndpoint : EndpointBaseAsync
             AccessToken = tokenResult.Token,
             RefreshToken = refreshTokenResult.Token,
             TokenType = "Bearer",
-            Expires = expires.ToString()
+            Expires = expires.ToString(CultureInfo.InvariantCulture)
         };
 
         TokenActivity activity = new()

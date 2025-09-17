@@ -22,7 +22,9 @@ public class EmailPublisherTests
                {
                    publishCalled = true;
                    if (msg is ApplicationCreated appCreated)
+                   {
                        publishedMessage = appCreated;
+                   }
                })
                .Returns(Task.CompletedTask);
 

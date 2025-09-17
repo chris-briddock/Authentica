@@ -1,3 +1,4 @@
+using Application.Exceptions;
 using Domain.Constants;
 using Domain.Errors;
 using System.Text.Json;
@@ -41,12 +42,68 @@ public sealed class ExceptionMiddleware
         {
             await Next(context);
         }
+        catch (ArgumentNullException ex)
+        {
+            if (!context.Response.HasStarted)
+            {
+                var result = await HandleExceptionAsync(context, ex);
+                Logger.LogError("An argument null exception has occurred. {ExceptionDetails}", result);
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            if (!context.Response.HasStarted)
+            {
+                var result = await HandleExceptionAsync(context, ex);
+                Logger.LogError("An argument exception has occurred. {ExceptionDetails}", result);
+            }
+        }
+        catch (InvalidOperationException ex)
+        {
+            if (!context.Response.HasStarted)
+            {
+                var result = await HandleExceptionAsync(context, ex);
+                Logger.LogError("An invalid operation exception has occurred. {ExceptionDetails}", result);
+            }
+        }
+        catch (NotSupportedException ex)
+        {
+            if (!context.Response.HasStarted)
+            {
+                var result = await HandleExceptionAsync(context, ex);
+                Logger.LogError("A not supported exception has occurred. {ExceptionDetails}", result);
+            }
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            if (!context.Response.HasStarted)
+            {
+                var result = await HandleExceptionAsync(context, ex);
+                Logger.LogError("An unauthorized access exception has occurred. {ExceptionDetails}", result);
+            }
+        }
+        catch (Application.Exceptions.PurgeFailureException ex)
+        {
+            if (!context.Response.HasStarted)
+            {
+                var result = await HandleExceptionAsync(context, ex);
+                Logger.LogError("A purge failure exception has occurred. {ExceptionDetails}", result);
+            }
+        }
+        catch (System.Security.SecurityException ex)
+        {
+            if (!context.Response.HasStarted)
+            {
+                var result = await HandleExceptionAsync(context, ex);
+                Logger.LogError("A security exception has occurred. {ExceptionDetails}", result);
+            }
+        }
         catch (Exception ex)
         {
             if (!context.Response.HasStarted)
             {
                 var result = await HandleExceptionAsync(context, ex);
-                Logger.LogError("An exception has occurred. {exceptionDetails}", result);
+                Logger.LogError("An unexpected exception has occurred. {ExceptionDetails}", result);
             }
         }
     }

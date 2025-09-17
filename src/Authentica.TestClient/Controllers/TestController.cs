@@ -11,7 +11,7 @@ public class TestController : ControllerBase
 {
     [HttpGet]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     public ActionResult Get()
     {
         return Ok("Test, from authorized.");

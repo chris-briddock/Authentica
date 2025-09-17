@@ -3,6 +3,7 @@ using Application.Results;
 using Domain.Contracts;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Stores;
 
@@ -11,12 +12,15 @@ namespace Application.Stores;
 /// </summary>
 public class SharedStore : StoreBase, ISharedStore
 {
+    private readonly ILogger<SharedStore> _logger;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="SharedStore"/> class.
     /// </summary>
     /// <param name="services">The service provider used to resolve services.</param>
     public SharedStore(IServiceProvider services) : base(services)
     {
+        _logger = services.GetRequiredService<ILogger<SharedStore>>();
     }
 
     /// <inheritdoc />
@@ -42,6 +46,7 @@ public class SharedStore : StoreBase, ISharedStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error purging entries of type {EntityType} older than {CutoffDate}", typeof(TEntity).Name, DateTime.UtcNow.AddYears(-7).Date);
             return SharedStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }

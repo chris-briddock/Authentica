@@ -5,7 +5,7 @@ namespace Application.Providers;
 /// <summary>
 /// Provides a timer that ticks at regular intervals and allows waiting for the next tick.
 /// </summary>
-public sealed class TimerProvider : ITimerProvider
+public sealed class TimerProvider : ITimerProvider, IDisposable
 {
     private readonly PeriodicTimer _timer;
 
@@ -23,10 +23,10 @@ public sealed class TimerProvider : ITimerProvider
     public async Task<bool> WaitForNextTickAsync(CancellationToken cancellationToken)
     {
         return await _timer.WaitForNextTickAsync(cancellationToken);
+    } 
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        _timer.Dispose();
     }
-
-    /// <summary>
-    /// Finalizer that disposes of the resources.
-    /// </summary>
-    ~TimerProvider() => _timer.Dispose();
 }

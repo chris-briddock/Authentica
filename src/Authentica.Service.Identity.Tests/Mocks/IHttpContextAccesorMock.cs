@@ -1,8 +1,8 @@
 namespace Authentica.Service.Identity.Tests.Mocks;
 
-public class IHttpContextAccessorMock : Mock<IHttpContextAccessor>, IMockBase<IHttpContextAccessorMock>
+public class HttpContextAccessorMock : Mock<IHttpContextAccessor>, IMockBase<HttpContextAccessorMock>
 {
-    public IHttpContextAccessorMock Mock()
+    public HttpContextAccessorMock Mock()
     {
         return this;
     }

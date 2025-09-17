@@ -57,7 +57,9 @@ public sealed class UpdatePhoneNumberEndpoint : EndpointBaseAsync
         var result = await userWriteStore.UpdatePhoneNumberAsync(user, request.PhoneNumber, request.Token);
 
         if (!result.Succeeded)
+        {
             return BadRequest();
+        }
 
         UpdatePhoneNumberActivity activity = new()
         {

@@ -42,7 +42,6 @@ public class UserReadStoreTests
     {
         // Arrange
         var email = _applicationUser.Email!;
-        var cacheKey = $"user_email_{email}";
 
         _userManagerMock.Setup(x => x.FindByEmailAsync(email))
             .ReturnsAsync(_applicationUser);

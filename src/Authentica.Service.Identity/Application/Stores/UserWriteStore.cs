@@ -6,6 +6,8 @@ using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Domain.Requests;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace Application.Stores;
@@ -15,12 +17,15 @@ namespace Application.Stores;
 /// </summary>
 public sealed class UserWriteStore : StoreBase, IUserWriteStore
 {
+    private readonly ILogger<UserWriteStore> _logger;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="UserWriteStore"/> class.
     /// </summary>
     /// <param name="services">The service provider to be used by the store.</param>
     public UserWriteStore(IServiceProvider services) : base(services)
     {
+        _logger = services.GetRequiredService<ILogger<UserWriteStore>>();
         FusionCache.RemoveByTag(CacheTagConstants.Users);
     }
 
@@ -35,7 +40,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         var result = await UserManager.UpdateAsync(updatedUser);
 
         if (!result.Succeeded)
+        {
             return UserStoreResult.Failed();
+        }
 
         return UserStoreResult.Success(updatedUser);
 
@@ -46,7 +53,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
     {
         User user = new()
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Ulid.NewUlid().ToString(),
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             UserName = request.Email,
@@ -60,7 +67,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         var result = await UserManager.CreateAsync(user);
 
         if (!result.Succeeded)
+        {
             return UserStoreResult.Failed();
+        }
 
         return UserStoreResult.Success(user);
     }
@@ -72,7 +81,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ConfirmEmail, token);
 
         if (!result)
+        {
             return UserStoreResult.Failed();
+        }
 
         user.EmailConfirmed = true;
 
@@ -92,7 +103,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         var passwordHasher = Services.GetRequiredService<IPasswordHasher<User>>();
 
         if (!tokenVerificationResult)
+        {
             return UserStoreResult.Failed(new IdentityErrorFactory().InvalidToken());
+        }
 
         user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
 
@@ -110,12 +123,15 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             var result = await UserManager.RedeemTwoFactorRecoveryCodeAsync(user, code);
 
             if (result.Succeeded)
+            {
                 return UserStoreResult.Success();
+            }
 
             return UserStoreResult.Failed();
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error redeeming multi-factor recovery code for user {UserId}", user.Id);
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
@@ -130,12 +146,14 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdateEmail, token);
 
             if (!result)
+            {
                 return UserStoreResult.Failed();
+            }
 
             user.Email = newEmail;
-            user.NormalizedEmail = newEmail.ToUpper();
+            user.NormalizedEmail = newEmail.ToUpper(CultureInfo.InvariantCulture);
             user.UserName = newEmail;
-            user.NormalizedEmail = newEmail.ToUpper();
+            user.NormalizedEmail = newEmail.ToUpper(CultureInfo.InvariantCulture);
 
             await UserManager.UpdateAsync(user);
 
@@ -143,6 +161,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error updating email for user {UserId} to {NewEmail}", user.Id, newEmail);
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
 
@@ -158,7 +177,9 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
             var result = await UserManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdatePhoneNumber, token);
 
             if (!result)
+            {
                 return UserStoreResult.Failed();
+            }
 
             user.PhoneNumber = phoneNumber;
 
@@ -168,6 +189,7 @@ public sealed class UserWriteStore : StoreBase, IUserWriteStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error updating phone number for user {UserId} to {PhoneNumber}", user.Id, phoneNumber);
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }

@@ -53,8 +53,6 @@ public class AddToRoleEndpointTests
 
         var sut = await client.PutAsJsonAsync($"{Routes.Admin.Roles.Add}", request);
 
-        var errorContent = await sut.Content.ReadAsStringAsync();
-
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
 }

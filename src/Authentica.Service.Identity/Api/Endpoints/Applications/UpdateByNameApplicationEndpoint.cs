@@ -55,19 +55,25 @@ public sealed class UpdateByNameApplicationEndpoint : EndpointBaseAsync
         var user = (await userWriteStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         if (user is null)
+        {
             return BadRequest();
+        }
 
         ClientApplication? app = await readStore.GetClientApplicationByNameAndUserIdAsync(request.CurrentName,
                                                                                           user.Id,
                                                                                           cancellationToken);
 
         if (app is null)
+        {
             return BadRequest();
+        }
 
         var result = await writeStore.UpdateApplicationAsync(User, request.CurrentName, request.NewName, request.NewCallbackUri, cancellationToken);
 
         if (result.Errors.Any())
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         UpdateApplicationByNameActivity activity = new()
         {

@@ -63,7 +63,9 @@ public sealed class ConfirmEmailEndpoint : EndpointBaseAsync
         await activityWriteStore.SaveActivityAsync(activity);
 
         if (result.Errors.Any() || !result.Succeeded)
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         UserEmailConfirmed @event = new(request.Email,
                                         DateTime.UtcNow);

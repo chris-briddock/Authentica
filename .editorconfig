@@ -1,0 +1,149 @@
+root = true
+
+# All files
+[*]
+charset = utf-8
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# C# files
+[*.cs]
+indent_size = 4
+end_of_line = lf
+
+# C# Code Style Rules
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+
+# New line preferences
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# Indentation preferences
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = flush_left
+
+# Prefer "var" everywhere
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+
+# Prefer method-like constructs to have a block body
+csharp_style_expression_bodied_methods = false:none
+csharp_style_expression_bodied_constructors = false:none
+csharp_style_expression_bodied_operators = false:none
+
+# Prefer property-like constructs to have an expression-body
+csharp_style_expression_bodied_properties = true:none
+csharp_style_expression_bodied_indexers = true:none
+csharp_style_expression_bodied_accessors = true:none
+
+# Pattern matching preferences
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+# Null-checking preferences
+csharp_style_throw_expression = true:suggestion
+csharp_style_conditional_delegate_call = true:suggestion
+
+# Modifier preferences
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:suggestion
+
+# Expression preferences
+csharp_prefer_braces = true:warning
+csharp_style_deconstructed_variable_declaration = true:suggestion
+csharp_prefer_simple_default_expression = true:suggestion
+
+# Analyzer Rules Severity
+
+# SonarAnalyzer Rules - Set to warning level
+dotnet_diagnostic.S125.severity = warning     # Sections of code should not be commented out
+dotnet_diagnostic.S1125.severity = warning    # Boolean literals should not be redundant
+dotnet_diagnostic.S1116.severity = warning    # Empty statements should be removed
+dotnet_diagnostic.S1481.severity = warning    # Unused local variables should be removed
+dotnet_diagnostic.S1133.severity = warning    # Deprecated code should be removed
+dotnet_diagnostic.S2259.severity = warning    # Null pointer should not be dereferenced
+dotnet_diagnostic.S3459.severity = warning    # Unassigned members should be removed
+dotnet_diagnostic.S112.severity = warning     # General exceptions should not be thrown
+dotnet_diagnostic.S3925.severity = warning    # ISerializable should be implemented correctly
+
+# Set other common SonarAnalyzer rules
+dotnet_diagnostic.S101.severity = warning     # Types should be named in PascalCase
+dotnet_diagnostic.S100.severity = warning     # Methods should be named in PascalCase
+dotnet_diagnostic.S1134.severity = warning    # Track uses of "FIXME" tags
+dotnet_diagnostic.S1135.severity = warning    # Track uses of "TODO" tags
+dotnet_diagnostic.S1186.severity = warning    # Methods should not be empty
+dotnet_diagnostic.S2696.severity = warning    # Instance members should not write to static fields
+dotnet_diagnostic.S3776.severity = suggestion # Cognitive Complexity of methods should not be too high
+dotnet_diagnostic.S1067.severity = suggestion # Expressions should not be too complex
+dotnet_diagnostic.S3358.severity = warning    # Ternary operators should not be nested
+dotnet_diagnostic.S2223.severity = warning    # Non-constant static fields should not be visible
+
+# .NET Code Analyzer Rules
+dotnet_diagnostic.CA1000.severity = warning   # Do not declare static members on generic types
+dotnet_diagnostic.CA1001.severity = warning   # Types that own disposable fields should be disposable
+dotnet_diagnostic.CA1018.severity = warning   # Mark attributes with AttributeUsageAttribute
+dotnet_diagnostic.CA1036.severity = warning   # Override methods on comparable types
+dotnet_diagnostic.CA1041.severity = warning   # Provide ObsoleteAttribute message
+dotnet_diagnostic.CA1051.severity = warning   # Do not declare visible instance fields
+dotnet_diagnostic.CA1304.severity = warning   # Specify CultureInfo
+dotnet_diagnostic.CA1305.severity = warning   # Specify IFormatProvider
+dotnet_diagnostic.CA1307.severity = warning   # Specify StringComparison for clarity
+dotnet_diagnostic.CA1309.severity = warning   # Use ordinal StringComparison
+dotnet_diagnostic.CA1810.severity = warning   # Initialize reference type static fields inline
+dotnet_diagnostic.CA1816.severity = warning   # Call GC.SuppressFinalize correctly
+dotnet_diagnostic.CA1826.severity = suggestion # Use property instead of Linq Enumerable method
+dotnet_diagnostic.CA2201.severity = warning   # Do not raise reserved exception types
+dotnet_diagnostic.CA2215.severity = warning   # Dispose methods should call base class dispose
+
+# Naming rules
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = warning
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
+
+dotnet_naming_rule.types_should_be_pascal_case.severity = warning
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = warning
+dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
+dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
+
+# Symbol specifications
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+
+dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+
+# Naming styles
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+# XML project files
+[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_size = 2
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false

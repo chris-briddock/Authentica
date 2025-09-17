@@ -54,12 +54,16 @@ public sealed class CreateApplicationEndpoint : EndpointBaseAsync
         var applicationExists = await readStore.CheckApplicationExistsByNameAsync(request.Name, cancellationToken);
 
         if (applicationExists)
+        {
             return BadRequest("Application with this name already exists.");
+        }
 
         var result = await writeStore.CreateClientApplicationAsync(User, request.Name, request.CallbackUri, cancellationToken);
 
         if (result.Errors.Any())
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         CreatedApplicationActivity activity = new()
         {

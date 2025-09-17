@@ -55,7 +55,9 @@ public sealed class MultiFactorManageEndpoint : EndpointBaseAsync
         var publisher = Services.GetRequiredService<IPublisher>();
 
         if (!userReadResult.Succeeded)
+        {
             return BadRequest();
+        }
 
         await userManager.SetTwoFactorEnabledAsync(userReadResult.User, request.IsEnabled);
 

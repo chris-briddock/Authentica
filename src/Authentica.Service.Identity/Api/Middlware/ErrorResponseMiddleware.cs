@@ -78,7 +78,7 @@ public sealed class ErrorHandlingMiddleware
 
         var result = JsonSerializer.Serialize(problemDetails);
 
-        Logger.LogError("An error occurred. {errorDetails}", result);
+        Logger.LogError("An error occurred. {ErrorDetails}", result);
 
         await context.Response.WriteAsync(result);
     }

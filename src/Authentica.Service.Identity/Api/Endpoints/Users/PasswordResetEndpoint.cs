@@ -61,7 +61,9 @@ public sealed class PasswordResetEndpoint : EndpointBaseAsync
         await activityWriteStore.SaveActivityAsync(activity);
 
         if (!result.Succeeded)
+        {
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
 
         UserPasswordReset @event = new(request.Email,
                                         DateTime.UtcNow);

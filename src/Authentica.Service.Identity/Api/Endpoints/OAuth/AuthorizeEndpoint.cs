@@ -52,7 +52,9 @@ public sealed class AuthorizeEndpoint : EndpointBaseAsync
         var client = await readStore.GetClientAppByClientIdAndCallbackUriAsync(request.ClientId, request.CallbackUri, cancellationToken);
 
         if (client is null)
+        {
             return Unauthorized();
+        }
 
         AuthorizeActivity activity = new()
         {

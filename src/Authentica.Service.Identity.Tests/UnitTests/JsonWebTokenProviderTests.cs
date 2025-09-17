@@ -89,10 +89,11 @@ public class JsonWebTokenProviderTests
         // Arrange
 
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+        var logger = new LoggerMock<JsonWebTokenProvider>();
 
         tokenHandler.Setup(x => x.WriteToken(It.IsAny<SecurityToken>())).Throws(new Exception("Test exception"));
 
-        var sut = new JsonWebTokenProvider(tokenHandler.Object);
+        var sut = new JsonWebTokenProvider(tokenHandler.Object, logger.Object);
         // Act
         var result = await sut.TryCreateTokenAsync(_email, _jwtSecret, _issuer, _audience, _expires, _subject, _roles, _scopes);
 
@@ -109,6 +110,7 @@ public class JsonWebTokenProviderTests
     {
 
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+        var logger = new LoggerMock<JsonWebTokenProvider>();
         var invalidToken = "invalidToken";
 
         tokenHandler.Setup(x => x.WriteToken(It.IsAny<SecurityToken>())).Returns(invalidToken);
@@ -116,7 +118,7 @@ public class JsonWebTokenProviderTests
                                                      It.IsAny<TokenValidationParameters>()))
                                                      .ThrowsAsync(new SecurityTokenException("Invalid token"));
 
-        var sut = new JsonWebTokenProvider(tokenHandler.Object);
+        var sut = new JsonWebTokenProvider(tokenHandler.Object, logger.Object);
 
         var result = await sut.TryValidateTokenAsync(invalidToken, _jwtSecret, _issuer, _audience);
         // Assert

@@ -66,12 +66,16 @@ public class MultiFactorManageAuthenticatorEndpoint : EndpointBaseAsync
         var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         if (!user.TwoFactorEnabled)
+        {
             return BadRequest("User does not have mfa enabled.");
+        }
 
         var enableAuthenticator = await userMultiFactorStore.SetAutheticatorAsync(request.IsEnabled, user.Id);
 
         if (!enableAuthenticator.Succeeded)
+        {
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
 
         if (request.IsEnabled)
         {

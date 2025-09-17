@@ -59,7 +59,9 @@ public sealed class ReadByNameApplicationEndpoint : EndpointBaseAsync
                                                                                                 cancellationToken);
 
         if (app is null)
+        {
             return BadRequest();
+        }
 
         ReadApplicationResponse response = new()
         {

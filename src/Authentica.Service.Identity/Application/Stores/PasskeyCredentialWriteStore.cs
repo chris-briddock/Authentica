@@ -4,6 +4,7 @@ using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Fido2NetLib;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Stores;
 
@@ -12,12 +13,15 @@ namespace Application.Stores;
 /// </summary>
 public sealed class PasskeyCredentialWriteStore : StoreBase, IPasskeyCredentialWriteStore
 {
+    private readonly ILogger<PasskeyCredentialWriteStore> _logger;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="PasskeyCredentialWriteStore"/> class.
     /// </summary>
     /// <param name="services">The service provider used to resolve dependencies.</param>
     public PasskeyCredentialWriteStore(IServiceProvider services) : base(services)
     {
+        _logger = services.GetRequiredService<ILogger<PasskeyCredentialWriteStore>>();
         FusionCache.RemoveByTag(CacheTagConstants.PasskeyCredentials);
     }
 
@@ -34,21 +38,22 @@ public sealed class PasskeyCredentialWriteStore : StoreBase, IPasskeyCredentialW
             await DbContext.Set<PasskeyCredential>()
                         .AddAsync(new PasskeyCredential()
                         {
-                            CredentialId = credential.Result!.CredentialId, 
-                            UserHandle = credential.Result.User.Id,         
-                            PublicKey = credential.Result.PublicKey,        
-                            SignatureCounter = credential.Result.Counter,   
-                            CredType = credential.Result.CredType,          
-                            CreatedDate = DateTime.UtcNow,                  
-                            AaGuid = credential.Result.Aaguid.ToString()    
+                            CredentialId = credential.Result!.CredentialId,
+                            UserHandle = credential.Result.User.Id,
+                            PublicKey = credential.Result.PublicKey,
+                            SignatureCounter = credential.Result.Counter,
+                            CredType = credential.Result.CredType,
+                            CreatedDate = DateTime.UtcNow,
+                            AaGuid = credential.Result.Aaguid.ToString()
                         });
 
             // Save the changes to the database.
             await DbContext.SaveChangesAsync();
             return PasskeyCredentialResult.Success();
-        } 
+        }
         catch(Exception ex)
         {
+            _logger.LogError(ex, "Error creating passkey credential for user {UserHandle}", credential.Result?.User.Id);
             return PasskeyCredentialResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
         

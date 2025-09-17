@@ -30,9 +30,10 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
     /// Initializes a new instance of the <see cref="RegisterAdminEndpoint"/> class.
     /// </summary>
     /// <param name="services">The service provider for resolving dependencies.</param>
+    /// <exception cref="ArgumentNullException">Thrown if services is null.</exception>
     public RegisterAdminEndpoint(IServiceProvider services)
     {
-        Services = services;
+        Services = services ?? throw new ArgumentNullException(nameof(services));
     }
 
     /// <summary>
@@ -56,7 +57,9 @@ public class RegisterAdminEndpoint : EndpointBaseAsync
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
 
         if (result.Errors.Any())
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         if (!await userManager.IsInRoleAsync(result.User, RoleDefaults.Admin))
         {

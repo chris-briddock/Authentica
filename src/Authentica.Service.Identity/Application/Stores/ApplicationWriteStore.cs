@@ -6,6 +6,7 @@ using Domain.Contracts.Cryptography;
 using Domain.Contracts.Providers;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace Application.Stores;
@@ -17,6 +18,7 @@ namespace Application.Stores;
 public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 {
 
+    private readonly ILogger<ApplicationWriteStore> _logger;
     /// <summary>
     /// Gets the App DbSet.
     /// </summary>
@@ -29,6 +31,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
     /// <param name="services">The service provider to retrieve required services for the write store operations.</param>
     public ApplicationWriteStore(IServiceProvider services) : base(services)
     {
+        _logger = services.GetRequiredService<ILogger<ApplicationWriteStore>>();
         FusionCache.RemoveByTagAsync(CacheTagConstants.Applications);
     }
     /// <inheritdoc/>
@@ -46,7 +49,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             var application = new ClientApplication
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = Ulid.NewUlid().ToString(),
                 Name = name,
                 CallbackUri = callbackUri,
                 EntityDeletionStatus = new(false, null, null),
@@ -68,6 +71,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error creating client application {Name} for user {Email}", name, claimsPrincipal.Identity?.Name ?? "unknown");
             return ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
@@ -85,14 +89,18 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
             var userReadResult = await UserReadStore.GetUserByEmailAsync(claimsPrincipal, cancellationToken);
 
             if (userReadResult.User is null)
+            {
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
+            }
 
             var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(oldName!,
                                                                                                   userReadResult.User.Id,
                                                                                                   cancellationToken);
 
             if (application is null)
+            {
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
+            }
 
             application.Name = newName ?? application.Name;
             application.CallbackUri = callbackUri ?? application.CallbackUri;
@@ -106,6 +114,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error updating application from {OldName} to {NewName} for user {Email}", oldName ?? "unknown", newName ?? "unchanged", claimsPrincipal.Identity?.Name ?? "unknown");
             return ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
@@ -124,7 +133,9 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             // Check if the user exists
             if (userReadResult.User is null)
+            {
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
+            }
 
             // Retrieve the application to be deleted based on the provided name and user ID
             var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(name,
@@ -133,7 +144,9 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             // Check if the application exists
             if (application is null)
+            {
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
+            }
 
             // Mark the application as deleted and set the deletion details
             application.EntityDeletionStatus.IsDeleted = true;
@@ -149,6 +162,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error soft deleting application {Name} for user {Email}", name, claimsPrincipal.Identity?.Name ?? "unknown");
             // Return failure result in case of an exception
             return ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
@@ -171,7 +185,9 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             // Check if the user exists
             if (userReadResult.User is null)
+            {
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.UserNotFound());
+            }
 
             // Retrieve the application to be updated based on the provided name and user ID.
             var application = await ApplicationReadStore.GetClientApplicationByNameAndUserIdAsync(applicationName,
@@ -180,7 +196,9 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
 
             // Check if the application exists
             if (application is null)
+            {
                 return ApplicationStoreResult.Failed(IdentityErrorFactory.ApplicationNotFound());
+            }
 
             var secret = randomStringProvider.GenerateAlphanumeric();
 
@@ -196,6 +214,7 @@ public class ApplicationWriteStore : StoreBase, IApplicationWriteStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error updating client secret for application {ApplicationName} for user {Email}", applicationName, claimsPrincipal.Identity?.Name ?? "unknown");
             // Return failure result in case of an exception
             return ApplicationStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }

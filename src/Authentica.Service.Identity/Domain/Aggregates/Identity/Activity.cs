@@ -8,7 +8,7 @@ public sealed class Activity : Activity<string>
     /// <summary>
     /// Gets or sets the unique identifier for the event.
     /// </summary>
-    public override string Id { get; set; } = Gusid.New().ToString();
+    public override string Id { get; set; } = Ulid.NewUlid().ToString();
 }
 
 /// <summary>
@@ -45,5 +45,5 @@ public abstract class Activity<TKey> where TKey : IEquatable<TKey>
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
+    public string ConcurrencyStamp { get; set; } = Ulid.NewUlid().ToString();
 }

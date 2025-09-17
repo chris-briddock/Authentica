@@ -21,13 +21,13 @@ public static partial class Seed
         /// <param name="app">The web application instance.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         public static async Task SeedOldDeletedClientApplicationAsync(WebApplication app) =>
-            await SeedClientApplicationAsync(app, "Default Old Deleted Application", true, Secret, Guid.NewGuid().ToString(),DateTime.UtcNow.AddYears(-8));
+            await SeedClientApplicationAsync(app, "Default Old Deleted Application", true, Secret, Ulid.NewUlid().ToString(),DateTime.UtcNow.AddYears(-8));
         /// <summary>
         /// Seeds a test client application into the database.
         /// </summary>
         /// <param name="app">The web application instance.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         public static async Task SeedRecentDeletedClientApplicationAsync(WebApplication app) =>
-            await SeedClientApplicationAsync(app, "Default Recent Deleted Application", true, Secret, Guid.NewGuid().ToString(), DateTime.UtcNow);
+            await SeedClientApplicationAsync(app, "Default Recent Deleted Application", true, Secret, Ulid.NewUlid().ToString(), DateTime.UtcNow);
     }
 }

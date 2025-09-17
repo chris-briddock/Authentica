@@ -30,9 +30,10 @@ public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
     /// Initializes a new instance of the <see cref="DisableMultiFactorEndpoint"/> class.
     /// </summary>
     /// <param name="services">The service provider used to resolve dependencies.</param>
+    /// <exception cref="ArgumentNullException">Thrown if services is null.</exception>
     public DisableMultiFactorEndpoint(IServiceProvider services)
     {
-        Services = services;
+        Services = services ?? throw new ArgumentNullException(nameof(services));
     }
 
     /// <summary>
@@ -52,13 +53,15 @@ public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
         var userManager = Services.GetRequiredService<UserManager<User>>();
         var activityStore = Services.GetRequiredService<IActivityWriteStore>();
         var multiFactorWriteStore = Services.GetRequiredService<IUserMultiFactorWriteStore>();
-        var passkeyStore = Services.GetRequiredService<IPasskeyCredentialWriteStore>();
+        // var passkeyStore = Services.GetRequiredService<IPasskeyCredentialWriteStore>();
         var publisher = Services.GetRequiredService<IPublisher>();
 
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
+        {
             return BadRequest();
+        }
 
         // Disable MFA within the SYSTEM_IDENTITY_USERS table.
         await userManager.SetTwoFactorEnabledAsync(user, false);
@@ -67,7 +70,8 @@ public sealed class DisableMultiFactorEndpoint : EndpointBaseAsync
         await multiFactorWriteStore.SetEmailAsync(false, user.Id);
         await multiFactorWriteStore.SetAutheticatorAsync(false, user.Id);
 
-        // TODO: Now delete all passkeys.
+        // TODO: Implement passkey deletion for user when disabling MFA
+        // await passkeyStore.DeleteByUserIdAsync(user.Id);
 
 
         DisableMultiFactorActivity activity = new()

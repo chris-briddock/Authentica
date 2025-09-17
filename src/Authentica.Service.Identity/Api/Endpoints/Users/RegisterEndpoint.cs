@@ -60,7 +60,9 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 
         if (existingUser is not null && !existingUser.EntityDeletionStatus.IsDeleted)
+        {
             return StatusCode(StatusCodes.Status409Conflict, "User is deleted, or already exists.");
+        }
 
         var result = await userWriteStore.CreateUserAsync(request, cancellationToken);
 
@@ -78,10 +80,14 @@ public sealed class RegisterEndpoint : EndpointBaseAsync
         await activityWriteStore.SaveActivityAsync(activity);
 
         if (result.Errors.Any())
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         if (!await userManager.IsInRoleAsync(result.User, RoleDefaults.User))
+        {
             await userManager.AddToRoleAsync(result.User, RoleDefaults.User);
+        }
 
         UserRegistered @event = new(request.Email,
                                       DateTime.UtcNow);

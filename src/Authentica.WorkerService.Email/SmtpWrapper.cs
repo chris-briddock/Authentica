@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.Extensions.Configuration;
 
 namespace Authentica.WorkerService.Email;
 
@@ -33,7 +35,7 @@ public sealed class SmtpClientWrapper : ISmtpClient
     public Task SendMailAsync(MailMessage message)
     {
         var smtpServer = Configuration["Email:Server"]!;
-        int smtpPort = Convert.ToInt16(Configuration["Email:Port"]!);
+        int smtpPort = Convert.ToInt16(Configuration["Email:Port"], CultureInfo.InvariantCulture!);
         var smtpUsername = Configuration["Email:Credentials:EmailAddress"]!;
         var smtpPassword = Configuration["Email:Credentials:Password"]!;
         _smtpClient.Host = smtpServer;

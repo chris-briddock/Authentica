@@ -17,7 +17,7 @@ public sealed class Session :
     /// This is automatically generated as a new GUID string when the session is created.
     /// It serves as the primary key for the session entity in the database.
     /// </remarks>
-    public string Id { get; set; } = Gusid.New().ToString();
+    public string Id { get; set; } = Ulid.NewUlid().ToString();
 
     /// <summary>
     /// Gets or sets the session identifier.
@@ -86,7 +86,7 @@ public sealed class Session :
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
+    public string ConcurrencyStamp { get; set; } = Ulid.NewUlid().ToString();
 
     /// <summary>
     /// Gets or sets the deletion status of the entity.

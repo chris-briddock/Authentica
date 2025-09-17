@@ -43,15 +43,18 @@ public sealed class SessionMiddleware
             var sessionReadStore = scope.ServiceProvider.GetRequiredService<ISessionReadStore>();
 
             if (currentSessionId is null)
+            {
                 shouldCreate = true;
+            }
 
             if (currentSessionId is not null)
             {
                 var storedSession = await sessionReadStore.GetByIdAsync(currentSessionId);
 
                 if (storedSession is null)
+                {
                     shouldCreate = true;
-
+                }
             }
 
             if (shouldCreate)
@@ -62,7 +65,9 @@ public sealed class SessionMiddleware
                 var userReadStore = scope.ServiceProvider.GetRequiredService<IUserReadStore>();
 
                 if (emailAddress is not null)
+                {
                     userId = (await userReadStore.GetUserByEmailAsync(emailAddress)).User.Id;
+                }
 
                 // Create a new Session object
                 Session session = new()

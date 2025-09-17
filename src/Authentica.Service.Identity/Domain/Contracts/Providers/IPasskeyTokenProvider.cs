@@ -32,12 +32,12 @@ public interface IPasskeyTokenProvider<TUser> : IUserTwoFactorTokenProvider<TUse
     /// </summary>
     /// <param name="user">The user for whom the assertion is being verified.</param>
     /// <param name="jsonOptions">The assertion options in JSON format used for verification.</param>
-    /// <param name="responce">The raw response from the authenticator containing assertion data.</param>
+    /// <param name="response">The raw response from the authenticator containing assertion data.</param>
     /// <param name="token">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>A task representing the asynchronous operation. The task result contains the verification result as a JSON string.</returns>
     Task<AssertionVerificationResult> VerifyAssertionAsync(TUser user,
                                                            string jsonOptions,
-                                                           AuthenticatorAssertionRawResponse responce,
+                                                           AuthenticatorAssertionRawResponse response,
                                                            CancellationToken token = default);
 
     /// <summary>

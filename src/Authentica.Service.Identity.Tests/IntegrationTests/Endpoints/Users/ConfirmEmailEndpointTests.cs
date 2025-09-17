@@ -47,8 +47,6 @@ public class ConfirmEmailEndpointTests
 
         using var sut = await client.PostAsync($"{Routes.Users.ConfirmEmail}?email={request.Email}&token={request.Token}", null!);
 
-        var errorContent = await sut.Content.ReadAsStringAsync();
-
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
     }

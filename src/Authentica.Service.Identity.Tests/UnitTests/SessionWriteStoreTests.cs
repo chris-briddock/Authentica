@@ -34,7 +34,7 @@ public class SessionWriteStoreTests
     public async Task CreateAsync_Should_AddSessionToDbSet_And_SaveChanges()
     {
         // Arrange
-        var session = new Session { Id = Guid.NewGuid().ToString() };
+        var session = new Session { Id = Ulid.NewUlid().ToString() };
 
         // Mock the behavior of AddAsync and SaveChangesAsync
         _dbSetMock.Setup(x => x.AddAsync(session, default)).ReturnsAsync((EntityEntry<Session>)null!);
@@ -55,7 +55,7 @@ public class SessionWriteStoreTests
         // Arrange
         var session = new Session
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Ulid.NewUlid().ToString(),
             SessionId = "test-session-id",
             UserId = "test-user-id",
             StartDateTime = DateTime.UtcNow,

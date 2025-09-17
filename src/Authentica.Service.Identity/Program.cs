@@ -27,6 +27,7 @@ namespace Authentica.Service.Identity;
 /// </summary>
 public sealed class Program
 {
+    private Program(){}
     /// <summary>
     /// The entry method for the web application.
     /// </summary>

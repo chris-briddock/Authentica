@@ -60,7 +60,7 @@ public sealed record TokenRequest
     /// This is a space-delimited list of strings.
     /// </summary>
     [FromForm(Name = "scopes")]
-    public string Scopes { get; init; }
+    public string Scopes { get; init; } = default!;
 
     /// <summary>
     /// Gets or sets the state parameter to prevent CSRF attacks.

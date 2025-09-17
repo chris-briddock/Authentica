@@ -58,17 +58,23 @@ public sealed class MultiFactorEmailLoginEndpoint : EndpointBaseAsync
         var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
 
         if (user is null)
+        {
             return BadRequest();
+        }
 
         bool isMfaEnabled = await userManager.GetTwoFactorEnabledAsync(user);
 
         if (!isMfaEnabled)
+        {
             return Unauthorized("User does not have mfa enabled.");
+        }
 
         var isEmailEnabled = await mfaReadStore.IsEmailEnabledAsync(user.Id, cancellationToken);
 
         if (!isEmailEnabled.MultiFactorEmailEnabled)
+        {
             return Unauthorized("User does not have email enabled.");
+        }
 
         result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.Token, true, true);
 
@@ -80,7 +86,9 @@ public sealed class MultiFactorEmailLoginEndpoint : EndpointBaseAsync
         await activityWriteStore.SaveActivityAsync(activity);
 
         if (!result.Succeeded)
+        {
             return Unauthorized();
+        }
 
         MfaEmailCodeVerified @event = new(user.Email!, DateTime.UtcNow);
 

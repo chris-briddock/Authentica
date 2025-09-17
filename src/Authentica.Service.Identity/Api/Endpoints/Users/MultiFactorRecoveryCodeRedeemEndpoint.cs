@@ -64,7 +64,9 @@ public class MultiFactorRecoveryCodeRedeemEndpoint : EndpointBaseAsync
         var result = await userWriteStore.RedeemMultiFactorRecoveryCodeAsync(user, request.Code);
 
         if (!result.Succeeded)
+        {
             return BadRequest();
+        }
 
         // Once recovery code is redeemed all multi factor options are reset.
         await userManager.SetTwoFactorEnabledAsync(user, false);

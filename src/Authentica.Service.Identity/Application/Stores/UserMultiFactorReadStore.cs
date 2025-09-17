@@ -13,7 +13,6 @@ namespace Application.Stores;
 /// </summary>
 public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadStore
 {
-    private DbSet<UserMultiFactorSettings> DbSet => DbContext.Set<UserMultiFactorSettings>();
     /// <summary>
     /// Initializes a new instance of the <see cref="UserMultiFactorReadStore"/>
     /// </summary>
@@ -96,7 +95,7 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     }
 
     /// <inheritdoc/>
-    public async Task<UserMultiFactorReadDto> IsAuthenticatorEnabledAsync(string userId, CancellationToken token)
+    public async Task<UserMultiFactorReadDto> IsAuthenticatorEnabledAsync(string userId, CancellationToken token = default!)
     {
         // Define the compiled query
         var compiledQuery = EF.CompileAsyncQuery(
@@ -127,7 +126,7 @@ public sealed class UserMultiFactorReadStore : StoreBase, IUserMultiFactorReadSt
     }
 
     /// <inheritdoc/>
-    public async Task<UserMultiFactorReadDto> IsPasskeysEnabledAsync(string userId, CancellationToken token)
+    public async Task<UserMultiFactorReadDto> IsPasskeysEnabledAsync(string userId, CancellationToken token = default!)
     {
         // Define the compiled query
         var compiledQuery = EF.CompileAsyncQuery(

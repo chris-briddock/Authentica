@@ -20,7 +20,7 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
     {
     }
     /// <inheritdoc/>
-    public async Task<List<SessionDto>> GetAsync(string userId, CancellationToken cancellation = default)
+    public async Task<List<SessionDto>> GetAsync(string userId, CancellationToken token = default)
     {
         var cacheKey = userId;
 
@@ -48,14 +48,13 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
                 ctx.Tags = [CacheTagConstants.Sessions];
                 // Execute the compiled query
                 return await compiledQuery(DbContext, userId);
-            },
-            token: cancellation
+            }
         );
 
         return result;
     }
     /// <inheritdoc/>
-    public async Task<Session?> GetByIdAsync(string sessionId, CancellationToken cancellation = default)
+    public async Task<Session?> GetByIdAsync(string sessionId, CancellationToken token = default)
     {
         // Use FusionCache to manage caching
         var cacheKey = sessionId;  // Cache key based on the sessionId
@@ -66,6 +65,7 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
                 context.Set<Session>()
                     .Where(x => x.SessionId == sId)
                     .FirstOrDefault()
+        
         );
 
         var result = await FusionCache.GetOrSetAsync<Session>(
@@ -77,7 +77,7 @@ public sealed class SessionReadStore : StoreBase, ISessionReadStore
                 var query = await compiledQuery(DbContext, sessionId);
                 return query!;
             },
-            token: cancellation
+            token: token
         );
 
         return result;

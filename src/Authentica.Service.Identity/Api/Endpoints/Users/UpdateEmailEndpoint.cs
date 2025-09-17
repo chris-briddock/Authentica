@@ -57,7 +57,9 @@ public sealed class UpdateEmailEndpoint : EndpointBaseAsync
         var result = await userWriteStore.UpdateEmailAsync(userResult.User, request.Email, request.Token);
 
         if (!result.Succeeded)
+        {
             return BadRequest();
+        }
 
         UpdateEmailActivity activity = new()
         {

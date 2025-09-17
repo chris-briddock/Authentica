@@ -8,5 +8,5 @@ public static partial class Seed
     /// <param name="app">The web application instance.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task SeedProdApplicationAsync(WebApplication app) => 
-            await SeedClientApplicationAsync(app, "Authentica Default Application", false, Secret, Guid.NewGuid().ToString(), null);
+            await SeedClientApplicationAsync(app, "Authentica Default Application", false, Secret, Ulid.NewUlid().ToString(), null);
 }

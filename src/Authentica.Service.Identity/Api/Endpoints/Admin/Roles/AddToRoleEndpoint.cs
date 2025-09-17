@@ -58,7 +58,12 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
 
         var user = await userManager.FindByEmailAsync(request.Email);
 
-        var result = await userManager.AddToRoleAsync(user!, request.Role);
+        if (user is null)
+        {
+            return BadRequest();
+        }
+
+        var result = await userManager.AddToRoleAsync(user, request.Role);
 
         AddToRoleActivity activity = new()
         {
@@ -68,13 +73,14 @@ public sealed class AddToRoleEndpoint : EndpointBaseAsync
         await activityStore.SaveActivityAsync(activity);
 
         if (result.Succeeded)
+        {
+            AdminAddedUserToRole @event = new(request.Role,
+                                          DateTime.UtcNow,
+                                          User.Identity?.Name ?? "Unknown");
+            
+            await publisher.PublishAsync(@event, cancellationToken);
             return Ok();
-        
-        AdminAddedUserToRole @event = new(request.Role,
-                                      DateTime.UtcNow,
-                                      User.Identity?.Name ?? "Unknown");
-        
-        await publisher.PublishAsync(@event, cancellationToken);
+        }
 
         return BadRequest();
     }

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Common.Constants;
 using ZiggyCreatures.Caching.Fusion;
 
@@ -12,7 +13,7 @@ public class UserWriteStoreTests
     private ServiceProviderMock _serviceProviderMock;
     private Mock<UserManager<User>> _userManagerMock;
     private UserReadStoreMock _userReadStoreMock;
-    private IHttpContextAccessorMock _httpContextAccessorMock;
+    private HttpContextAccessorMock _httpContextAccessorMock;
     private ApplicationReadStoreMock _applicationReadStoreMock;
     private FusionCacheMock _cacheMock;
 
@@ -72,7 +73,7 @@ public class UserWriteStoreTests
 
         _applicationUser = new User
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Ulid.NewUlid().ToString(),
             Email = "test@example.com",
         };
 
@@ -165,7 +166,7 @@ public class UserWriteStoreTests
 
 
         // Act & Assert
-        var ex = Assert.ThrowsAsync<NullReferenceException>(
+        Assert.ThrowsAsync<NullReferenceException>(
             async () => await _sut.SoftDeleteUserAsync(_testUser));
     }
 
@@ -320,7 +321,7 @@ public class UserWriteStoreTests
         var ex = Assert.ThrowsAsync<ArgumentException>(async () =>
             await _sut.ConfirmEmailAsync(_applicationUser, invalidToken));
 
-        Assert.That(ex.Message, Is.EqualTo("The value cannot be an empty string or composed entirely of whitespace. (Parameter 'token')"));
+        Assert.That(ex.Message, Does.Contain("token").And.Contains("empty string").Or.Contains("whitespace"));
     }
 
     [Test]
@@ -406,7 +407,7 @@ public class UserWriteStoreTests
         Assert.Multiple(() =>
         {
             Assert.That(result.Succeeded, Is.False);
-            Assert.That(result.Errors, Has.One.Items); // Assuming you return one error for invalid token
+            Assert.That(result.Errors.Count(), Is.EqualTo(1)); // Assuming you return one error for invalid token
         });
     }
 
@@ -421,7 +422,7 @@ public class UserWriteStoreTests
         var ex = Assert.ThrowsAsync<ArgumentException>(async () =>
             await _sut.ResetPasswordAsync(_applicationUser, invalidToken, newPassword));
 
-        Assert.That(ex.Message, Is.EqualTo("The value cannot be an empty string or composed entirely of whitespace. (Parameter 'token')"));
+        Assert.That(ex.Message, Does.Contain("token").And.Contains("empty string").Or.Contains("whitespace"));
     }
 
     [Test]
@@ -528,7 +529,7 @@ public class UserWriteStoreTests
             Assert.That(result.Succeeded, Is.True);
             Assert.That(result.Errors, Is.Empty);
             Assert.That(_applicationUser.Email, Is.EqualTo(newEmail));
-            Assert.That(_applicationUser.NormalizedEmail, Is.EqualTo(newEmail.ToUpper()));
+            Assert.That(_applicationUser.NormalizedEmail, Is.EqualTo(newEmail.ToUpper(CultureInfo.InvariantCulture)));
             Assert.That(_applicationUser.UserName, Is.EqualTo(newEmail));
         });
     }

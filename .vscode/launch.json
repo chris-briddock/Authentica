@@ -11,6 +11,12 @@
         "cwd": "${workspaceFolder}/src/Authentica.Service.Identity",
         "console": "internalConsole",
         "stopAtEntry": false
+      },
+      {
+        "type": "chrome",
+        "name": "vscode://augment.vscode-augment/auth/result?code=_a05fd8dd1edbc1b289e7e8879c646af6&state=80f2eccb-03e7-4298-9bb9-b9599139c9ae&tenant_url=https%3A%2F%2Fi1.api.augmentcode.com%2F",
+        "request": "launch",
+        "url": "vscode://augment.vscode-augment/auth/result?code=_a05fd8dd1edbc1b289e7e8879c646af6&state=80f2eccb-03e7-4298-9bb9-b9599139c9ae&tenant_url=https%3A%2F%2Fi1.api.augmentcode.com%2F"
       }
     ]
   }

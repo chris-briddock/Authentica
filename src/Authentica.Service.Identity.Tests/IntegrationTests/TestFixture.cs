@@ -45,7 +45,8 @@ public sealed class TestFixture<TProgram> where TProgram : class
 
         var content = new FormUrlEncodedContent(values);
         HttpResponseMessage? result = await Client.PostAsync($"{Routes.OAuth.Token}", content);
-        string? errorContent = await result.Content.ReadAsStringAsync();
+        
+        // string? errorContent = await result.Content.ReadAsStringAsync();
 
         result.EnsureSuccessStatusCode();
 

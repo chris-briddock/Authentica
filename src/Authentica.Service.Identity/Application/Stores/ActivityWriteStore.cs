@@ -6,6 +6,7 @@ using Domain.Aggregates.Identity;
 using Domain.Constants;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Application.Stores;
@@ -15,6 +16,7 @@ namespace Application.Stores;
 /// </summary>
 public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
 {
+    private readonly ILogger<ActivityWriteStore> _logger;
     /// <summary>
     /// Gets the Activity DbSet.
     /// </summary>
@@ -28,6 +30,7 @@ public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
     /// </remarks>
     public ActivityWriteStore(IServiceProvider services) : base(services)
     {
+        _logger = services.GetRequiredService<ILogger<ActivityWriteStore>>();
         FusionCache.RemoveByTag(CacheTagConstants.Activities);
     }
 
@@ -54,6 +57,7 @@ public sealed class ActivityWriteStore : StoreBase, IActivityWriteStore
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error saving activity of type {ActivityType}", activity.GetType().Name);
             return ActivityStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }

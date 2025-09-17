@@ -16,13 +16,14 @@ public static partial class ServiceCollectionExtensions
     /// <exception cref="InvalidOperationException">Thrown if required configuration values are missing.</exception>
     public static IServiceCollection AddPasskeys(this IServiceCollection services, IConfiguration configuration)
     {
-        var origin = configuration["Passkeys:Origin"];
+        string? origin = configuration["Passkeys:Origin"];
 
         services.AddFido2(x =>
         {
             x.ServerName = ServiceNameDefaults.ServiceName;
             x.ServerDomain = configuration["Passkeys:Domain"];
             x.TimestampDriftTolerance = 100000;
+            x.Origins = [origin];
         });
 
         return services;

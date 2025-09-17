@@ -1,3 +1,5 @@
+using System.Globalization;
+using Api.Constants;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Cryptography;
 using Domain.Contracts.Providers;
@@ -13,6 +15,8 @@ namespace Persistence.Seed;
 /// </summary>
 public static partial class Seed
 {
+    private static string[] AdminRoles { get; set; } = [RoleDefaults.Admin, RoleDefaults.User];
+    private static string[] UserRoles { get; set; } = [RoleDefaults.User];
     /// <summary>
     /// Pre defined secret for the test client application.
     /// </summary>
@@ -52,11 +56,13 @@ public static partial class Seed
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         var hasher = scope.ServiceProvider.GetRequiredService<ISecretHasher>();
-        var stringProvider = scope.ServiceProvider.GetService<IRandomStringProvider>();
 
         var adminEmail = AdminEmail;
         var user = await userManager.FindByEmailAsync(adminEmail);
-        if (user is null) return;
+        if (user is null)
+        {
+            return;
+        }
 
         var hashedSecret = hasher.Hash(secret);
 
@@ -64,12 +70,12 @@ public static partial class Seed
         {
             var application = new ClientApplication
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = Ulid.NewUlid().ToString(),
                 ClientId = clientId,
                 Name = appName,
                 CallbackUri = "https://localhost:7256/callback",
                 ClientSecret = hashedSecret,
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = Ulid.NewUlid().ToString(),
                 EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
                 EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
                 EntityDeletionStatus = new(isDeleted, deletedAt, isDeleted ? user.Id : null)
@@ -114,7 +120,9 @@ public static partial class Seed
 
         var existingUser = await userManager.FindByEmailAsync(email);
         if (existingUser is not null)
+        {
             return;
+        }
 
         User user = new()
         {
@@ -166,15 +174,17 @@ public static partial class Seed
             Role newRole = new()
             {
                 Name = role,
-                NormalizedName = role.ToUpper(),
+                NormalizedName = role.ToUpper(CultureInfo.InvariantCulture),
                 EntityCreationStatus = new(DateTime.UtcNow, CreatedBy),
                 EntityDeletionStatus = new(false, null, null),
                 EntityModificationStatus = new(DateTime.UtcNow, CreatedBy),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                ConcurrencyStamp = Ulid.NewUlid().ToString()
             };
 
             if (!await roleManager.RoleExistsAsync(newRole.Name))
+            {
                 await roleManager.CreateAsync(newRole);
+            }
         }
     }
     /// <summary>

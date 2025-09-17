@@ -47,10 +47,9 @@ public sealed class MultiFactorTotpProvider : IMultiFactorTotpProvider
     /// <param name="user">The user for whom to generate the QR code URI.</param>
     /// <returns>A task representing the asynchronous operation. The task result contains the QR code URI.</returns>
     /// <exception cref="InvalidOperationException">Thrown if no authenticator key is found for the user.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the user has no email address.</exception>
     public async Task<string> GenerateQrCodeUriAsync(User user)
     {
-        var key = await GenerateKeyAsync(user);
-
         var unformattedKey = await UserManager.GetAuthenticatorKeyAsync(user);
         if (string.IsNullOrEmpty(unformattedKey))
         {
@@ -58,9 +57,15 @@ public sealed class MultiFactorTotpProvider : IMultiFactorTotpProvider
         }
 
         var email = await UserManager.GetEmailAsync(user);
-        var issuer = $"Authentica";
+        if (string.IsNullOrEmpty(email))
+        {
+            throw new InvalidOperationException("User must have an email address to generate QR code URI.");
+        }
 
-        return $"otpauth://totp/{issuer}:{UrlEncoder.Default.Encode(email!)}?secret={unformattedKey}&issuer={issuer}&digits=6";
+        const string issuer = "Authentica";
+        const int digits = 6;
+
+        return $"otpauth://totp/{issuer}:{UrlEncoder.Default.Encode(email)}?secret={unformattedKey}&issuer={issuer}&digits={digits}";
     }
 
     /// <summary>

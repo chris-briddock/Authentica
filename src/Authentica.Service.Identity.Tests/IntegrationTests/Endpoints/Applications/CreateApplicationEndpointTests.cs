@@ -34,7 +34,7 @@ public class CreateApplicationEndpointTests
 
         using var sut = await sutClient.PostAsync($"{Routes.Applications.Create}", jsonContent);
 
-        var errorContent = await sut.Content.ReadAsStringAsync();
+        // var errorContent = await sut.Content.ReadAsStringAsync();
 
         Assert.That(sut.StatusCode, Is.EqualTo(HttpStatusCode.Created));
     }

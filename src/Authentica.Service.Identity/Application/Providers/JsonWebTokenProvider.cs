@@ -1,6 +1,7 @@
 using Application.Results;
 using Domain.Contracts.Providers;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,15 +19,18 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
     /// Gets the <see cref="JwtSecurityTokenHandler"/> instance used for creating and validating JWT tokens.
     /// </summary>
     private JwtSecurityTokenHandler TokenHandler { get; }
+    private readonly ILogger<JsonWebTokenProvider> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="JsonWebTokenProvider"/> class with a specified 
+    /// Initializes a new instance of the <see cref="JsonWebTokenProvider"/> class with a specified
     /// <see cref="JwtSecurityTokenHandler"/> for handling JWT operations.
     /// </summary>
     /// <param name="tokenHandler">The token handler used for generating and validating JWT tokens.</param>
-    public JsonWebTokenProvider(JwtSecurityTokenHandler tokenHandler)
+    /// <param name="logger">The logger for logging JWT operations.</param>
+    public JsonWebTokenProvider(JwtSecurityTokenHandler tokenHandler, ILogger<JsonWebTokenProvider> logger)
     {
         TokenHandler = tokenHandler;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -48,7 +52,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
             List<Claim> claims =
             [
                 new(JwtRegisteredClaimNames.Sub, subject),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.Jti, Ulid.NewUlid().ToString()),
                 new(JwtRegisteredClaimNames.Email, email)
             ];
 
@@ -83,6 +87,7 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error creating JWT token for email {Email}", email);
             result.Error = ex.Message;
             result.Success = false;
         }
@@ -124,9 +129,9 @@ public sealed class JsonWebTokenProvider : IJsonWebTokenProvider
         }
         catch (SecurityTokenException ex)
         {
+            _logger.LogError(ex, "Error validating JWT token for issuer {Issuer} and audience {Audience}", issuer, audience);
             result.Error = ex.Message;
             result.Success = false;
-
         }
 
         return await Task.FromResult(result);

@@ -51,7 +51,9 @@ public class MultiFactorPasskeyAssertionEndpoint : EndpointBaseAsync
         var publisher = Services.GetRequiredService<IPublisher>();
 
         if (!await featureManager.IsEnabledAsync(FeatureFlagConstants.Passkeys, cancellationToken))
+        {
             return NotFound();
+        }
 
         var user =  (await userReadStore.GetUserByEmailAsync(request.Email, cancellationToken)).User;
 
@@ -60,7 +62,9 @@ public class MultiFactorPasskeyAssertionEndpoint : EndpointBaseAsync
         var result = await tokenProvider.VerifyAssertionAsync(user, options, request.Response, cancellationToken);
 
         if (result.ErrorMessage is not null)
+        {
             return BadRequest();
+        }
         
         PasskeyVerified @event = new(user.Email!, DateTime.UtcNow);
         

@@ -27,7 +27,8 @@ public class DeleteByNameApplicationEndpoint : EndpointBaseAsync
     /// <summary>
     /// Initializes a new instance of <see cref="DeleteByNameApplicationEndpoint"/>
     /// </summary>
-    /// <param name="services"></param>
+    /// <param name="services">The service provider for dependency injection.</param>
+    /// <exception cref="ArgumentNullException">Thrown if services is null.</exception>
     public DeleteByNameApplicationEndpoint(IServiceProvider services)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
@@ -57,12 +58,16 @@ public class DeleteByNameApplicationEndpoint : EndpointBaseAsync
                                                                            cancellationToken);
 
         if (app is null)
+        {
             return BadRequest();
+        }
 
         var result = await writeStore.SoftDeleteApplicationAsync(User, app.Name, cancellationToken);
 
         if (result.Errors.Any())
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         DeleteApplicationActivity activity = new()
         {

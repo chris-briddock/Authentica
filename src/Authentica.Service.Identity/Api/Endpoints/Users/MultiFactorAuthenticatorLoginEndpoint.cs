@@ -50,17 +50,23 @@ public sealed class MultiFactorAuthenticatorLoginEndpoint : EndpointBaseAsync
         var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
 
         if (user is null)
+        {
             return BadRequest();
+        }
 
         bool isMfaEnabled = await userManager.GetTwoFactorEnabledAsync(user);
 
         if (!isMfaEnabled)
+        {
             return Unauthorized("User does not have mfa enabled.");
+        }
 
         var isAuthenticatorEnabled = await mfaReadStore.IsAuthenticatorEnabledAsync(user.Id, cancellationToken);
 
         if (!isAuthenticatorEnabled.MultiFactorPasskeysEnabled)
+        {
             return Unauthorized("User does not have authenticator enabled.");
+        }
 
         result = await signInManager.TwoFactorSignInAsync(TokenOptions.DefaultAuthenticatorProvider, request.Token, true, true);
 
@@ -72,7 +78,9 @@ public sealed class MultiFactorAuthenticatorLoginEndpoint : EndpointBaseAsync
         await activityWriteStore.SaveActivityAsync(activity);
 
         if (!result.Succeeded)
+        {
             return Unauthorized();
+        }
         
         MfaAuthenticatorCodeVerified @event = new(user.Email!, DateTime.UtcNow);
         

@@ -4,6 +4,7 @@ using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Stores;
 
@@ -12,6 +13,7 @@ namespace Application.Stores;
 /// </summary>
 public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWriteStore
 {
+    private readonly ILogger<UserMultiFactorWriteStore> _logger;
     private DbSet<UserMultiFactorSettings> DbSet => DbContext.Set<UserMultiFactorSettings>();
     /// <summary>
     /// Initializes a new instance of the <see cref="UserMultiFactorWriteStore"/>
@@ -19,6 +21,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
     /// <param name="services">The service provider used to resolve dependencies.</param>
     public UserMultiFactorWriteStore(IServiceProvider services) : base(services)
     {
+        _logger = services.GetRequiredService<ILogger<UserMultiFactorWriteStore>>();
         FusionCache.RemoveByTag(CacheTagConstants.MultiFactorSettings);
     }
     /// <inheritdoc/>
@@ -45,6 +48,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error creating multi-factor settings for user {UserId}", userId);
             return UserMultiFactorStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
@@ -60,6 +64,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error setting email multi-factor to {IsEnabled} for user {UserId}", isEnabled, userId);
             return UserMultiFactorStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
 
@@ -76,6 +81,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error setting authenticator multi-factor to {IsEnabled} for user {UserId}", isEnabled, userId);
             return UserMultiFactorStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
@@ -92,6 +98,7 @@ public sealed class UserMultiFactorWriteStore : StoreBase, IUserMultiFactorWrite
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error setting passkeys multi-factor to {IsEnabled} for user {UserId}", isEnabled, userId);
             return UserMultiFactorStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }

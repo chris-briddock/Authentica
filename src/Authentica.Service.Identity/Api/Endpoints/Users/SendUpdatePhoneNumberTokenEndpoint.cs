@@ -48,7 +48,9 @@ public sealed class SendUpdatePhoneNumberTokenEndpoint : EndpointBaseAsync
         User? user = await userManager.FindByEmailAsync(request.Email)!;
 
          if (user is null)
+         {
             return BadRequest();
+         }
 
         var token = await userManager.GenerateUserTokenAsync(user!, TokenOptions.DefaultEmailProvider, EmailTokenConstants.UpdatePhoneNumber);
 

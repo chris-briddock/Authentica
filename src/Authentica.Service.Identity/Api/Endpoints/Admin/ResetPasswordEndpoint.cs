@@ -56,7 +56,9 @@ public class ResetPasswordEndpoint : EndpointBaseAsync
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
+        {
             return BadRequest();
+        }
 
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
 

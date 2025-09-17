@@ -53,7 +53,9 @@ public sealed class DeleteAccountEndpoint : EndpointBaseAsync
         await activityWriteStore.SaveActivityAsync(activity);
 
         if (result.Errors.Any())
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         UserDeleted @event = new(User.Identity?.Name ?? "Unknown",
                                  DateTime.UtcNow);

@@ -14,12 +14,12 @@ public sealed class ClientApplication :
     /// <summary>
     /// Gets or sets the unique identifier for the client application.
     /// </summary>
-    public override string Id { get; set; } = Gusid.New().ToString();
+    public override string Id { get; set; } = Ulid.NewUlid().ToString();
 
     /// <summary>
     /// Gets or sets the globally unique identifier for the client application.
     /// </summary>
-    public override string ClientId { get; set; } = Gusid.New().ToString();
+    public override string ClientId { get; set; } = Ulid.NewUlid().ToString();
 
     /// <summary>
     /// Gets or sets the creation status of the entity.
@@ -88,5 +88,5 @@ public abstract class ClientApplication<TKey> where TKey : IEquatable<TKey>
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
+    public string ConcurrencyStamp { get; set; } = Ulid.NewUlid().ToString();
 }

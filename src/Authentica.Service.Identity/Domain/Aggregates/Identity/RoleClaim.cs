@@ -10,12 +10,12 @@ public sealed class RoleClaim : IdentityRoleClaim<string>
     /// <summary>
     /// Gets or sets the unique identifier for the role claim.
     /// </summary>
-    public new string Id { get; set; } = Gusid.New().ToString();
+    public new string Id { get; set; } = Ulid.NewUlid().ToString();
 
     /// <summary>
     /// A random value that should change whenever the entity is persisted.
     /// </summary>
-    public string ConcurrencyStamp { get; set; } = Gusid.New().ToString();
+    public string ConcurrencyStamp { get; set; } = Ulid.NewUlid().ToString();
 
     /// <summary>
     /// Gets or sets the role associated with this claim.

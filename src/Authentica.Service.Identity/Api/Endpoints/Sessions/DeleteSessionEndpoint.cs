@@ -48,7 +48,9 @@ public sealed class DeleteSessionEndpoint : EndpointBaseAsync
         var session = await sessionReadStore.GetByIdAsync(request.SessionId);
 
         if (session is null)
+        {
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
 
         await sessionWriteStore.DeleteAsync(session);
         return NoContent();

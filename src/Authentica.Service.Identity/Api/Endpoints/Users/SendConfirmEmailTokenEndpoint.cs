@@ -50,7 +50,9 @@ public class SendConfirmEmailTokenEndpoint : EndpointBaseAsync
         User? user = await userManager.FindByEmailAsync(request.Email)!;
 
          if (user is null)
+        {
             return BadRequest();
+        }
 
         var code = await userManager.GenerateUserTokenAsync(user!, TokenOptions.DefaultEmailProvider, EmailTokenConstants.ConfirmEmail);
 

@@ -22,7 +22,7 @@ public class ApplicationPurge : BackgroundService
     /// <summary>
     /// A periodic timer.
     /// </summary>
-    public readonly ITimerProvider _timer;
+    public ITimerProvider Timer { get; }
 
     /// <summary>
     /// Initializes a new instance of <see cref="ApplicationPurge"/>
@@ -36,23 +36,25 @@ public class ApplicationPurge : BackgroundService
     {
         ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _timer = timer ?? throw new ArgumentNullException(nameof(timer));
+        Timer = timer ?? throw new ArgumentNullException(nameof(timer));
     }
     /// <inheritdoc/>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using var scope = ServiceScopeFactory.CreateScope();
         while (!stoppingToken.IsCancellationRequested &&
-               await _timer.WaitForNextTickAsync(stoppingToken))
+               await Timer.WaitForNextTickAsync(stoppingToken))
         {
-            Logger.LogInformation("Executing {methodName}", nameof(ApplicationPurge));
+            Logger.LogInformation("Executing {MethodName}", nameof(ApplicationPurge));
 
             var sharedStore = scope.ServiceProvider.GetRequiredService<ISharedStore>();
 
             var result = await sharedStore.PurgeEntriesAsync<ClientApplication>(stoppingToken);
 
             if (result.Errors.Any())
+            {
                 throw new PurgeFailureException(result.Errors.First().Description);
+            }
         }
     }
 }

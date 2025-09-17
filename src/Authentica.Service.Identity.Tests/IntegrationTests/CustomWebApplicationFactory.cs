@@ -30,7 +30,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
     }
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        var connectionString = _msSqlContainer.GetConnectionString().Replace("master", "Authentica.Service.Identity");
+        var connectionString = _msSqlContainer.GetConnectionString().Replace("master", "Authentica.Service.Identity", StringComparison.Ordinal);
         string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
         builder.UseEnvironment(env);
 
@@ -64,9 +64,5 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 
             ]).Build();
         });
-    }
-    protected override void ConfigureClient(HttpClient client)
-    {
-        base.ConfigureClient(client);
     }
 }

@@ -58,12 +58,16 @@ public class CreateApplicationSecretEndpoint : EndpointBaseAsync
                                                                               userReadResult.User!.Id,
                                                                               cancellationToken);
         if (app is null)
+        {
             return BadRequest();
+        }
 
         var result = await appWriteStore.UpdateClientSecretAsync(User, request.Name, cancellationToken);
 
         if (result.Errors.Any())
+        {
             return StatusCode(StatusCodes.Status500InternalServerError, result.Errors.First().Description);
+        }
 
         CreatedApplicationSecretActivity activity = new()
         {

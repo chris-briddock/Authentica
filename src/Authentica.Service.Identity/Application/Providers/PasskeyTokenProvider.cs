@@ -9,10 +9,10 @@ using System.Text;
 namespace Application.Providers;
 
 /// <summary>
-/// Provides functionality for generating and verifying passkey tokens.
+/// Provides functionality for generating and verifying passkey tokens using the FIDO2 standard.
 /// </summary>
 /// <typeparam name="TUser">The type of user.</typeparam>
-public sealed class PasskeyTokenProvider<TUser> : IPasskeyTokenProvider<TUser> 
+public sealed class PasskeyTokenProvider<TUser> : IPasskeyTokenProvider<TUser>
     where TUser : IdentityUser<string>
 {
     /// <summary>
@@ -36,174 +36,178 @@ public sealed class PasskeyTokenProvider<TUser> : IPasskeyTokenProvider<TUser>
     /// <param name="fido2Lib">The Fido2 library instance.</param>
     /// <param name="readStore">The passkey credential read store instance.</param>
     /// <param name="writeStore">The passkey credential write store instance.</param>
-    public PasskeyTokenProvider(IFido2 fido2Lib,
-                                IPasskeyCredentialReadStore readStore,
-                                IPasskeyCredentialWriteStore writeStore)
+    /// <exception cref="ArgumentNullException">Thrown when any required dependency is null.</exception>
+    public PasskeyTokenProvider(
+        IFido2 fido2Lib,
+        IPasskeyCredentialReadStore readStore,
+        IPasskeyCredentialWriteStore writeStore)
     {
         Fido2Lib = fido2Lib ?? throw new ArgumentNullException(nameof(fido2Lib));
         ReadStore = readStore ?? throw new ArgumentNullException(nameof(readStore));
         WriteStore = writeStore ?? throw new ArgumentNullException(nameof(writeStore));
-
     }
 
-    /// <summary>
-    /// Determines whether a two-factor token can be generated for the specified user.
-    /// </summary>
-    /// <param name="manager">The user manager instance.</param>
-    /// <param name="user">The user instance.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result indicates whether a two-factor token can be generated.</returns>
-    public async Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
+    /// <inheritdoc/>
+    public Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
     {
-        return await Task.FromResult(true);
+        ArgumentNullException.ThrowIfNull(user);
+        return Task.FromResult(true);
     }
 
-    /// <summary>
-    /// Creates assertion options for the specified user.
-    /// </summary>
-    /// <param name="user">The user instance.</param>
-    /// <param name="token">The cancellation token.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result is the assertion options as a JSON string.</returns>
+    /// <inheritdoc/>
     public async Task<string> CreateAssertionOptionsAsync(TUser user, CancellationToken token = default)
     {
-        List<PublicKeyCredentialDescriptor> existingKeys = [];
-
+        ArgumentNullException.ThrowIfNull(user);
+        
         var credentials = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
-
-        foreach (var credential in credentials) 
-        {
-            existingKeys.Add(new PublicKeyCredentialDescriptor()
-            {
-                Id = credential.PasskeyCredentialId,
-                Type = PublicKeyCredentialType.PublicKey
-            });
-        }  
-
-        AssertionOptions options = Fido2Lib.GetAssertionOptions(existingKeys, UserVerificationRequirement.Discouraged);
+        var existingKeys = ConvertToPublicKeyDescriptors(credentials);
+        
+        var options = Fido2Lib.GetAssertionOptions(
+            existingKeys, 
+            UserVerificationRequirement.Discouraged);
 
         return options.ToJson();
     }
 
-    /// <summary>
-    /// Creates attestation options for the specified user.
-    /// </summary>
-    /// <param name="user">The user instance.</param>
-    /// <param name="token">The cancellation token.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result is the attestation options as a JSON string.</returns>
+    /// <inheritdoc/>
     public async Task<string> CreateAttestationOptionsAsync(TUser user, CancellationToken token = default)
     {
-        Fido2User fidoUser = new()
-        {
-            Id = Encoding.UTF8.GetBytes(user.Id),
-            Name = user.Email,
-            DisplayName = user.Email
-        };
+        ArgumentNullException.ThrowIfNull(user);
+        
+        var fidoUser = CreateFido2User(user);
+        var credentials = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
+        var existingKeys = ConvertToPublicKeyDescriptors(credentials);
 
-        List<PublicKeyCredentialDescriptor> existingKeys = [];
-
-        List<PasskeyCredentialReadDto> query = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
-
-        foreach (var credential in query)
-        {
-            existingKeys.Add(new PublicKeyCredentialDescriptor()
-            {
-                Id = credential.PasskeyCredentialId,
-                Type = PublicKeyCredentialType.PublicKey
-            });
-        }
-
-        var options = Fido2Lib.RequestNewCredential(fidoUser, existingKeys, AuthenticatorSelection.Default, AttestationConveyancePreference.None);
+        var options = Fido2Lib.RequestNewCredential(
+            fidoUser, 
+            existingKeys, 
+            AuthenticatorSelection.Default, 
+            AttestationConveyancePreference.None);
 
         return options.ToJson();
-
     }
 
-    /// <summary>
-    /// Creates a credential for the specified user.
-    /// </summary>
-    /// <param name="user">The user instance.</param>
-    /// <param name="jsonOptions">The JSON options.</param>
-    /// <param name="response">The authenticator attestation raw response.</param>
-    /// <param name="token">The cancellation token.</param>
-    public async Task CreateCredentialAsync(TUser user,
-                                            string jsonOptions,
-                                            AuthenticatorAttestationRawResponse response,
-                                            CancellationToken token = default)
+    /// <inheritdoc/>
+    public async Task CreateCredentialAsync(
+        TUser user,
+        string jsonOptions,
+        AuthenticatorAttestationRawResponse response,
+        CancellationToken token = default)
     {
+        ArgumentNullException.ThrowIfNull(user);
+        ArgumentNullException.ThrowIfNull(jsonOptions);
+        ArgumentNullException.ThrowIfNull(response);
+
         var options = CredentialCreateOptions.FromJson(jsonOptions);
+        var uniquenessCallback = CreateUniqueCredentialCallback(user.Id);
+        
+        var result = await Fido2Lib.MakeNewCredentialAsync(
+            response, 
+            options, 
+            uniquenessCallback, 
+            cancellationToken: token);
 
-        IsCredentialIdUniqueToUserAsyncDelegate callback = async (parameters, ctx) =>
-        {
-            List<PasskeyCredentialReadDto> credentials = await ReadStore.GetPasskeyCredentialsAsync(user.Id, ctx);
-            if (credentials.Count > 0) return false;
-
-            return true;
-        };
-        // 2. Verify and make the credentials
-        Fido2.CredentialMakeResult result = await Fido2Lib.MakeNewCredentialAsync(response, options, callback);
-
-        // persist the credential.
         await WriteStore.CreateAsync(result);
     }
 
-    /// <summary>
-    /// Generates a passkey token for the specified user. This method is obsolete and should not be used.
-    /// </summary>
-    /// <param name="purpose">The purpose of the token.</param>
-    /// <param name="manager">The user manager instance.</param>
-    /// <param name="user">The user instance.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result is the generated token.</returns>
+    /// <inheritdoc/>
     [Obsolete($"Please use {nameof(CreateCredentialAsync)}")]
     public Task<string> GenerateAsync(string purpose, UserManager<TUser> manager, TUser user)
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException($"This method is obsolete. Please use {nameof(CreateCredentialAsync)} instead.");
     }
 
-    /// <summary>
-    /// Validates a passkey token for the specified user. This method is obsolete and should not be used.
-    /// </summary>
-    /// <param name="purpose">The purpose of the token.</param>
-    /// <param name="token">The token to validate.</param>
-    /// <param name="manager">The user manager instance.</param>
-    /// <param name="user">The user instance.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result indicates whether the token is valid.</returns>
+    /// <inheritdoc/>
     [Obsolete($"Please use {nameof(VerifyAssertionAsync)}")]
     public Task<bool> ValidateAsync(string purpose, string token, UserManager<TUser> manager, TUser user)
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException($"This method is obsolete. Please use {nameof(VerifyAssertionAsync)} instead.");
     }
 
-    /// <summary>
-    /// Verifies an assertion for the specified user.
-    /// </summary>
-    /// <param name="user">The user instance.</param>
-    /// <param name="jsonOptions">The JSON options.</param>
-    /// <param name="response">The authenticator assertion raw response.</param>
-    /// <param name="token">The cancellation token.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result is the assertion verification result.</returns>
+    /// <inheritdoc/>
     public async Task<AssertionVerificationResult> VerifyAssertionAsync(
         TUser user,
         string jsonOptions,
         AuthenticatorAssertionRawResponse response,
         CancellationToken token = default)
     {
+        ArgumentNullException.ThrowIfNull(user);
+        ArgumentNullException.ThrowIfNull(jsonOptions);
+        ArgumentNullException.ThrowIfNull(response);
+
         var options = AssertionOptions.FromJson(jsonOptions);
+        var credentials = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
+        
+        var credential = credentials.FirstOrDefault(c => c.PasskeyCredentialId.SequenceEqual(response.Id))
+            ?? throw new InvalidOperationException("Credential not found for the provided response.");
 
-        uint signatureCount = 0;
+        var ownershipCallback = CreateOwnershipCallback(credentials);
+        
+        var result = await Fido2Lib.MakeAssertionAsync(
+            response, 
+            options, 
+            credential.PublicKey, 
+            credential.SignatureCounter, 
+            ownershipCallback, 
+            cancellationToken: token);
 
-        PasskeyCredentialReadDto credential = new();
-
-        List<PasskeyCredentialReadDto> credentials = await ReadStore.GetPasskeyCredentialsAsync(user.Id, token);
-
-        credential = credentials.FirstOrDefault(c => c.PasskeyCredentialId.SequenceEqual(response.Id))!;
-
-        IsUserHandleOwnerOfCredentialIdAsync callback = async (args, cancellationToken) =>
-        {
-            return await Task.FromResult(credentials.Exists(c => c.PasskeyCredentialId.SequenceEqual(args.CredentialId)));
-        };
-        var res = await Fido2Lib.MakeAssertionAsync(response, options, credential.PublicKey, signatureCount, callback, cancellationToken: token);
-
-        res.Counter++;
-
-        return res;
+        return result;
     }
+
+    #region Private Helper Methods
+
+    /// <summary>
+    /// Creates a Fido2User from the provided user.
+    /// </summary>
+    private static Fido2User CreateFido2User(TUser user)
+    {
+        return new Fido2User
+        {
+            Id = Encoding.UTF8.GetBytes(user.Id),
+            Name = user.Email ?? user.UserName ?? user.Id,
+            DisplayName = user.Email ?? user.UserName ?? user.Id
+        };
+    }
+
+    /// <summary>
+    /// Converts a list of PasskeyCredentialReadDto to PublicKeyCredentialDescriptor list.
+    /// </summary>
+    private static List<PublicKeyCredentialDescriptor> ConvertToPublicKeyDescriptors(
+        IEnumerable<PasskeyCredentialReadDto> credentials)
+    {
+        return credentials
+            .Select(c => new PublicKeyCredentialDescriptor
+            {
+                Id = c.PasskeyCredentialId,
+                Type = PublicKeyCredentialType.PublicKey
+            })
+            .ToList();
+    }
+
+    /// <summary>
+    /// Creates a callback to check credential uniqueness for a user.
+    /// </summary>
+    private IsCredentialIdUniqueToUserAsyncDelegate CreateUniqueCredentialCallback(string userId)
+    {
+        return async (parameters, cancellationToken) =>
+        {
+            var existingCredentials = await ReadStore.GetPasskeyCredentialsAsync(userId, cancellationToken);
+            return !existingCredentials.Any(c => c.PasskeyCredentialId.SequenceEqual(parameters.CredentialId));
+        };
+    }
+
+    /// <summary>
+    /// Creates a callback to verify ownership of credentials.
+    /// </summary>
+    private static IsUserHandleOwnerOfCredentialIdAsync CreateOwnershipCallback(
+        List<PasskeyCredentialReadDto> credentials)
+    {
+        return (args, cancellationToken) =>
+        {
+            var isOwner = credentials.Any(c => c.PasskeyCredentialId.SequenceEqual(args.CredentialId));
+            return Task.FromResult(isOwner);
+        };
+    }
+
+    #endregion
 }

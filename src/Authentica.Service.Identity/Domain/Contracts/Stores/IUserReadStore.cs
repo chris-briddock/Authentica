@@ -55,5 +55,5 @@ public interface IUserReadStore
     /// <returns>
     /// A task that represents the asynchronous operation. The task result contains a list of all users.
     /// </returns>
-    Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken);
+    Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken = default!);
 }

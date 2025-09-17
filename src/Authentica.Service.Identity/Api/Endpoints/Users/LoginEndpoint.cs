@@ -62,7 +62,9 @@ public sealed class LoginEndpoint : EndpointBaseAsync
         User? user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
+        {
             return BadRequest();
+        }
 
         // Attempt to sign in the user
         var signInResult = await signInManager.PasswordSignInAsync(request.Email, request.Password, true, true);
@@ -76,14 +78,20 @@ public sealed class LoginEndpoint : EndpointBaseAsync
 
         // Check if the user requires mfa authentication
         if (signInResult.RequiresTwoFactor)
+        {
             return Ok("User requires mfa authentication.");
+        }
         
         if (signInResult.IsLockedOut)
+        {
             return Unauthorized("User is locked out.");
+        }
 
         // Check if the sign-in attempt was successful
         if (!signInResult.Succeeded)
+        {
             return Unauthorized("User login failed.");
+        }
 
         UserLoggedIn @event = new(request.Email,
                                   DateTime.UtcNow);

@@ -38,5 +38,5 @@ public class UserPasskeyCredential<TKey> where TKey : IEquatable<TKey>
 public sealed class UserPasskeyCredential : UserPasskeyCredential<string>
 {
     /// <inheritdoc />
-    public override string Id { get; set; } = Gusid.New().ToString();
+    public override string Id { get; set; } = Ulid.NewUlid().ToString();
 }

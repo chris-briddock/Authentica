@@ -30,9 +30,10 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
     /// Initializes a new instance of the <see cref="DeleteRoleEndpoint"/> class.
     /// </summary>
     /// <param name="services">The service provider for dependency injection.</param>
+    /// <exception cref="ArgumentNullException">Thrown if services is null.</exception>
     public DeleteRoleEndpoint(IServiceProvider services)
     {
-        Services = services;
+        Services = services ?? throw new ArgumentNullException(nameof(services));
     }
 
     /// <summary>
@@ -57,7 +58,9 @@ public sealed class DeleteRoleEndpoint : EndpointBaseAsync
         var user = (await userReadStore.GetUserByEmailAsync(User, cancellationToken)).User;
 
         if (role is null)
+        {
             return BadRequest();
+        }
 
         role.EntityDeletionStatus = new(true, DateTime.UtcNow, user.Id);
         role.EntityModificationStatus = new(DateTime.UtcNow, user.Id);

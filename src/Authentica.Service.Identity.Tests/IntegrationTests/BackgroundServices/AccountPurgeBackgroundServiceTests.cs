@@ -48,7 +48,7 @@ public class AccountPurgeBackgroundServiceTests
                 return timerCallCount == 1;
             });
 
-        var webAppFactory = _fixture.WebApplicationFactory.WithWebHostBuilder(builder =>
+        _fixture.WebApplicationFactory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
@@ -91,11 +91,10 @@ public class AccountPurgeBackgroundServiceTests
         var mockTimer = new TimerMock();
         var serviceScopeFactoryMock = new Mock<IServiceScopeFactory>();
         var serviceScopeMock = new Mock<IServiceScope>();
-        var serviceProviderMock = new Mock<IServiceProvider>();
         var sharedStoreMock = new Mock<ISharedStore>();
 
         sharedStoreMock.Setup(x => x.PurgeEntriesAsync<User>(It.IsAny<CancellationToken>()))
-       .ReturnsAsync(SharedStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
+       .ReturnsAsync(SharedStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new OperationCanceledException())));
         serviceScopeMock.Setup(x => x.ServiceProvider.GetService(typeof(ISharedStore))).Returns(sharedStoreMock.Object);
         serviceScopeFactoryMock.Setup(x => x.CreateScope()).Returns(serviceScopeMock.Object);
 
@@ -107,7 +106,7 @@ public class AccountPurgeBackgroundServiceTests
                 return timerCallCount == 1;
             });
 
-        var webAppFactory = _fixture.WebApplicationFactory.WithWebHostBuilder(builder =>
+        _fixture.WebApplicationFactory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {

@@ -46,7 +46,9 @@ public class SendMultiFactorTokenEndpoint : EndpointBaseAsync
          User? user = await userManager.FindByEmailAsync(request.Email)!;
 
          if (user is null)
+        {
             return BadRequest();
+        }
 
         var token = await userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
 

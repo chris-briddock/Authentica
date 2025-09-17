@@ -43,7 +43,7 @@ public class SendTokenRequestValidator : AbstractValidator<SendTokenRequest>
     /// <returns>
     /// <c>true</c> if the token type is valid; otherwise, <c>false</c>.
     /// </returns>
-    private bool BeValidTokenType(string tokenType)
+    private static bool BeValidTokenType(string tokenType)
     {
         return AllowedTokenTypes.Contains(tokenType);
     }

@@ -5,6 +5,7 @@ using Application.Results;
 using Domain.Aggregates.Identity;
 using Domain.Contracts.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Persistence.Contexts;
 using System.Security.Claims;
 
@@ -15,12 +16,15 @@ namespace Application.Stores;
 /// </summary>
 public class UserReadStore : StoreBase, IUserReadStore
 {
+    private readonly ILogger<UserReadStore> _logger;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="UserReadStore"/> class.
     /// </summary>
     /// <param name="services">The service provider for accessing application services.</param>
     public UserReadStore(IServiceProvider services) : base(services)
     {
+        _logger = services.GetRequiredService<ILogger<UserReadStore>>();
     }
 
     /// <inheritdoc/>
@@ -30,7 +34,9 @@ public class UserReadStore : StoreBase, IUserReadStore
         var emailClaim = claimsPrincipal.FindFirst(ClaimTypes.Email);
 
         if (emailClaim is null)
+        {
             return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+        }
 
         var email = emailClaim.Value;
 
@@ -57,7 +63,9 @@ public class UserReadStore : StoreBase, IUserReadStore
         );
 
         if (user is null)
+        {
             return UserStoreResult.Failed(IdentityErrorFactory.UserNotFound());
+        }
 
         return UserStoreResult.Success(user);
     }
@@ -91,22 +99,25 @@ public class UserReadStore : StoreBase, IUserReadStore
             );
 
             if (user is null)
+            {
                 return UserStoreResult.Failed(IdentityErrorFactory.EmailNotFound());
+            }
 
             return UserStoreResult.Success(user);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error getting user by email {Email}", email);
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
     /// <inheritdoc/>
-    public async Task<UserStoreResult> GetUserByIdAsync(string id,
+    public async Task<UserStoreResult> GetUserByIdAsync(string Id,
                                                         CancellationToken cancellationToken = default)
     {
         try
         {
-            var cacheKey = $"user_id_{id}";
+            var cacheKey = $"user_id_{Id}";
 
             // Define the compiled query
             var compiledQuery = EF.CompileAsyncQuery(
@@ -122,19 +133,22 @@ public class UserReadStore : StoreBase, IUserReadStore
                 {
                     ctx.Tags = [CacheTagConstants.Users];
                     // Execute the compiled query
-                    var result = await compiledQuery(DbContext, id);
+                    var result = await compiledQuery(DbContext, Id);
                     return result!;
                 },
                 token: cancellationToken
             );
 
             if (user is null)
+            {
                 return UserStoreResult.Failed(IdentityErrorFactory.UserNotFound());
+            }
 
             return UserStoreResult.Success(user);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error getting user by ID {UserId}", Id);
             return UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(ex));
         }
     }
@@ -163,14 +177,6 @@ public class UserReadStore : StoreBase, IUserReadStore
     public async Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken = default)
     {
         var cacheKey = "all_users";
-
-        // Define the compiled query for getting all users
-        var compiledQuery = EF.CompileAsyncQuery(
-            (AppDbContext context) =>
-                context.Users
-                    .AsNoTracking()
-                    .ToList()
-        );
 
         var users = await FusionCache.GetOrSetAsync<List<User>>(
             cacheKey,

@@ -51,7 +51,9 @@ public class MultiFactorPasskeyAttestationEndpoint : EndpointBaseAsync
         var publisher = Services.GetRequiredService<IPublisher>();
 
         if (!await featureManager.IsEnabledAsync(FeatureFlagConstants.Passkeys, cancellationToken))
+        {
             return NotFound();
+        }
 
 
         var user =  (await userReadStore.GetUserByEmailAsync(request.Email)).User;

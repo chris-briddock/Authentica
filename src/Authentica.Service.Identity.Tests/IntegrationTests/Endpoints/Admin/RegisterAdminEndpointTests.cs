@@ -51,7 +51,7 @@ public class RegisterAdminEndpointTests
         var userWriteStoreMock = new UserWriteStoreMock();
 
         userWriteStoreMock.Setup(x => x.CreateUserAsync(It.IsAny<RegisterRequest>(), It.IsAny<CancellationToken>()))
-        .ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new Exception())));
+        .ReturnsAsync(UserStoreResult.Failed(IdentityErrorFactory.ExceptionOccurred(new OperationCanceledException())));
 
         using var client = _fixture.CreateAuthenticatedClient(x => x.Replace(new ServiceDescriptor(typeof(IUserWriteStore), userWriteStoreMock.Object)));
 
